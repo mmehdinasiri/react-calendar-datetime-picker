@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { ExampleComponent } from 'react-datetime-picker'
+import { DtPicker } from 'react-datetime-picker'
 import 'react-datetime-picker/dist/index.css'
 
 const App = () => {
-  return <ExampleComponent text='Create React Library Example 😄' />
+  return <DtPicker text='This is gonna be Date Time Picker 😄' />
 }
 
 export default App

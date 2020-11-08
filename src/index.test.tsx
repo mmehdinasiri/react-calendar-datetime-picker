@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import { DtPicker } from '.'
 
-describe('ExampleComponent', () => {
+describe('dtPicker', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(DtPicker).toBeTruthy()
   })
 })

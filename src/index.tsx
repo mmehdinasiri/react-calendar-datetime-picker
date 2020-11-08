@@ -1,10 +1,7 @@
 import * as React from 'react'
-import styles from './styles.module.css'
+// import styles from './styles.module.css'
+import { DtWrapper } from './Components'
 
-interface Props {
-  text: string
-}
-
-export const ExampleComponent = ({ text }: Props) => {
-  return <div className={styles.test}>Example Component: {text}</div>
+export const DtPicker = ({ text }: IDtPicker) => {
+  return <DtWrapper text={text} />
 }
