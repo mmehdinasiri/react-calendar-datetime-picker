@@ -20,3 +20,7 @@ declare module '*.svg' {
 interface IDtPicker {
   text: string
 }
+interface IDayProvider {
+  initState: string
+  children: React.ReactElement | React.ReactElement[]
+}

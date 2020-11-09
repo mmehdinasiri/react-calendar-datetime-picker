@@ -11,11 +11,6 @@ const DayContextSetState = createContext(
   Function as Dispatch<SetStateAction<string>>
 )
 
-interface IDayProvider {
-  initState: string
-  children: React.ReactElement | React.ReactElement[]
-}
-
 function DayProvider({ children, initState }: IDayProvider) {
   const [day, setDay] = useState<string>(initState)
   return (

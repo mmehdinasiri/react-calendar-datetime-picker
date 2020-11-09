@@ -1,0 +1,19 @@
+.daysList {
+  list-style: none;
+  overflow: hidden;
+  padding: 0;
+  text-align: center;
+  width: 340px;
+}
+.daysList_day {
+  width: calc(340px / 7);
+  height: calc(340px / 7);
+  line-height: calc(340px / 7);
+  float: left;
+  text-align: center;
+  cursor: pointer;
+}
+
+.daysList_day:nth-child(7n + 1) {
+  clear: left;
+}
