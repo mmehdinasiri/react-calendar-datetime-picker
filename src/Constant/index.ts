@@ -8,3 +8,18 @@ export const WEEK_DAY = [
   'Saturday'
 ]
 export const WEEK_DAY_SHORT = ['Su', 'Mo', 'Tu', 'We', 'Tr', 'Fr', 'Sa']
+
+export const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+]
