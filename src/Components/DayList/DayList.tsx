@@ -18,6 +18,7 @@ const DayList = ({ year, month, day }: IMonthList) => {
     })
   }
   const daysForCurrentMonth = createDaysForCurrentMonth(year, month)
+
   const createDaysForPreviousMonth = (year: number, month: number) => {
     const firstDayOfTheMonthWeekday = getWeekday(
       daysForCurrentMonth[0].date.getDay()
@@ -32,9 +33,6 @@ const DayList = ({ year, month, day }: IMonthList) => {
     )
 
     return [...Array(visibleNumberOfDaysFromPreviousMonth)].map((_, index) => {
-      console.log(previousMonth.getMonth() + 1)
-      console.log(previousMonthLastMondayDayOfMonth + index)
-
       return {
         date: new Date(
           previousMonth.getFullYear(),
@@ -46,9 +44,30 @@ const DayList = ({ year, month, day }: IMonthList) => {
       }
     })
   }
+  function createDaysForNextMonth(year: number, month: number) {
+    const lastDayOfTheMonthWeekday = getWeekday(
+      new Date(year, month, daysForCurrentMonth.length).getDay()
+    )
+    const nextMonth = new Date(year, month + 1)
+    const visibleNumberOfDaysFromNextMonth = lastDayOfTheMonthWeekday.weekDayIndex
+      ? 7 - lastDayOfTheMonthWeekday.weekDayIndex
+      : lastDayOfTheMonthWeekday
 
-  console.log(day)
+    return [...Array(visibleNumberOfDaysFromNextMonth)].map((_, index) => {
+      return {
+        date: new Date(
+          nextMonth.getFullYear(),
+          nextMonth.getMonth(),
+          index + 1
+        ),
+        dayOfMonth: index + 1,
+        isCurrentMonth: false
+      }
+    })
+  }
   console.log(createDaysForPreviousMonth(year, month))
+  console.log(createDaysForNextMonth(year, month))
+  console.log(day)
 
   return (
     <ul className={styles.daysList}>
