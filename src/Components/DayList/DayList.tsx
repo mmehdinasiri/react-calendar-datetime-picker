@@ -1,6 +1,10 @@
 import React from 'react'
 import styles from './styles.module.css'
-import { getNumberOfDaysInMonth, getWeekday } from '../../Helpers'
+import {
+  getNumberOfDaysInMonth,
+  getPreviousSundayDay,
+  getWeekday
+} from '../../Helpers'
 import { WEEK_DAY_SHORT } from '../../Constant'
 
 const DayList = ({ year, month, day }: IMonthList) => {
@@ -15,9 +19,6 @@ const DayList = ({ year, month, day }: IMonthList) => {
   }
   const daysForCurrentMonth = createDaysForCurrentMonth(year, month)
   const createDaysForPreviousMonth = (year: number, month: number) => {
-    console.log(year)
-    console.log(month)
-    console.log('----------')
     const firstDayOfTheMonthWeekday = getWeekday(
       daysForCurrentMonth[0].date.getDay()
     )
@@ -25,31 +26,30 @@ const DayList = ({ year, month, day }: IMonthList) => {
       ? firstDayOfTheMonthWeekday.weekDayIndex - 1
       : 6
 
-    console.log(visibleNumberOfDaysFromPreviousMonth)
-    // const previousMonth = dayjs(`${year}-${month}-01`).subtract(1, 'month')
-    // const previousMonthLastMondayDayOfMonth = new Date(
-    //   daysForCurrentMonth[0].date
-    // )
-    //   .subtract(visibleNumberOfDaysFromPreviousMonth, 'day')
-    //   .date()
-    // return [...Array(visibleNumberOfDaysFromPreviousMonth)].map(
-    //   (day, index) => {
-    //     return {
-    //       date: dayjs(
-    //         `${previousMonth.year()}-${previousMonth.month() + 1}-${
-    //           previousMonthLastMondayDayOfMonth + index
-    //         }`
-    //       ).format('YYYY-MM-DD'),
-    //       dayOfMonth: previousMonthLastMondayDayOfMonth + index,
-    //       isCurrentMonth: false
-    //     }
-    //   }
-    // )
+    const previousMonth = new Date(year, month - 1)
+    var previousMonthLastMondayDayOfMonth = getPreviousSundayDay(
+      daysForCurrentMonth[0].date
+    )
+
+    return [...Array(visibleNumberOfDaysFromPreviousMonth)].map((_, index) => {
+      console.log(previousMonth.getMonth() + 1)
+      console.log(previousMonthLastMondayDayOfMonth + index)
+
+      return {
+        date: new Date(
+          previousMonth.getFullYear(),
+          previousMonth.getMonth(),
+          previousMonthLastMondayDayOfMonth + index
+        ),
+        dayOfMonth: previousMonthLastMondayDayOfMonth + index,
+        isCurrentMonth: false
+      }
+    })
   }
 
   console.log(day)
-  console.log(daysForCurrentMonth)
-  createDaysForPreviousMonth(year, month)
+  console.log(createDaysForPreviousMonth(year, month))
+
   return (
     <ul className={styles.daysList}>
       {WEEK_DAY_SHORT.map((day) => (

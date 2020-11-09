@@ -20,3 +20,14 @@ export const todayObject = () => {
   }
   return today
 }
+
+export const getPreviousSundayDay = (date: Date) => {
+  var day = date.getDay()
+  const prevMonday = new Date()
+  if (date.getDay() === 0) {
+    prevMonday.setDate(date.getDate() - 6)
+  } else {
+    prevMonday.setDate(date.getDate() - (day - 1))
+  }
+  return prevMonday.getDate()
+}
