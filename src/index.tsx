@@ -3,10 +3,10 @@ import * as React from 'react'
 import { DtWrapper } from './Components'
 import DayProvider from './store/DayProvider'
 
-export const DtPicker = ({ text }: IDtPicker) => {
+export const DtPicker = () => {
   return (
-    <DayProvider initState='25/1/1367'>
-      <DtWrapper text={text} />
+    <DayProvider>
+      <DtWrapper />
     </DayProvider>
   )
 }

@@ -16,11 +16,22 @@ declare module '*.svg' {
   export default svgUrl
   export { svgComponent as ReactComponent }
 }
-
-interface IDtPicker {
-  text: string
+interface IDay {
+  year: number
+  month: number
+  day: number
+  hour: number
+  minutes: number
+}
+interface IMonthList {
+  year: number
+  month: number
+  day: number
+}
+interface IHeader {
+  month: number
 }
 interface IDayProvider {
-  initState: string
+  initState?: IDay
   children: React.ReactElement | React.ReactElement[]
 }

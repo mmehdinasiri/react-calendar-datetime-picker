@@ -1,20 +1,16 @@
-import React, { useEffect } from 'react'
-import { useDayState, useDayActions } from '../../store/DayProvider'
-import { DayList } from '../'
+import React from 'react'
+import { useDayState } from '../../store/DayProvider'
+import { DayList, Header } from '../'
 import styles from './styles.module.css'
 
-const Wrapper = ({ text }: IDtPicker) => {
+const Wrapper = () => {
   const day = useDayState()
-  const { changeDay } = useDayActions()
-  useEffect(() => {
-    setTimeout(() => {
-      changeDay('25/1/1399')
-    }, 2000)
-  }, [])
+
   return (
     <div className={styles.dtWrapper}>
-      DtWrapper Component: {text} : {day}
-      <DayList />
+      DtWrapper Component: {day.year}
+      <Header month={day.month} />
+      <DayList year={day.year} month={day.month} day={day.day} />
     </div>
   )
 }

@@ -5,14 +5,17 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
+import { todayObject } from '../Helpers'
 
-const DayContext = createContext('' as string)
+const DayContext = createContext({} as IDay)
 const DayContextSetState = createContext(
-  Function as Dispatch<SetStateAction<string>>
+  (Function as unknown) as Dispatch<SetStateAction<IDay>>
 )
 
 function DayProvider({ children, initState }: IDayProvider) {
-  const [day, setDay] = useState<string>(initState)
+  const initDay = initState || todayObject()
+  console.log(initDay)
+  const [day, setDay] = useState<IDay>(initDay)
   return (
     <DayContext.Provider value={day}>
       <DayContextSetState.Provider value={setDay}>
@@ -30,8 +33,11 @@ function useSetDayState() {
 }
 function useDayActions() {
   const setDayAction = useSetDayState()
-  const changeDay = (newValue: string) => {
-    setDayAction(newValue)
+  const changeDay = (newValue: IDay) => {
+    setDayAction((oldVal) => ({
+      ...oldVal,
+      ...newValue
+    }))
   }
   return { changeDay }
 }
