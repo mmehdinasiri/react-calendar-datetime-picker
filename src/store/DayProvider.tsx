@@ -14,7 +14,6 @@ const DayContextSetState = createContext(
 
 function DayProvider({ children, initState }: IDayProvider) {
   const initDay = initState || todayObject()
-  console.log(initDay)
   const [day, setDay] = useState<IDay>(initDay)
   return (
     <DayContext.Provider value={day}>

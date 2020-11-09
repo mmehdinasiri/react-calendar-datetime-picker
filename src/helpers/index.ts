@@ -25,7 +25,7 @@ export const getPreviousSundayDay = (date: Date) => {
   var day = date.getDay()
   const prevMonday = new Date()
   if (date.getDay() === 0) {
-    prevMonday.setDate(date.getDate() - 6)
+    prevMonday.setDate(date.getDate() - 7)
   } else {
     prevMonday.setDate(date.getDate() - (day - 1))
   }

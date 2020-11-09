@@ -16,6 +16,12 @@
 .daysList_day:nth-child(7n + 1) {
   clear: left;
 }
+.is_disabled {
+  pointer-events: none;
+  background-color: #aaa;
+  opacity: 0.7;
+}
+
 .pointer {
   cursor: pointer;
 }

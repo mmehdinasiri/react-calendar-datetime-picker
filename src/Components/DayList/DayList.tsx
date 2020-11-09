@@ -8,6 +8,7 @@ import {
 import { WEEK_DAY_SHORT } from '../../Constant'
 
 const DayList = ({ year, month, day }: IMonthList) => {
+  console.log(day)
   const createDaysForCurrentMonth = (year: number, month: number) => {
     return [...Array(getNumberOfDaysInMonth(year, month))].map((_, index) => {
       return {
@@ -17,21 +18,18 @@ const DayList = ({ year, month, day }: IMonthList) => {
       }
     })
   }
-  const daysForCurrentMonth = createDaysForCurrentMonth(year, month)
-
   const createDaysForPreviousMonth = (year: number, month: number) => {
     const firstDayOfTheMonthWeekday = getWeekday(
       daysForCurrentMonth[0].date.getDay()
     )
     const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday.weekDayIndex
       ? firstDayOfTheMonthWeekday.weekDayIndex - 1
-      : 6
+      : 7
 
     const previousMonth = new Date(year, month - 1)
     var previousMonthLastMondayDayOfMonth = getPreviousSundayDay(
       daysForCurrentMonth[0].date
     )
-
     return [...Array(visibleNumberOfDaysFromPreviousMonth)].map((_, index) => {
       return {
         date: new Date(
@@ -50,7 +48,7 @@ const DayList = ({ year, month, day }: IMonthList) => {
     )
     const nextMonth = new Date(year, month + 1)
     const visibleNumberOfDaysFromNextMonth = lastDayOfTheMonthWeekday.weekDayIndex
-      ? 7 - lastDayOfTheMonthWeekday.weekDayIndex
+      ? 6 - lastDayOfTheMonthWeekday.weekDayIndex
       : lastDayOfTheMonthWeekday
 
     return [...Array(visibleNumberOfDaysFromNextMonth)].map((_, index) => {
@@ -65,9 +63,9 @@ const DayList = ({ year, month, day }: IMonthList) => {
       }
     })
   }
-  console.log(createDaysForPreviousMonth(year, month))
-  console.log(createDaysForNextMonth(year, month))
-  console.log(day)
+  const daysForCurrentMonth = createDaysForCurrentMonth(year, month)
+  const daysForPreviousMonth = createDaysForPreviousMonth(year, month)
+  const daysForNextMonth = createDaysForNextMonth(year, month)
 
   return (
     <ul className={styles.daysList}>
@@ -76,6 +74,15 @@ const DayList = ({ year, month, day }: IMonthList) => {
           {day}
         </li>
       ))}
+      {daysForPreviousMonth.length < 7 &&
+        daysForPreviousMonth.map((day) => (
+          <li
+            key={day.dayOfMonth}
+            className={`${styles.daysList_day} ${styles.is_disabled} }`}
+          >
+            {day.dayOfMonth}
+          </li>
+        ))}
       {daysForCurrentMonth.map((day) => (
         <li
           key={day.dayOfMonth}
@@ -84,6 +91,15 @@ const DayList = ({ year, month, day }: IMonthList) => {
           {day.dayOfMonth}
         </li>
       ))}
+      {daysForNextMonth.length < 7 &&
+        daysForNextMonth.map((day) => (
+          <li
+            key={day.dayOfMonth}
+            className={`${styles.daysList_day} ${styles.is_disabled}`}
+          >
+            {day.dayOfMonth}
+          </li>
+        ))}
     </ul>
   )
 }
