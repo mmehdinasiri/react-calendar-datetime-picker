@@ -5,8 +5,6 @@ export const getNumberOfDaysInMonth = (year: number, month: number): number => {
 }
 
 export const getWeekday = (number: number) => {
-  // console.log(number)
-  // console.log(WEEK_DAY_SHORT[number])
   const weekDay = WEEK_DAY_SHORT[number]
   return { weekDay, weekDayIndex: WEEK_DAY_SHORT.indexOf(weekDay) }
 }

@@ -9,7 +9,7 @@ import { WEEK_DAY_SHORT } from '../../Constant'
 import { useDayState } from '../../store/DayProvider'
 
 const DayList = () => {
-  const today = new Date().getTime()
+  const today = new Date().setHours(0, 0, 0, 0)
   const dayState = useDayState()
   const year = dayState.getFullYear()
   const month = dayState.getMonth()
@@ -19,7 +19,7 @@ const DayList = () => {
       const date = new Date(year, month, index + 1)
       return {
         date,
-        time: date.getTime(),
+        time: date.setHours(0, 0, 0, 0),
         dayOfMonth: index + 1,
         isCurrentMonth: true
       }
@@ -48,7 +48,7 @@ const DayList = () => {
       }
     })
   }
-  function createDaysForNextMonth(year: number, month: number) {
+  const createDaysForNextMonth = (year: number, month: number) => {
     const lastDayOfTheMonthWeekday = getWeekday(
       new Date(year, month, daysForCurrentMonth.length).getDay()
     )
