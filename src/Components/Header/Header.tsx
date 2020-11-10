@@ -11,12 +11,12 @@ const Header = () => {
   const day = dayState.getDate()
   return (
     <div className={styles.header}>
-      <button onClick={() => changeDay(new Date(year, month + 1, day))}>
-        next
-      </button>
-      {year}/{monthConvertor(month + 1)}
       <button onClick={() => changeDay(new Date(year, month - 1, day))}>
         prev
+      </button>
+      {year}/{monthConvertor(month + 1)}
+      <button onClick={() => changeDay(new Date(year, month + 1, day))}>
+        next
       </button>
     </div>
   )

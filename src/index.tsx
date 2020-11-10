@@ -2,6 +2,7 @@ import * as React from 'react'
 // import styles from './styles.module.css'
 import { DtWrapper } from './Components'
 import DayProvider from './store/DayProvider'
+import ViewProvider from './store/ViewProvider'
 
 export const DtPicker = () => {
   // const day = new Date(1999, 1, 12)
@@ -12,9 +13,11 @@ export const DtPicker = () => {
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
   return (
-    <DayProvider>
-      {/* <DayProvider initState={day}> */}
-      <DtWrapper />
-    </DayProvider>
+    <ViewProvider>
+      <DayProvider>
+        {/* <DayProvider initState={day}> */}
+        <DtWrapper />
+      </DayProvider>
+    </ViewProvider>
   )
 }
