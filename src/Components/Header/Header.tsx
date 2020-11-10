@@ -9,7 +9,7 @@ const Header = () => {
   const day = dayState.getDate()
   return (
     <div>
-      {year}/{monthConvertor(month)}/{day}
+      {year}/{monthConvertor(month + 1)}/{day}
     </div>
   )
 }

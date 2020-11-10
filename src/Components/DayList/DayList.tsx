@@ -30,9 +30,8 @@ const DayList = () => {
       daysForCurrentMonth[0].date.getDay()
     )
     const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday.weekDayIndex
-      ? firstDayOfTheMonthWeekday.weekDayIndex - 1
+      ? firstDayOfTheMonthWeekday.weekDayIndex
       : 7
-
     const previousMonth = new Date(year, month - 1)
     var previousMonthLastMondayDayOfMonth = getPreviousSundayDay(
       daysForCurrentMonth[0].date
@@ -56,7 +55,7 @@ const DayList = () => {
     const nextMonth = new Date(year, month + 1)
     const visibleNumberOfDaysFromNextMonth = lastDayOfTheMonthWeekday.weekDayIndex
       ? 6 - lastDayOfTheMonthWeekday.weekDayIndex
-      : lastDayOfTheMonthWeekday
+      : 6
 
     return [...Array(visibleNumberOfDaysFromNextMonth)].map((_, index) => {
       return {
@@ -74,6 +73,7 @@ const DayList = () => {
   const daysForCurrentMonth = createDaysForCurrentMonth(year, month)
   const daysForPreviousMonth = createDaysForPreviousMonth(year, month)
   const daysForNextMonth = createDaysForNextMonth(year, month)
+
   return (
     <ul className={styles.daysList}>
       {WEEK_DAY_SHORT.map((day) => (
