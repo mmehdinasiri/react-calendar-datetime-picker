@@ -11,10 +11,14 @@
   line-height: calc(340px / 7);
   float: left;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .daysList_day:nth-child(7n + 1) {
   clear: left;
+}
+.is_today {
+  border: 1px solid green;
 }
 .is_disabled {
   pointer-events: none;

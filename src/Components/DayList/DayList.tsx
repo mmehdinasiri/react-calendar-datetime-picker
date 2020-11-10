@@ -8,11 +8,14 @@ import {
 import { WEEK_DAY_SHORT } from '../../Constant'
 
 const DayList = ({ year, month, day }: IMonthList) => {
-  console.log(day)
+  const today = new Date(year, month, day).getTime()
+
   const createDaysForCurrentMonth = (year: number, month: number) => {
     return [...Array(getNumberOfDaysInMonth(year, month))].map((_, index) => {
+      const date = new Date(year, month, index + 1)
       return {
-        date: new Date(year, month, index + 1),
+        date,
+        time: date.getTime(),
         dayOfMonth: index + 1,
         isCurrentMonth: true
       }
@@ -63,10 +66,10 @@ const DayList = ({ year, month, day }: IMonthList) => {
       }
     })
   }
+
   const daysForCurrentMonth = createDaysForCurrentMonth(year, month)
   const daysForPreviousMonth = createDaysForPreviousMonth(year, month)
   const daysForNextMonth = createDaysForNextMonth(year, month)
-
   return (
     <ul className={styles.daysList}>
       {WEEK_DAY_SHORT.map((day) => (
@@ -86,7 +89,9 @@ const DayList = ({ year, month, day }: IMonthList) => {
       {daysForCurrentMonth.map((day) => (
         <li
           key={day.dayOfMonth}
-          className={`${styles.daysList_day} ${styles.pointer}`}
+          className={`${styles.daysList_day} ${styles.pointer} ${
+            day.time === today ? styles.is_today : null
+          }`}
         >
           {day.dayOfMonth}
         </li>
