@@ -6,9 +6,13 @@ import {
   getWeekday
 } from '../../Helpers'
 import { WEEK_DAY_SHORT } from '../../Constant'
+import { useDayState } from '../../store/DayProvider'
 
-const DayList = ({ year, month, day }: IMonthList) => {
-  const today = new Date(year, month, day).getTime()
+const DayList = () => {
+  const today = new Date().getTime()
+  const dayState = useDayState()
+  const year = dayState.getFullYear()
+  const month = dayState.getMonth()
 
   const createDaysForCurrentMonth = (year: number, month: number) => {
     return [...Array(getNumberOfDaysInMonth(year, month))].map((_, index) => {

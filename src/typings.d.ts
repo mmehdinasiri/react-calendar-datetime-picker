@@ -28,10 +28,8 @@ interface IMonthList {
   month: number
   day: number
 }
-interface IHeader {
-  month: number
-}
+
 interface IDayProvider {
-  initState?: IDay
+  initState?: Date
   children: React.ReactElement | React.ReactElement[]
 }
