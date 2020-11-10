@@ -8,7 +8,7 @@ import {
 import { WEEK_DAY_SHORT } from '../../Constant'
 import { useDayState } from '../../store/DayProvider'
 
-const Days = () => {
+const DaysView = () => {
   const today = new Date().setHours(0, 0, 0, 0)
   const dayState = useDayState()
   const year = dayState.getFullYear()
@@ -113,4 +113,4 @@ const Days = () => {
   )
 }
 
-export default Days
+export default DaysView

@@ -1,4 +1,4 @@
-import { WEEK_DAY_SHORT, MONTHS } from '../Constant'
+import { WEEK_DAY_SHORT, MONTHS_SHORT } from '../Constant'
 
 export const getNumberOfDaysInMonth = (year: number, month: number): number => {
   return new Date(year, month + 1, 0).getDate()
@@ -10,7 +10,7 @@ export const getWeekday = (number: number) => {
 }
 
 export const getMonth = (number: number) => {
-  return MONTHS[number]
+  return MONTHS_SHORT[number]
 }
 
 export const todayObject = () => {

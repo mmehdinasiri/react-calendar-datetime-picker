@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { useViewState } from '../../store/ViewProvider'
-import { Header, Years, Months, Days } from '../'
+import { Header, YearsView, MonthsView, DaysView } from '../'
 import styles from './styles.module.css'
 // import { viewsSelector } from '../../Convertor'
 
@@ -9,16 +9,16 @@ const viewsSelector = (currentView: string) => {
   let view: ReactElement | unknown
   switch (currentView) {
     case YEARS_VIEW:
-      view = <Years />
+      view = <YearsView />
       break
     case MONTHS_VIEW:
-      view = <Months />
+      view = <MonthsView />
       break
     case DAYS_VIEW:
-      view = <Days />
+      view = <DaysView />
       break
     default:
-      view = <Days />
+      view = <DaysView />
   }
   return view
 }
