@@ -7,7 +7,7 @@ export const WEEK_DAY = [
   'Friday',
   'Saturday'
 ]
-export const WEEK_DAY_SHORT = ['Su', 'Mo', 'Tu', 'We', 'Tr', 'Fr', 'Sa']
+export const WEEK_DAY_SHORT = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
 export const MONTHS = [
   'Jan',
