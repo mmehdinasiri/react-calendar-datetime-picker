@@ -9,7 +9,6 @@ import useDidMountEffect from '../../hooks/useDidMountEffect'
 const TimeView = () => {
   const date = useDayState()
   const selectedDate = useSelectedDayState()
-  console.log(selectedDate)
   const [hours, setHours] = useState<number>(
     selectedDate?.getHours() || date.getHours()
   )
@@ -26,15 +25,22 @@ const TimeView = () => {
     const newDate = new Date(
       selectedDate?.setMinutes(minutes) || date.getMinutes()
     )
+    if (minutes === 60) {
+      if (hours !== 24) {
+        setHours(hours + 1)
+      } else {
+        setHours(0)
+      }
+    }
     changeSelectedDay(newDate)
   }
   useDidMountEffect(() => {
+    console.log(hours)
     handelChangeHours()
   }, [hours])
   useDidMountEffect(() => {
     handelChangeMinutes()
   }, [minutes])
-
   return (
     <div>
       <input
