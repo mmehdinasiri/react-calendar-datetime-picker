@@ -16,20 +16,23 @@ declare module '*.svg' {
   export default svgUrl
   export { svgComponent as ReactComponent }
 }
-interface IDay {
-  year: number
-  month: number
-  day: number
-  hour: number
-  minutes: number
-}
-interface IMonthList {
-  year: number
-  month: number
-  day: number
-}
 
 interface IDayProvider {
   initState?: Date
   children: React.ReactElement | React.ReactElement[]
+}
+interface ISelectedDayProvider {
+  initState?: Date
+  range?: string
+  children: React.ReactElement | React.ReactElement[]
+}
+
+interface IYearsProps {
+  type?: string
+}
+interface IMonthsProps {
+  type?: string
+}
+interface IDaysProps {
+  type?: string
 }
