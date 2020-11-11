@@ -1,6 +1,5 @@
 import React from 'react'
 import { DAYS_VIEW, MONTHS } from '../../Constant'
-import styles from './styles.module.css'
 import { useViewActions } from '../../store/ViewProvider'
 import { useDayActions, useDayState } from '../../store/DayProvider'
 
@@ -21,11 +20,11 @@ const MonthsView = () => {
   }
   return (
     <div>
-      <ul className={styles.monthList}>
+      <ul className='monthList'>
         {MONTHS.map((month, index) => (
           <div
             key={index}
-            className={styles.monthList_month}
+            className='monthList_month'
             onClick={() => changeMonth(index)}
           >
             {month}

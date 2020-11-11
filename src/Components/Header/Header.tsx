@@ -3,7 +3,6 @@ import { monthConvertor } from '../../Convertor'
 import { useDayActions, useDayState } from '../../store/DayProvider'
 import { useViewActions } from '../../store/ViewProvider'
 import { MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
-import styles from './styles.module.css'
 
 const Header = () => {
   const dayState = useDayState()
@@ -15,7 +14,7 @@ const Header = () => {
   const hours = dayState.getHours()
   const minutes = dayState.getMinutes()
   return (
-    <div className={styles.header}>
+    <div className='header'>
       <button
         onClick={() =>
           changeDay(new Date(year, month - 1, day, hours, minutes))

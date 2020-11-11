@@ -2,7 +2,6 @@ import React from 'react'
 import { DAYS_VIEW } from '../../Constant'
 import { useDayActions, useDayState } from '../../store/DayProvider'
 import { useViewActions } from '../../store/ViewProvider'
-import styles from './styles.module.css'
 
 const years = () => {
   const { changeView } = useViewActions()
@@ -23,19 +22,15 @@ const years = () => {
     const yearsList = []
     for (let i = 1900; i <= 2100; i++)
       yearsList.push(
-        <li
-          key={i}
-          className={styles.yearList_year}
-          onClick={() => changeMonth(i)}
-        >
+        <li key={i} className='yearList_year' onClick={() => changeMonth(i)}>
           {i}
         </li>
       )
     return yearsList
   }
   return (
-    <div className={styles.yearWrapper}>
-      <ul className={styles.yearList}>{yearsRange()}</ul>
+    <div className='yearWrapper'>
+      <ul className='yearList'>{yearsRange()}</ul>
     </div>
   )
 }

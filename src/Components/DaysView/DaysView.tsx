@@ -1,5 +1,4 @@
 import React from 'react'
-import styles from './styles.module.css'
 import {
   getNumberOfDaysInMonth,
   getPreviousSundayDay,
@@ -75,26 +74,23 @@ const DaysView = () => {
   const daysForNextMonth = createDaysForNextMonth(year, month)
 
   return (
-    <ul className={styles.daysList}>
+    <ul className='daysList'>
       {WEEK_DAY_SHORT.map((day) => (
-        <li key={day} className={styles.daysList_day}>
+        <li key={day} className='daysList_day'>
           {day}
         </li>
       ))}
       {daysForPreviousMonth.length < 7 &&
         daysForPreviousMonth.map((day) => (
-          <li
-            key={day.dayOfMonth}
-            className={`${styles.daysList_day} ${styles.is_disabled} }`}
-          >
+          <li key={day.dayOfMonth} className='daysList_day is_disabled'>
             {day.dayOfMonth}
           </li>
         ))}
       {daysForCurrentMonth.map((day) => (
         <li
           key={day.dayOfMonth}
-          className={`${styles.daysList_day} ${styles.pointer} ${
-            day.time === today ? styles.is_today : null
+          className={`daysList_day pointer} ${
+            day.time === today ? 'is_today' : null
           }`}
         >
           {day.dayOfMonth}
@@ -102,10 +98,7 @@ const DaysView = () => {
       ))}
       {daysForNextMonth.length < 7 &&
         daysForNextMonth.map((day) => (
-          <li
-            key={day.dayOfMonth}
-            className={`${styles.daysList_day} ${styles.is_disabled}`}
-          >
+          <li key={day.dayOfMonth} className='daysList_day is_disabled'>
             {day.dayOfMonth}
           </li>
         ))}

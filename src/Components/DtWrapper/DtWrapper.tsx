@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import { useViewState } from '../../store/ViewProvider'
 import { Header, YearsView, MonthsView, DaysView, TimeView } from '../'
-import styles from './styles.module.css'
 
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useDayState } from '../../store/DayProvider'
@@ -29,7 +28,7 @@ const Wrapper = ({ onChange }: any) => {
   }, [date])
 
   return (
-    <div className={styles.dtWrapper}>
+    <div className='dtWrapper'>
       <Header />
       {viewsSelector(useViewState())}
       <TimeView />

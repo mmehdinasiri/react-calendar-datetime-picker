@@ -1,5 +1,6 @@
 import * as React from 'react'
 // import styles from './styles.module.css'
+import './style/main.scss'
 import { DtWrapper } from './Components'
 import DayProvider from './store/DayProvider'
 import ViewProvider from './store/ViewProvider'
