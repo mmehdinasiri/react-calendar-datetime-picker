@@ -1,9 +1,9 @@
 /* add css module styles here (optional) */
 .dtWrapper {
   margin: auto;
-  width: 340px;
+  width: rem(340px);
   position: relative;
-  border: 1px solid #444;
-  padding: 8px;
-  border-radius: 4px;
+  border: rem(1px) solid #444;
+  padding: rem(8px);
+  border-radius: rem(4px);
 }

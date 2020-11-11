@@ -3,12 +3,11 @@
   overflow: hidden;
   padding: 0;
   text-align: center;
-  width: 340px;
 }
 .daysList_day {
-  width: calc(340px / 7);
-  height: calc(340px / 7);
-  line-height: calc(340px / 7);
+  width: rem(calc(340px / 7));
+  height: rem(calc(340px / 7));
+  line-height: rem(calc(340px / 7));
   float: left;
   text-align: center;
   box-sizing: border-box;
@@ -18,7 +17,7 @@
   clear: left;
 }
 .is_today {
-  border: 1px solid green;
+  border: rem(1px) solid green;
 }
 .is_disabled {
   pointer-events: none;

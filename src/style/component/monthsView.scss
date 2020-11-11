@@ -3,12 +3,11 @@
   overflow: hidden;
   padding: 0;
   text-align: center;
-  width: 340px;
 }
 .monthList_month {
-  width: calc(340px / 3);
-  height: 72px;
-  line-height: 72px;
+  width: rem(calc(340px / 3));
+  height: rem(72px);
+  line-height: rem(72px);
   float: left;
   text-align: center;
   box-sizing: border-box;
