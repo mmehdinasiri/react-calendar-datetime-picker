@@ -12,9 +12,15 @@ const Header = () => {
   const year = dayState.getFullYear()
   const month = dayState.getMonth()
   const day = dayState.getDate()
+  const hours = dayState.getHours()
+  const minutes = dayState.getMinutes()
   return (
     <div className={styles.header}>
-      <button onClick={() => changeDay(new Date(year, month - 1, day))}>
+      <button
+        onClick={() =>
+          changeDay(new Date(year, month - 1, day, hours, minutes))
+        }
+      >
         prev
       </button>
       <div>
@@ -23,7 +29,11 @@ const Header = () => {
           {monthConvertor(month + 1)}
         </div>
       </div>
-      <button onClick={() => changeDay(new Date(year, month + 1, day))}>
+      <button
+        onClick={() =>
+          changeDay(new Date(year, month + 1, day, hours, minutes))
+        }
+      >
         next
       </button>
     </div>

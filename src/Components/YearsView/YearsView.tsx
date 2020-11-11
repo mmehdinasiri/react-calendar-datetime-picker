@@ -12,7 +12,9 @@ const years = () => {
     const dateWithNewMonth: Date = new Date(
       year,
       dayState.getMonth(),
-      dayState.getDate()
+      dayState.getDate(),
+      dayState.getHours(),
+      dayState.getMinutes()
     )
     changeDay(dateWithNewMonth)
     changeView(DAYS_VIEW)
