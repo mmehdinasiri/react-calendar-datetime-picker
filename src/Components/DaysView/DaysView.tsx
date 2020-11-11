@@ -16,7 +16,10 @@ const DaysView = () => {
   const dayState = useDayState()
   const selectedDayState = useSelectedDayState()
   const { changeSelectedDay } = useSelectedDayActions()
-  const selectedDay = new Date(selectedDayState).setHours(0, 0, 0, 0)
+  let selectedDay = 0
+  if (selectedDayState) {
+    selectedDay = new Date(selectedDayState).setHours(0, 0, 0, 0)
+  }
   const year = dayState.getFullYear()
   const month = dayState.getMonth()
 
