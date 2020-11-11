@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { useViewState } from '../../store/ViewProvider'
 import { Header, YearsView, MonthsView, DaysView, TimeView } from '../'
 import styles from './styles.module.css'
 
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
+import { useDayState } from '../../store/DayProvider'
 const viewsSelector = (currentView: string) => {
-  let view: React.ReactElement | unknown
+  let view: ReactElement | unknown
   switch (currentView) {
     case YEARS_VIEW:
       view = <YearsView />
@@ -21,7 +22,14 @@ const viewsSelector = (currentView: string) => {
   }
   return view
 }
-const Wrapper = () => {
+const Wrapper = ({ onChange }: any) => {
+  const date = useDayState()
+  React.useEffect(() => {
+    console.log('-----------')
+    console.log(date)
+    onChange(date)
+  }, [date])
+
   return (
     <div className={styles.dtWrapper}>
       <Header />
