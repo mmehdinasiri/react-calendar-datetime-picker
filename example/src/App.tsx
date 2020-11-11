@@ -12,6 +12,12 @@ const App = () => {
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
   const [date, setDate] = useState<Date>(new Date())
+  // const handelState = (date: Date) => {
+  //   setDate((oldState) => ({
+  //     ...oldState,
+  //     date
+  //   }))
+  // }
   return (
     <>
       <DtPicker defaultValue={date} onChange={setDate} />

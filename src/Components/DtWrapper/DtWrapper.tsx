@@ -3,7 +3,7 @@ import { useViewState } from '../../store/ViewProvider'
 import { Header, YearsView, MonthsView, DaysView, TimeView } from '../'
 
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
-import { useDayState } from '../../store/DayProvider'
+import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 const viewsSelector = (currentView: string) => {
   let view: ReactElement | unknown
   switch (currentView) {
@@ -22,10 +22,10 @@ const viewsSelector = (currentView: string) => {
   return view
 }
 const Wrapper = ({ onChange }: any) => {
-  const date = useDayState()
+  const selectedDate = useSelectedDayState()
   React.useEffect(() => {
-    onChange(date)
-  }, [date])
+    onChange(selectedDate)
+  }, [selectedDate])
 
   return (
     <div className='dtWrapper'>

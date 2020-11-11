@@ -6,10 +6,17 @@ import {
 } from '../../Helpers'
 import { WEEK_DAY_SHORT } from '../../Constant'
 import { useDayState } from '../../store/DayProvider'
+import {
+  useSelectedDayActions,
+  useSelectedDayState
+} from '../../store/SelectedDaysProvider'
 
 const DaysView = () => {
   const today = new Date().setHours(0, 0, 0, 0)
   const dayState = useDayState()
+  const selectedDayState = useSelectedDayState()
+  const { changeSelectedDay } = useSelectedDayActions()
+  const selectedDay = new Date(selectedDayState).setHours(0, 0, 0, 0)
   const year = dayState.getFullYear()
   const month = dayState.getMonth()
 
@@ -68,11 +75,21 @@ const DaysView = () => {
       }
     })
   }
-
   const daysForCurrentMonth = createDaysForCurrentMonth(year, month)
   const daysForPreviousMonth = createDaysForPreviousMonth(year, month)
   const daysForNextMonth = createDaysForNextMonth(year, month)
 
+  const handelChangeDay = (date: Date) => {
+    changeSelectedDay(
+      new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        dayState.getHours(),
+        dayState.getMinutes()
+      )
+    )
+  }
   return (
     <ul className='daysList'>
       {WEEK_DAY_SHORT.map((day) => (
@@ -91,7 +108,12 @@ const DaysView = () => {
           key={day.dayOfMonth}
           className={`daysList_day pointer} ${
             day.time === today ? 'is_today' : null
-          }`}
+          }
+          ${day.time === selectedDay ? 'is_selected_day' : null}
+          `}
+          onClick={() => {
+            handelChangeDay(day.date)
+          }}
         >
           {day.dayOfMonth}
         </li>

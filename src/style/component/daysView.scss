@@ -17,12 +17,16 @@
   clear: left;
 }
 .is_today {
-  border: rem(1px) solid green;
+  border: rem(2px) solid green;
 }
 .is_disabled {
   pointer-events: none;
   background-color: #aaa;
   opacity: 0.7;
+}
+
+.is_selected_day {
+  background-color: yellow;
 }
 
 .pointer {
