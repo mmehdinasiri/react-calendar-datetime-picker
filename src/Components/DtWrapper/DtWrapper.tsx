@@ -25,8 +25,6 @@ const viewsSelector = (currentView: string) => {
 const Wrapper = ({ onChange }: any) => {
   const date = useDayState()
   React.useEffect(() => {
-    console.log('-----------')
-    console.log(date)
     onChange(date)
   }, [date])
 
