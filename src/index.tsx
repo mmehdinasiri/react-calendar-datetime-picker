@@ -7,12 +7,13 @@ import ViewProvider from './store/ViewProvider'
 import SelectedDaysProvider from './store/SelectedDaysProvider'
 
 // { defaultValue: Date; onChange: Dispatch<SetStateAction<Date>>
-export const DtPicker = ({ defaultValue, onChange }: any) => {
+
+export const DtPicker = ({ defaultValue, onChange, type }: IDtPickerProps) => {
   return (
     <ViewProvider>
-      <DayProvider initState={defaultValue}>
-        <SelectedDaysProvider initState={defaultValue}>
-          <DtWrapper onChange={onChange} />
+      <DayProvider initState={defaultValue} type={type}>
+        <SelectedDaysProvider initState={defaultValue} type={type}>
+          <DtWrapper onChange={onChange} type={type} />
         </SelectedDaysProvider>
       </DayProvider>
     </ViewProvider>

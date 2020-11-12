@@ -11,22 +11,21 @@ const App = () => {
   // const day = new Date(2009, 11, 1)
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
-  const [date, setDate] = useState<Date>()
+  const [date, setDate] = useState({ from: null, to: null })
   // const handelState = (date: Date) => {
   //   setDate((oldState) => ({
   //     ...oldState,
   //     date
   //   }))
   // }
-  console.log(date)
   return (
     <>
-      <DtPicker defaultValue={date} onChange={setDate} />
-      {date && (
+      <DtPicker onChange={setDate} type='range' defaultValue={date} />
+      {/* {date && (
         <h1>{`${date.getFullYear()} / ${
           date.getMonth() + 1
         } / ${date.getDate()} - ${date.getHours()} : ${date.getMinutes()}`}</h1>
-      )}
+      )} */}
     </>
   )
 }

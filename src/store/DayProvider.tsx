@@ -12,8 +12,16 @@ const DayContextSetState = createContext(
   (Function as unknown) as Dispatch<SetStateAction<Date>>
 )
 
-function DayProvider({ children, initState }: IDayProvider) {
-  const initDay = initState || new Date()
+function DayProvider({ children, initState, type }: IDayProvider) {
+  let initDay
+  if (!type) {
+    initDay = initState || new Date()
+  }
+  if (type === 'range') {
+    // @ts-ignore: Unreachable code error
+    initDay = initState?.from || new Date()
+  }
+
   const [day, setDay] = useState<Date>(initDay)
   return (
     <DayContext.Provider value={day}>

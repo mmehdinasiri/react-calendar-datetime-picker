@@ -4,7 +4,7 @@ import { Header, YearsView, MonthsView, DaysView, TimeView } from '../'
 
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
-const viewsSelector = (currentView: string) => {
+const viewsSelector = (currentView: string, type?: string) => {
   let view: ReactElement | unknown
   switch (currentView) {
     case YEARS_VIEW:
@@ -14,14 +14,14 @@ const viewsSelector = (currentView: string) => {
       view = <MonthsView />
       break
     case DAYS_VIEW:
-      view = <DaysView />
+      view = <DaysView type={type} />
       break
     default:
-      view = <DaysView />
+      view = <DaysView type={type} />
   }
   return view
 }
-const Wrapper = ({ onChange }: any) => {
+const Wrapper = ({ onChange, type }: any) => {
   const selectedDate = useSelectedDayState()
   React.useEffect(() => {
     onChange(selectedDate)
@@ -30,7 +30,7 @@ const Wrapper = ({ onChange }: any) => {
   return (
     <div className='dtWrapper'>
       <Header />
-      {viewsSelector(useViewState())}
+      {viewsSelector(useViewState(), type)}
       <TimeView />
     </div>
   )

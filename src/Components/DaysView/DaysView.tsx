@@ -11,15 +11,11 @@ import {
   useSelectedDayState
 } from '../../store/SelectedDaysProvider'
 
-const DaysView = () => {
+const DaysView = ({ type }: IDaysProps) => {
   const today = new Date().setHours(0, 0, 0, 0)
   const dayState = useDayState()
   const selectedDayState = useSelectedDayState()
-  const { changeSelectedDay } = useSelectedDayActions()
-  let selectedDay = 0
-  if (selectedDayState) {
-    selectedDay = new Date(selectedDayState).setHours(0, 0, 0, 0)
-  }
+  const { changeSelectedDay, changeSelectedDayRange } = useSelectedDayActions()
   const year = dayState.getFullYear()
   const month = dayState.getMonth()
 
@@ -83,15 +79,33 @@ const DaysView = () => {
   const daysForNextMonth = createDaysForNextMonth(year, month)
 
   const handelChangeDay = (date: Date) => {
-    changeSelectedDay(
-      new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        dayState.getHours(),
-        dayState.getMinutes()
-      )
+    const newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      dayState.getHours(),
+      dayState.getMinutes()
     )
+    if (!type) {
+      console.log('single')
+      changeSelectedDay(newDate)
+    }
+
+    if (type === 'range') {
+      // @ts-ignore: Unreachable code error
+      if (selectedDayState.from === null) {
+        changeSelectedDayRange({ from: newDate })
+        // @ts-ignore: Unreachable code error
+      } else if (selectedDayState.to === null) {
+        changeSelectedDayRange({ to: newDate })
+        // @ts-ignore: Unreachable code error
+      } else if (selectedDayState.from && selectedDayState.to) {
+        changeSelectedDayRange({ from: newDate })
+        // @ts-ignore: Unreachable code error
+      } else if (selectedDayState.from && selectedDayState.to) {
+        changeSelectedDayRange({ to: newDate })
+      }
+    }
   }
   return (
     <ul className='daysList'>
@@ -112,7 +126,34 @@ const DaysView = () => {
           className={`daysList_day pointer} ${
             day.time === today ? 'is_today' : null
           }
-          ${day.time === selectedDay ? 'is_selected_day' : null}
+          ${
+            !type &&
+            day.date.setHours(0, 0, 0, 0) ===
+              // @ts-ignore: Unreachable code error
+              selectedDayState?.setHours(0, 0, 0, 0)
+              ? 'is_selected_day'
+              : null
+          }
+          ${
+            type === 'range' &&
+            // @ts-ignore: Unreachable code error
+            selectedDayState?.from &&
+            day.date.setHours(0, 0, 0, 0) ===
+              // @ts-ignore: Unreachable code error
+              selectedDayState.from.setHours(0, 0, 0, 0)
+              ? 'is_selected_day_from'
+              : null
+          }
+          ${
+            type === 'range' &&
+            // @ts-ignore: Unreachable code error
+            selectedDayState?.to &&
+            day.date.setHours(0, 0, 0, 0) ===
+              // @ts-ignore: Unreachable code error
+              selectedDayState.to?.setHours(0, 0, 0, 0)
+              ? 'is_selected_day_to'
+              : null
+          }
           `}
           onClick={() => {
             handelChangeDay(day.date)
