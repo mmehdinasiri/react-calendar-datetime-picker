@@ -9,11 +9,12 @@ import SelectedDaysProvider from './store/SelectedDaysProvider'
 // { defaultValue: Date; onChange: Dispatch<SetStateAction<Date>>
 
 export const DtPicker = ({ defaultValue, onChange, type }: IDtPickerProps) => {
+  const correctedType = type || 'single'
   return (
     <ViewProvider>
-      <DayProvider initState={defaultValue} type={type}>
-        <SelectedDaysProvider initState={defaultValue} type={type}>
-          <DtWrapper onChange={onChange} type={type} />
+      <DayProvider initState={defaultValue} type={correctedType}>
+        <SelectedDaysProvider initState={defaultValue} type={correctedType}>
+          <DtWrapper onChange={onChange} type={correctedType} />
         </SelectedDaysProvider>
       </DayProvider>
     </ViewProvider>

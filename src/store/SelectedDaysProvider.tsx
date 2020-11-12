@@ -17,7 +17,7 @@ function SelectedDaysProvider({
   type
 }: ISelectedDayProvider) {
   let initDay
-  if (!type) {
+  if (type === 'single') {
     initDay = initState
   }
   if (type === 'range') {
@@ -44,6 +44,7 @@ function useSetSelectedDayState() {
 function useSelectedDayActions() {
   const setSelectedDayAction = useSetSelectedDayState()
   const changeSelectedDay = (newValue: Date) => {
+    console.log('changeSelectedDay')
     setSelectedDayAction(newValue)
   }
   const changeSelectedDayRange = (newValue: any) => {

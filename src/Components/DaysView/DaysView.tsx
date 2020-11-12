@@ -86,8 +86,7 @@ const DaysView = ({ type }: IDaysProps) => {
       dayState.getHours(),
       dayState.getMinutes()
     )
-    if (!type) {
-      console.log('single')
+    if (type === 'single') {
       changeSelectedDay(newDate)
     }
 
@@ -139,7 +138,7 @@ const DaysView = ({ type }: IDaysProps) => {
             day.timeStamp === today ? 'is_today' : ''
           }
           ${
-            !type &&
+            type === 'single' &&
             day.timeStamp ===
               // @ts-ignore: Unreachable code error
               selectedDayState?.setHours(0, 0, 0, 0)

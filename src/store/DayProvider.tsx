@@ -14,7 +14,7 @@ const DayContextSetState = createContext(
 
 function DayProvider({ children, initState, type }: IDayProvider) {
   let initDay
-  if (!type) {
+  if (type === 'single') {
     initDay = initState || new Date()
   }
   if (type === 'range') {

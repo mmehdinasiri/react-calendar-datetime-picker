@@ -31,7 +31,13 @@ const Wrapper = ({ onChange, type }: any) => {
     <div className='dtWrapper'>
       <Header />
       {viewsSelector(useViewState(), type)}
-      <TimeView />
+      {type === 'single' && <TimeView />}
+      {type === 'range' && (
+        <React.Fragment>
+          <TimeView />
+          <TimeView />
+        </React.Fragment>
+      )}
     </div>
   )
 }
