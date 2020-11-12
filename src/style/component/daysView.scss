@@ -30,10 +30,14 @@
   background-color: yellow;
 }
 .is_selected_day_from {
-  background-color: blue;
+  background-color: cyan;
+  border-top-left-radius: rem(50%);
+  border-bottom-left-radius: rem(50%);
 }
 .is_selected_day_to {
-  background-color: brown;
+  background-color: yellowgreen;
+  border-top-right-radius: rem(50%);
+  border-bottom-right-radius: rem(50%);
 }
 .is_selected_day_range {
   background-color: yellow;
