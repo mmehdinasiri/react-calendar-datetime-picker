@@ -11,7 +11,10 @@ const App = () => {
   // const day = new Date(2009, 11, 1)
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
-  const [date, setDate] = useState({ from: null, to: null })
+  const [date, setDate] = useState<{ from: Date | null; to: Date | null }>({
+    from: null,
+    to: null
+  })
   // const handelState = (date: Date) => {
   //   setDate((oldState) => ({
   //     ...oldState,
@@ -21,6 +24,20 @@ const App = () => {
   return (
     <>
       <DtPicker onChange={setDate} type='range' defaultValue={date} />
+      <div>
+        {date.from && (
+          <h1>{`${date.from.getFullYear()} / ${
+            date.from.getMonth() + 1
+          } / ${date.from.getDate()} - ${date.from.getHours()} : ${date.from.getMinutes()}`}</h1>
+        )}
+      </div>
+      <div>
+        {date.to && (
+          <h1>{`${date.to.getFullYear()} / ${
+            date.to.getMonth() + 1
+          } / ${date.to.getDate()} - ${date.to.getHours()} : ${date.to.getMinutes()}`}</h1>
+        )}
+      </div>
       {/* {date && (
         <h1>{`${date.getFullYear()} / ${
           date.getMonth() + 1
