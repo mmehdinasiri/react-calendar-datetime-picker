@@ -47,7 +47,6 @@ function useSelectedDayActions() {
     setSelectedDayAction(newValue)
   }
   const changeSelectedDayRange = (newValue: any) => {
-    console.log(newValue)
     setSelectedDayAction((oldValue) => ({ ...oldValue, ...newValue }))
   }
   return { changeSelectedDay, changeSelectedDayRange }

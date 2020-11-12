@@ -90,20 +90,33 @@ const DaysView = ({ type }: IDaysProps) => {
       console.log('single')
       changeSelectedDay(newDate)
     }
-
     if (type === 'range') {
       // @ts-ignore: Unreachable code error
       if (selectedDayState.from === null) {
         changeSelectedDayRange({ from: newDate })
         // @ts-ignore: Unreachable code error
-      } else if (selectedDayState.to === null) {
+      } else if (
+        // @ts-ignore: Unreachable code error
+        selectedDayState.to === null &&
+        // @ts-ignore: Unreachable code error
+        selectedDayState.from.setHours(0, 0, 0, 0) <
+          newDate.setHours(0, 0, 0, 0)
+      ) {
         changeSelectedDayRange({ to: newDate })
         // @ts-ignore: Unreachable code error
-      } else if (selectedDayState.from && selectedDayState.to) {
-        changeSelectedDayRange({ from: newDate })
+      } else if (
+        // @ts-ignore: Unreachable code error
+        selectedDayState.to === null &&
+        // @ts-ignore: Unreachable code error
+        selectedDayState.from.setHours(0, 0, 0, 0) >
+          newDate.setHours(0, 0, 0, 0)
+      ) {
+        // @ts-ignore: Unreachable code error
+        const newTo = selectedDayState.from
+        changeSelectedDayRange({ from: newDate, to: newTo })
         // @ts-ignore: Unreachable code error
       } else if (selectedDayState.from && selectedDayState.to) {
-        changeSelectedDayRange({ to: newDate })
+        changeSelectedDayRange({ from: newDate, to: null })
       }
     }
   }
