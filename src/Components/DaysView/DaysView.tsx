@@ -24,7 +24,7 @@ const DaysView = ({ type }: IDaysProps) => {
       const date = new Date(year, month, index + 1)
       return {
         date,
-        time: date.setHours(0, 0, 0, 0),
+        timeStamp: date.setHours(0, 0, 0, 0),
         dayOfMonth: index + 1,
         isCurrentMonth: true
       }
@@ -135,36 +135,47 @@ const DaysView = ({ type }: IDaysProps) => {
       {daysForCurrentMonth.map((day) => (
         <li
           key={day.dayOfMonth}
-          className={`daysList_day pointer} ${
-            day.time === today ? 'is_today' : null
+          className={`daysList_day pointer ${
+            day.timeStamp === today ? 'is_today' : ''
           }
           ${
             !type &&
-            day.date.setHours(0, 0, 0, 0) ===
+            day.timeStamp ===
               // @ts-ignore: Unreachable code error
               selectedDayState?.setHours(0, 0, 0, 0)
               ? 'is_selected_day'
-              : null
+              : ''
           }
           ${
             type === 'range' &&
             // @ts-ignore: Unreachable code error
             selectedDayState?.from &&
-            day.date.setHours(0, 0, 0, 0) ===
+            day.timeStamp ===
               // @ts-ignore: Unreachable code error
               selectedDayState.from.setHours(0, 0, 0, 0)
               ? 'is_selected_day_from'
-              : null
+              : ''
           }
           ${
             type === 'range' &&
             // @ts-ignore: Unreachable code error
             selectedDayState?.to &&
-            day.date.setHours(0, 0, 0, 0) ===
+            day.timeStamp ===
               // @ts-ignore: Unreachable code error
               selectedDayState.to?.setHours(0, 0, 0, 0)
               ? 'is_selected_day_to'
-              : null
+              : ''
+          }
+          ${
+            type === 'range' &&
+            // @ts-ignore: Unreachable code error
+            selectedDayState &&
+            // @ts-ignore: Unreachable code error
+            selectedDayState.from?.setHours(0, 0, 0, 0) < day.timeStamp &&
+            // @ts-ignore: Unreachable code error
+            day.timeStamp < selectedDayState.to?.setHours(0, 0, 0, 0)
+              ? 'is_selected_day_range'
+              : ''
           }
           `}
           onClick={() => {
