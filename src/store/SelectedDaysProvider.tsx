@@ -19,7 +19,8 @@ function SelectedDaysProvider({
   // const today = new Date()
   let initDay
   if (type === 'single') {
-    initDay = initState
+    initDay = initState as IDay
+    initDay.fullDay = `${initDay.year}${initDay.month}${initDay.day}`
   }
   if (type === 'range') {
     initDay = initState || { from: null, to: null }

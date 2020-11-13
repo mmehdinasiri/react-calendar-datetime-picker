@@ -17,16 +17,16 @@ const DaysView = ({ type }: IDaysProps) => {
   const todayFullDay = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`
   const calenderState = useCalenderState()
   const selectedDayState = useSelectedDayState()
-  let fromTimeStamp: number, toTimeStamp: number, singleTimeStamp
+  console.log(selectedDayState)
+  let fromTimeStamp: number, toTimeStamp: number
   if (type === 'single') {
-    singleTimeStamp = getDateTimeSameHours(selectedDayState as IDay)
+    // singleTimeStamp = getDateTimeSameHours(selectedDayState as IDay)
   } else if (type === 'range') {
     // @ts-ignore: Unreachable code error
     fromTimeStamp = getDateTimeSameHours((selectedDayState as IRange).from)
     // @ts-ignore: Unreachable code error
     toTimeStamp = getDateTimeSameHours((selectedDayState as IRange).to)
   }
-  console.log(singleTimeStamp)
 
   const { changeSelectedDay, changeSelectedDayRange } = useSelectedDayActions()
   const year = calenderState.getFullYear()
