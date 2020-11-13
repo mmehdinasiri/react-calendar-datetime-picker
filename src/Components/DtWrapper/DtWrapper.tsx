@@ -53,14 +53,14 @@ const Wrapper = ({ onChange, type }: any) => {
       {viewsSelector(useViewState(), type)}
       {type === 'single' && (
         <TimeView
-        // timeFor='single'
-        // initHour={(selectedDate as IDay)?.hours}
-        // initMinutes={(selectedDate as IDay)?.minutes}
+          timeFor='single'
+          initHour={(selectedDate as IDay)?.hours}
+          initMinutes={(selectedDate as IDay)?.minutes}
         />
       )}
       {type === 'range' && (
         <React.Fragment>
-          {/* <TimeView
+          <TimeView
             timeFor='from'
             initHour={(selectedDate as IRange).from?.hours}
             initMinutes={(selectedDate as IRange).from?.minutes}
@@ -69,7 +69,7 @@ const Wrapper = ({ onChange, type }: any) => {
             timeFor='to'
             initHour={(selectedDate as IRange).to?.hours}
             initMinutes={(selectedDate as IRange).to?.minutes}
-          /> */}
+          />
         </React.Fragment>
       )}
     </div>

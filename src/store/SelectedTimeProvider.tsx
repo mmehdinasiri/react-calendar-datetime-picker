@@ -34,13 +34,13 @@ function useSetSelectedTimeState() {
 }
 function useSelectedTimeActions() {
   const setSelectedTimeAction = useSetSelectedTimeState()
-  const changeSelectedDay = (newValue: any) => {
+  const changeSelectedTime = (newValue: any) => {
     setSelectedTimeAction((oldState) => ({
       ...oldState,
       ...newValue
     }))
   }
-  const changeSelectedDayRange = (
+  const changeSelectedTimeRange = (
     field: string,
     newValue: ITime | null | undefined
   ) => {
@@ -51,8 +51,8 @@ function useSelectedTimeActions() {
   }
 
   return {
-    changeSelectedDay,
-    changeSelectedDayRange
+    changeSelectedTime,
+    changeSelectedTimeRange
   }
 }
 
