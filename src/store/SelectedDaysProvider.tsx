@@ -6,9 +6,9 @@ import React, {
   SetStateAction
 } from 'react'
 
-const SelectedDaysContext = createContext({} as Date | IRange | undefined)
+const SelectedDaysContext = createContext({} as IDay | IRange | undefined)
 const SelectedDaysContextSetState = createContext(
-  (Function as unknown) as Dispatch<SetStateAction<Date | IRange>>
+  (Function as unknown) as Dispatch<SetStateAction<IDay | IRange | undefined>>
 )
 
 function SelectedDaysProvider({
@@ -16,6 +16,7 @@ function SelectedDaysProvider({
   initState,
   type
 }: ISelectedDayProvider) {
+  // const today = new Date()
   let initDay
   if (type === 'single') {
     initDay = initState
@@ -23,7 +24,7 @@ function SelectedDaysProvider({
   if (type === 'range') {
     initDay = initState || { from: null, to: null }
   }
-  const [selectedDays, setSelectedDays] = useState<Date | IRange | undefined>(
+  const [selectedDays, setSelectedDays] = useState<IDay | IRange | undefined>(
     initDay
   )
   return (
@@ -43,10 +44,10 @@ function useSetSelectedDayState() {
 }
 function useSelectedDayActions() {
   const setSelectedDayAction = useSetSelectedDayState()
-  const changeSelectedDay = (newValue: Date) => {
+  const changeSelectedDay = (newValue: IDay) => {
     setSelectedDayAction(newValue)
   }
-  const changeSelectedDayRange = (newValue: any) => {
+  const changeSelectedDayRange = (newValue: IRange) => {
     setSelectedDayAction((oldValue) => ({ ...oldValue, ...newValue }))
   }
   return { changeSelectedDay, changeSelectedDayRange }

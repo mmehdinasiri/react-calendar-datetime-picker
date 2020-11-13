@@ -34,8 +34,8 @@ const Wrapper = ({ onChange, type }: any) => {
       {type === 'single' && <TimeView />}
       {type === 'range' && (
         <React.Fragment>
-          <TimeView timeFor='from' />
-          <TimeView timeFor='to' />
+          {/* <TimeView timeFor='from' />
+          <TimeView timeFor='to' /> */}
         </React.Fragment>
       )}
     </div>

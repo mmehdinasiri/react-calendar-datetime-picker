@@ -12,17 +12,8 @@ const CalenderContextSetState = createContext(
   (Function as unknown) as Dispatch<SetStateAction<Date>>
 )
 
-function CalenderProvider({ children, initState, type }: ICalenderProvider) {
-  let initDay
-  if (type === 'single') {
-    initDay = initState || new Date()
-  }
-  if (type === 'range') {
-    // @ts-ignore: Unreachable code error
-    initDay = initState?.from || new Date()
-  }
-
-  const [calender, setCalender] = useState<Date>(initDay)
+function CalenderProvider({ children, initCalender }: ICalenderProvider) {
+  const [calender, setCalender] = useState<Date>(initCalender)
   return (
     <CalenderContext.Provider value={calender}>
       <CalenderContextSetState.Provider value={setCalender}>

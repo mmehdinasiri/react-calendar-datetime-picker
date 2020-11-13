@@ -16,33 +16,39 @@ declare module '*.svg' {
   export default svgUrl
   export { svgComponent as ReactComponent }
 }
-interface IRange {
-  from: Date | null
-  to: Date | null
+
+interface IDay {
+  year: number
+  month: number
+  day: number
+  hour: number
+  minutes: number
+  fullDay?: string
 }
+interface IRange {
+  from: IDay | null
+  to: IDay | null
+}
+interface ICalenderProvider {
+  type?: string
+  initCalender: Date
+  children: React.ReactElement | React.ReactElement[]
+}
+interface ISelectedDayProvider {
+  type?: string
+  initState?: IDay | IRange
+  children: React.ReactElement | React.ReactElement[]
+}
+
 interface IViewProvider {
   children: React.ReactElement | React.ReactElement[]
 }
 interface IDtPickerProps {
-  defaultValue?: Date | IRange
+  defaultValue?: IDay | IRange
   onChange: () => void
   type?: string
 }
-interface ICalenderProvider {
-  type?: string
-  initState?: Date | IRange
-  children: React.ReactElement | React.ReactElement[]
-}
-interface ISelectedDayProvider {
-  type?: string
-  initState?: Date | IRange
-  children: React.ReactElement | React.ReactElement[]
-}
-interface ISelectedDayProvider {
-  initState?: Date | IRange | undefined
-  range?: string
-  children: React.ReactElement | React.ReactElement[]
-}
+
 interface ITimeViewProps {
   timeFor?: string
 }
