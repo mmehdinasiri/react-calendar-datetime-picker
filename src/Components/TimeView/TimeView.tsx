@@ -1,89 +1,69 @@
-import React from 'react'
-// import React, { useState } from 'react'
-// import {
-//   useSelectedDayState,
-//   useSelectedDayActions
-// } from '../../store/SelectedDaysProvider'
-// import { useCalenderState } from '../../store/CalenderProvider'
+import React, { useEffect, useState } from 'react'
+import {
+  useSelectedDayActions,
+  useSelectedDayState
+} from '../../store/SelectedDaysProvider'
 // import useDidMountEffect from '../../hooks/useDidMountEffect'
 
-const TimeView = ({ timeFor }: ITimeViewProps) => {
-  console.log(timeFor)
-  // const calender = useCalenderState()
-  // let selectedDate = useSelectedDayState()
-  // const { changeSelectedDay, changeSelectedDayRange } = useSelectedDayActions()
-  // if (timeFor === 'from') {
-  //   // @ts-ignore
-  //   selectedDate = selectedDate.from
-  // } else if (timeFor === 'to') {
-  //   // @ts-ignore
-  //   selectedDate = selectedDate.to
-  // }
-  // console.log(selectedDate)
-  // const [hours, setHours] = useState<number>(
-  //   // @ts-ignore
-  //   selectedDate?.getHours() || calender.getHours()
-  // )
-  // const [minutes, setMinutes] = useState<number>(
-  //   // @ts-ignore
-  //   selectedDate?.getMinutes() || calender.getMinutes()
-  // )
-  // const actionSelector = (newDate: Date) => {
-  //   if (timeFor === 'from') {
-  //     changeSelectedDayRange({ from: newDate })
-  //   } else if (timeFor === 'to') {
-  //     changeSelectedDayRange({ to: newDate })
-  //   } else {
-  //     changeSelectedDay(newDate)
-  //   }
-  // }
-  // const handelChangeHours = () => {
-  //   // @ts-ignore
-  //   const newDate: Date = new Date(selectedDate) || new Date(date)
-  //   newDate.setHours(hours, minutes)
-  //   actionSelector(newDate)
-  // }
-  // const handelChangeMinutes = () => {
-  //   // @ts-ignore
-  //   const newDate: Date = new Date(selectedDate) || new Date(date)
-  //   newDate.setHours(hours, minutes)
-  //   if (minutes === 60) {
-  //     if (hours !== 24) {
-  //       setHours(hours + 1)
-  //     } else {
-  //       setHours(0)
-  //     }
-  //   }
-  //   actionSelector(newDate)
-  // }
-  // useDidMountEffect(() => {
-  //   handelChangeHours()
-  // }, [hours])
-  // useDidMountEffect(() => {
-  //   handelChangeMinutes()
-  // }, [minutes])
-  // return (
-  //   <div>
-  //     <input
-  //       value={hours}
-  //       type='number'
-  //       max='24'
-  //       min='0'
-  //       onChange={(e) => setHours(Number(e.target.value))}
-  //       disabled={!selectedDate || selectedDate === undefined}
-  //     />
-  //     :
-  //     <input
-  //       value={minutes}
-  //       type='number'
-  //       max='60'
-  //       min='0'
-  //       onChange={(e) => setMinutes(Number(e.target.value))}
-  //       disabled={!selectedDate || selectedDate === undefined}
-  //     />
-  //   </div>
-  // )
-  return <div>time</div>
+const TimeView = ({ timeFor, initHour, initMinutes }: ITimeViewProps) => {
+  const today = new Date()
+
+  const selectedDate = useSelectedDayState()
+  const { changeSelectedDay, changeSelectedDayRange } = useSelectedDayActions()
+
+  const [hours, setHours] = useState<number>(initHour || today.getHours())
+
+  const [minutes, setMinutes] = useState<number>(
+    initMinutes || today.getMinutes()
+  )
+  const handelChangeHours = () => {
+    const newTime = selectedDate
+    if (timeFor === 'from') {
+      // @ts-ignore
+      newTime.from.hour = hours
+      // @ts-ignore
+      newTime.from.minutes = minutes
+      changeSelectedDayRange('from', newTime as IDay)
+    } else if (timeFor === 'to') {
+      // @ts-ignore
+      newTime.to.hour = hours
+      // @ts-ignore
+      newTime.to.minutes = minutes
+      changeSelectedDayRange('to', newTime as IDay)
+    } else {
+      // @ts-ignore
+      newTime.hour = hours
+      // @ts-ignore
+      newTime.minutes = minutes
+
+      changeSelectedDay(newTime as IDay)
+    }
+  }
+  useEffect(() => {
+    handelChangeHours()
+  }, [hours, minutes])
+
+  return (
+    <div>
+      <input
+        value={hours}
+        type='number'
+        max='24'
+        min='0'
+        onChange={(e) => setHours(Number(e.target.value))}
+        disabled={!selectedDate || selectedDate === undefined}
+      />
+      :
+      <input
+        value={minutes}
+        type='number'
+        max='60'
+        min='0'
+        onChange={(e) => setMinutes(Number(e.target.value))}
+        disabled={!selectedDate || selectedDate === undefined}
+      />
+    </div>
+  )
 }
 
 export default TimeView

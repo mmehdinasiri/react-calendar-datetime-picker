@@ -16,12 +16,24 @@ const App = () => {
   //   to: { year: 2000, month: 5, day: 25 }
   // })
   // const [date, setDate] = useState({ year: 2000, month: 5, day: 25 })
-  const [date, setDate] = useState()
+  const [date, setDate] = useState({
+    year: 2000,
+    month: 5,
+    day: 25
+  })
+  // const [date, setDate] = useState({
+  //   year: 2000,
+  //   month: 5,
+  //   day: 25,
+  //   hour: 12,
+  //   minutes: 15
+  // })
+  // const [date, setDate] = useState()
 
   return (
     <>
       {/* <DtPicker onChange={setDate} defaultValue={date} type='range' /> */}
-      <DtPicker onChange={setDate} defaultValue={date} type='range' />
+      <DtPicker onChange={setDate} defaultValue={date} />
       {/* <div>
         {date.from && (
           <h1>{`${date.from.getFullYear()} / ${

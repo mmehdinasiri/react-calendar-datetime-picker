@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react'
 import { useViewState } from '../../store/ViewProvider'
-import { Header, YearsView, MonthsView, DaysView } from '../'
+import { Header, YearsView, MonthsView, DaysView, TimeView } from '../'
 
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
@@ -22,7 +22,6 @@ const viewsSelector = (currentView: string, type?: string) => {
   return view
 }
 const Wrapper = ({ onChange, type }: any) => {
-  // console.log(TimeView)
   const selectedDate = useSelectedDayState()
   React.useEffect(() => {
     onChange(selectedDate)
@@ -32,11 +31,24 @@ const Wrapper = ({ onChange, type }: any) => {
     <div className='dtWrapper'>
       <Header />
       {viewsSelector(useViewState(), type)}
-      {/* {type === 'single' && <TimeView />} */}
+      {type === 'single' && (
+        <TimeView
+          initHour={(selectedDate as IDay)?.hour}
+          initMinutes={(selectedDate as IDay)?.minutes}
+        />
+      )}
       {type === 'range' && (
         <React.Fragment>
-          {/* <TimeView timeFor='from' />
-          <TimeView timeFor='to' /> */}
+          <TimeView
+            timeFor='from'
+            initHour={(selectedDate as IRange).from?.hour}
+            initMinutes={(selectedDate as IRange).from?.minutes}
+          />
+          <TimeView
+            timeFor='to'
+            initHour={(selectedDate as IRange).to?.hour}
+            initMinutes={(selectedDate as IRange).to?.minutes}
+          />
         </React.Fragment>
       )}
     </div>

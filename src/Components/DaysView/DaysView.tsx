@@ -50,8 +50,8 @@ const DaysView = ({ type }: IDaysProps) => {
   const createDaysForPreviousMonth = (year: number, month: number) => {
     const firsDayOfMonth = new Date(
       daysForCurrentMonth[0].date.year,
-      daysForCurrentMonth[0].date.year,
-      daysForCurrentMonth[0].date.year
+      daysForCurrentMonth[0].date.month,
+      daysForCurrentMonth[0].date.day
     )
     const firstDayOfTheMonthWeekday = getWeekday(firsDayOfMonth.getDay())
     const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday.weekDayIndex

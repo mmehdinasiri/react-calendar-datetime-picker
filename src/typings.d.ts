@@ -50,6 +50,8 @@ interface IDtPickerProps {
 }
 
 interface ITimeViewProps {
+  initHour: number | undefined
+  initMinutes: number | undefined
   timeFor?: string
 }
 
