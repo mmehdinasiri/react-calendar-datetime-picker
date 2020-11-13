@@ -15,7 +15,7 @@ const App = () => {
   //   from: null,
   //   to: null
   // })
-  const [date, setDate] = useState({ year: 2009, month: 2, day: 5 })
+  const [date, setDate] = useState()
 
   return (
     <>

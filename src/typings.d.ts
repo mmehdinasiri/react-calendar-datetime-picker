@@ -36,7 +36,7 @@ interface ICalenderProvider {
 }
 interface ISelectedDayProvider {
   type?: string
-  initState?: IDay | IRange
+  initState?: IDay | IRange | null
   children: React.ReactElement | React.ReactElement[]
 }
 

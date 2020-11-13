@@ -17,7 +17,6 @@ const DaysView = ({ type }: IDaysProps) => {
   const todayFullDay = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`
   const calenderState = useCalenderState()
   const selectedDayState = useSelectedDayState()
-  console.log(selectedDayState)
   let fromTimeStamp: number, toTimeStamp: number
   if (type === 'single') {
     // singleTimeStamp = getDateTimeSameHours(selectedDayState as IDay)
@@ -136,7 +135,7 @@ const DaysView = ({ type }: IDaysProps) => {
     }
     if (
       type === 'single' &&
-      day.date.fullDay === (selectedDayState as IDay).fullDay
+      day.date.fullDay === (selectedDayState as IDay)?.fullDay
     ) {
       classes += ' is_selected_day'
     }
@@ -185,8 +184,6 @@ const DaysView = ({ type }: IDaysProps) => {
       {daysForCurrentMonth.map((day) => (
         <li
           key={day.dayOfMonth}
-          date-cur={day.date.fullDay}
-          date-sel={(selectedDayState as IDay).fullDay}
           className={`daysList_day pointer ${checkClass(day)}`}
           onClick={() => {
             handelChangeDay(day.date)

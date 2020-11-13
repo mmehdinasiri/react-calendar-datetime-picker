@@ -8,7 +8,7 @@ import SelectedDaysProvider from './store/SelectedDaysProvider'
 export const DtPicker = ({ defaultValue, onChange, type }: IDtPickerProps) => {
   const correctedType = type || 'single'
   let initCalender = new Date()
-  if (correctedType === 'single' && (defaultValue as IDay).year) {
+  if (correctedType === 'single' && (defaultValue as IDay | null)?.year) {
     initCalender = new Date(
       (defaultValue as IDay).year,
       (defaultValue as IDay).month,
