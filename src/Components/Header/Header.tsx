@@ -1,12 +1,15 @@
 import React from 'react'
 import { monthConvertor } from '../../Convertor'
-import { useDayActions, useDayState } from '../../store/DayProvider'
+import {
+  useCalenderActions,
+  useCalenderState
+} from '../../store/CalenderProvider'
 import { useViewActions } from '../../store/ViewProvider'
 import { MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 
 const Header = () => {
-  const dayState = useDayState()
-  const { changeDay } = useDayActions()
+  const dayState = useCalenderState()
+  const { changeCalender } = useCalenderActions()
   const { changeView } = useViewActions()
   const year = dayState.getFullYear()
   const month = dayState.getMonth()
@@ -17,7 +20,7 @@ const Header = () => {
     <div className='header'>
       <button
         onClick={() =>
-          changeDay(new Date(year, month - 1, day, hours, minutes))
+          changeCalender(new Date(year, month - 1, day, hours, minutes))
         }
       >
         prev
@@ -30,7 +33,7 @@ const Header = () => {
       </div>
       <button
         onClick={() =>
-          changeDay(new Date(year, month + 1, day, hours, minutes))
+          changeCalender(new Date(year, month + 1, day, hours, minutes))
         }
       >
         next

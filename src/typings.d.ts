@@ -25,7 +25,7 @@ interface IDtPickerProps {
   onChange: () => void
   type?: string
 }
-interface IDayProvider {
+interface ICalenderProvider {
   type?: string
   initState?: Date | IRange
   children: React.ReactElement | React.ReactElement[]

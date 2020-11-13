@@ -44,7 +44,6 @@ function useSetSelectedDayState() {
 function useSelectedDayActions() {
   const setSelectedDayAction = useSetSelectedDayState()
   const changeSelectedDay = (newValue: Date) => {
-    console.log('changeSelectedDay')
     setSelectedDayAction(newValue)
   }
   const changeSelectedDayRange = (newValue: any) => {

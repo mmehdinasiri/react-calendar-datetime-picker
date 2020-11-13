@@ -1,21 +1,24 @@
 import React from 'react'
 import { DAYS_VIEW } from '../../Constant'
-import { useDayActions, useDayState } from '../../store/DayProvider'
 import { useViewActions } from '../../store/ViewProvider'
+import {
+  useCalenderActions,
+  useCalenderState
+} from '../../store/CalenderProvider'
 
 const years = () => {
   const { changeView } = useViewActions()
-  const { changeDay } = useDayActions()
-  const dayState = useDayState()
+  const { changeCalender } = useCalenderActions()
+  const calenderState = useCalenderState()
   const changeMonth = (year: number) => {
     const dateWithNewMonth: Date = new Date(
       year,
-      dayState.getMonth(),
-      dayState.getDate(),
-      dayState.getHours(),
-      dayState.getMinutes()
+      calenderState.getMonth(),
+      calenderState.getDate(),
+      calenderState.getHours(),
+      calenderState.getMinutes()
     )
-    changeDay(dateWithNewMonth)
+    changeCalender(dateWithNewMonth)
     changeView(DAYS_VIEW)
   }
   const yearsRange = () => {

@@ -5,7 +5,7 @@ import {
   getWeekday
 } from '../../Helpers'
 import { WEEK_DAY_SHORT } from '../../Constant'
-import { useDayState } from '../../store/DayProvider'
+import { useCalenderState } from '../../store/CalenderProvider'
 import {
   useSelectedDayActions,
   useSelectedDayState
@@ -13,11 +13,11 @@ import {
 
 const DaysView = ({ type }: IDaysProps) => {
   const today = new Date().setHours(0, 0, 0, 0)
-  const dayState = useDayState()
+  const calenderState = useCalenderState()
   const selectedDayState = useSelectedDayState()
   const { changeSelectedDay, changeSelectedDayRange } = useSelectedDayActions()
-  const year = dayState.getFullYear()
-  const month = dayState.getMonth()
+  const year = calenderState.getFullYear()
+  const month = calenderState.getMonth()
 
   const createDaysForCurrentMonth = (year: number, month: number) => {
     return [...Array(getNumberOfDaysInMonth(year, month))].map((_, index) => {
@@ -83,8 +83,8 @@ const DaysView = ({ type }: IDaysProps) => {
       date.getFullYear(),
       date.getMonth(),
       date.getDate(),
-      dayState.getHours(),
-      dayState.getMinutes()
+      calenderState.getHours(),
+      calenderState.getMinutes()
     )
     if (type === 'single') {
       changeSelectedDay(newDate)
