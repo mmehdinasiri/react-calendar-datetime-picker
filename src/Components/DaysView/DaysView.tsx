@@ -12,9 +12,17 @@ import {
 } from '../../store/SelectedDaysProvider'
 
 const DaysView = ({ type }: IDaysProps) => {
-  const today = new Date().setHours(0, 0, 0, 0)
+  const today = new Date()
   const calenderState = useCalenderState()
   const selectedDayState = useSelectedDayState()
+  // @ts-ignore: Unreachable code error
+  let fromTimeStamp, toTimeStamp
+  if (type === 'range') {
+    // @ts-ignore: Unreachable code error
+    fromTimeStamp = new Date(selectedDayState.from).setHours(0, 0, 0, 0)
+    // @ts-ignore: Unreachable code error
+    toTimeStamp = new Date(selectedDayState.to).setHours(0, 0, 0, 0)
+  }
   const { changeSelectedDay, changeSelectedDayRange } = useSelectedDayActions()
   const year = calenderState.getFullYear()
   const month = calenderState.getMonth()
@@ -74,10 +82,6 @@ const DaysView = ({ type }: IDaysProps) => {
       }
     })
   }
-  const daysForCurrentMonth = createDaysForCurrentMonth(year, month)
-  const daysForPreviousMonth = createDaysForPreviousMonth(year, month)
-  const daysForNextMonth = createDaysForNextMonth(year, month)
-
   const handelChangeDay = (date: Date) => {
     const newDate = new Date(
       date.getFullYear(),
@@ -86,6 +90,7 @@ const DaysView = ({ type }: IDaysProps) => {
       calenderState.getHours(),
       calenderState.getMinutes()
     )
+    const newDateTimeStamp = new Date(newDate).setHours(0, 0, 0, 0)
     if (type === 'single') {
       changeSelectedDay(newDate)
     }
@@ -98,16 +103,14 @@ const DaysView = ({ type }: IDaysProps) => {
         // @ts-ignore
         selectedDayState.to === null &&
         // @ts-ignore
-        selectedDayState.from.setHours(0, 0, 0, 0) <
-          newDate.setHours(0, 0, 0, 0)
+        fromTimeStamp < newDateTimeStamp
       ) {
         changeSelectedDayRange({ to: newDate })
       } else if (
         // @ts-ignore
         selectedDayState.to === null &&
         // @ts-ignore
-        selectedDayState.from.setHours(0, 0, 0, 0) >
-          newDate.setHours(0, 0, 0, 0)
+        fromTimeStamp > newDateTimeStamp
       ) {
         // @ts-ignore
         const newTo = selectedDayState.from
@@ -118,6 +121,55 @@ const DaysView = ({ type }: IDaysProps) => {
       }
     }
   }
+  const checkClass = (day: any) => {
+    let classes = ''
+    if (day.date.toLocaleDateString() === today.toLocaleDateString()) {
+      classes += ' is_today'
+    }
+    if (
+      type === 'single' &&
+      // @ts-ignore: Unreachable code error
+      day.date.toLocaleDateString() === selectedDayState?.toLocaleDateString()
+    ) {
+      classes += ' is_selected_day'
+    }
+    if (
+      type === 'range' &&
+      // @ts-ignore: Unreachable code error
+      selectedDayState?.from &&
+      day.date.toLocaleDateString() ===
+        // @ts-ignore: Unreachable code error
+        selectedDayState.from.toLocaleDateString()
+    ) {
+      classes += ' is_selected_day_from'
+    }
+    if (
+      type === 'range' &&
+      // @ts-ignore: Unreachable code error
+      selectedDayState?.to &&
+      // @ts-ignore: Unreachable code error
+      day.date.toLocaleDateString() === selectedDayState.to.toLocaleDateString()
+    ) {
+      classes += ' is_selected_day_to'
+    }
+    if (
+      type === 'range' &&
+      // @ts-ignore: Unreachable code error
+      selectedDayState &&
+      // @ts-ignore: Unreachable code error
+      fromTimeStamp < day.timeStamp &&
+      // @ts-ignore: Unreachable code error
+      day.timeStamp < toTimeStamp
+    ) {
+      classes += ' is_selected_day_range'
+    }
+
+    return classes
+  }
+  const daysForCurrentMonth = createDaysForCurrentMonth(year, month)
+  const daysForNextMonth = createDaysForNextMonth(year, month)
+  const daysForPreviousMonth = createDaysForPreviousMonth(year, month)
+
   return (
     <ul className='daysList'>
       {WEEK_DAY_SHORT.map((day) => (
@@ -134,49 +186,7 @@ const DaysView = ({ type }: IDaysProps) => {
       {daysForCurrentMonth.map((day) => (
         <li
           key={day.dayOfMonth}
-          className={`daysList_day pointer ${
-            day.timeStamp === today ? 'is_today' : ''
-          }
-          ${
-            type === 'single' &&
-            day.timeStamp ===
-              // @ts-ignore: Unreachable code error
-              selectedDayState?.setHours(0, 0, 0, 0)
-              ? 'is_selected_day'
-              : ''
-          }
-          ${
-            type === 'range' &&
-            // @ts-ignore: Unreachable code error
-            selectedDayState?.from &&
-            day.timeStamp ===
-              // @ts-ignore: Unreachable code error
-              selectedDayState.from.setHours(0, 0, 0, 0)
-              ? 'is_selected_day_from'
-              : ''
-          }
-          ${
-            type === 'range' &&
-            // @ts-ignore: Unreachable code error
-            selectedDayState?.to &&
-            day.timeStamp ===
-              // @ts-ignore: Unreachable code error
-              selectedDayState.to?.setHours(0, 0, 0, 0)
-              ? 'is_selected_day_to'
-              : ''
-          }
-          ${
-            type === 'range' &&
-            // @ts-ignore: Unreachable code error
-            selectedDayState &&
-            // @ts-ignore: Unreachable code error
-            selectedDayState.from?.setHours(0, 0, 0, 0) < day.timeStamp &&
-            // @ts-ignore: Unreachable code error
-            day.timeStamp < selectedDayState.to?.setHours(0, 0, 0, 0)
-              ? 'is_selected_day_range'
-              : ''
-          }
-          `}
+          className={`daysList_day pointer ${checkClass(day)}`}
           onClick={() => {
             handelChangeDay(day.date)
           }}

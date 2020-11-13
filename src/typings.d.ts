@@ -20,6 +20,9 @@ interface IRange {
   from: Date | null
   to: Date | null
 }
+interface IViewProvider {
+  children: React.ReactElement | React.ReactElement[]
+}
 interface IDtPickerProps {
   defaultValue?: Date | IRange
   onChange: () => void
@@ -36,7 +39,7 @@ interface ISelectedDayProvider {
   children: React.ReactElement | React.ReactElement[]
 }
 interface ISelectedDayProvider {
-  initState?: Date
+  initState?: Date | IRange | undefined
   range?: string
   children: React.ReactElement | React.ReactElement[]
 }

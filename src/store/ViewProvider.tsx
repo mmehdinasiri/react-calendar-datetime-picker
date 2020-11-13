@@ -12,7 +12,7 @@ const ViewContextSetState = createContext(
   (Function as unknown) as Dispatch<SetStateAction<string>>
 )
 
-function ViewProvider({ children }: IDayProvider) {
+function ViewProvider({ children }: IViewProvider) {
   const initView = DAYS_VIEW
   const [view, setView] = useState<string>(initView)
   return (
