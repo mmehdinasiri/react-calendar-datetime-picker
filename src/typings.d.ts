@@ -43,6 +43,9 @@ interface ISelectedDayProvider {
   range?: string
   children: React.ReactElement | React.ReactElement[]
 }
+interface ITimeViewProps {
+  timeFor?: string
+}
 
 interface IYearsProps {
   type?: string
