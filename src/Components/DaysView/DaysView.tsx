@@ -18,11 +18,11 @@ const DaysView = ({ type }: IDaysProps) => {
   const calenderState = useCalenderState()
   const selectedDayState = useSelectedDayState()
   let fromTimeStamp: number, toTimeStamp: number
-  if (type === 'single') {
-    // singleTimeStamp = getDateTimeSameHours(selectedDayState as IDay)
-  } else if (type === 'range') {
+  if (type === 'range' && (selectedDayState as IRange).from) {
     // @ts-ignore: Unreachable code error
     fromTimeStamp = getDateTimeSameHours((selectedDayState as IRange).from)
+  }
+  if (type === 'range' && (selectedDayState as IRange).to) {
     // @ts-ignore: Unreachable code error
     toTimeStamp = getDateTimeSameHours((selectedDayState as IRange).to)
   }
@@ -103,7 +103,6 @@ const DaysView = ({ type }: IDaysProps) => {
     if (type === 'single') {
       changeSelectedDay(newDate)
     }
-
     if (type === 'range' && selectedDayState) {
       if ((selectedDayState as IRange).from === null) {
         changeSelectedDayRange('from', newDate)

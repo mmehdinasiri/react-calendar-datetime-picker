@@ -15,7 +15,7 @@ export const DtPicker = ({ defaultValue, onChange, type }: IDtPickerProps) => {
       (defaultValue as IDay).day
     )
   }
-  if (correctedType === 'range' && (defaultValue as IRange).from) {
+  if (correctedType === 'range' && (defaultValue as IRange | null)?.from) {
     initCalender = new Date(
       (defaultValue as IRange).from!.year,
       (defaultValue as IRange).from!.month,

@@ -20,7 +20,7 @@ const App = () => {
   return (
     <>
       {/* <DtPicker onChange={setDate} defaultValue={date} type='range' /> */}
-      <DtPicker onChange={setDate} defaultValue={date} />
+      <DtPicker onChange={setDate} defaultValue={date} type='range' />
       {/* <div>
         {date.from && (
           <h1>{`${date.from.getFullYear()} / ${
