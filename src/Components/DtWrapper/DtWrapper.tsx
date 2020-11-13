@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
 import { useViewState } from '../../store/ViewProvider'
 import { Header, YearsView, MonthsView, DaysView, TimeView } from '../'
-
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
+import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 const viewsSelector = (currentView: string, type?: string) => {
   let view: ReactElement | unknown
   switch (currentView) {
@@ -23,9 +23,29 @@ const viewsSelector = (currentView: string, type?: string) => {
 }
 const Wrapper = ({ onChange, type }: any) => {
   const selectedDate = useSelectedDayState()
+  const selectedTime = useSelectedTimeState()
   React.useEffect(() => {
-    onChange(selectedDate)
-  }, [selectedDate])
+    if (type === 'single' && (selectedDate as IDay)?.year) {
+      onChange({ ...selectedDate, ...selectedTime })
+    } else if (
+      type === 'range' &&
+      (selectedDate as IRange).from?.year &&
+      (selectedDate as IRange).to?.year
+    ) {
+      onChange({
+        from: {
+          ...(selectedDate as IRange).from,
+          ...(selectedTime as ITimeRange).from
+        },
+        to: {
+          ...(selectedDate as IRange).to,
+          ...(selectedTime as ITimeRange).to
+        }
+      })
+    } else if (type === 'multi') {
+      onChange(selectedDate)
+    }
+  }, [selectedDate, selectedTime])
 
   return (
     <div className='dtWrapper'>
@@ -33,22 +53,23 @@ const Wrapper = ({ onChange, type }: any) => {
       {viewsSelector(useViewState(), type)}
       {type === 'single' && (
         <TimeView
-          initHour={(selectedDate as IDay)?.hour}
-          initMinutes={(selectedDate as IDay)?.minutes}
+        // timeFor='single'
+        // initHour={(selectedDate as IDay)?.hours}
+        // initMinutes={(selectedDate as IDay)?.minutes}
         />
       )}
       {type === 'range' && (
         <React.Fragment>
-          <TimeView
+          {/* <TimeView
             timeFor='from'
-            initHour={(selectedDate as IRange).from?.hour}
+            initHour={(selectedDate as IRange).from?.hours}
             initMinutes={(selectedDate as IRange).from?.minutes}
           />
           <TimeView
             timeFor='to'
-            initHour={(selectedDate as IRange).to?.hour}
+            initHour={(selectedDate as IRange).to?.hours}
             initMinutes={(selectedDate as IRange).to?.minutes}
-          />
+          /> */}
         </React.Fragment>
       )}
     </div>

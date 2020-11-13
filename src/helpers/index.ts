@@ -19,7 +19,7 @@ export const todayObject = () => {
     year: todayDate.getFullYear(),
     month: todayDate.getMonth(),
     day: todayDate.getDate(),
-    hour: todayDate.getHours(),
+    hours: todayDate.getHours(),
     minutes: todayDate.getMinutes()
   }
   return today
@@ -38,4 +38,46 @@ export const getPreviousSundayDay = (date: Date) => {
 
 export const getDateTimeSameHours = (date: IDay) => {
   return new Date(date.year, date.month, date.day).setHours(0, 0, 0, 0)
+}
+
+export const handelInitialValues = (
+  defaultValue: any,
+  correctedType: string
+) => {
+  let initTime
+  let initCalender = new Date()
+  if (correctedType === 'single') {
+    if (defaultValue?.year) {
+      initCalender = new Date(
+        defaultValue.year,
+        defaultValue.month,
+        defaultValue.day
+      )
+    }
+    initTime = {
+      hours: defaultValue?.hours || initCalender.getHours(),
+      minutes: defaultValue?.minutes || initCalender.getMinutes()
+    }
+  }
+  if (correctedType === 'range') {
+    if (defaultValue?.from) {
+      initCalender = new Date(
+        defaultValue.from.year,
+        defaultValue.from.month,
+        defaultValue.from.day
+      )
+    }
+    const today = new Date()
+    initTime = {
+      from: {
+        hours: defaultValue?.from?.hours || today.getHours(),
+        minutes: defaultValue?.from?.minutes || today.getMinutes()
+      },
+      to: {
+        hours: defaultValue?.to?.hours || today.getHours(),
+        minutes: defaultValue?.to?.minutes || today.getMinutes()
+      }
+    }
+  }
+  return { initCalender, initTime }
 }

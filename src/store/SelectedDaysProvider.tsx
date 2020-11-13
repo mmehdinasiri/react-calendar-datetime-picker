@@ -53,7 +53,7 @@ function useSetSelectedDayState() {
 }
 function useSelectedDayActions() {
   const setSelectedDayAction = useSetSelectedDayState()
-  const changeSelectedDay = (newValue: IDay) => {
+  const changeSelectedDay = (newValue: any) => {
     setSelectedDayAction((oldState) => ({
       ...oldState,
       ...newValue
@@ -68,7 +68,11 @@ function useSelectedDayActions() {
       [field]: newValue
     }))
   }
-  return { changeSelectedDay, changeSelectedDayRange }
+
+  return {
+    changeSelectedDay,
+    changeSelectedDayRange
+  }
 }
 
 export { useSelectedDayState, useSetSelectedDayState, useSelectedDayActions }

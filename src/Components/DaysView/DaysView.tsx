@@ -104,15 +104,15 @@ const DaysView = ({ type }: IDaysProps) => {
       changeSelectedDay(newDate)
     }
     if (type === 'range' && selectedDayState) {
-      if ((selectedDayState as IRange).from === null) {
+      if (!(selectedDayState as IRange).from?.year) {
         changeSelectedDayRange('from', newDate)
       } else if (
-        (selectedDayState as IRange).to === null &&
+        !(selectedDayState as IRange).to?.year &&
         fromTimeStamp < newDateTimeStamp
       ) {
         changeSelectedDayRange('to', newDate)
       } else if (
-        (selectedDayState as IRange).to === null &&
+        !(selectedDayState as IRange).to?.year &&
         fromTimeStamp > newDateTimeStamp
       ) {
         const newTo = (selectedDayState as IRange).from
