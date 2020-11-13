@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  getDateTimeSameHours,
   getNumberOfDaysInMonth,
   getPreviousSundayDay,
   getWeekday
@@ -13,49 +14,62 @@ import {
 
 const DaysView = ({ type }: IDaysProps) => {
   const today = new Date()
+  const todayFullDay = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`
   const calenderState = useCalenderState()
   const selectedDayState = useSelectedDayState()
-  // @ts-ignore: Unreachable code error
-  let fromTimeStamp, toTimeStamp
-  if (type === 'range') {
+  let fromTimeStamp: number, toTimeStamp: number, singleTimeStamp
+  if (type === 'single') {
+    singleTimeStamp = getDateTimeSameHours(selectedDayState as IDay)
+  } else if (type === 'range') {
     // @ts-ignore: Unreachable code error
-    fromTimeStamp = new Date(selectedDayState.from).setHours(0, 0, 0, 0)
+    fromTimeStamp = getDateTimeSameHours((selectedDayState as IRange).from)
     // @ts-ignore: Unreachable code error
-    toTimeStamp = new Date(selectedDayState.to).setHours(0, 0, 0, 0)
+    toTimeStamp = getDateTimeSameHours((selectedDayState as IRange).to)
   }
+  console.log(singleTimeStamp)
+
   const { changeSelectedDay, changeSelectedDayRange } = useSelectedDayActions()
   const year = calenderState.getFullYear()
   const month = calenderState.getMonth()
 
   const createDaysForCurrentMonth = (year: number, month: number) => {
     return [...Array(getNumberOfDaysInMonth(year, month))].map((_, index) => {
-      const date = new Date(year, month, index + 1)
+      const date = {
+        year: year,
+        month: month,
+        day: index + 1,
+        fullDay: `${year}${month}${index + 1}`
+      }
       return {
         date,
-        timeStamp: date.setHours(0, 0, 0, 0),
+        timeStamp: getDateTimeSameHours(date),
         dayOfMonth: index + 1,
         isCurrentMonth: true
       }
     })
   }
   const createDaysForPreviousMonth = (year: number, month: number) => {
-    const firstDayOfTheMonthWeekday = getWeekday(
-      daysForCurrentMonth[0].date.getDay()
+    const firsDayOfMonth = new Date(
+      daysForCurrentMonth[0].date.year,
+      daysForCurrentMonth[0].date.year,
+      daysForCurrentMonth[0].date.year
     )
+    const firstDayOfTheMonthWeekday = getWeekday(firsDayOfMonth.getDay())
     const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday.weekDayIndex
       ? firstDayOfTheMonthWeekday.weekDayIndex
       : 7
     const previousMonth = new Date(year, month - 1)
-    var previousMonthLastMondayDayOfMonth = getPreviousSundayDay(
-      daysForCurrentMonth[0].date
-    )
+    var previousMonthLastMondayDayOfMonth = getPreviousSundayDay(firsDayOfMonth)
+
     return [...Array(visibleNumberOfDaysFromPreviousMonth)].map((_, index) => {
+      const date = {
+        year: year,
+        month: month,
+        day: index,
+        fullDay: `${previousMonth.getFullYear()}${previousMonth.getMonth()}${index}`
+      }
       return {
-        date: new Date(
-          previousMonth.getFullYear(),
-          previousMonth.getMonth(),
-          previousMonthLastMondayDayOfMonth + index
-        ),
+        date,
         dayOfMonth: previousMonthLastMondayDayOfMonth + index,
         isCurrentMonth: false
       }
@@ -71,94 +85,79 @@ const DaysView = ({ type }: IDaysProps) => {
       : 6
 
     return [...Array(visibleNumberOfDaysFromNextMonth)].map((_, index) => {
+      const date = {
+        year: year,
+        month: month,
+        day: index,
+        fullDay: `${nextMonth.getFullYear()}${nextMonth.getMonth()}${index + 1}`
+      }
       return {
-        date: new Date(
-          nextMonth.getFullYear(),
-          nextMonth.getMonth(),
-          index + 1
-        ),
+        date,
         dayOfMonth: index + 1,
         isCurrentMonth: false
       }
     })
   }
-  const handelChangeDay = (date: Date) => {
-    const newDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      calenderState.getHours(),
-      calenderState.getMinutes()
-    )
-    const newDateTimeStamp = new Date(newDate).setHours(0, 0, 0, 0)
+  const handelChangeDay = (date: any) => {
+    const newDate = { ...date }
+    const newDateTimeStamp = getDateTimeSameHours(newDate)
     if (type === 'single') {
       changeSelectedDay(newDate)
     }
 
     if (type === 'range' && selectedDayState) {
-      // @ts-ignore
-      if (selectedDayState.from === null) {
-        changeSelectedDayRange({ from: newDate })
+      if ((selectedDayState as IRange).from === null) {
+        changeSelectedDayRange('from', newDate)
       } else if (
-        // @ts-ignore
-        selectedDayState.to === null &&
-        // @ts-ignore
+        (selectedDayState as IRange).to === null &&
         fromTimeStamp < newDateTimeStamp
       ) {
-        changeSelectedDayRange({ to: newDate })
+        changeSelectedDayRange('to', newDate)
       } else if (
-        // @ts-ignore
-        selectedDayState.to === null &&
-        // @ts-ignore
+        (selectedDayState as IRange).to === null &&
         fromTimeStamp > newDateTimeStamp
       ) {
-        // @ts-ignore
-        const newTo = selectedDayState.from
-        changeSelectedDayRange({ from: newDate, to: newTo })
-        // @ts-ignore
-      } else if (selectedDayState.from && selectedDayState.to) {
-        changeSelectedDayRange({ from: newDate, to: null })
+        const newTo = (selectedDayState as IRange).from
+        changeSelectedDayRange('from', newDate)
+        changeSelectedDayRange('to', newTo)
+      } else if (
+        (selectedDayState as IRange).from &&
+        (selectedDayState as IRange).to
+      ) {
+        changeSelectedDayRange('from', newDate)
+        changeSelectedDayRange('to', null)
       }
     }
   }
   const checkClass = (day: any) => {
     let classes = ''
-    if (day.date.toLocaleDateString() === today.toLocaleDateString()) {
+    if (day.date.fullDay === todayFullDay) {
       classes += ' is_today'
     }
     if (
       type === 'single' &&
-      // @ts-ignore: Unreachable code error
-      day.date.toLocaleDateString() === selectedDayState?.toLocaleDateString()
+      day.date.fullDay === (selectedDayState as IDay).fullDay
     ) {
       classes += ' is_selected_day'
     }
     if (
       type === 'range' &&
-      // @ts-ignore: Unreachable code error
-      selectedDayState?.from &&
-      day.date.toLocaleDateString() ===
-        // @ts-ignore: Unreachable code error
-        selectedDayState.from.toLocaleDateString()
+      (selectedDayState as IRange).from &&
+      day.date.fullDay === (selectedDayState as IRange).from?.fullDay
     ) {
       classes += ' is_selected_day_from'
     }
     if (
       type === 'range' &&
-      // @ts-ignore: Unreachable code error
-      selectedDayState?.to &&
-      // @ts-ignore: Unreachable code error
-      day.date.toLocaleDateString() === selectedDayState.to.toLocaleDateString()
+      (selectedDayState as IRange)?.to &&
+      day.date.fullDay === (selectedDayState as IRange).to?.fullDay
     ) {
       classes += ' is_selected_day_to'
     }
     if (
       type === 'range' &&
-      // @ts-ignore: Unreachable code error
       selectedDayState &&
-      // @ts-ignore: Unreachable code error
       fromTimeStamp < day.timeStamp &&
-      // @ts-ignore: Unreachable code error
       day.timeStamp < toTimeStamp
     ) {
       classes += ' is_selected_day_range'
@@ -186,6 +185,8 @@ const DaysView = ({ type }: IDaysProps) => {
       {daysForCurrentMonth.map((day) => (
         <li
           key={day.dayOfMonth}
+          date-cur={day.date.fullDay}
+          date-sel={(selectedDayState as IDay).fullDay}
           className={`daysList_day pointer ${checkClass(day)}`}
           onClick={() => {
             handelChangeDay(day.date)

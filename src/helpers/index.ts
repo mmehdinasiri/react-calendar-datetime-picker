@@ -35,3 +35,7 @@ export const getPreviousSundayDay = (date: Date) => {
   }
   return prevMonday.getDate()
 }
+
+export const getDateTimeSameHours = (date: IDay) => {
+  return new Date(date.year, date.month, date.day).setHours(0, 0, 0, 0)
+}

@@ -8,7 +8,7 @@ import React, {
 
 const SelectedDaysContext = createContext({} as IDay | IRange | undefined)
 const SelectedDaysContextSetState = createContext(
-  (Function as unknown) as Dispatch<SetStateAction<IDay | IRange | undefined>>
+  (Function as unknown) as Dispatch<SetStateAction<IDay>>
 )
 
 function SelectedDaysProvider({
@@ -47,8 +47,11 @@ function useSelectedDayActions() {
   const changeSelectedDay = (newValue: IDay) => {
     setSelectedDayAction(newValue)
   }
-  const changeSelectedDayRange = (newValue: IRange) => {
-    setSelectedDayAction((oldValue) => ({ ...oldValue, ...newValue }))
+  const changeSelectedDayRange = (field: string, newValue: IDay | null) => {
+    setSelectedDayAction((oldState) => ({
+      ...oldState,
+      [field]: newValue
+    }))
   }
   return { changeSelectedDay, changeSelectedDayRange }
 }

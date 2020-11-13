@@ -22,6 +22,7 @@ const viewsSelector = (currentView: string, type?: string) => {
   return view
 }
 const Wrapper = ({ onChange, type }: any) => {
+  console.log(TimeView)
   const selectedDate = useSelectedDayState()
   React.useEffect(() => {
     onChange(selectedDate)
@@ -31,7 +32,7 @@ const Wrapper = ({ onChange, type }: any) => {
     <div className='dtWrapper'>
       <Header />
       {viewsSelector(useViewState(), type)}
-      {type === 'single' && <TimeView />}
+      {/* {type === 'single' && <TimeView />} */}
       {type === 'range' && (
         <React.Fragment>
           {/* <TimeView timeFor='from' />

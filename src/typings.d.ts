@@ -21,8 +21,8 @@ interface IDay {
   year: number
   month: number
   day: number
-  hour: number
-  minutes: number
+  hour?: number
+  minutes?: number
   fullDay?: string
 }
 interface IRange {
