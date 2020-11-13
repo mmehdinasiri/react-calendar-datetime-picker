@@ -46,6 +46,7 @@ export const handelInitialValues = (
 ) => {
   let initTime
   let initCalender = new Date()
+  const today = new Date()
   if (correctedType === 'single') {
     if (defaultValue?.year) {
       initCalender = new Date(
@@ -55,8 +56,8 @@ export const handelInitialValues = (
       )
     }
     initTime = {
-      hours: defaultValue?.hours || initCalender.getHours(),
-      minutes: defaultValue?.minutes || initCalender.getMinutes()
+      hours: defaultValue?.hours || today.getHours(),
+      minutes: defaultValue?.minutes || today.getMinutes()
     }
   }
   if (correctedType === 'range') {
@@ -67,7 +68,6 @@ export const handelInitialValues = (
         defaultValue.from.day
       )
     }
-    const today = new Date()
     initTime = {
       from: {
         hours: defaultValue?.from?.hours || today.getHours(),
