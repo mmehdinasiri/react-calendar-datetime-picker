@@ -27,7 +27,11 @@ function SelectedDaysProvider({
     }
   }
   if (type === 'range') {
-    initDay = initState || { from: null, to: null }
+    initDay = (initState as IRange) || { from: null, to: null }
+    if (initDay.from?.year && initDay.to?.year) {
+      initDay.from.fullDay = `${initDay.from.year}${initDay.from.month}${initDay.from.day}`
+      initDay.to.fullDay = `${initDay.to.year}${initDay.to.month}${initDay.to.day}`
+    }
   }
   const [selectedDays, setSelectedDays] = useState<
     IDay | IRange | null | undefined

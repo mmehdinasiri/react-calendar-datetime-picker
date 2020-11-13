@@ -138,6 +138,7 @@ const DaysView = ({ type }: IDaysProps) => {
     ) {
       classes += ' is_selected_day'
     }
+
     if (
       type === 'range' &&
       (selectedDayState as IRange).from &&
