@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  addZero,
   getDateTimeStamp,
   getNumberOfDaysInMonth,
   getPreviousSundayDay,
@@ -14,7 +15,9 @@ import {
 
 const DaysView = ({ type }: IDaysProps) => {
   const today = new Date()
-  const todayFullDay = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`
+  const todayFullDay = `${today.getFullYear()}${addZero(
+    today.getMonth()
+  )}${addZero(today.getDate())}`
   const calenderState = useCalenderState()
   const selectedDayState = useSelectedDayState()
   const {
@@ -43,7 +46,7 @@ const DaysView = ({ type }: IDaysProps) => {
         year: year,
         month: month,
         day: index + 1,
-        fullDay: `${year}${month}${index + 1}`
+        fullDay: `${year}${addZero(month)}${addZero(index + 1)}`
       }
       return {
         date,
@@ -71,7 +74,9 @@ const DaysView = ({ type }: IDaysProps) => {
         year: year,
         month: month,
         day: index,
-        fullDay: `${previousMonth.getFullYear()}${previousMonth.getMonth()}${index}`
+        fullDay: `${previousMonth.getFullYear()}${addZero(
+          previousMonth.getMonth()
+        )}${addZero(index)}`
       }
       return {
         date,
@@ -94,7 +99,9 @@ const DaysView = ({ type }: IDaysProps) => {
         year: year,
         month: month,
         day: index,
-        fullDay: `${nextMonth.getFullYear()}${nextMonth.getMonth()}${index + 1}`
+        fullDay: `${nextMonth.getFullYear()}${addZero(
+          nextMonth.getMonth()
+        )}${addZero(index + 1)}`
       }
       return {
         date,

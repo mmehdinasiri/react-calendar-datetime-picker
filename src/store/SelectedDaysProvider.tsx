@@ -5,6 +5,7 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
+import { addZero } from '../Helpers'
 
 const SelectedDaysContext = createContext(
   {} as IDay | IRange | IDay[] | null | undefined
@@ -24,21 +25,28 @@ function SelectedDaysProvider({
   if (type === 'single') {
     initDay = initState as IDay | null
     if (initDay?.year) {
-      initDay.fullDay = `${initDay.year}${initDay.month}${initDay.day}`
+      initDay.fullDay = `${initDay.year}${addZero(initDay.month)}${addZero(
+        initDay.day
+      )}`
     }
   }
   if (type === 'range') {
     initDay = (initState as IRange) || { from: null, to: null }
     if (initDay.from?.year && initDay.to?.year) {
-      initDay.from.fullDay = `${initDay.from.year}${initDay.from.month}${initDay.from.day}`
-      initDay.to.fullDay = `${initDay.to.year}${initDay.to.month}${initDay.to.day}`
+      initDay.from.fullDay = `${initDay.from.year}${addZero(
+        initDay.from.month
+      )}${addZero(initDay.from.day)}`
+      initDay.to.fullDay = `${initDay.to.year}${addZero(
+        initDay.to.month
+      )}${addZero(initDay.to.day)}`
     }
   }
   if (type === 'multi') {
     initDay = ((initState as unknown) as IDay[]) || []
     if (((initState as unknown) as IDay[]).length) {
       ;((initState as unknown) as IDay[]).map(
-        (day: IDay) => (day.fullDay = `${day.year}${day.month}${day.day}`)
+        (day: IDay) =>
+          (day.fullDay = `${day.year}${addZero(day.month)}${addZero(day.day)}`)
       )
     }
   }
