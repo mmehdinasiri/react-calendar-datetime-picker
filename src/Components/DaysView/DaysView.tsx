@@ -193,7 +193,6 @@ const DaysView = ({ type }: IDaysProps) => {
     ) {
       classes += ' is_selected_day_range'
     }
-
     return classes
   }
   const daysForCurrentMonth = createDaysForCurrentMonth(year, month)

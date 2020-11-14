@@ -79,6 +79,15 @@ export const handelInitialValues = (
       }
     }
   }
+  if (correctedType === 'multi') {
+    if (defaultValue.length && defaultValue[0]?.year) {
+      initCalender = new Date(
+        defaultValue[0].year,
+        defaultValue[0].month,
+        defaultValue[0].day
+      )
+    }
+  }
   return { initCalender, initTime }
 }
 

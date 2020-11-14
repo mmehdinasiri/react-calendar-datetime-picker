@@ -36,6 +36,11 @@ function SelectedDaysProvider({
   }
   if (type === 'multi') {
     initDay = ((initState as unknown) as IDay[]) || []
+    if (((initState as unknown) as IDay[]).length) {
+      ;((initState as unknown) as IDay[]).map(
+        (day: IDay) => (day.fullDay = `${day.year}${day.month}${day.day}`)
+      )
+    }
   }
   const [selectedDays, setSelectedDays] = useState<
     IDay | IRange | IDay[] | null | undefined

@@ -24,13 +24,22 @@ const App = () => {
   //   from: null,
   //   to: null
   // })
-  // const [date, setDate] = useState({
-  //   year: 2000,
-  //   month: 5,
-  //   day: 25,
-  //   hours: 18,
-  //   minutes: 11
-  // })
+  // const [date, setDate] = useState([
+  //   {
+  //     year: 2000,
+  //     month: 5,
+  //     day: 25,
+  //     hours: 18,
+  //     minutes: 11
+  //   },
+  //   {
+  //     year: 2000,
+  //     month: 5,
+  //     day: 1,
+  //     hours: 18,
+  //     minutes: 11
+  //   }
+  // ])
   // const [date, setDate] = useState({
   //   year: 2000,
   //   month: 5,
@@ -47,7 +56,7 @@ const App = () => {
 
   return (
     <>
-      <DtPicker onChange={setDate} defaultValue={date} type='multi' />
+      <DtPicker onChange={setDate} defaultValue={date} type='multi' withTime />
       {/* <DtPicker onChange={setDate} defaultValue={date} /> */}
       {/* <div>
         {date.from && (
