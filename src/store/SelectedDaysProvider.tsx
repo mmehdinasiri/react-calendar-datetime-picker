@@ -7,10 +7,12 @@ import React, {
 } from 'react'
 
 const SelectedDaysContext = createContext(
-  {} as IDay | IRange | null | undefined
+  {} as IDay | IRange | IDay[] | null | undefined
 )
 const SelectedDaysContextSetState = createContext(
-  (Function as unknown) as Dispatch<SetStateAction<IDay | null>>
+  (Function as unknown) as Dispatch<
+    SetStateAction<IDay | IDay[] | null | undefined>
+  >
 )
 
 function SelectedDaysProvider({
@@ -18,7 +20,6 @@ function SelectedDaysProvider({
   initState,
   type
 }: ISelectedDayProvider) {
-  // const today = new Date()
   let initDay
   if (type === 'single') {
     initDay = initState as IDay | null
@@ -33,8 +34,11 @@ function SelectedDaysProvider({
       initDay.to.fullDay = `${initDay.to.year}${initDay.to.month}${initDay.to.day}`
     }
   }
+  if (type === 'multi') {
+    initDay = ((initState as unknown) as IDay[]) || []
+  }
   const [selectedDays, setSelectedDays] = useState<
-    IDay | IRange | null | undefined
+    IDay | IRange | IDay[] | null | undefined
   >(initDay)
   return (
     <SelectedDaysContext.Provider value={selectedDays}>
@@ -52,6 +56,7 @@ function useSetSelectedDayState() {
   return useContext(SelectedDaysContextSetState)
 }
 function useSelectedDayActions() {
+  const selectedDayState = useSelectedDayState()
   const setSelectedDayAction = useSetSelectedDayState()
   const changeSelectedDay = (newValue: any) => {
     setSelectedDayAction((prevState) => ({
@@ -71,11 +76,31 @@ function useSelectedDayActions() {
       [field]: newValue
     }))
   }
+  const changeSelectedDayMulti = (newValue: IDay | null | undefined) => {
+    if (
+      !(selectedDayState as IDay[]).find(
+        (day) => day.fullDay === newValue?.fullDay
+      )
+    ) {
+      // @ts-ignore: Unreachable code error
+      setSelectedDayAction((prevState) => [...prevState, newValue])
+    }
+  }
+  const removeSelectedDayMulti = (newValue: IDay | null | undefined) => {
+    // @ts-ignore: Unreachable code error
+    setSelectedDayAction((prevState) => [
+      ...(selectedDayState as IDay[]).filter(
+        (day) => day.fullDay !== newValue?.fullDay
+      )
+    ])
+  }
 
   return {
     changeSelectedDay,
     changeSelectedDayRange,
-    removeSelectedDay
+    removeSelectedDay,
+    changeSelectedDayMulti,
+    removeSelectedDayMulti
   }
 }
 

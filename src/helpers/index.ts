@@ -84,7 +84,7 @@ export const handelInitialValues = (
 
 export const mergeProviders = (
   type: string,
-  selectedDate: IDay | IRange | null | undefined,
+  selectedDate: IDay | IRange | IDay[] | null | undefined,
   selectedTime: ITime | ITimeRange | null | undefined,
   withTime: boolean,
   onChange: (date: any) => void

@@ -20,7 +20,9 @@ const DaysView = ({ type }: IDaysProps) => {
   const {
     changeSelectedDay,
     changeSelectedDayRange,
-    removeSelectedDay
+    removeSelectedDay,
+    changeSelectedDayMulti,
+    removeSelectedDayMulti
   } = useSelectedDayActions()
 
   const year = calenderState.getFullYear()
@@ -109,10 +111,8 @@ const DaysView = ({ type }: IDaysProps) => {
         selectedDayState &&
         newDate.fullDay === (selectedDayState as IDay).fullDay
       ) {
-        console.log('in')
         removeSelectedDay()
       } else {
-        console.log('out')
         changeSelectedDay(newDate)
       }
     }
@@ -137,6 +137,17 @@ const DaysView = ({ type }: IDaysProps) => {
       ) {
         changeSelectedDayRange('from', newDate)
         changeSelectedDayRange('to', null)
+      }
+    }
+    if (type === 'multi') {
+      if (
+        (selectedDayState as IDay[]).find(
+          (day) => day.fullDay === newDate?.fullDay
+        )
+      ) {
+        removeSelectedDayMulti(newDate)
+      } else {
+        changeSelectedDayMulti(newDate)
       }
     }
   }
@@ -171,6 +182,14 @@ const DaysView = ({ type }: IDaysProps) => {
       selectedDayState &&
       fromTimeStamp < day.timeStamp &&
       day.timeStamp < toTimeStamp
+    ) {
+      classes += ' is_selected_day_range'
+    }
+    if (
+      type === 'multi' &&
+      (selectedDayState as IDay[]).find(
+        (item) => item.fullDay === day.date.fullDay
+      )
     ) {
       classes += ' is_selected_day_range'
     }
