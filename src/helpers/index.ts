@@ -81,3 +81,40 @@ export const handelInitialValues = (
   }
   return { initCalender, initTime }
 }
+
+export const mergeProviders = (
+  type: string,
+  selectedDate: IDay | IRange | null | undefined,
+  selectedTime: ITime | ITimeRange | null | undefined,
+  withTime: boolean,
+  onChange: (date: any) => void
+) => {
+  if (type === 'single' && (selectedDate as IDay)?.year) {
+    if (withTime) {
+      onChange({ ...selectedDate, ...selectedTime })
+    } else {
+      onChange(selectedDate)
+    }
+  } else if (
+    type === 'range' &&
+    (selectedDate as IRange).from?.year &&
+    (selectedDate as IRange).to?.year
+  ) {
+    if (withTime) {
+      onChange({
+        from: {
+          ...(selectedDate as IRange).from,
+          ...(selectedTime as ITimeRange).from
+        },
+        to: {
+          ...(selectedDate as IRange).to,
+          ...(selectedTime as ITimeRange).to
+        }
+      })
+    } else {
+      onChange(selectedDate)
+    }
+  } else if (type === 'multi') {
+    onChange(selectedDate)
+  }
+}

@@ -7,7 +7,12 @@ import SelectedDaysProvider from './store/SelectedDaysProvider'
 import SelectedTimeProvider from './store/SelectedTimeProvider'
 import { handelInitialValues } from './Helpers'
 
-export const DtPicker = ({ defaultValue, onChange, type }: IDtPickerProps) => {
+export const DtPicker = ({
+  defaultValue,
+  onChange,
+  type,
+  withTime
+}: IDtPickerProps) => {
   const correctedType = type || 'single'
 
   const { initCalender, initTime } = handelInitialValues(
@@ -19,7 +24,11 @@ export const DtPicker = ({ defaultValue, onChange, type }: IDtPickerProps) => {
       <CalenderProvider initCalender={initCalender} type={correctedType}>
         <SelectedDaysProvider initState={defaultValue} type={correctedType}>
           <SelectedTimeProvider initState={initTime} type={correctedType}>
-            <DtWrapper onChange={onChange} type={correctedType} />
+            <DtWrapper
+              onChange={onChange}
+              type={correctedType}
+              withTime={withTime}
+            />
           </SelectedTimeProvider>
         </SelectedDaysProvider>
       </CalenderProvider>

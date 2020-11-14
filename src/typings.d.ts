@@ -61,6 +61,7 @@ interface IDtPickerProps {
   defaultValue?: IDay | IRange
   onChange: () => void
   type?: string
+  withTime?: boolean
 }
 
 interface ITimeViewProps {

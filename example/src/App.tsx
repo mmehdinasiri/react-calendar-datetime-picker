@@ -11,15 +11,15 @@ const App = () => {
   // const day = new Date(2009, 11, 1)
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
-  // const [date, setDate] = useState()
+  const [date, setDate] = useState()
   // const [date, setDate] = useState({
   //   from: { year: 2000, month: 5, day: 2 },
   //   to: { year: 2000, month: 5, day: 25 }
   // })
-  const [date, setDate] = useState({
-    from: { year: 2008, month: 8, day: 2, minutes: 33 },
-    to: { year: 2008, month: 8, day: 6, hours: 12 }
-  })
+  // const [date, setDate] = useState({
+  //   from: { year: 2008, month: 8, day: 2, minutes: 33 },
+  //   to: { year: 2008, month: 8, day: 6, hours: 12 }
+  // })
   // const [date, setDate] = useState({
   //   from: null,
   //   to: null
@@ -47,7 +47,7 @@ const App = () => {
 
   return (
     <>
-      <DtPicker onChange={setDate} defaultValue={date} type='range' />
+      <DtPicker onChange={setDate} defaultValue={date} />
       {/* <DtPicker onChange={setDate} defaultValue={date} /> */}
       {/* <div>
         {date.from && (
