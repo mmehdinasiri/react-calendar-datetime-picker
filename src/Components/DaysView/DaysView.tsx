@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  getDateTimeSameHours,
+  getDateTimeStamp,
   getNumberOfDaysInMonth,
   getPreviousSundayDay,
   getWeekday
@@ -17,19 +17,23 @@ const DaysView = ({ type }: IDaysProps) => {
   const todayFullDay = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`
   const calenderState = useCalenderState()
   const selectedDayState = useSelectedDayState()
+  const {
+    changeSelectedDay,
+    changeSelectedDayRange,
+    removeSelectedDay
+  } = useSelectedDayActions()
+
+  const year = calenderState.getFullYear()
+  const month = calenderState.getMonth()
   let fromTimeStamp: number, toTimeStamp: number
   if (type === 'range' && (selectedDayState as IRange).from) {
     // @ts-ignore: Unreachable code error
-    fromTimeStamp = getDateTimeSameHours((selectedDayState as IRange).from)
+    fromTimeStamp = getDateTimeStamp((selectedDayState as IRange).from)
   }
   if (type === 'range' && (selectedDayState as IRange).to) {
     // @ts-ignore: Unreachable code error
-    toTimeStamp = getDateTimeSameHours((selectedDayState as IRange).to)
+    toTimeStamp = getDateTimeStamp((selectedDayState as IRange).to)
   }
-
-  const { changeSelectedDay, changeSelectedDayRange } = useSelectedDayActions()
-  const year = calenderState.getFullYear()
-  const month = calenderState.getMonth()
 
   const createDaysForCurrentMonth = (year: number, month: number) => {
     return [...Array(getNumberOfDaysInMonth(year, month))].map((_, index) => {
@@ -41,7 +45,7 @@ const DaysView = ({ type }: IDaysProps) => {
       }
       return {
         date,
-        timeStamp: getDateTimeSameHours(date),
+        timeStamp: getDateTimeStamp(date),
         dayOfMonth: index + 1,
         isCurrentMonth: true
       }
@@ -99,9 +103,18 @@ const DaysView = ({ type }: IDaysProps) => {
   }
   const handelChangeDay = (date: any) => {
     const newDate = { ...date }
-    const newDateTimeStamp = getDateTimeSameHours(newDate)
+    const newDateTimeStamp = getDateTimeStamp(newDate)
     if (type === 'single') {
-      changeSelectedDay(newDate)
+      if (
+        selectedDayState &&
+        newDate.fullDay === (selectedDayState as IDay).fullDay
+      ) {
+        console.log('in')
+        removeSelectedDay()
+      } else {
+        console.log('out')
+        changeSelectedDay(newDate)
+      }
     }
     if (type === 'range' && selectedDayState) {
       if (!(selectedDayState as IRange).from?.year) {

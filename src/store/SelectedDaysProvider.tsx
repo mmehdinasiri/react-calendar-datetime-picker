@@ -10,7 +10,7 @@ const SelectedDaysContext = createContext(
   {} as IDay | IRange | null | undefined
 )
 const SelectedDaysContextSetState = createContext(
-  (Function as unknown) as Dispatch<SetStateAction<IDay>>
+  (Function as unknown) as Dispatch<SetStateAction<IDay | null>>
 )
 
 function SelectedDaysProvider({
@@ -54,24 +54,28 @@ function useSetSelectedDayState() {
 function useSelectedDayActions() {
   const setSelectedDayAction = useSetSelectedDayState()
   const changeSelectedDay = (newValue: any) => {
-    setSelectedDayAction((oldState) => ({
-      ...oldState,
+    setSelectedDayAction((prevState) => ({
+      ...prevState,
       ...newValue
     }))
+  }
+  const removeSelectedDay = () => {
+    setSelectedDayAction(null)
   }
   const changeSelectedDayRange = (
     field: string,
     newValue: IDay | null | undefined
   ) => {
-    setSelectedDayAction((oldState) => ({
-      ...oldState,
+    setSelectedDayAction((prevState: IDay) => ({
+      ...prevState,
       [field]: newValue
     }))
   }
 
   return {
     changeSelectedDay,
-    changeSelectedDayRange
+    changeSelectedDayRange,
+    removeSelectedDay
   }
 }
 
