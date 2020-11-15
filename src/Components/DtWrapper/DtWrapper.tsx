@@ -6,7 +6,7 @@ import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { mergeProviders } from '../../Helpers'
 
-const viewsSelector = (currentView: string, type?: string) => {
+const viewsSelector = (currentView: string, type?: string, local?: string) => {
   let view: ReactElement | unknown
   switch (currentView) {
     case YEARS_VIEW:
@@ -16,14 +16,14 @@ const viewsSelector = (currentView: string, type?: string) => {
       view = <MonthsView />
       break
     case DAYS_VIEW:
-      view = <DaysView type={type} />
+      view = <DaysView type={type} local={local} />
       break
     default:
-      view = <DaysView type={type} />
+      view = <DaysView type={type} local={local} />
   }
   return view
 }
-const Wrapper = ({ onChange, type, withTime }: any) => {
+const Wrapper = ({ onChange, type, withTime, local }: any) => {
   const selectedDate = useSelectedDayState()
   const selectedTime = useSelectedTimeState()
   useEffect(() => {
@@ -33,7 +33,7 @@ const Wrapper = ({ onChange, type, withTime }: any) => {
   return (
     <div className='dtWrapper'>
       <Header />
-      {viewsSelector(useViewState(), type)}
+      {viewsSelector(useViewState(), type, local)}
       {withTime && type === 'single' && (
         <TimeView
           timeFor='single'

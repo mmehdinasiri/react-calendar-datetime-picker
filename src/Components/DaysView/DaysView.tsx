@@ -1,6 +1,8 @@
 import React from 'react'
+import jalaali from 'jalaali-js'
 import {
   addZero,
+  genDayObject,
   getDateTimeStamp,
   getNumberOfDaysInMonth,
   getPreviousSundayDay,
@@ -13,7 +15,7 @@ import {
   useSelectedDayState
 } from '../../store/SelectedDaysProvider'
 
-const DaysView = ({ type }: IDaysProps) => {
+const DaysView = ({ type, local }: IDaysProps) => {
   const today = new Date()
   const todayFullDay = `${today.getFullYear()}${addZero(
     today.getMonth()
@@ -30,31 +32,39 @@ const DaysView = ({ type }: IDaysProps) => {
 
   const year = calenderState.getFullYear()
   const month = calenderState.getMonth()
+  const day = calenderState.getDate()
   let fromTimeStamp: number, toTimeStamp: number
   if (type === 'range' && (selectedDayState as IRange).from) {
     // @ts-ignore: Unreachable code error
-    fromTimeStamp = getDateTimeStamp((selectedDayState as IRange).from)
+    fromTimeStamp = getDateTimeStamp((selectedDayState as IRange).from, local)
   }
   if (type === 'range' && (selectedDayState as IRange).to) {
     // @ts-ignore: Unreachable code error
-    toTimeStamp = getDateTimeStamp((selectedDayState as IRange).to)
+    toTimeStamp = getDateTimeStamp((selectedDayState as IRange).to, local)
   }
 
-  const createDaysForCurrentMonth = (year: number, month: number) => {
-    return [...Array(getNumberOfDaysInMonth(year, month))].map((_, index) => {
-      const date = {
-        year: year,
-        month: month,
-        day: index + 1,
-        fullDay: `${year}${addZero(month)}${addZero(index + 1)}`
+  const createDaysForCurrentMonth = (
+    year: number,
+    month: number,
+    day: number
+  ) => {
+    if (local) {
+      const dayJ = jalaali.toJalaali(year, month + 1, day)
+      year = dayJ.jy
+      month = dayJ.jm
+      day = dayJ.jd
+    }
+    return [...Array(getNumberOfDaysInMonth(year, month, day, local))].map(
+      (_, index) => {
+        const date = genDayObject(year, month, index + 1)
+        return {
+          date,
+          timeStamp: getDateTimeStamp(date, local),
+          dayOfMonth: index + 1,
+          isCurrentMonth: true
+        }
       }
-      return {
-        date,
-        timeStamp: getDateTimeStamp(date),
-        dayOfMonth: index + 1,
-        isCurrentMonth: true
-      }
-    })
+    )
   }
   const createDaysForPreviousMonth = (year: number, month: number) => {
     const firsDayOfMonth = new Date(
@@ -112,7 +122,7 @@ const DaysView = ({ type }: IDaysProps) => {
   }
   const handelChangeDay = (date: any) => {
     const newDate = { ...date }
-    const newDateTimeStamp = getDateTimeStamp(newDate)
+    const newDateTimeStamp = getDateTimeStamp(newDate, local)
     if (type === 'single') {
       if (
         selectedDayState &&
@@ -202,7 +212,8 @@ const DaysView = ({ type }: IDaysProps) => {
     }
     return classes
   }
-  const daysForCurrentMonth = createDaysForCurrentMonth(year, month)
+  const daysForCurrentMonth = createDaysForCurrentMonth(year, month, day)
+  console.log(daysForCurrentMonth)
   const daysForNextMonth = createDaysForNextMonth(year, month)
   const daysForPreviousMonth = createDaysForPreviousMonth(year, month)
 

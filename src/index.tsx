@@ -11,7 +11,8 @@ export const DtPicker = ({
   defaultValue,
   onChange,
   type,
-  withTime
+  withTime,
+  local
 }: IDtPickerProps) => {
   const correctedType = type || 'single'
 
@@ -28,6 +29,7 @@ export const DtPicker = ({
               onChange={onChange}
               type={correctedType}
               withTime={withTime}
+              local={local}
             />
           </SelectedTimeProvider>
         </SelectedDaysProvider>

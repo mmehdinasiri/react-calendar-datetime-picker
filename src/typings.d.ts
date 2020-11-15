@@ -62,6 +62,7 @@ interface IDtPickerProps {
   onChange: () => void
   type?: string
   withTime?: boolean
+  local?: string
 }
 
 interface ITimeViewProps {
@@ -77,5 +78,6 @@ interface IMonthsProps {
   type?: string
 }
 interface IDaysProps {
+  local?: string
   type?: string
 }

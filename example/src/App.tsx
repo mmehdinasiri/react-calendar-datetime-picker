@@ -11,7 +11,7 @@ const App = () => {
   // const day = new Date(2009, 11, 1)
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
-  // const [date, setDate] = useState([])
+  const [date, setDate] = useState([])
   // const [date, setDate] = useState({
   //   from: { year: 2000, month: 5, day: 2 },
   //   to: { year: 2000, month: 5, day: 25 }
@@ -40,11 +40,11 @@ const App = () => {
   //     minutes: 11
   //   }
   // ])
-  const [date, setDate] = useState({
-    year: 2000,
-    month: 0,
-    day: 25
-  })
+  // const [date, setDate] = useState({
+  //   year: 2000,
+  //   month: 0,
+  //   day: 25
+  // })
   // const [date, setDate] = useState({
   //   year: 2000,
   //   month: 5,
@@ -56,7 +56,7 @@ const App = () => {
 
   return (
     <>
-      <DtPicker onChange={setDate} defaultValue={date} withTime />
+      <DtPicker onChange={setDate} defaultValue={date} withTime local='fa-IR' />
       {/* <DtPicker onChange={setDate} defaultValue={date} /> */}
       {/* <div>
         {date.from && (
