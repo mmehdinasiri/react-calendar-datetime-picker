@@ -29,7 +29,8 @@ export const DtPicker = ({
               onChange={onChange}
               type={correctedType}
               withTime={withTime}
-              local={local}
+              local={local ? local.toLocaleLowerCase() : 'en'}
+              hasDefaultVal={!!defaultValue}
             />
           </SelectedTimeProvider>
         </SelectedDaysProvider>

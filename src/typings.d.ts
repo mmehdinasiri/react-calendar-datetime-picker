@@ -75,9 +75,10 @@ interface IYearsProps {
   type?: string
 }
 interface IMonthsProps {
-  type?: string
+  local: string
 }
 interface IDaysProps {
-  local?: string
+  hasDefaultVal: boolean
+  local: string
   type?: string
 }

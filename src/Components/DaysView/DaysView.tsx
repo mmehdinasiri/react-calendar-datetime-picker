@@ -8,14 +8,14 @@ import {
   getPreviousSundayDay,
   getWeekday
 } from '../../Helpers'
-import { WEEK_DAY_SHORT } from '../../Constant'
+import { LOCAL_CONSTANT } from '../../Constant'
 import { useCalenderState } from '../../store/CalenderProvider'
 import {
   useSelectedDayActions,
   useSelectedDayState
 } from '../../store/SelectedDaysProvider'
 
-const DaysView = ({ type, local }: IDaysProps) => {
+const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
   const today = new Date()
   const todayFullDay = `${today.getFullYear()}${addZero(
     today.getMonth()
@@ -48,13 +48,14 @@ const DaysView = ({ type, local }: IDaysProps) => {
     month: number,
     day: number
   ) => {
-    if (local) {
+    if (local === 'fa' && !hasDefaultVal) {
       const dayJ = jalaali.toJalaali(year, month + 1, day)
       year = dayJ.jy
       month = dayJ.jm
       day = dayJ.jd
     }
-    return [...Array(getNumberOfDaysInMonth(year, month, day, local))].map(
+    console.log(getNumberOfDaysInMonth(year, month, local))
+    return [...Array(getNumberOfDaysInMonth(year, month, local))].map(
       (_, index) => {
         const date = genDayObject(year, month, index + 1)
         return {
@@ -72,7 +73,9 @@ const DaysView = ({ type, local }: IDaysProps) => {
       daysForCurrentMonth[0].date.month,
       daysForCurrentMonth[0].date.day
     )
-    const firstDayOfTheMonthWeekday = getWeekday(firsDayOfMonth.getDay())
+    console.log(firsDayOfMonth)
+    console.log(firsDayOfMonth.getDay())
+    const firstDayOfTheMonthWeekday = getWeekday(firsDayOfMonth.getDay(), local)
     const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday.weekDayIndex
       ? firstDayOfTheMonthWeekday.weekDayIndex
       : 7
@@ -97,7 +100,8 @@ const DaysView = ({ type, local }: IDaysProps) => {
   }
   const createDaysForNextMonth = (year: number, month: number) => {
     const lastDayOfTheMonthWeekday = getWeekday(
-      new Date(year, month, daysForCurrentMonth.length).getDay()
+      new Date(year, month, daysForCurrentMonth.length).getDay(),
+      local
     )
     const nextMonth = new Date(year, month + 1)
     const visibleNumberOfDaysFromNextMonth = lastDayOfTheMonthWeekday.weekDayIndex
@@ -213,15 +217,15 @@ const DaysView = ({ type, local }: IDaysProps) => {
     return classes
   }
   const daysForCurrentMonth = createDaysForCurrentMonth(year, month, day)
-  console.log(daysForCurrentMonth)
+  // console.log(daysForCurrentMonth)
   const daysForNextMonth = createDaysForNextMonth(year, month)
   const daysForPreviousMonth = createDaysForPreviousMonth(year, month)
 
   return (
-    <ul className='daysList'>
-      {WEEK_DAY_SHORT.map((day) => (
-        <li key={day} className='daysList_day'>
-          {day}
+    <ul className={`daysList ${local === 'fa' ? 'is-rtl' : ''}`}>
+      {LOCAL_CONSTANT[local].WEEK_DAYS.map((day: any) => (
+        <li key={day.name} className='daysList_day'>
+          {day.short}
         </li>
       ))}
       {daysForPreviousMonth.length < 7 &&

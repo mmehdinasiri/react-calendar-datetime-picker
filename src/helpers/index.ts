@@ -1,18 +1,15 @@
 import jalaali from 'jalaali-js'
-import { WEEK_DAY_SHORT, MONTHS_SHORT } from '../Constant'
+import { LOCAL_CONSTANT } from '../Constant'
 
 export const getNumberOfDaysInMonth = (
   year: number,
   month: number,
-  day: number,
   local?: string
 ): number => {
-  console.log(jalaali.jalaaliMonthLength(year, month))
-  if (local) {
-    console.log('0-----')
+  if (local === 'fa') {
     return jalaali.jalaaliMonthLength(year, month)
   } else {
-    return new Date(year, month + 1, day).getDate()
+    return new Date(year, month + 1, 0).getDate()
   }
 }
 
@@ -28,13 +25,12 @@ export const genDayObject = (year: number, month: number, day: number) => {
   }
 }
 
-export const getWeekday = (number: number) => {
-  const weekDay = WEEK_DAY_SHORT[number]
-  return { weekDay, weekDayIndex: WEEK_DAY_SHORT.indexOf(weekDay) }
-}
-
-export const getMonth = (number: number) => {
-  return MONTHS_SHORT[number]
+export const getWeekday = (number: number, local: string) => {
+  const weekDay = LOCAL_CONSTANT[local].WEEK_DAY_SHORT[number]
+  return {
+    weekDay,
+    weekDayIndex: LOCAL_CONSTANT[local].WEEK_DAY_SHORT.indexOf(weekDay)
+  }
 }
 
 export const todayObject = () => {
@@ -61,7 +57,7 @@ export const getPreviousSundayDay = (date: Date) => {
 }
 
 export const getDateTimeStamp = (date: IDay, local?: string) => {
-  if (local) {
+  if (local === 'fa') {
     return jalaali.j2d(date.year, date.month, date.day)
   }
   return new Date(date.year, date.month, date.day).setHours(0, 0, 0, 0)
@@ -117,7 +113,6 @@ export const handelInitialValues = (
   }
   return { initCalender, initTime }
 }
-
 export const mergeProviders = (
   type: string,
   selectedDate: IDay | IRange | IDay[] | null | undefined,
