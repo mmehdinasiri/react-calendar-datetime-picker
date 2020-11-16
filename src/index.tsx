@@ -15,11 +15,14 @@ export const DtPicker = ({
   local
 }: IDtPickerProps) => {
   const correctedType = type || 'single'
+  const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
 
   const { initCalender, initTime } = handelInitialValues(
     defaultValue,
-    correctedType
+    correctedType,
+    correctedLocal
   )
+
   return (
     <ViewProvider>
       <CalenderProvider initCalender={initCalender} type={correctedType}>
@@ -29,7 +32,7 @@ export const DtPicker = ({
               onChange={onChange}
               type={correctedType}
               withTime={withTime}
-              local={local ? local.toLocaleLowerCase() : 'en'}
+              local={correctedLocal}
               hasDefaultVal={!!defaultValue}
             />
           </SelectedTimeProvider>

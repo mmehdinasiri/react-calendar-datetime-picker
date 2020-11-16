@@ -65,18 +65,20 @@ export const getDateTimeStamp = (date: IDay, local?: string) => {
 
 export const handelInitialValues = (
   defaultValue: any,
-  correctedType: string
+  correctedType: string,
+  local: string
 ) => {
   let initTime
-  let initCalender = new Date()
+  let initCalender
   const today = new Date()
+  const todayJ = jalaali.toJalaali(new Date())
   if (correctedType === 'single') {
     if (defaultValue?.year) {
-      initCalender = new Date(
-        defaultValue.year,
-        defaultValue.month,
-        defaultValue.day
-      )
+      initCalender = {
+        year: defaultValue.year,
+        month: defaultValue.month,
+        day: defaultValue.day
+      }
     }
     initTime = {
       hours: defaultValue?.hours || today.getHours(),
@@ -85,11 +87,11 @@ export const handelInitialValues = (
   }
   if (correctedType === 'range') {
     if (defaultValue?.from) {
-      initCalender = new Date(
-        defaultValue.from.year,
-        defaultValue.from.month,
-        defaultValue.from.day
-      )
+      initCalender = {
+        year: defaultValue.from.year,
+        month: defaultValue.from.month,
+        day: defaultValue.from.day
+      }
     }
     initTime = {
       from: {
@@ -104,11 +106,29 @@ export const handelInitialValues = (
   }
   if (correctedType === 'multi') {
     if (defaultValue.length && defaultValue[0]?.year) {
-      initCalender = new Date(
-        defaultValue[0].year,
-        defaultValue[0].month,
-        defaultValue[0].day
-      )
+      initCalender = {
+        year: defaultValue[0].year,
+        month: defaultValue[0].month,
+        day: defaultValue[0].day
+      }
+    }
+  }
+  if (
+    !defaultValue?.year &&
+    !defaultValue?.from &&
+    !defaultValue?.length &&
+    local === 'fa'
+  ) {
+    initCalender = {
+      year: todayJ.jy,
+      month: todayJ.jm,
+      day: todayJ.jd
+    }
+  } else {
+    initCalender = {
+      year: today.getFullYear(),
+      month: today.getMonth(),
+      day: today.getDate()
     }
   }
   return { initCalender, initTime }

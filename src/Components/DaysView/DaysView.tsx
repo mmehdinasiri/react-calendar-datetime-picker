@@ -30,9 +30,9 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
     removeSelectedDayMulti
   } = useSelectedDayActions()
 
-  const year = calenderState.getFullYear()
-  const month = calenderState.getMonth()
-  const day = calenderState.getDate()
+  const year = calenderState.year
+  const month = calenderState.month
+  const day = calenderState.day
   let fromTimeStamp: number, toTimeStamp: number
   if (type === 'range' && (selectedDayState as IRange).from) {
     // @ts-ignore: Unreachable code error
@@ -54,7 +54,7 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
       month = dayJ.jm
       day = dayJ.jd
     }
-    console.log(getNumberOfDaysInMonth(year, month, local))
+    // console.log(getNumberOfDaysInMonth(year, month, local))
     return [...Array(getNumberOfDaysInMonth(year, month, local))].map(
       (_, index) => {
         const date = genDayObject(year, month, index + 1)
@@ -73,8 +73,8 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
       daysForCurrentMonth[0].date.month,
       daysForCurrentMonth[0].date.day
     )
-    console.log(firsDayOfMonth)
-    console.log(firsDayOfMonth.getDay())
+    // console.log(firsDayOfMonth)
+    // console.log(firsDayOfMonth.getDay())
     const firstDayOfTheMonthWeekday = getWeekday(firsDayOfMonth.getDay(), local)
     const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday.weekDayIndex
       ? firstDayOfTheMonthWeekday.weekDayIndex

@@ -40,7 +40,7 @@ interface IRange {
 }
 interface ICalenderProvider {
   type?: string
-  initCalender: Date
+  initCalender: IDay
   children: React.ReactElement | React.ReactElement[]
 }
 interface ISelectedDayProvider {
@@ -70,7 +70,9 @@ interface ITimeViewProps {
   initMinutes: number | undefined
   timeFor?: string
 }
-
+interface IHeaderProps {
+  local: string
+}
 interface IYearsProps {
   type?: string
 }

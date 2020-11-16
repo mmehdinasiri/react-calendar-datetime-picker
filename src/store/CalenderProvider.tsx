@@ -7,13 +7,13 @@ import React, {
 } from 'react'
 // import { todayObject } from '../Helpers'
 
-const CalenderContext = createContext({} as Date)
+const CalenderContext = createContext({} as IDay)
 const CalenderContextSetState = createContext(
-  (Function as unknown) as Dispatch<SetStateAction<Date>>
+  (Function as unknown) as Dispatch<SetStateAction<IDay>>
 )
 
 function CalenderProvider({ children, initCalender }: ICalenderProvider) {
-  const [calender, setCalender] = useState<Date>(initCalender)
+  const [calender, setCalender] = useState<IDay>(initCalender)
   return (
     <CalenderContext.Provider value={calender}>
       <CalenderContextSetState.Provider value={setCalender}>
@@ -31,8 +31,11 @@ function useSetCalenderState() {
 }
 function useCalenderActions() {
   const setCalenderAction = useSetCalenderState()
-  const changeCalender = (newValue: Date) => {
-    setCalenderAction(newValue)
+  const changeCalender = (newValue: IDay) => {
+    setCalenderAction((oldState) => ({
+      ...oldState,
+      ...newValue
+    }))
   }
   return { changeCalender }
 }
