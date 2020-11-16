@@ -41,7 +41,7 @@ const Wrapper = ({ onChange, type, withTime, local, hasDefaultVal }: any) => {
 
   return (
     <div className='dtWrapper' dir={local === 'fa' ? 'rtl' : 'ltr'}>
-      <Header />
+      <Header local={local} />
       {viewsSelector(hasDefaultVal, useViewState(), local, type)}
       {withTime && type === 'single' && (
         <TimeView

@@ -57,6 +57,8 @@ const App = () => {
 
   return (
     <>
+      <DtPicker onChange={setDate} defaultValue={date} withTime local='en' />
+      <br />
       <DtPicker onChange={setDate} defaultValue={date} withTime local='fa' />
       {/* <DtPicker onChange={setDate} defaultValue={date} /> */}
       {/* <div>

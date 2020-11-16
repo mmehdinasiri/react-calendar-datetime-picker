@@ -17,3 +17,12 @@
 .monthList_month:nth-child(3n + 1) {
   clear: left;
 }
+
+.is-rtl.monthList {
+  .monthList_month {
+    float: right;
+  }
+  .monthList_month:nth-child(3n + 1) {
+    clear: right;
+  }
+}

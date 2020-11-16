@@ -10,15 +10,16 @@ const years = () => {
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
   const calenderState = useCalenderState()
-  const changeMonth = (year: number) => {
-    const dateWithNewMonth: Date = new Date(
-      year,
-      calenderState.getMonth(),
-      calenderState.getDate(),
-      calenderState.getHours(),
-      calenderState.getMinutes()
-    )
-    changeCalender(dateWithNewMonth)
+  const { month, day, hours, minutes } = calenderState
+  const changeMonth = (newYear: number) => {
+    const newDate = {
+      year: newYear,
+      month: month,
+      day: day,
+      hour: hours,
+      minutes: minutes
+    }
+    changeCalender({ ...newDate })
     changeView(DAYS_VIEW)
   }
   const yearsRange = () => {

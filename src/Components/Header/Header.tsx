@@ -1,18 +1,18 @@
 import React from 'react'
 // import jalaali from 'jalaali-js'
-import { monthConvertor } from '../../Convertor'
 import {
   useCalenderActions,
   useCalenderState
 } from '../../store/CalenderProvider'
 import { useViewActions } from '../../store/ViewProvider'
-import { MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
+import { LOCAL_CONSTANT, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 
-const Header = () => {
+const Header = ({ local }: IHeaderProps) => {
   const dayState = useCalenderState()
   const { changeCalender } = useCalenderActions()
   const { changeView } = useViewActions()
   const { year, month, hours, minutes } = dayState
+
   const handelMonth = (action: string) => {
     const toSum = action === 'inc' ? 1 : -1
     let newMonthIndex = month + toSum
@@ -41,7 +41,7 @@ const Header = () => {
       <div>
         <div onClick={() => changeView(YEARS_VIEW)}>{year}</div>
         <div onClick={() => changeView(MONTHS_VIEW)}>
-          {monthConvertor(month + 1)}
+          {LOCAL_CONSTANT[local].MONTHS[month]}
         </div>
       </div>
       <button onClick={() => handelMonth('inc')}>next</button>

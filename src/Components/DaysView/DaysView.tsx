@@ -73,6 +73,7 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
       daysForCurrentMonth[0].date.month,
       daysForCurrentMonth[0].date.day
     )
+    // console.log(year, month)
     // console.log(firsDayOfMonth)
     // console.log(firsDayOfMonth.getDay())
     const firstDayOfTheMonthWeekday = getWeekday(firsDayOfMonth.getDay(), local)
