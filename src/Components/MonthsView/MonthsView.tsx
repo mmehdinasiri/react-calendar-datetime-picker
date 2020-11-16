@@ -10,10 +10,8 @@ const MonthsView = ({ local }: IMonthsProps) => {
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
   const calenderState = useCalenderState()
-  const { year, month, day, hours, minutes } = calenderState
-  console.log(month)
+  const { year, day, hours, minutes } = calenderState
   const changeMonth = (newMonth: number) => {
-    // console.log(index)
     const newDate = {
       year: year,
       month: newMonth,

@@ -46,7 +46,9 @@ export const LOCAL_CONSTANT = {
         short: 'ج',
         isWeekend: true
       }
-    ]
+    ],
+    YEARS_RANGE_START: 1302,
+    YEARS_RANGE_END: 1450
   },
   en: {
     WEEK_DAY: [
@@ -119,7 +121,9 @@ export const LOCAL_CONSTANT = {
         short: 'S',
         isWeekend: true
       }
-    ]
+    ],
+    YEARS_RANGE_START: 1900,
+    YEARS_RANGE_END: 2100
   }
 }
 

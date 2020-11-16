@@ -1,12 +1,12 @@
 import React from 'react'
-import { DAYS_VIEW } from '../../Constant'
+import { DAYS_VIEW, LOCAL_CONSTANT } from '../../Constant'
 import { useViewActions } from '../../store/ViewProvider'
 import {
   useCalenderActions,
   useCalenderState
 } from '../../store/CalenderProvider'
 
-const years = () => {
+const years = ({ local }: IYearsProps) => {
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
   const calenderState = useCalenderState()
@@ -24,7 +24,11 @@ const years = () => {
   }
   const yearsRange = () => {
     const yearsList = []
-    for (let i = 1900; i <= 2100; i++)
+    for (
+      let i = LOCAL_CONSTANT[local].YEARS_RANGE_START;
+      i <= LOCAL_CONSTANT[local].YEARS_RANGE_END;
+      i++
+    )
       yearsList.push(
         <li key={i} className='yearList_year' onClick={() => changeMonth(i)}>
           {i}
@@ -34,7 +38,9 @@ const years = () => {
   }
   return (
     <div className='yearWrapper'>
-      <ul className='yearList'>{yearsRange()}</ul>
+      <ul className={`yearList ${local === 'fa' ? 'is-rtl' : ''}`}>
+        {yearsRange()}
+      </ul>
     </div>
   )
 }

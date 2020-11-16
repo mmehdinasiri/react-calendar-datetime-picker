@@ -74,7 +74,7 @@ interface IHeaderProps {
   local: string
 }
 interface IYearsProps {
-  type?: string
+  local: string
 }
 interface IMonthsProps {
   local: string

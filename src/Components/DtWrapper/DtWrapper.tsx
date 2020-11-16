@@ -15,7 +15,7 @@ const viewsSelector = (
   let view: ReactElement | unknown
   switch (currentView) {
     case YEARS_VIEW:
-      view = <YearsView />
+      view = <YearsView local={local} />
       break
     case MONTHS_VIEW:
       view = <MonthsView local={local} />
