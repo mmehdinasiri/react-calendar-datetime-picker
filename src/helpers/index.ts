@@ -8,7 +8,6 @@ export const getNumberOfDaysInMonth = (
   local?: string
 ): number => {
   if (local === 'fa') {
-    console.log(month)
     return new persianDate([year, month + 1]).daysInMonth()
   } else {
     return new Date(year, month + 1, 0).getDate()
@@ -29,9 +28,6 @@ export const genDayObject = (year: number, month: number, day: number) => {
 
 export const getWeekday = (number: number, local: string) => {
   const weekDay = LOCAL_CONSTANT[local].WEEK_DAY_SHORT[number]
-  // console.log(number)
-  // console.log(weekDay)
-  // console.log('==========')
   return {
     weekDay,
     weekDayIndex: LOCAL_CONSTANT[local].WEEK_DAY_SHORT.indexOf(weekDay)

@@ -51,7 +51,7 @@ export const LOCAL_CONSTANT = {
     YEARS_RANGE_START: 1302,
     YEARS_RANGE_END: 1450,
     getDay: (date: IDay) => {
-      return new persianDate([date.year, date.month, date.day]).day()
+      return new persianDate([date.year, date.month + 1, date.day]).day() - 1
     },
     today: () => {
       const pDate = new persianDate()

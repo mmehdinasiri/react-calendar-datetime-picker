@@ -30,7 +30,6 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
     changeSelectedDayMulti,
     removeSelectedDayMulti
   } = useSelectedDayActions()
-
   const year = calenderState.year
   const month = calenderState.month
   const day = calenderState.day
@@ -50,12 +49,11 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
     day: number
   ) => {
     if (local === 'fa' && !hasDefaultVal) {
-      const dayP = new persianDate([year, month, day]).State.persianAstro
+      const dayP = new persianDate([year, month + 1, day]).State.persianAstro
       year = dayP.year
       month = dayP.month
       day = dayP.day
     }
-    // console.log(getDateTimeStamp(date, local))
     return [...Array(getNumberOfDaysInMonth(year, month, local))].map(
       (_, index) => {
         const date = genDayObject(year, month, index + 1)
@@ -74,8 +72,7 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
       month: daysForCurrentMonth[0].date.month,
       day: daysForCurrentMonth[0].date.day
     }
-    // console.log(firsDayOfMonth)
-    // console.log(LOCAL_CONSTANT[local].getDay(firsDayOfMonth))
+
     const firstDayOfTheMonthWeekday = getWeekday(
       LOCAL_CONSTANT[local].getDay(firsDayOfMonth),
       local
@@ -88,7 +85,6 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
       firsDayOfMonth,
       local
     )
-    // console.log(previousMonthLastSundayDayOfMonth)
 
     return [...Array(visibleNumberOfDaysFromPreviousMonth)].map((_, index) => {
       const date = {
