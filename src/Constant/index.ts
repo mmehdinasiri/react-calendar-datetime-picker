@@ -57,8 +57,12 @@ export const LOCAL_CONSTANT = {
       const pDate = new persianDate()
       return pDate.State.persianAstro
     },
+    todayObject: () => {
+      const pDate = new persianDate()
+      return pDate.State.persianAstro
+    },
     getDayOfMonth: (date: IDay) => {
-      return new persianDate([date.year, date.month, date.day]).date()
+      return new persianDate([date.year, date.month + 1, date.day]).date()
     },
     setDayOfMonth: (date: IDay, day: number) => {
       return new persianDate([date.year, date.month, date.day]).date(day)
@@ -142,8 +146,15 @@ export const LOCAL_CONSTANT = {
       return new Date(date.year, date.month, date.day).getDay()
     },
     today: () => {
-      const pDate = new Date()
-      return pDate
+      return new Date()
+    },
+    todayObject: () => {
+      const date = new Date()
+      return {
+        year: date.getFullYear(),
+        month: date.getMonth(),
+        day: date.getDate()
+      }
     },
     getDayOfMonth: (date: IDay) => {
       return new Date(date.year, date.month, date.day).getDate()

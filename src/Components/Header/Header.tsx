@@ -17,13 +17,13 @@ const Header = ({ local }: IHeaderProps) => {
     const toSum = action === 'inc' ? 1 : -1
     let newMonthIndex = month + toSum
     let newYear = year
-    if (newMonthIndex <= 1) {
+    if (newMonthIndex < 0) {
       newMonthIndex = 11
       newYear -= 1
     }
 
     if (newMonthIndex > 11) {
-      newMonthIndex = 1
+      newMonthIndex = 0
       newYear += 1
     }
     const newDate = {
@@ -33,7 +33,6 @@ const Header = ({ local }: IHeaderProps) => {
       hour: hours,
       minutes: minutes
     }
-
     changeCalender({ ...newDate })
   }
   return (

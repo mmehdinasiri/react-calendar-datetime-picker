@@ -124,7 +124,7 @@ export const handelInitialValues = (
     }
   }
   if (correctedType === 'multi') {
-    if (defaultValue.length && defaultValue[0]?.year) {
+    if (defaultValue && defaultValue.lenght && defaultValue[0]?.year) {
       initCalender = {
         year: defaultValue[0].year,
         month: defaultValue[0].month,

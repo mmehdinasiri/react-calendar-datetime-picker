@@ -11,7 +11,8 @@ const App = () => {
   // const day = new Date(2009, 11, 1)
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
-  const [date, setDate] = useState()
+  const [dateEn, setDateEn] = useState()
+  const [dateFa, setDateFa] = useState()
   // const [date, setDate] = useState({ year: 1398, month: 8, day: 1 })
   // const [date, setDate] = useState({
   //   from: { year: 2000, month: 5, day: 2 },
@@ -57,9 +58,25 @@ const App = () => {
 
   return (
     <>
-      <DtPicker onChange={setDate} defaultValue={date} withTime local='en' />
+      <DtPicker
+        onChange={setDateEn}
+        defaultValue={dateEn}
+        type='single'
+        withTime
+        local='en'
+      />
+      {JSON.stringify(dateEn, null, 4)}
       <br />
-      <DtPicker onChange={setDate} defaultValue={date} withTime local='fa' />
+      <br />
+      <br />
+      <DtPicker
+        onChange={setDateFa}
+        defaultValue={dateFa}
+        withTime
+        type='single'
+        local='fa'
+      />
+      {JSON.stringify(dateFa, null, 4)}
       {/* <DtPicker onChange={setDate} defaultValue={date} /> */}
       {/* <div>
         {date.from && (
@@ -75,7 +92,6 @@ const App = () => {
           } / ${date.to.getDate()} - ${date.to.getHours()} : ${date.to.getMinutes()}`}</h1>
         )}
       </div> */}
-      {JSON.stringify(date, null, 4)}
     </>
   )
 }

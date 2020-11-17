@@ -17,10 +17,10 @@ import {
 } from '../../store/SelectedDaysProvider'
 
 const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
-  const today = new Date()
-  const todayFullDay = `${today.getFullYear()}${addZero(
-    today.getMonth()
-  )}${addZero(today.getDate())}`
+  const today = LOCAL_CONSTANT[local].todayObject()
+  const todayFullDay = `${today.year}${addZero(today.month)}${addZero(
+    today.day
+  )}`
   const calenderState = useCalenderState()
   const selectedDayState = useSelectedDayState()
   const {

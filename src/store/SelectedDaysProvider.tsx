@@ -43,7 +43,7 @@ function SelectedDaysProvider({
   }
   if (type === 'multi') {
     initDay = ((initState as unknown) as IDay[]) || []
-    if (((initState as unknown) as IDay[]).length) {
+    if (initState && ((initState as unknown) as IDay[]).length) {
       ;((initState as unknown) as IDay[]).map(
         (day: IDay) =>
           (day.fullDay = `${day.year}${addZero(day.month)}${addZero(day.day)}`)
