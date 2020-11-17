@@ -57,6 +57,7 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
     return [...Array(getNumberOfDaysInMonth(year, month, local))].map(
       (_, index) => {
         const date = genDayObject(year, month, index + 1)
+        date.fullDay = `${date.year}${addZero(date.month)}${addZero(index + 1)}`
         return {
           date,
           timeStamp: getDateTimeStamp(date, local),

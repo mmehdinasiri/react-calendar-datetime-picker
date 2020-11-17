@@ -77,7 +77,7 @@ export const getPreviousSundayDay = (date: IDay, local: string) => {
 
 export const getDateTimeStamp = (date: IDay, local?: string) => {
   if (local === 'fa') {
-    return new persianDate([date.year, date.month, date.day]).valueOf()
+    return new persianDate([date.year, date.month + 1, date.day])
   }
   return new Date(date.year, date.month, date.day).setHours(0, 0, 0, 0)
 }
@@ -112,6 +112,7 @@ export const handelInitialValues = (
         day: defaultValue.from.day
       }
     }
+
     initTime = {
       from: {
         hours: defaultValue?.from?.hours || today.getHours(),
@@ -124,7 +125,7 @@ export const handelInitialValues = (
     }
   }
   if (correctedType === 'multi') {
-    if (defaultValue && defaultValue.lenght && defaultValue[0]?.year) {
+    if (defaultValue && defaultValue.length && defaultValue[0]?.year) {
       initCalender = {
         year: defaultValue[0].year,
         month: defaultValue[0].month,
@@ -133,23 +134,17 @@ export const handelInitialValues = (
     }
   }
   if (
-    !defaultValue?.year &&
-    !defaultValue?.from &&
-    !defaultValue?.length &&
-    local === 'fa'
+    (correctedType === 'single' && !defaultValue?.year) ||
+    (correctedType === 'range' && !defaultValue?.from) ||
+    (correctedType === 'multi' && !defaultValue?.length && local === 'fa')
   ) {
     initCalender = {
       year: todayP.year,
       month: todayP.month,
       day: todayP.day
     }
-  } else {
-    initCalender = {
-      year: today.getFullYear(),
-      month: today.getMonth(),
-      day: today.getDate()
-    }
   }
+
   return { initCalender, initTime }
 }
 export const mergeProviders = (

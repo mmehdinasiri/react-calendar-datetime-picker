@@ -18,9 +18,13 @@ const App = () => {
   //   from: { year: 2000, month: 5, day: 2 },
   //   to: { year: 2000, month: 5, day: 25 }
   // })
-  // const [date, setDate] = useState({
+  // const [dateEn, setDateEn] = useState({
   //   from: { year: 2008, month: 8, day: 2, minutes: 33 },
   //   to: { year: 2008, month: 8, day: 6, hours: 12 }
+  // })
+  // const [dateFa, setDateFa] = useState({
+  //   from: { year: 1395, month: 0, day: 2, minutes: 33 },
+  //   to: { year: 1395, month: 0, day: 6, hours: 12 }
   // })
   // const [date, setDate] = useState({
   //   from: null,
@@ -61,7 +65,7 @@ const App = () => {
       <DtPicker
         onChange={setDateEn}
         defaultValue={dateEn}
-        type='single'
+        type='range'
         withTime
         local='en'
       />
@@ -73,7 +77,7 @@ const App = () => {
         onChange={setDateFa}
         defaultValue={dateFa}
         withTime
-        type='single'
+        type='range'
         local='fa'
       />
       {JSON.stringify(dateFa, null, 4)}
