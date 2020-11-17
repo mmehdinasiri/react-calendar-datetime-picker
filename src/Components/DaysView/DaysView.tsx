@@ -104,7 +104,11 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
   }
   const createDaysForNextMonth = (year: number, month: number) => {
     const lastDayOfTheMonthWeekday = getWeekday(
-      new Date(year, month, daysForCurrentMonth.length).getDay(),
+      LOCAL_CONSTANT[local].getDay({
+        year,
+        month,
+        day: daysForCurrentMonth.length
+      }),
       local
     )
     const nextMonth = new Date(year, month + 1)
