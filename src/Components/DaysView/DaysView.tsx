@@ -221,7 +221,6 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
     return classes
   }
   const daysForCurrentMonth = createDaysForCurrentMonth(year, month, day)
-  // console.log(daysForCurrentMonth)
   const daysForNextMonth = createDaysForNextMonth(year, month)
   const daysForPreviousMonth = createDaysForPreviousMonth(year, month)
 
