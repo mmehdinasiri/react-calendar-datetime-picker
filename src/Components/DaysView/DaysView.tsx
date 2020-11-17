@@ -1,5 +1,5 @@
 import React from 'react'
-import jalaali from 'jalaali-js'
+import persianDate from 'persian-date'
 
 import {
   addZero,
@@ -50,12 +50,12 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
     day: number
   ) => {
     if (local === 'fa' && !hasDefaultVal) {
-      const dayJ = jalaali.toJalaali(year, month + 1, day)
-      year = dayJ.jy
-      month = dayJ.jm
-      day = dayJ.jd
+      const dayP = new persianDate([year, month, day]).State.persianAstro
+      year = dayP.year
+      month = dayP.month
+      day = dayP.day
     }
-    // console.log(getNumberOfDaysInMonth(year, month, local))
+    // console.log(getDateTimeStamp(date, local))
     return [...Array(getNumberOfDaysInMonth(year, month, local))].map(
       (_, index) => {
         const date = genDayObject(year, month, index + 1)
@@ -74,7 +74,8 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
       month: daysForCurrentMonth[0].date.month,
       day: daysForCurrentMonth[0].date.day
     }
-
+    // console.log(firsDayOfMonth)
+    // console.log(LOCAL_CONSTANT[local].getDay(firsDayOfMonth))
     const firstDayOfTheMonthWeekday = getWeekday(
       LOCAL_CONSTANT[local].getDay(firsDayOfMonth),
       local
@@ -83,11 +84,11 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
       ? firstDayOfTheMonthWeekday.weekDayIndex
       : 7
     const previousMonth = new Date(year, month - 1)
-    var previousMonthLastMondayDayOfMonth = getPreviousSundayDay(
+    var previousMonthLastSundayDayOfMonth = getPreviousSundayDay(
       firsDayOfMonth,
       local
     )
-    console.log(previousMonthLastMondayDayOfMonth)
+    // console.log(previousMonthLastSundayDayOfMonth)
 
     return [...Array(visibleNumberOfDaysFromPreviousMonth)].map((_, index) => {
       const date = {
@@ -100,7 +101,7 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
       }
       return {
         date,
-        dayOfMonth: previousMonthLastMondayDayOfMonth + index,
+        dayOfMonth: previousMonthLastSundayDayOfMonth + index,
         isCurrentMonth: false
       }
     })

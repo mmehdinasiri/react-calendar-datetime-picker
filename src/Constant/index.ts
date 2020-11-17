@@ -61,7 +61,6 @@ export const LOCAL_CONSTANT = {
       return new persianDate([date.year, date.month, date.day]).date()
     },
     setDayOfMonth: (date: IDay, day: number) => {
-      console.log(date)
       return new persianDate([date.year, date.month, date.day]).date(day)
     }
   },
@@ -108,32 +107,32 @@ export const LOCAL_CONSTANT = {
     WEEK_DAYS: [
       {
         name: 'Sunday',
-        short: 'S',
+        short: 'Su',
         isWeekend: true
       },
       {
         name: 'Monday',
-        short: 'M'
+        short: 'Mo'
       },
       {
         name: 'Tuesday',
-        short: 'T'
+        short: 'Tu'
       },
       {
         name: 'Wednesday',
-        short: 'W'
+        short: 'We'
       },
       {
         name: 'Thursday',
-        short: 'T'
+        short: 'Th'
       },
       {
         name: 'Friday',
-        short: 'F'
+        short: 'Fr'
       },
       {
         name: 'Saturday',
-        short: 'S',
+        short: 'Sa',
         isWeekend: true
       }
     ],

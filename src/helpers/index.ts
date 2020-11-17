@@ -1,4 +1,4 @@
-import jalaali from 'jalaali-js'
+import persianDate from 'persian-date'
 // import persianDate from 'persian-date'
 import { LOCAL_CONSTANT } from '../Constant'
 
@@ -8,7 +8,8 @@ export const getNumberOfDaysInMonth = (
   local?: string
 ): number => {
   if (local === 'fa') {
-    return jalaali.jalaaliMonthLength(year, month)
+    console.log(month)
+    return new persianDate([year, month + 1]).daysInMonth()
   } else {
     return new Date(year, month + 1, 0).getDate()
   }
@@ -28,6 +29,9 @@ export const genDayObject = (year: number, month: number, day: number) => {
 
 export const getWeekday = (number: number, local: string) => {
   const weekDay = LOCAL_CONSTANT[local].WEEK_DAY_SHORT[number]
+  // console.log(number)
+  // console.log(weekDay)
+  // console.log('==========')
   return {
     weekDay,
     weekDayIndex: LOCAL_CONSTANT[local].WEEK_DAY_SHORT.indexOf(weekDay)
@@ -77,7 +81,7 @@ export const getPreviousSundayDay = (date: IDay, local: string) => {
 
 export const getDateTimeStamp = (date: IDay, local?: string) => {
   if (local === 'fa') {
-    return jalaali.j2d(date.year, date.month, date.day)
+    return new persianDate([date.year, date.month, date.day]).valueOf()
   }
   return new Date(date.year, date.month, date.day).setHours(0, 0, 0, 0)
 }
@@ -90,7 +94,7 @@ export const handelInitialValues = (
   let initTime
   let initCalender
   const today = new Date()
-  const todayJ = jalaali.toJalaali(new Date())
+  const todayP = new persianDate(new Date()).State.persianAstro
   if (correctedType === 'single') {
     if (defaultValue?.year) {
       initCalender = {
@@ -139,9 +143,9 @@ export const handelInitialValues = (
     local === 'fa'
   ) {
     initCalender = {
-      year: todayJ.jy,
-      month: todayJ.jm,
-      day: todayJ.jd
+      year: todayP.year,
+      month: todayP.month,
+      day: todayP.day
     }
   } else {
     initCalender = {

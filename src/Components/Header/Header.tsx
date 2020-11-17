@@ -32,7 +32,7 @@ const Header = ({ local }: IHeaderProps) => {
       hour: hours,
       minutes: minutes
     }
-
+    console.log(newDate)
     changeCalender({ ...newDate })
   }
   return (
