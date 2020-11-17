@@ -136,15 +136,22 @@ export const handelInitialValues = (
   if (
     (correctedType === 'single' && !defaultValue?.year) ||
     (correctedType === 'range' && !defaultValue?.from) ||
-    (correctedType === 'multi' && !defaultValue?.length && local === 'fa')
+    (correctedType === 'multi' && !defaultValue?.length)
   ) {
-    initCalender = {
-      year: todayP.year,
-      month: todayP.month,
-      day: todayP.day
+    if (local === 'fa') {
+      initCalender = {
+        year: todayP.year,
+        month: todayP.month,
+        day: todayP.day
+      }
+    } else {
+      initCalender = {
+        year: today.getFullYear(),
+        month: today.getMonth(),
+        day: today.getDate()
+      }
     }
   }
-
   return { initCalender, initTime }
 }
 export const mergeProviders = (
