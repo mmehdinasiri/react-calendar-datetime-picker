@@ -1,4 +1,5 @@
 import jalaali from 'jalaali-js'
+// import persianDate from 'persian-date'
 import { LOCAL_CONSTANT } from '../Constant'
 
 export const getNumberOfDaysInMonth = (
@@ -45,15 +46,33 @@ export const todayObject = () => {
   return today
 }
 
-export const getPreviousSundayDay = (date: Date) => {
-  var day = date.getDay()
-  const prevMonday = new Date()
-  if (date.getDay() === 0) {
-    prevMonday.setDate(date.getDate() - 7)
+export const getPreviousSundayDay = (date: IDay, local: string) => {
+  const day = LOCAL_CONSTANT[local].getDay(date)
+  const dayOfMonth = LOCAL_CONSTANT[local].getDayOfMonth(date)
+  const prevSunday = LOCAL_CONSTANT[local].today()
+  let previousSundayDay
+  if (day === 0) {
+    previousSundayDay = LOCAL_CONSTANT[local].setDayOfMonth(
+      prevSunday,
+      dayOfMonth - 7
+    )
   } else {
-    prevMonday.setDate(date.getDate() - day)
+    previousSundayDay = LOCAL_CONSTANT[local].setDayOfMonth(
+      prevSunday,
+      dayOfMonth - day
+    )
   }
-  return prevMonday.getDate()
+  if (local === 'fa') {
+    return LOCAL_CONSTANT[local].getDayOfMonth(
+      previousSundayDay.State.persianAstro
+    )
+  }
+  const temp = {
+    year: previousSundayDay.getFullYear(),
+    month: previousSundayDay.getMonth(),
+    day: previousSundayDay.getDate()
+  }
+  return LOCAL_CONSTANT[local].getDayOfMonth(temp)
 }
 
 export const getDateTimeStamp = (date: IDay, local?: string) => {

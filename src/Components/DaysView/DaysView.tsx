@@ -1,5 +1,6 @@
 import React from 'react'
 import jalaali from 'jalaali-js'
+
 import {
   addZero,
   genDayObject,
@@ -68,20 +69,25 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
     )
   }
   const createDaysForPreviousMonth = (year: number, month: number) => {
-    const firsDayOfMonth = new Date(
-      daysForCurrentMonth[0].date.year,
-      daysForCurrentMonth[0].date.month,
-      daysForCurrentMonth[0].date.day
+    const firsDayOfMonth = {
+      year: daysForCurrentMonth[0].date.year,
+      month: daysForCurrentMonth[0].date.month,
+      day: daysForCurrentMonth[0].date.day
+    }
+
+    const firstDayOfTheMonthWeekday = getWeekday(
+      LOCAL_CONSTANT[local].getDay(firsDayOfMonth),
+      local
     )
-    // console.log(year, month)
-    // console.log(firsDayOfMonth)
-    // console.log(firsDayOfMonth.getDay())
-    const firstDayOfTheMonthWeekday = getWeekday(firsDayOfMonth.getDay(), local)
     const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday.weekDayIndex
       ? firstDayOfTheMonthWeekday.weekDayIndex
       : 7
     const previousMonth = new Date(year, month - 1)
-    var previousMonthLastMondayDayOfMonth = getPreviousSundayDay(firsDayOfMonth)
+    var previousMonthLastMondayDayOfMonth = getPreviousSundayDay(
+      firsDayOfMonth,
+      local
+    )
+    console.log(previousMonthLastMondayDayOfMonth)
 
     return [...Array(visibleNumberOfDaysFromPreviousMonth)].map((_, index) => {
       const date = {

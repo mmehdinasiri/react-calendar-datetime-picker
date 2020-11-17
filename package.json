@@ -64,6 +64,7 @@
     "@types/jalaali-js": "^1.1.0",
     "jalaali-js": "^1.1.5",
     "node-sass": "^5.0.0",
+    "persian-date": "^1.1.0",
     "sass-rem": "^2.0.1"
   }
 }

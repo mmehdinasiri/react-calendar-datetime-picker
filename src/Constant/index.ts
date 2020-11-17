@@ -1,3 +1,4 @@
+import persianDate from 'persian-date'
 export const LOCAL_CONSTANT = {
   fa: {
     NUMBERS: ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],
@@ -48,7 +49,21 @@ export const LOCAL_CONSTANT = {
       }
     ],
     YEARS_RANGE_START: 1302,
-    YEARS_RANGE_END: 1450
+    YEARS_RANGE_END: 1450,
+    getDay: (date: IDay) => {
+      return new persianDate([date.year, date.month, date.day]).day()
+    },
+    today: () => {
+      const pDate = new persianDate()
+      return pDate.State.persianAstro
+    },
+    getDayOfMonth: (date: IDay) => {
+      return new persianDate([date.year, date.month, date.day]).date()
+    },
+    setDayOfMonth: (date: IDay, day: number) => {
+      console.log(date)
+      return new persianDate([date.year, date.month, date.day]).date(day)
+    }
   },
   en: {
     WEEK_DAY: [
@@ -123,7 +138,20 @@ export const LOCAL_CONSTANT = {
       }
     ],
     YEARS_RANGE_START: 1900,
-    YEARS_RANGE_END: 2100
+    YEARS_RANGE_END: 2100,
+    getDay: (date: IDay) => {
+      return new Date(date.year, date.month, date.day).getDay()
+    },
+    today: () => {
+      const pDate = new Date()
+      return pDate
+    },
+    getDayOfMonth: (date: IDay) => {
+      return new Date(date.year, date.month, date.day).getDate()
+    },
+    setDayOfMonth: (date: Date, day: number) => {
+      return new Date(new Date(date).setDate(day))
+    }
   }
 }
 
