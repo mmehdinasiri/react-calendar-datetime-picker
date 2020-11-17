@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useSelectedTimeActions } from '../../store/SelectedTimeProvider'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
+import { addZero } from '../../Helpers'
 // import useDidMountEffect from '../../hooks/useDidMountEffect'
 
 const TimeView = ({ timeFor, initHour, initMinutes }: ITimeViewProps) => {
@@ -40,9 +41,9 @@ const TimeView = ({ timeFor, initHour, initMinutes }: ITimeViewProps) => {
   }, [hours, minutes])
 
   return (
-    <div>
+    <div dir='ltr'>
       <input
-        value={hours}
+        value={addZero(hours)}
         type='number'
         max='23'
         min='0'
@@ -51,7 +52,7 @@ const TimeView = ({ timeFor, initHour, initMinutes }: ITimeViewProps) => {
       />
       :
       <input
-        value={minutes}
+        value={addZero(minutes)}
         type='number'
         max='59'
         min='0'
