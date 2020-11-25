@@ -1,13 +1,6 @@
 import React, { ReactElement, useEffect } from 'react'
 import { useViewState } from '../../store/ViewProvider'
-import {
-  Header,
-  YearsView,
-  MonthsView,
-  DaysView,
-  TimeView,
-  InputPicker
-} from '../'
+import { Header, YearsView, MonthsView, DaysView, TimeView } from '../'
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
@@ -49,7 +42,6 @@ const Wrapper = ({ onChange, type, withTime, local, hasDefaultVal }: any) => {
   return (
     <div className='dtWrapper' dir={local === 'fa' ? 'rtl' : 'ltr'}>
       <Header local={local} />
-      <InputPicker />
       {viewsSelector(hasDefaultVal, useViewState(), local, type)}
       {withTime && type === 'single' && (
         <TimeView

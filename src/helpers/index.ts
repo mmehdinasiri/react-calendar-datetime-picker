@@ -17,6 +17,23 @@ export const getNumberOfDaysInMonth = (
 export const genFullDay = (year: number, month: number, day: number) => {
   return `${year}${addZero(month)}${addZero(day)}`
 }
+
+export const genFullIDay = (
+  date: IDay | null | undefined,
+  withTime?: boolean
+) => {
+  if (date) {
+    if (withTime && date.hours && date.minutes) {
+      return `${date.year}/${addZero(date.month)}/${addZero(
+        date.day
+      )} ${addZero(date.hours)}:${addZero(date.minutes)}`
+    } else {
+      return `${date.year}/${addZero(date.month)}/${addZero(date.day)}`
+    }
+  }
+  return ''
+}
+
 export const genDayObject = (year: number, month: number, day: number) => {
   return {
     year: year,

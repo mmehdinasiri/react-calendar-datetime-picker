@@ -1,6 +1,6 @@
 import * as React from 'react'
 import './style/main.scss'
-import { DtWrapper } from './Components'
+import { DtWrapper, InputPicker } from './Components'
 import CalenderProvider from './store/CalenderProvider'
 import ViewProvider from './store/ViewProvider'
 import SelectedDaysProvider from './store/SelectedDaysProvider'
@@ -27,6 +27,7 @@ export const DtPicker = ({
       <CalenderProvider initCalender={initCalender} type={correctedType}>
         <SelectedDaysProvider initState={defaultValue} type={correctedType}>
           <SelectedTimeProvider initState={initTime} type={correctedType}>
+            <InputPicker type={correctedType} />
             <DtWrapper
               onChange={onChange}
               type={correctedType}

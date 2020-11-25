@@ -88,7 +88,7 @@ const App = () => {
       <DtPicker
         onChange={setDateEn}
         defaultValue={dateEn}
-        type='single'
+        type='range'
         local='en'
       />
       {JSON.stringify(dateEn, null, 4)}
