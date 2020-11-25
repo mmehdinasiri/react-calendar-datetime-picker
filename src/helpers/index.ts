@@ -133,11 +133,7 @@ export const handelInitialValues = (
       }
     }
   }
-  if (
-    (correctedType === 'single' && !defaultValue?.year) ||
-    (correctedType === 'range' && !defaultValue?.from) ||
-    (correctedType === 'multi' && !defaultValue?.length)
-  ) {
+  if (!initCalender) {
     if (local === 'fa') {
       initCalender = {
         year: todayP.year,

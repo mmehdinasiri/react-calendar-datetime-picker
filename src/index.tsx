@@ -22,7 +22,6 @@ export const DtPicker = ({
     correctedType,
     correctedLocal
   )
-
   return (
     <ViewProvider>
       <CalenderProvider initCalender={initCalender} type={correctedType}>
