@@ -4,8 +4,13 @@ import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 interface IInputPicker {
   placeholder?: string
   type: string
+  handelComponentVisible: () => void
 }
-const InputPicker = ({ placeholder, type }: IInputPicker) => {
+const InputPicker = ({
+  placeholder,
+  type,
+  handelComponentVisible
+}: IInputPicker) => {
   const selectedDayState = useSelectedDayState()
   const correctValue = () => {
     if (type === 'single') {
@@ -19,9 +24,12 @@ const InputPicker = ({ placeholder, type }: IInputPicker) => {
     return ''
   }
   return (
-    <div>
-      <input readOnly placeholder={placeholder} value={correctValue()} />
-    </div>
+    <input
+      readOnly
+      placeholder={placeholder}
+      value={correctValue()}
+      onClick={() => handelComponentVisible()}
+    />
   )
 }
 

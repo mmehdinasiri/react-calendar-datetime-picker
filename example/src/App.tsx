@@ -84,7 +84,7 @@ const App = () => {
   // const [date, setDate] = useState()
 
   return (
-    <>
+    <div style={{ margin: 'auto', width: '720px' }}>
       <DtPicker
         onChange={setDateEn}
         defaultValue={dateEn}
@@ -118,7 +118,7 @@ const App = () => {
           } / ${date.to.getDate()} - ${date.to.getHours()} : ${date.to.getMinutes()}`}</h1>
         )}
       </div> */}
-    </>
+    </div>
   )
 }
 
