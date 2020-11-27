@@ -10,6 +10,7 @@ const viewsSelector = (
   hasDefaultVal: boolean,
   currentView: string,
   local: string,
+  showWeekend: boolean,
   type?: string
 ) => {
   let view: ReactElement | unknown
@@ -22,17 +23,34 @@ const viewsSelector = (
       break
     case DAYS_VIEW:
       view = (
-        <DaysView type={type} local={local} hasDefaultVal={hasDefaultVal} />
+        <DaysView
+          type={type}
+          local={local}
+          hasDefaultVal={hasDefaultVal}
+          showWeekend={showWeekend}
+        />
       )
       break
     default:
       view = (
-        <DaysView type={type} local={local} hasDefaultVal={hasDefaultVal} />
+        <DaysView
+          type={type}
+          local={local}
+          hasDefaultVal={hasDefaultVal}
+          showWeekend={showWeekend}
+        />
       )
   }
   return view
 }
-const Wrapper = ({ onChange, type, withTime, local, hasDefaultVal }: any) => {
+const Wrapper = ({
+  onChange,
+  type,
+  withTime,
+  local,
+  hasDefaultVal,
+  showWeekend
+}: any) => {
   const selectedDate = useSelectedDayState()
   const selectedTime = useSelectedTimeState()
   useEffect(() => {
@@ -42,7 +60,7 @@ const Wrapper = ({ onChange, type, withTime, local, hasDefaultVal }: any) => {
   return (
     <div className='dtWrapper' dir={local === 'fa' ? 'rtl' : 'ltr'}>
       <Header local={local} />
-      {viewsSelector(hasDefaultVal, useViewState(), local, type)}
+      {viewsSelector(hasDefaultVal, useViewState(), local, showWeekend, type)}
       {withTime && type === 'single' && (
         <TimeView
           timeFor='single'

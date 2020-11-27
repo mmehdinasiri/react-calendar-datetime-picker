@@ -16,7 +16,7 @@ import {
   useSelectedDayState
 } from '../../store/SelectedDaysProvider'
 
-const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
+const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
   const today = LOCAL_CONSTANT[local].todayObject()
   const todayFullDay = `${today.year}${addZero(today.month)}${addZero(
     today.day
@@ -181,7 +181,7 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
       }
     }
   }
-  const checkClass = (day: any) => {
+  const checkClass = (day: any, index: number) => {
     let classes = ''
     if (day.date.fullDay === todayFullDay) {
       classes += ' is_today'
@@ -223,11 +223,26 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
     ) {
       classes += ' is_selected_day_range'
     }
+    if (showWeekend) {
+      if (
+        local === 'fa' &&
+        ((index + daysForPreviousMonth.length) % 7 === 6 ||
+          (index + daysForPreviousMonth.length) % 7 === 5)
+      ) {
+        classes += ' is_weekends'
+      } else if (
+        local === 'en' &&
+        (index + daysForPreviousMonth.length) % 7 === 0
+      ) {
+        classes += ' is_weekends'
+      }
+    }
+
     return classes
   }
   const daysForCurrentMonth = createDaysForCurrentMonth(year, month, day)
-  const daysForNextMonth = createDaysForNextMonth(year, month)
   const daysForPreviousMonth = createDaysForPreviousMonth(year, month)
+  const daysForNextMonth = createDaysForNextMonth(year, month)
 
   return (
     <ul className={`daysList ${local === 'fa' ? 'is-rtl' : ''}`}>
@@ -242,10 +257,10 @@ const DaysView = ({ type, local, hasDefaultVal }: IDaysProps) => {
             {day.dayOfMonth}
           </li>
         ))}
-      {daysForCurrentMonth.map((day) => (
+      {daysForCurrentMonth.map((day, index) => (
         <li
           key={day.dayOfMonth}
-          className={`daysList_day pointer ${checkClass(day)}`}
+          className={`daysList_day pointer ${checkClass(day, index)}`}
           onClick={() => {
             handelChangeDay(day.date)
           }}

@@ -13,7 +13,8 @@ export const DtPicker = ({
   onChange,
   type,
   withTime,
-  local
+  local,
+  showWeekend
 }: IDtPickerProps) => {
   const {
     ref,
@@ -49,6 +50,7 @@ export const DtPicker = ({
                     withTime={withTime}
                     local={correctedLocal}
                     hasDefaultVal={!!defaultValue}
+                    showWeekend={!!showWeekend}
                   />
                 </div>
               )}

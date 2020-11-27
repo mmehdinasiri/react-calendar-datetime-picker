@@ -65,6 +65,7 @@ interface IDtPickerProps {
   type?: string
   withTime?: boolean
   local?: string
+  showWeekend?: boolean
 }
 
 interface ITimeViewProps {
@@ -85,4 +86,5 @@ interface IDaysProps {
   hasDefaultVal: boolean
   local: string
   type?: string
+  showWeekend: boolean
 }
