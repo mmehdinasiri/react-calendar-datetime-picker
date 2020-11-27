@@ -22,6 +22,9 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
     today.day
   )}`
   const calenderState = useCalenderState()
+  const year = calenderState.year
+  const month = calenderState.month
+  const day = calenderState.day
   const selectedDayState = useSelectedDayState()
   const {
     changeSelectedDay,
@@ -30,9 +33,7 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
     changeSelectedDayMulti,
     removeSelectedDayMulti
   } = useSelectedDayActions()
-  const year = calenderState.year
-  const month = calenderState.month
-  const day = calenderState.day
+
   let fromTimeStamp: number, toTimeStamp: number
   if (type === 'range' && (selectedDayState as IRange).from) {
     // @ts-ignore: Unreachable code error
@@ -180,7 +181,6 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
     }
   }
   const checkClass = (day: any, index: number) => {
-    console.log('checkClass')
     let classes = ''
     if (day.date.fullDay === todayFullDay) {
       classes += ' is_today'
@@ -223,11 +223,7 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
       classes += ' is_selected_day_range'
     }
     if (showWeekend) {
-      if (
-        local === 'fa' &&
-        ((index + daysForPreviousMonth.length) % 7 === 6 ||
-          (index + daysForPreviousMonth.length) % 7 === 5)
-      ) {
+      if (local === 'fa' && (index + daysForPreviousMonth.length) % 7 === 6) {
         classes += ' is_weekends'
       } else if (
         local === 'en' &&

@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react'
-import { useViewState } from '../../store/ViewProvider'
+import { useViewActions, useViewState } from '../../store/ViewProvider'
 import { Header, YearsView, MonthsView, DaysView, TimeView } from '../'
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
@@ -53,10 +53,15 @@ const Wrapper = ({
 }: any) => {
   const selectedDate = useSelectedDayState()
   const selectedTime = useSelectedTimeState()
+  const { changeView } = useViewActions()
   useEffect(() => {
     mergeProviders(type, selectedDate, selectedTime, withTime, onChange)
   }, [selectedDate, selectedTime])
-
+  useEffect(() => {
+    return () => {
+      changeView(DAYS_VIEW)
+    }
+  }, [])
   return (
     <div className='dtWrapper' dir={local === 'fa' ? 'rtl' : 'ltr'}>
       <Header local={local} />

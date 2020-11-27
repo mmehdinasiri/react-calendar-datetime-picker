@@ -24,7 +24,6 @@ export const DtPicker = ({
   const handelComponentVisible = () => {
     setIsComponentVisible(!isComponentVisible)
   }
-
   const correctedType = type ? type.toLocaleLowerCase() : 'single'
   const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
   const { initCalender, initTime } = handelInitialValues(
@@ -32,6 +31,7 @@ export const DtPicker = ({
     correctedType,
     correctedLocal
   )
+
   return (
     <ViewProvider>
       <CalenderProvider initCalender={initCalender} type={correctedType}>

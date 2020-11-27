@@ -12,7 +12,7 @@ const App = () => {
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
   const [dateEn, setDateEn] = useState()
-  const [dateFa, setDateFa] = useState()
+  // const [dateFa, setDateFa] = useState()
   // const [dateEn, setDateEn] = useState({ year: 1398, month: 8, day: 1 })
   // const [dateEn, setDateEn] = useState({
   //   from: { year: 2000, month: 5, day: 2 },
@@ -95,7 +95,7 @@ const App = () => {
       <br />
       <br />
       <br />
-      <DtPicker
+      {/* <DtPicker
         onChange={setDateFa}
         defaultValue={dateFa}
         withTime
@@ -103,7 +103,7 @@ const App = () => {
         local='fa'
         showWeekend
       />
-      {JSON.stringify(dateFa, null, 4)}
+      {JSON.stringify(dateFa, null, 4)} */}
       {/* <DtPicker onChange={setDate} defaultValue={date} /> */}
       {/* <div>
         {date.from && (
