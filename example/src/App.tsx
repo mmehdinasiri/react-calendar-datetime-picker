@@ -88,6 +88,7 @@ const App = () => {
       <DtPicker
         onChange={setDateEn}
         defaultValue={dateEn}
+        type='range'
         local='en'
         showWeekend
       />

@@ -150,7 +150,7 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
         changeSelectedDayRange('from', newDate)
       } else if (
         !(selectedDayState as IRange).to?.year &&
-        fromTimeStamp < newDateTimeStamp
+        fromTimeStamp <= newDateTimeStamp
       ) {
         changeSelectedDayRange('to', newDate)
       } else if (
