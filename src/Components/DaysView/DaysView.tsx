@@ -9,7 +9,7 @@ import {
   getPreviousSundayDay,
   getWeekday
 } from '../../Helpers'
-import { LOCAL_CONSTANT } from '../../Constant'
+import { useLangOption } from '../../hooks/useLangOption'
 import { useCalenderState } from '../../store/CalenderProvider'
 import {
   useSelectedDayActions,
@@ -17,7 +17,7 @@ import {
 } from '../../store/SelectedDaysProvider'
 
 const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
-  const today = LOCAL_CONSTANT[local].todayObject()
+  const { today, getDay, WEEK_DAYS } = useLangOption(local)
   const todayFullDay = `${today.year}${addZero(today.month)}${addZero(
     today.day
   )}`
@@ -74,10 +74,7 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
       day: daysForCurrentMonth[0].date.day
     }
 
-    const firstDayOfTheMonthWeekday = getWeekday(
-      LOCAL_CONSTANT[local].getDay(firsDayOfMonth),
-      local
-    )
+    const firstDayOfTheMonthWeekday = getWeekday(getDay(firsDayOfMonth), local)
     const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday.weekDayIndex
       ? firstDayOfTheMonthWeekday.weekDayIndex
       : 7
@@ -105,7 +102,7 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
   }
   const createDaysForNextMonth = (year: number, month: number) => {
     const lastDayOfTheMonthWeekday = getWeekday(
-      LOCAL_CONSTANT[local].getDay({
+      getDay({
         year,
         month,
         day: daysForCurrentMonth.length
@@ -246,7 +243,7 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
 
   return (
     <ul className={`daysList ${local === 'fa' ? 'is-rtl' : ''}`}>
-      {LOCAL_CONSTANT[local].WEEK_DAYS.map((day: any) => (
+      {WEEK_DAYS.map((day: any) => (
         <li key={day.name} className='daysList_day'>
           {day.short}
         </li>

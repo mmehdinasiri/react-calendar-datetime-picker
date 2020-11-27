@@ -1,12 +1,14 @@
 import React from 'react'
-import { DAYS_VIEW, LOCAL_CONSTANT } from '../../Constant'
+import { DAYS_VIEW } from '../../Constant'
 import { useViewActions } from '../../store/ViewProvider'
+import { useLangOption } from '../../hooks/useLangOption'
 import {
   useCalenderActions,
   useCalenderState
 } from '../../store/CalenderProvider'
 
 const MonthsView = ({ local }: IMonthsProps) => {
+  const { MONTHS } = useLangOption(local)
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
   const calenderState = useCalenderState()
@@ -25,7 +27,7 @@ const MonthsView = ({ local }: IMonthsProps) => {
   return (
     <div>
       <ul className={`monthList ${local === 'fa' ? 'is-rtl' : ''}`}>
-        {LOCAL_CONSTANT[local].MONTHS.map((month: string, index: number) => (
+        {MONTHS.map((month: string, index: number) => (
           <div
             key={index}
             className='monthList_month'

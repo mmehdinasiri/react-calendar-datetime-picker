@@ -1,6 +1,6 @@
 import persianDate from 'persian-date'
 // import persianDate from 'persian-date'
-import { LOCAL_CONSTANT } from '../Constant'
+import { useLangOption } from '../hooks/useLangOption'
 
 export const getNumberOfDaysInMonth = (
   year: number,
@@ -44,10 +44,11 @@ export const genDayObject = (year: number, month: number, day: number) => {
 }
 
 export const getWeekday = (number: number, local: string) => {
-  const weekDay = LOCAL_CONSTANT[local].WEEK_DAY_SHORT[number]
+  const { WEEK_DAY_SHORT } = useLangOption(local)
+  const weekDay = WEEK_DAY_SHORT[number]
   return {
     weekDay,
-    weekDayIndex: LOCAL_CONSTANT[local].WEEK_DAY_SHORT.indexOf(weekDay)
+    weekDayIndex: WEEK_DAY_SHORT.indexOf(weekDay)
   }
 }
 
@@ -64,32 +65,25 @@ export const todayObject = () => {
 }
 
 export const getPreviousSundayDay = (date: IDay, local: string) => {
-  const day = LOCAL_CONSTANT[local].getDay(date)
-  const dayOfMonth = LOCAL_CONSTANT[local].getDayOfMonth(date)
-  const prevSunday = LOCAL_CONSTANT[local].today()
+  const { getDay, getDayOfMonth, today, setDayOfMonth } = useLangOption(local)
+  const day = getDay(date)
+  const dayOfMonth = getDayOfMonth(date)
+  const prevSunday = today()
   let previousSundayDay
   if (day === 0) {
-    previousSundayDay = LOCAL_CONSTANT[local].setDayOfMonth(
-      prevSunday,
-      dayOfMonth - 7
-    )
+    previousSundayDay = setDayOfMonth(prevSunday, dayOfMonth - 7)
   } else {
-    previousSundayDay = LOCAL_CONSTANT[local].setDayOfMonth(
-      prevSunday,
-      dayOfMonth - day
-    )
+    previousSundayDay = setDayOfMonth(prevSunday, dayOfMonth - day)
   }
   if (local === 'fa') {
-    return LOCAL_CONSTANT[local].getDayOfMonth(
-      previousSundayDay.State.persianAstro
-    )
+    return getDayOfMonth(previousSundayDay.State.persianAstro)
   }
   const temp = {
     year: previousSundayDay.getFullYear(),
     month: previousSundayDay.getMonth(),
     day: previousSundayDay.getDate()
   }
-  return LOCAL_CONSTANT[local].getDayOfMonth(temp)
+  return getDayOfMonth(temp)
 }
 
 export const getDateTimeStamp = (date: IDay, local?: string) => {
