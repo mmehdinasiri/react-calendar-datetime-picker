@@ -164,9 +164,7 @@ export const LOCAL_CONSTANT = {
     }
   }
 }
-export const SELECTED_LOCAL_OPTION = (local: string) => {
-  return LOCAL_CONSTANT[local]
-}
+
 export const YEARS_VIEW = 'DYEARS_VIEW'
 export const MONTHS_VIEW = 'MONTHS_VIEW'
 export const DAYS_VIEW = 'DAYS_VIEW'

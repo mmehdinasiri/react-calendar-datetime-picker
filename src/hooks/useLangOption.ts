@@ -1,8 +1,5 @@
-import { useMemo } from 'react'
+import { LOCAL_CONSTANT } from '../Constant'
 
-import { SELECTED_LOCAL_OPTION } from '../Constant'
-
-const useLangOption = (locale: string) =>
-  useMemo(() => SELECTED_LOCAL_OPTION(locale), [locale])
+const useLangOption = (locale: string) => LOCAL_CONSTANT[locale]
 
 export { useLangOption }

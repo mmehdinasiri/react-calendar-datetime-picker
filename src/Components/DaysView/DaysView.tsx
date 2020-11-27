@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import persianDate from 'persian-date'
 
 import {
@@ -131,6 +131,7 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
     })
   }
   const handelChangeDay = (date: any) => {
+    console.log('handelChangeDay')
     const newDate = { ...date }
     const newDateTimeStamp = getDateTimeStamp(newDate, local)
     if (type === 'single') {
@@ -179,6 +180,7 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
     }
   }
   const checkClass = (day: any, index: number) => {
+    console.log('checkClass')
     let classes = ''
     if (day.date.fullDay === todayFullDay) {
       classes += ' is_today'
@@ -237,9 +239,15 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
 
     return classes
   }
-  const daysForCurrentMonth = createDaysForCurrentMonth(year, month, day)
-  const daysForPreviousMonth = createDaysForPreviousMonth(year, month)
-  const daysForNextMonth = createDaysForNextMonth(year, month)
+  const daysForCurrentMonth = useMemo(() => {
+    return createDaysForCurrentMonth(year, month, day)
+  }, [year, month])
+  const daysForPreviousMonth = useMemo(() => {
+    return createDaysForPreviousMonth(year, month)
+  }, [year, month])
+  const daysForNextMonth = useMemo(() => {
+    return createDaysForNextMonth(year, month)
+  }, [year, month])
 
   return (
     <ul className={`daysList ${local === 'fa' ? 'is-rtl' : ''}`}>
