@@ -4,13 +4,14 @@ import {
   useCalenderActions,
   useCalenderState
 } from '../../store/CalenderProvider'
-import { useViewActions } from '../../store/ViewProvider'
-import { MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
+import { useViewState, useViewActions } from '../../store/ViewProvider'
+import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useLangOption } from '../../hooks/useLangOption'
 
 const Header = ({ local }: IHeaderProps) => {
   const { MONTHS } = useLangOption(local)
   const dayState = useCalenderState()
+  const viewState = useViewState()
   const { changeCalender } = useCalenderActions()
   const { changeView } = useViewActions()
   const { year, month, hours, minutes } = dayState
@@ -37,12 +38,19 @@ const Header = ({ local }: IHeaderProps) => {
     }
     changeCalender({ ...newDate })
   }
+  const handelView = (view: string) => {
+    if (viewState === MONTHS_VIEW || viewState === YEARS_VIEW) {
+      changeView(DAYS_VIEW)
+    } else {
+      changeView(view)
+    }
+  }
   return (
     <div className='header'>
       <button onClick={() => handelMonth('dec')}>prev</button>
       <div>
-        <div onClick={() => changeView(YEARS_VIEW)}>{year}</div>
-        <div onClick={() => changeView(MONTHS_VIEW)}>{MONTHS[month]}</div>
+        <div onClick={() => handelView(YEARS_VIEW)}>{year}</div>
+        <div onClick={() => handelView(MONTHS_VIEW)}>{MONTHS[month]}</div>
       </div>
       <button onClick={() => handelMonth('inc')}>next</button>
     </div>
