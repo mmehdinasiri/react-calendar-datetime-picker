@@ -14,7 +14,8 @@ export const DtPicker = ({
   type,
   withTime,
   local,
-  showWeekend
+  showWeekend,
+  clearBtn
 }: IDtPickerProps) => {
   const {
     ref,
@@ -39,6 +40,7 @@ export const DtPicker = ({
           <SelectedTimeProvider initState={initTime} type={correctedType}>
             <div style={{ position: 'relative' }}>
               <InputPicker
+                clearBtn={clearBtn}
                 type={correctedType}
                 handelComponentVisible={handelComponentVisible}
               />

@@ -1,15 +1,13 @@
 import React from 'react'
 import { genFullIDay } from '../../Helpers'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
-interface IInputPicker {
-  placeholder?: string
-  type: string
-  handelComponentVisible: () => void
-}
+import { ReactComponent as Close } from '../../Icons/close.svg'
+
 const InputPicker = ({
   placeholder,
   type,
-  handelComponentVisible
+  handelComponentVisible,
+  clearBtn
 }: IInputPicker) => {
   const selectedDayState = useSelectedDayState()
   const correctValue = () => {
@@ -24,12 +22,20 @@ const InputPicker = ({
     return ''
   }
   return (
-    <input
-      readOnly
-      placeholder={placeholder}
-      value={correctValue()}
-      onClick={() => handelComponentVisible()}
-    />
+    <div className='input-picker'>
+      <input
+        className='input-picker--input'
+        readOnly
+        placeholder={placeholder}
+        value={correctValue()}
+        onClick={() => handelComponentVisible()}
+      />
+      {clearBtn && (
+        <a className='input-picker--clearBtn'>
+          <Close />
+        </a>
+      )}
+    </div>
   )
 }
 

@@ -66,8 +66,14 @@ interface IDtPickerProps {
   withTime?: boolean
   local?: string
   showWeekend?: boolean
+  clearBtn?: boolean
 }
-
+interface IInputPicker {
+  placeholder?: string
+  type: string
+  handelComponentVisible: () => void
+  clearBtn?: boolean
+}
 interface ITimeViewProps {
   initHour: number | undefined
   initMinutes: number | undefined

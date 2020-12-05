@@ -12,6 +12,8 @@ const App = () => {
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
   const [dateEn, setDateEn] = useState()
+  // const [dateEn2, setDateEn2] = useState()
+  // const [dateEn3, setDateEn3] = useState()
   // const [dateFa, setDateFa] = useState()
   // const [dateEn, setDateEn] = useState({ year: 1398, month: 8, day: 1 })
   // const [dateEn, setDateEn] = useState({
@@ -85,18 +87,43 @@ const App = () => {
 
   return (
     <div style={{ margin: 'auto', width: '720px' }}>
+      <p>single en with time</p>
       <DtPicker
         onChange={setDateEn}
         defaultValue={dateEn}
+        type='single'
+        local='en'
+        withTime
+        showWeekend
+        clearBtn
+      />
+      {JSON.stringify(dateEn, null, 4)}
+      <br />
+      {/* <p>range en no time</p> */}
+      {/* <DtPicker
+        onChange={setDateEn2}
+        defaultValue={dateEn2}
         type='range'
         local='en'
         showWeekend
       />
-      {JSON.stringify(dateEn, null, 4)}
+      {JSON.stringify(dateEn2, null, 4)}
+      <br />
+
+      <p>multi en no time</p>
+      <DtPicker
+        onChange={setDateEn3}
+        defaultValue={dateEn3}
+        type='multi'
+        local='en'
+        showWeekend
+      />
+      {JSON.stringify(dateEn3, null, 4)}
       <br />
       <br />
       <br />
-      {/* <DtPicker
+      <p>range fa with time</p>
+      <DtPicker
         onChange={setDateFa}
         defaultValue={dateFa}
         withTime
