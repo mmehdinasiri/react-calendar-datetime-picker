@@ -132,7 +132,6 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
     })
   }
   const handelChangeDay = (date: any) => {
-    console.log('handelChangeDay')
     const newDate = { ...date }
     const newDateTimeStamp = getDateTimeStamp(newDate, local)
     if (type === 'single') {

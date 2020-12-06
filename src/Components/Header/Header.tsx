@@ -1,5 +1,4 @@
 import React from 'react'
-// import jalaali from 'jalaali-js'
 import {
   useCalenderActions,
   useCalenderState
@@ -7,6 +6,8 @@ import {
 import { useViewState, useViewActions } from '../../store/ViewProvider'
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useLangOption } from '../../hooks/useLangOption'
+import { ReactComponent as Next } from '../../Icons/next.svg'
+import { ReactComponent as Back } from '../../Icons/back.svg'
 
 const Header = ({ local }: IHeaderProps) => {
   const { MONTHS } = useLangOption(local)
@@ -47,12 +48,16 @@ const Header = ({ local }: IHeaderProps) => {
   }
   return (
     <div className='header'>
-      <button onClick={() => handelMonth('dec')}>prev</button>
+      <a className='header--btn' onClick={() => handelMonth('dec')}>
+        <Back />
+      </a>
       <div>
         <div onClick={() => handelView(YEARS_VIEW)}>{year}</div>
         <div onClick={() => handelView(MONTHS_VIEW)}>{MONTHS[month]}</div>
       </div>
-      <button onClick={() => handelMonth('inc')}>next</button>
+      <a className='header--btn' onClick={() => handelMonth('inc')}>
+        <Next />
+      </a>
     </div>
   )
 }
