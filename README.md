@@ -44,7 +44,6 @@ const App = () => {
 - [ ] min date
 - [ ] min and max together (Specific date range search Specific date range)
 - [ ] Portal version ( search portal in https://reactdatepicker.com/)
-- [ ] Neptune
 - [ ] add today button
 
 ## License
