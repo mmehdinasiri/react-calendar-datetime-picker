@@ -2,17 +2,17 @@
   position: relative;
   display: inline-block;
   .input-picker--input{
-    height: 32px;
-    line-height: 32px;
+    height: rem(32px);
+    line-height: rem(32px);
     padding: 0 8px;
   }
   .input-picker--clearBtn {
     display: block;
-    width: 24px;
-    height:  24px;
+    width: rem(24px);
+    height:  rem(24px);
     position: absolute;
     top: 50%;    
-    right: 0;
+    right: rem(5px);
     transform: translateY(-50%);
     cursor: pointer;
     color: $iconColor

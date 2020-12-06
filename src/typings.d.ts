@@ -59,9 +59,17 @@ interface ISelectedTimeProvider {
 interface IViewProvider {
   children: React.ReactElement | React.ReactElement[]
 }
+interface IWrapper {
+  onChange: (date: any) => void
+  type: string
+  withTime?: boolean
+  local: string
+  hasDefaultVal: boolean
+  showWeekend: boolean
+}
 interface IDtPickerProps {
   defaultValue?: IDay | IRange
-  onChange: () => void
+  onChange: (date: any) => void
   type?: string
   withTime?: boolean
   local?: string
@@ -72,7 +80,9 @@ interface IInputPicker {
   placeholder?: string
   type: string
   handelComponentVisible: () => void
+  onChange: (date: any) => void
   clearBtn?: boolean
+  withTime?: boolean
 }
 interface ITimeViewProps {
   initHour: number | undefined

@@ -107,13 +107,16 @@ function useSelectedDayActions() {
       )
     ])
   }
-
+  const removeAllSelectedDayMulti = () => {
+    setSelectedDayAction(() => [])
+  }
   return {
     changeSelectedDay,
     changeSelectedDayRange,
     removeSelectedDay,
     changeSelectedDayMulti,
-    removeSelectedDayMulti
+    removeSelectedDayMulti,
+    removeAllSelectedDayMulti
   }
 }
 

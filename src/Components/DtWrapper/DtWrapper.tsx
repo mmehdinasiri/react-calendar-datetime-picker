@@ -50,13 +50,13 @@ const Wrapper = ({
   local,
   hasDefaultVal,
   showWeekend
-}: any) => {
-  const selectedDate = useSelectedDayState()
+}: IWrapper) => {
+  const selectedDayState = useSelectedDayState()
   const selectedTime = useSelectedTimeState()
   const { changeView } = useViewActions()
   useEffect(() => {
-    mergeProviders(type, selectedDate, selectedTime, withTime, onChange)
-  }, [selectedDate, selectedTime])
+    mergeProviders(onChange, type, selectedDayState, selectedTime, withTime)
+  }, [selectedDayState, selectedTime])
   useEffect(() => {
     return () => {
       changeView(DAYS_VIEW)
@@ -69,21 +69,21 @@ const Wrapper = ({
       {withTime && type === 'single' && (
         <TimeView
           timeFor='single'
-          initHour={(selectedDate as IDay)?.hours}
-          initMinutes={(selectedDate as IDay)?.minutes}
+          initHour={(selectedDayState as IDay)?.hours}
+          initMinutes={(selectedDayState as IDay)?.minutes}
         />
       )}
       {withTime && type === 'range' && (
         <React.Fragment>
           <TimeView
             timeFor='from'
-            initHour={(selectedDate as IRange).from?.hours}
-            initMinutes={(selectedDate as IRange).from?.minutes}
+            initHour={(selectedDayState as IRange).from?.hours}
+            initMinutes={(selectedDayState as IRange).from?.minutes}
           />
           <TimeView
             timeFor='to'
-            initHour={(selectedDate as IRange).to?.hours}
-            initMinutes={(selectedDate as IRange).to?.minutes}
+            initHour={(selectedDayState as IRange).to?.hours}
+            initMinutes={(selectedDayState as IRange).to?.minutes}
           />
         </React.Fragment>
       )}

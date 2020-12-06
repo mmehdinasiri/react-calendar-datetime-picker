@@ -43,6 +43,8 @@ export const DtPicker = ({
                 clearBtn={clearBtn}
                 type={correctedType}
                 handelComponentVisible={handelComponentVisible}
+                onChange={onChange}
+                withTime={withTime}
               />
               {isComponentVisible && (
                 <div ref={ref} className='calender-modal'>
