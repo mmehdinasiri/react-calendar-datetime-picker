@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 
-const useComponentVisible = (initialIsVisible: any) => {
+const useComponentVisible = (
+  initialIsVisible: any,
+  callBack: any,
+  inputRef: any
+) => {
   const [isComponentVisible, setIsComponentVisible] = useState(initialIsVisible)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -9,10 +13,14 @@ const useComponentVisible = (initialIsVisible: any) => {
       setIsComponentVisible(false)
     }
   }
-
   const handleClickOutside = (event: Event) => {
-    if (ref.current && !ref.current.contains(event.target as Node)) {
+    if (
+      ref.current &&
+      !ref.current.contains(event.target as Node) &&
+      event.target !== inputRef.current
+    ) {
       setIsComponentVisible(false)
+      callBack()
     }
   }
 

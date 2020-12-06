@@ -84,7 +84,8 @@ const App = () => {
   //   minutes: 15
   // })
   // const [date, setDate] = useState()
-
+  const handleCalendarClose = () => console.log('Calendar closed')
+  const handleCalendarOpen = () => console.log('Calendar opened')
   return (
     <div style={{ margin: 'auto', width: '720px' }}>
       <p>single en with time</p>
@@ -96,6 +97,8 @@ const App = () => {
         withTime
         showWeekend
         clearBtn
+        onCalenderShow={handleCalendarOpen}
+        onCalenderHide={handleCalendarClose}
       />
       {JSON.stringify(dateEn, null, 4)}
       <br />

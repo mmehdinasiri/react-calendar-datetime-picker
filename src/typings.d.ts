@@ -70,6 +70,8 @@ interface IWrapper {
 interface IDtPickerProps {
   defaultValue?: IDay | IRange
   onChange: (date: any) => void
+  onCalenderHide?: any
+  onCalenderShow?: any
   type?: string
   withTime?: boolean
   local?: string

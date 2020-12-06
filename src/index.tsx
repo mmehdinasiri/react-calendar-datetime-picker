@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import './style/main.scss'
 import { DtWrapper, InputPicker } from './Components'
 import CalenderProvider from './store/CalenderProvider'
@@ -15,14 +15,22 @@ export const DtPicker = ({
   withTime,
   local,
   showWeekend,
-  clearBtn
+  clearBtn,
+  onCalenderHide,
+  onCalenderShow
 }: IDtPickerProps) => {
+  const inputRef = useRef(null)
   const {
     ref,
     isComponentVisible,
     setIsComponentVisible
-  } = useComponentVisible(false)
+  } = useComponentVisible(false, onCalenderHide, inputRef)
+
   const handelComponentVisible = () => {
+    if (isComponentVisible) return
+    if (!isComponentVisible) {
+      onCalenderShow()
+    }
     setIsComponentVisible(!isComponentVisible)
   }
   const correctedType = type ? type.toLocaleLowerCase() : 'single'
@@ -40,6 +48,7 @@ export const DtPicker = ({
           <SelectedTimeProvider initState={initTime} type={correctedType}>
             <div style={{ position: 'relative' }}>
               <InputPicker
+                ref={inputRef}
                 clearBtn={clearBtn}
                 type={correctedType}
                 handelComponentVisible={handelComponentVisible}
