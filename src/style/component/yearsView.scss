@@ -1,0 +1,63 @@
+.yearWrapper {
+  position: relative;
+}
+.yearWrapper:after,
+.yearWrapper:before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: rem(30px);
+  position: absolute;
+  left: 0;
+  transition: 0.4s;
+  transition-delay: 0.2s;
+}
+.yearWrapper:before {
+  background-image: linear-gradient(
+    0deg,
+    #fff,
+    #fff 10%,
+    hsla(0, 0%, 96.1%, 0)
+  );
+  bottom: 0;
+}
+
+.yearWrapper:after {
+  background-image: linear-gradient(
+    180deg,
+    #fff,
+    #fff 10%,
+    hsla(0, 0%, 96.1%, 0)
+  );
+  top: -0.1em;
+}
+
+.yearList {
+  list-style: none;
+  overflow: hidden;
+  padding: 0;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  height: rem(291px);
+  overflow-y: scroll;
+  padding: rem(30px) 0;
+  margin: rem(8px) 0;
+}
+
+.yearList::-webkit-scrollbar {
+  display: none;
+}
+.yearList_year {
+  width: 20%;
+  height: rem(55px);
+  line-height: rem(55px);
+  float: left;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.yearList_year:nth-child(5n + 1) {
+  clear: left;
+}

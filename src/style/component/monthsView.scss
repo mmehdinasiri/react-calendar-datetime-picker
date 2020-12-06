@@ -1,0 +1,28 @@
+.monthList {
+  list-style: none;
+  overflow: hidden;
+  padding: 0;
+  text-align: center;
+}
+.monthList_month {
+  width: rem(calc(340px / 3));
+  height: rem(72px);
+  line-height: rem(72px);
+  float: left;
+  text-align: center;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.monthList_month:nth-child(3n + 1) {
+  clear: left;
+}
+
+.is-rtl.monthList {
+  .monthList_month {
+    float: right;
+  }
+  .monthList_month:nth-child(3n + 1) {
+    clear: right;
+  }
+}

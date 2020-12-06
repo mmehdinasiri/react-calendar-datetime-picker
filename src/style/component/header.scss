@@ -1,0 +1,11 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .header--btn{
+    cursor: pointer;
+    display: block;
+    width: rem(24px);
+    height:  rem(24px);
+  }
+}

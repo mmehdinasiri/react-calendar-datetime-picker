@@ -1,0 +1,20 @@
+.input-picker {
+  position: relative;
+  display: inline-block;
+  .input-picker--input{
+    height: rem(32px);
+    line-height: rem(32px);
+    padding: 0 8px;
+  }
+  .input-picker--clearBtn {
+    display: block;
+    width: rem(24px);
+    height:  rem(24px);
+    position: absolute;
+    top: 50%;    
+    right: rem(5px);
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: $iconColor
+  }
+}
