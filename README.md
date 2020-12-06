@@ -15,15 +15,37 @@ npm install --save react-datetime-picker
 ```tsx
 import React, { Component } from 'react'
 
-import MyComponent from 'react-datetime-picker'
+import { DtPicker } from 'react-datetime-picker'
 import 'react-datetime-picker/dist/index.css'
 
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
+const App = () => {
+  const [date, setDate] = useState()
+  const handleCalendarClose = () => console.log('Calendar closed')
+  const handleCalendarOpen = () => console.log('Calendar opened')
+  return (
+      <DtPicker
+        onChange={setDate}
+        defaultValue={date}
+        type='single'
+        local='en'
+        withTim
+        showWeekend
+        clearBtn
+        onCalenderShow={handleCalendarOpen}
+        onCalenderHide={handleCalendarClose}
+        // isDisabled
+      />
+  )
 }
 ```
+### TODO
+
+- [ ] max date
+- [ ] min date
+- [ ] min and max together (Specific date range search Specific date range)
+- [ ] Portal version ( search portal in https://reactdatepicker.com/)
+- [ ] Neptune
+- [ ] add today button
 
 ## License
 
