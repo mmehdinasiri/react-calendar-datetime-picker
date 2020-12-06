@@ -45,6 +45,10 @@ const App = () => {
 - [ ] min and max together (Specific date range search Specific date range)
 - [ ] Portal version ( search portal in https://reactdatepicker.com/)
 - [ ] add today button
+- [ ] add auto close form calender without time
+- [ ] remove disabled date in range date
+- [ ] write test
+- [ ] add styles
 
 ## License
 
