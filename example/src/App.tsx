@@ -94,11 +94,12 @@ const App = () => {
         defaultValue={dateEn}
         type='single'
         local='en'
-        withTime
+        withTim
         showWeekend
         clearBtn
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
+        // isDisabled
       />
       {JSON.stringify(dateEn, null, 4)}
       <br />

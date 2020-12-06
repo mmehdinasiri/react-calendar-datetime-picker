@@ -77,6 +77,7 @@ interface IDtPickerProps {
   local?: string
   showWeekend?: boolean
   clearBtn?: boolean
+  isDisabled?: boolean
 }
 interface IInputPicker {
   placeholder?: string
@@ -85,6 +86,7 @@ interface IInputPicker {
   onChange: (date: any) => void
   clearBtn?: boolean
   withTime?: boolean
+  isDisabled?: boolean
 }
 interface ITimeViewProps {
   initHour: number | undefined

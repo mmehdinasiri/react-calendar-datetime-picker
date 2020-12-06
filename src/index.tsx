@@ -17,7 +17,8 @@ export const DtPicker = ({
   showWeekend,
   clearBtn,
   onCalenderHide,
-  onCalenderShow
+  onCalenderShow,
+  isDisabled
 }: IDtPickerProps) => {
   const inputRef = useRef(null)
   const {
@@ -54,6 +55,7 @@ export const DtPicker = ({
                 handelComponentVisible={handelComponentVisible}
                 onChange={onChange}
                 withTime={withTime}
+                isDisabled={isDisabled}
               />
               {isComponentVisible && (
                 <div ref={ref} className='calender-modal'>

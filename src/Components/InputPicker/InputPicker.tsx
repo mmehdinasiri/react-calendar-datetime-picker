@@ -15,7 +15,8 @@ const InputPicker = forwardRef(
       handelComponentVisible,
       clearBtn,
       withTime,
-      onChange
+      onChange,
+      isDisabled
     }: IInputPicker,
     ref: RefObject<HTMLInputElement>
   ) => {
@@ -63,6 +64,7 @@ const InputPicker = forwardRef(
           placeholder={placeholder}
           value={correctValue()}
           onClick={() => handelComponentVisible()}
+          disabled={isDisabled}
         />
         {clearBtn && (
           <a className='input-picker--clearBtn' onClick={() => clearValue()}>
