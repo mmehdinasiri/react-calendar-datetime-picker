@@ -24,6 +24,7 @@ const DaysView = ({
   maxDate,
   minDate
 }: IDaysProps) => {
+  console.log(maxDate, minDate)
   const { today, getDay, WEEK_DAYS } = useLangOption(local)
   const todayFullDay = `${today.year}${addZero(today.month)}${addZero(
     today.day

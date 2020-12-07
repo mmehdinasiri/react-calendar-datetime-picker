@@ -99,6 +99,8 @@ interface ITimeViewProps {
 }
 interface IHeaderProps {
   local: string
+  maxDate?: IDay
+  minDate?: IDay
 }
 interface IYearsProps {
   local: string

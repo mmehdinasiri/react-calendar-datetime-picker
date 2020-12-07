@@ -70,7 +70,7 @@ const Wrapper = ({
   }, [])
   return (
     <div className='dtWrapper' dir={local === 'fa' ? 'rtl' : 'ltr'}>
-      <Header local={local} />
+      <Header local={local} maxDate={maxDate} minDate={minDate} />
       {viewsSelector(
         hasDefaultVal,
         useViewState(),

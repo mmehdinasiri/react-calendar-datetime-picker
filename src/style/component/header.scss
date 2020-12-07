@@ -7,5 +7,9 @@
     display: block;
     width: rem(24px);
     height:  rem(24px);
+    &.is-disabled{
+      opacity: 0.2;
+      pointer-events: none;
+    }
   }
 }

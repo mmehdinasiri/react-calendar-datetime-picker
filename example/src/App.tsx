@@ -91,12 +91,12 @@ const App = () => {
   })
   const maxDate = {
     year: 2010,
-    month: 3,
+    month: 5,
     day: 23
   }
   const minDate = {
     year: 2010,
-    month: 3,
+    month: 1,
     day: 5
   }
   const handleCalendarClose = () => console.log('Calendar closed')

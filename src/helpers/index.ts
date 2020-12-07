@@ -92,9 +92,7 @@ export const getDateTimeStamp = (date: IDay, local?: string) => {
   }
   return new Date(date.year, date.month, date.day).setHours(0, 0, 0, 0)
 }
-export const compareToDateEN = (date1: IDay, date2: IDay) => {
-  console.log(date1)
-  console.log(date2)
+export const compareDateEN = (date1: IDay, date2: IDay) => {
   const fixDate1 = new Date(date1.year, date1.month, date1.day)
   const fixDate2 = new Date(date2.year, date2.month, date2.day)
   if (fixDate1 > fixDate2) {
@@ -104,7 +102,7 @@ export const compareToDateEN = (date1: IDay, date2: IDay) => {
   }
   return 0
 }
-export const compareToDateFA = (date1: IDay, date2: IDay) => {
+export const compareDateFA = (date1: IDay, date2: IDay) => {
   const fixDate1 = new persianDate([date1.year, date1.month, date1.day])
   const fixDate2 = new persianDate([date2.year, date2.month, date2.day])
   if (fixDate1.diff(fixDate2) > 0) {
@@ -123,8 +121,8 @@ const isDefaultDateIsCorrectBaseOnMaxMinDate = (
   minDate?: IDay
 ) => {
   const selectCompar = {
-    en: compareToDateEN,
-    fa: compareToDateFA
+    en: compareDateEN,
+    fa: compareDateFA
   }
   if (maxDate) {
     if (correctedType === 'single') {

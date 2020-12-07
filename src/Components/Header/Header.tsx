@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   useCalenderActions,
   useCalenderState
@@ -9,7 +9,7 @@ import { useLangOption } from '../../hooks/useLangOption'
 import { ReactComponent as Next } from '../../Icons/next.svg'
 import { ReactComponent as Back } from '../../Icons/back.svg'
 
-const Header = ({ local }: IHeaderProps) => {
+const Header = ({ local, minDate, maxDate }: IHeaderProps) => {
   const { MONTHS } = useLangOption(local)
   const dayState = useCalenderState()
   const viewState = useViewState()
@@ -17,7 +17,7 @@ const Header = ({ local }: IHeaderProps) => {
   const { changeView } = useViewActions()
   const { year, month, hours, minutes } = dayState
 
-  const handelMonth = (action: string) => {
+  const handelNextMonth = (action: string) => {
     const toSum = action === 'inc' ? 1 : -1
     let newMonthIndex = month + toSum
     let newYear = year
@@ -30,13 +30,16 @@ const Header = ({ local }: IHeaderProps) => {
       newMonthIndex = 0
       newYear += 1
     }
-    const newDate = {
+    return {
       year: newYear,
       month: newMonthIndex,
       day: 1,
       hour: hours,
       minutes: minutes
     }
+  }
+  const handelNextMonthState = (action: string) => {
+    const newDate = handelNextMonth(action)
     changeCalender({ ...newDate })
   }
   const handelView = (view: string) => {
@@ -46,16 +49,45 @@ const Header = ({ local }: IHeaderProps) => {
       changeView(view)
     }
   }
+  const isActiveBack = () => {
+    const newDate = handelNextMonth('dec')
+    if (minDate) {
+      if (
+        minDate.year > newDate.year ||
+        (minDate.year === newDate.year && minDate.month > newDate.month)
+      )
+        return false
+    }
+    return true
+  }
+  const isActiveNext = () => {
+    const newDate = handelNextMonth('inc')
+    if (maxDate) {
+      if (
+        maxDate.year < newDate.year ||
+        (maxDate.year === newDate.year && maxDate.month < newDate.month)
+      )
+        return false
+    }
+    return true
+  }
+  useEffect(() => {})
   return (
     <div className='header'>
-      <a className='header--btn' onClick={() => handelMonth('dec')}>
+      <a
+        className={`header--btn ${!isActiveBack() ? 'is-disabled' : ''}`}
+        onClick={() => handelNextMonthState('dec')}
+      >
         <Back />
       </a>
       <div>
         <div onClick={() => handelView(YEARS_VIEW)}>{year}</div>
         <div onClick={() => handelView(MONTHS_VIEW)}>{MONTHS[month]}</div>
       </div>
-      <a className='header--btn' onClick={() => handelMonth('inc')}>
+      <a
+        className={`header--btn ${!isActiveNext() ? 'is-disabled' : ''}`}
+        onClick={() => handelNextMonthState('inc')}
+      >
         <Next />
       </a>
     </div>
