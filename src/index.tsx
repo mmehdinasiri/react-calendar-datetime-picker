@@ -18,7 +18,9 @@ export const DtPicker = ({
   clearBtn,
   onCalenderHide,
   onCalenderShow,
-  isDisabled
+  isDisabled,
+  maxDate,
+  minDate
 }: IDtPickerProps) => {
   const inputRef = useRef(null)
   const {
@@ -39,7 +41,9 @@ export const DtPicker = ({
   const { initCalender, initTime } = handelInitialValues(
     defaultValue,
     correctedType,
-    correctedLocal
+    correctedLocal,
+    maxDate,
+    minDate
   )
 
   return (
@@ -66,6 +70,8 @@ export const DtPicker = ({
                     local={correctedLocal}
                     hasDefaultVal={!!defaultValue}
                     showWeekend={!!showWeekend}
+                    maxDate={maxDate}
+                    minDate={minDate}
                   />
                 </div>
               )}

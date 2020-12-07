@@ -11,7 +11,7 @@ const App = () => {
   // const day = new Date(2009, 11, 1)
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
-  const [dateEn, setDateEn] = useState()
+  // const [dateEn, setDateEn] = useState()
   // const [dateEn2, setDateEn2] = useState()
   // const [dateEn3, setDateEn3] = useState()
   // const [dateFa, setDateFa] = useState()
@@ -84,6 +84,21 @@ const App = () => {
   //   minutes: 15
   // })
   // const [date, setDate] = useState()
+  const [dateEn, setDateEn] = useState({
+    year: 2010,
+    month: 3,
+    day: 23
+  })
+  const maxDate = {
+    year: 2010,
+    month: 3,
+    day: 23
+  }
+  const minDate = {
+    year: 2010,
+    month: 3,
+    day: 5
+  }
   const handleCalendarClose = () => console.log('Calendar closed')
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
@@ -99,6 +114,8 @@ const App = () => {
         clearBtn
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
+        maxDate={maxDate}
+        minDate={minDate}
         // isDisabled
       />
       {JSON.stringify(dateEn, null, 4)}

@@ -16,7 +16,14 @@ import {
   useSelectedDayState
 } from '../../store/SelectedDaysProvider'
 
-const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
+const DaysView = ({
+  type,
+  local,
+  hasDefaultVal,
+  showWeekend,
+  maxDate,
+  minDate
+}: IDaysProps) => {
   const { today, getDay, WEEK_DAYS } = useLangOption(local)
   const todayFullDay = `${today.year}${addZero(today.month)}${addZero(
     today.day

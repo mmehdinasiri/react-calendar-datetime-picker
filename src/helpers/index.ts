@@ -92,16 +92,100 @@ export const getDateTimeStamp = (date: IDay, local?: string) => {
   }
   return new Date(date.year, date.month, date.day).setHours(0, 0, 0, 0)
 }
+export const compareToDateEN = (date1: IDay, date2: IDay) => {
+  console.log(date1)
+  console.log(date2)
+  const fixDate1 = new Date(date1.year, date1.month, date1.day)
+  const fixDate2 = new Date(date2.year, date2.month, date2.day)
+  if (fixDate1 > fixDate2) {
+    return 1
+  } else if (fixDate1 < fixDate2) {
+    return 2
+  }
+  return 0
+}
+export const compareToDateFA = (date1: IDay, date2: IDay) => {
+  const fixDate1 = new persianDate([date1.year, date1.month, date1.day])
+  const fixDate2 = new persianDate([date2.year, date2.month, date2.day])
+  if (fixDate1.diff(fixDate2) > 0) {
+    return 1
+  } else if (fixDate1.diff(fixDate2) < 0) {
+    return 2
+  }
+  return 0
+}
+
+const isDefaultDateIsCorrectBaseOnMaxMinDate = (
+  defaultValue: any,
+  local: string,
+  correctedType: string,
+  maxDate?: IDay,
+  minDate?: IDay
+) => {
+  const selectCompar = {
+    en: compareToDateEN,
+    fa: compareToDateFA
+  }
+  if (maxDate) {
+    if (correctedType === 'single') {
+      if (selectCompar[local](maxDate, defaultValue) === 2)
+        // eslint-disable-next-line no-throw-literal
+        throw 'Max date must be greater than default date'
+    } else if (correctedType === 'range') {
+      if (selectCompar[local](maxDate, defaultValue.to) === 2)
+        // eslint-disable-next-line no-throw-literal
+        throw 'Max date must be greater than default to date'
+    }
+  } else if (correctedType === 'multi') {
+    const isThereAnyGreater = defaultValue.find(
+      (date: IDay) => selectCompar[local](maxDate, date) === 2
+    )
+    if (isThereAnyGreater) {
+      // eslint-disable-next-line no-throw-literal
+      throw 'Max date must be greater than default to date'
+    }
+  }
+  if (minDate) {
+    if (correctedType === 'single') {
+      if (selectCompar[local](minDate, defaultValue) === 1)
+        // eslint-disable-next-line no-throw-literal
+        throw 'Default date must be greater than min date'
+    } else if (correctedType === 'range') {
+      if (selectCompar[local](minDate, defaultValue.to) === 1)
+        // eslint-disable-next-line no-throw-literal
+        throw 'Default date must be greater than min date'
+    }
+  } else if (correctedType === 'multi') {
+    const isThereAnyGreater = defaultValue.find(
+      (date: IDay) => selectCompar[local](minDate, date) === 1
+    )
+    if (isThereAnyGreater) {
+      // eslint-disable-next-line no-throw-literal
+      throw 'Default date must be greater than min date'
+    }
+  }
+}
 
 export const handelInitialValues = (
   defaultValue: any,
   correctedType: string,
-  local: string
+  local: string,
+  maxDate?: IDay,
+  minDate?: IDay
 ) => {
   let initTime
   let initCalender
   const today = new Date()
-  const todayP = new persianDate(new Date()).State.persianAstro
+  const todayP = new persianDate(today).State.persianAstro
+  if (defaultValue?.year || defaultValue?.to.year)
+    isDefaultDateIsCorrectBaseOnMaxMinDate(
+      defaultValue,
+      local,
+      correctedType,
+      maxDate,
+      minDate
+    )
+
   if (correctedType === 'single') {
     if (defaultValue?.year) {
       initCalender = {
