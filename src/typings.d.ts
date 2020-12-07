@@ -59,6 +59,13 @@ interface ISelectedTimeProvider {
 interface IViewProvider {
   children: React.ReactElement | React.ReactElement[]
 }
+interface IMinMaxProvider {
+  initState: {
+    minDate: IDay | null | undefined
+    maxDate: IDay | null | undefined
+  }
+  children: React.ReactElement | React.ReactElement[]
+}
 interface IWrapper {
   onChange: (date: any) => void
   type: string
@@ -66,8 +73,6 @@ interface IWrapper {
   local: string
   hasDefaultVal: boolean
   showWeekend: boolean
-  maxDate?: IDay
-  minDate?: IDay
 }
 interface IDtPickerProps {
   defaultValue?: IDay | IRange
@@ -99,8 +104,6 @@ interface ITimeViewProps {
 }
 interface IHeaderProps {
   local: string
-  maxDate?: IDay
-  minDate?: IDay
 }
 interface IYearsProps {
   local: string
@@ -113,6 +116,4 @@ interface IDaysProps {
   local: string
   type?: string
   showWeekend: boolean
-  maxDate?: IDay
-  minDate?: IDay
 }

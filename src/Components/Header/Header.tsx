@@ -8,8 +8,10 @@ import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useLangOption } from '../../hooks/useLangOption'
 import { ReactComponent as Next } from '../../Icons/next.svg'
 import { ReactComponent as Back } from '../../Icons/back.svg'
+import { useMinMaxState } from '../../store/MinMaxProvider'
 
-const Header = ({ local, minDate, maxDate }: IHeaderProps) => {
+const Header = ({ local }: IHeaderProps) => {
+  const { minDate, maxDate } = useMinMaxState()
   const { MONTHS } = useLangOption(local)
   const dayState = useCalenderState()
   const viewState = useViewState()

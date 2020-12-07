@@ -5,6 +5,7 @@ import CalenderProvider from './store/CalenderProvider'
 import ViewProvider from './store/ViewProvider'
 import SelectedDaysProvider from './store/SelectedDaysProvider'
 import SelectedTimeProvider from './store/SelectedTimeProvider'
+import MinMaxProvider from './store/MinMaxProvider'
 import { handelInitialValues } from './Helpers'
 import useComponentVisible from './hooks/useComponentVisible'
 
@@ -23,6 +24,10 @@ export const DtPicker = ({
   minDate
 }: IDtPickerProps) => {
   const inputRef = useRef(null)
+  const minMaxState = {
+    minDate: minDate,
+    maxDate: maxDate
+  }
   const {
     ref,
     isComponentVisible,
@@ -49,35 +54,35 @@ export const DtPicker = ({
   return (
     <ViewProvider>
       <CalenderProvider initCalender={initCalender} type={correctedType}>
-        <SelectedDaysProvider initState={defaultValue} type={correctedType}>
-          <SelectedTimeProvider initState={initTime} type={correctedType}>
-            <div style={{ position: 'relative' }}>
-              <InputPicker
-                ref={inputRef}
-                clearBtn={clearBtn}
-                type={correctedType}
-                handelComponentVisible={handelComponentVisible}
-                onChange={onChange}
-                withTime={withTime}
-                isDisabled={isDisabled}
-              />
-              {isComponentVisible && (
-                <div ref={ref} className='calender-modal'>
-                  <DtWrapper
-                    onChange={onChange}
-                    type={correctedType}
-                    withTime={withTime}
-                    local={correctedLocal}
-                    hasDefaultVal={!!defaultValue}
-                    showWeekend={!!showWeekend}
-                    maxDate={maxDate}
-                    minDate={minDate}
-                  />
-                </div>
-              )}
-            </div>
-          </SelectedTimeProvider>
-        </SelectedDaysProvider>
+        <MinMaxProvider initState={minMaxState}>
+          <SelectedDaysProvider initState={defaultValue} type={correctedType}>
+            <SelectedTimeProvider initState={initTime} type={correctedType}>
+              <div style={{ position: 'relative' }}>
+                <InputPicker
+                  ref={inputRef}
+                  clearBtn={clearBtn}
+                  type={correctedType}
+                  handelComponentVisible={handelComponentVisible}
+                  onChange={onChange}
+                  withTime={withTime}
+                  isDisabled={isDisabled}
+                />
+                {isComponentVisible && (
+                  <div ref={ref} className='calender-modal'>
+                    <DtWrapper
+                      onChange={onChange}
+                      type={correctedType}
+                      withTime={withTime}
+                      local={correctedLocal}
+                      hasDefaultVal={!!defaultValue}
+                      showWeekend={!!showWeekend}
+                    />
+                  </div>
+                )}
+              </div>
+            </SelectedTimeProvider>
+          </SelectedDaysProvider>
+        </MinMaxProvider>
       </CalenderProvider>
     </ViewProvider>
   )

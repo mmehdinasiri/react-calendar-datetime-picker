@@ -11,9 +11,7 @@ const viewsSelector = (
   currentView: string,
   local: string,
   showWeekend: boolean,
-  type?: string,
-  maxDate?: IDay,
-  minDate?: IDay
+  type?: string
 ) => {
   let view: ReactElement | unknown
   switch (currentView) {
@@ -30,8 +28,6 @@ const viewsSelector = (
           local={local}
           hasDefaultVal={hasDefaultVal}
           showWeekend={showWeekend}
-          maxDate={maxDate}
-          minDate={minDate}
         />
       )
       break
@@ -53,9 +49,7 @@ const Wrapper = ({
   withTime,
   local,
   hasDefaultVal,
-  showWeekend,
-  maxDate,
-  minDate
+  showWeekend
 }: IWrapper) => {
   const selectedDayState = useSelectedDayState()
   const selectedTime = useSelectedTimeState()
@@ -70,16 +64,8 @@ const Wrapper = ({
   }, [])
   return (
     <div className='dtWrapper' dir={local === 'fa' ? 'rtl' : 'ltr'}>
-      <Header local={local} maxDate={maxDate} minDate={minDate} />
-      {viewsSelector(
-        hasDefaultVal,
-        useViewState(),
-        local,
-        showWeekend,
-        type,
-        maxDate,
-        minDate
-      )}
+      <Header local={local} />
+      {viewsSelector(hasDefaultVal, useViewState(), local, showWeekend, type)}
       {withTime && type === 'single' && (
         <TimeView
           timeFor='single'
