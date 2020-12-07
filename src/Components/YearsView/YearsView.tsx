@@ -6,8 +6,10 @@ import {
   useCalenderActions,
   useCalenderState
 } from '../../store/CalenderProvider'
+import { useMinMaxState } from '../../store/MinMaxProvider'
 
 const years = ({ local }: IYearsProps) => {
+  const { minDate, maxDate } = useMinMaxState()
   const { YEARS_RANGE_START, YEARS_RANGE_END } = useLangOption(local)
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
@@ -24,9 +26,23 @@ const years = ({ local }: IYearsProps) => {
     changeCalender({ ...newDate })
     changeView(DAYS_VIEW)
   }
+  const fixedMinStartYear = () => {
+    let startYear = YEARS_RANGE_START
+    if (minDate) {
+      startYear = minDate.year
+    }
+    return startYear
+  }
+  const fixedMaxEndYear = () => {
+    let endYear = YEARS_RANGE_END
+    if (maxDate) {
+      endYear = maxDate.year
+    }
+    return endYear
+  }
   const yearsRange = () => {
     const yearsList = []
-    for (let i = YEARS_RANGE_START; i <= YEARS_RANGE_END; i++)
+    for (let i = fixedMinStartYear(); i <= fixedMaxEndYear(); i++)
       yearsList.push(
         <li key={i} className='yearList_year' onClick={() => changeMonth(i)}>
           {i}

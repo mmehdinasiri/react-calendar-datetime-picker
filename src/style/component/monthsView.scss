@@ -12,6 +12,10 @@
   text-align: center;
   box-sizing: border-box;
   cursor: pointer;
+  &.is-disabled{
+    opacity: 0.2;
+    pointer-events: none;
+  }
 }
 
 .monthList_month:nth-child(3n + 1) {

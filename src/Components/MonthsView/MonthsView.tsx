@@ -6,8 +6,10 @@ import {
   useCalenderActions,
   useCalenderState
 } from '../../store/CalenderProvider'
+import { useMinMaxState } from '../../store/MinMaxProvider'
 
 const MonthsView = ({ local }: IMonthsProps) => {
+  const { minDate, maxDate } = useMinMaxState()
   const { MONTHS } = useLangOption(local)
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
@@ -24,13 +26,28 @@ const MonthsView = ({ local }: IMonthsProps) => {
     changeCalender({ ...newDate })
     changeView(DAYS_VIEW)
   }
+  const isDisabled = (index: number) => {
+    if (minDate) {
+      if (minDate.year === year && minDate.month > index) {
+        return true
+      }
+    }
+    if (maxDate) {
+      if (maxDate.year === year && maxDate.month < index) {
+        return true
+      }
+    }
+    return false
+  }
   return (
     <div>
       <ul className={`monthList ${local === 'fa' ? 'is-rtl' : ''}`}>
         {MONTHS.map((month: string, index: number) => (
           <div
             key={index}
-            className='monthList_month'
+            className={`monthList_month ${
+              isDisabled(index) ? 'is-disabled' : ''
+            }`}
             onClick={() => changeMonth(index)}
           >
             {month}

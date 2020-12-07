@@ -3,12 +3,12 @@ import {
   useCalenderActions,
   useCalenderState
 } from '../../store/CalenderProvider'
+import { useMinMaxState } from '../../store/MinMaxProvider'
 import { useViewState, useViewActions } from '../../store/ViewProvider'
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useLangOption } from '../../hooks/useLangOption'
 import { ReactComponent as Next } from '../../Icons/next.svg'
 import { ReactComponent as Back } from '../../Icons/back.svg'
-import { useMinMaxState } from '../../store/MinMaxProvider'
 
 const Header = ({ local }: IHeaderProps) => {
   const { minDate, maxDate } = useMinMaxState()
