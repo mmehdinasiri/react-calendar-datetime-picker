@@ -20,6 +20,16 @@ import 'react-datetime-picker/dist/index.css'
 
 const App = () => {
   const [date, setDate] = useState()
+  const maxDate = {
+    year: 2012,
+    month: 6,
+    day: 23
+  }
+  const minDate = {
+    year: 2012,
+    month: 5,
+    day: 2
+  }
   const handleCalendarClose = () => console.log('Calendar closed')
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
@@ -33,6 +43,8 @@ const App = () => {
         clearBtn
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
+        maxDate={maxDate}
+        minDate={minDate}
         // isDisabled
       />
   )
@@ -40,8 +52,8 @@ const App = () => {
 ```
 ### TODO
 
-- [ ] max date
-- [ ] min date
+- [x] max date
+- [x] min date
 - [ ] check init value and min max (max must be greater than min)
 - [ ] fix header change view form months to years
 - [ ] Portal version ( search portal in https://reactdatepicker.com/)
