@@ -96,7 +96,7 @@ const App = () => {
   }
   const minDate = {
     year: 2008,
-    month: 3,
+    month: 1,
     day: 5
   }
   const handleCalendarClose = () => console.log('Calendar closed')

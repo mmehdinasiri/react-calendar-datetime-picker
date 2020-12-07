@@ -3,7 +3,7 @@
   overflow: hidden;
   padding: 0;
   text-align: center;
-  .daysList_day {
+  .daysList-day {
     width: rem(calc(340px / 7));
     height: rem(calc(340px / 7));
     line-height: rem(calc(340px / 7));
@@ -13,56 +13,61 @@
     cursor: pointer;
   }
 
-  .daysList_day:nth-child(7n + 1) {
+  .daysList-day:nth-child(7n + 1) {
     clear: left;
   }
-  .is_today {
+  .is-today {
     border: rem(2px) solid green;
   }
-  .is_disabled {
+  .is-disabled {
     pointer-events: none;
     background-color: #aaa;
     opacity: 0.7;
   }
+  .is-minMaxDisabled {
+    pointer-events: none;
+    background-color: #ccc;
+    opacity: 0.3;
+  }
 
-  .is_selected_day {
+  .is-selected-day {
     background-color: yellow;
   }
-  .is_selected_day_from {
+  .is-selected-day-from {
     background-color: cyan;
     border-top-left-radius: rem(50%);
     border-bottom-left-radius: rem(50%);
   }
-  .is_selected_day_to {
+  .is-selected-day-to {
     background-color: yellowgreen;
     border-top-right-radius: rem(50%);
     border-bottom-right-radius: rem(50%);
   }
-  .is_selected_day_range {
+  .is-selected-day-range {
     background-color: yellow;
   }
-  .pointer {
+  .is-pointer {
     cursor: pointer;
   }
-  .is_weekends {
+  .is-weekends {
     color: red;
   }
 }
 .is-rtl.daysList {
-  .daysList_day {
+  .daysList-day {
     float: right;
   }
-  .daysList_day:nth-child(7n + 1) {
+  .daysList-day:nth-child(7n + 1) {
     clear: right;
   }
-  .is_selected_day_from {
+  .is-selected-day-from {
     background-color: cyan;
     border-top-left-radius: rem(0);
     border-bottom-left-radius: rem(0);
     border-top-right-radius: rem(50%);
     border-bottom-right-radius: rem(50%);
   }
-  .is_selected_day_to {
+  .is-selected-day-to {
     background-color: yellowgreen;
     border-top-right-radius: rem(0);
     border-bottom-right-radius: rem(0);

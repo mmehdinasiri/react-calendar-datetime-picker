@@ -15,16 +15,10 @@ import {
   useSelectedDayActions,
   useSelectedDayState
 } from '../../store/SelectedDaysProvider'
+import { useMinMaxState } from '../../store/MinMaxProvider'
 
-const DaysView = ({
-  type,
-  local,
-  hasDefaultVal,
-  showWeekend,
-  maxDate,
-  minDate
-}: IDaysProps) => {
-  console.log(maxDate, minDate)
+const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
+  const { minDate, maxDate } = useMinMaxState()
   const { today, getDay, WEEK_DAYS } = useLangOption(local)
   const todayFullDay = `${today.year}${addZero(today.month)}${addZero(
     today.day
@@ -190,13 +184,13 @@ const DaysView = ({
   const checkClass = (day: any, index: number) => {
     let classes = ''
     if (day.date.fullDay === todayFullDay) {
-      classes += ' is_today'
+      classes += ' is-today'
     }
     if (
       type === 'single' &&
       day.date.fullDay === (selectedDayState as IDay)?.fullDay
     ) {
-      classes += ' is_selected_day'
+      classes += ' is-selected-day'
     }
 
     if (
@@ -204,14 +198,14 @@ const DaysView = ({
       (selectedDayState as IRange).from &&
       day.date.fullDay === (selectedDayState as IRange).from?.fullDay
     ) {
-      classes += ' is_selected_day_from'
+      classes += ' is-selected-day-from'
     }
     if (
       type === 'range' &&
       (selectedDayState as IRange)?.to &&
       day.date.fullDay === (selectedDayState as IRange).to?.fullDay
     ) {
-      classes += ' is_selected_day_to'
+      classes += ' is-selected-day-to'
     }
     if (
       type === 'range' &&
@@ -219,7 +213,7 @@ const DaysView = ({
       fromTimeStamp < day.timeStamp &&
       day.timeStamp < toTimeStamp
     ) {
-      classes += ' is_selected_day_range'
+      classes += ' is-selected-day-range'
     }
     if (
       type === 'multi' &&
@@ -227,7 +221,7 @@ const DaysView = ({
         (item) => item.fullDay === day.date.fullDay
       )
     ) {
-      classes += ' is_selected_day_range'
+      classes += ' is-selected-day-range'
     }
     if (showWeekend) {
       if (local === 'fa' && (index + daysForPreviousMonth.length) % 7 === 6) {
@@ -239,7 +233,22 @@ const DaysView = ({
         classes += ' is_weekends'
       }
     }
-
+    if (
+      minDate &&
+      minDate.year === day.date.year &&
+      minDate.month === day.date.month &&
+      minDate.day >= day.date.day
+    ) {
+      classes += ' is-minMaxDisabled'
+    }
+    if (
+      maxDate &&
+      maxDate.year === day.date.year &&
+      maxDate.month === day.date.month &&
+      maxDate.day <= day.date.day
+    ) {
+      classes += ' is-minMaxDisabled'
+    }
     return classes
   }
   const daysForCurrentMonth = useMemo(() => {
@@ -255,20 +264,20 @@ const DaysView = ({
   return (
     <ul className={`daysList ${local === 'fa' ? 'is-rtl' : ''}`}>
       {WEEK_DAYS.map((day: any) => (
-        <li key={day.name} className='daysList_day'>
+        <li key={day.name} className='daysList-day'>
           {day.short}
         </li>
       ))}
       {daysForPreviousMonth.length < 7 &&
         daysForPreviousMonth.map((day) => (
-          <li key={day.dayOfMonth} className='daysList_day is_disabled'>
+          <li key={day.dayOfMonth} className='daysList-day is-disabled'>
             {day.dayOfMonth}
           </li>
         ))}
       {daysForCurrentMonth.map((day, index) => (
         <li
           key={day.dayOfMonth}
-          className={`daysList_day pointer ${checkClass(day, index)}`}
+          className={`daysList-day is-pointer ${checkClass(day, index)}`}
           onClick={() => {
             handelChangeDay(day.date)
           }}
@@ -278,7 +287,7 @@ const DaysView = ({
       ))}
       {daysForNextMonth.length < 7 &&
         daysForNextMonth.map((day) => (
-          <li key={day.dayOfMonth} className='daysList_day is_disabled'>
+          <li key={day.dayOfMonth} className='daysList-day is-disabled'>
             {day.dayOfMonth}
           </li>
         ))}
