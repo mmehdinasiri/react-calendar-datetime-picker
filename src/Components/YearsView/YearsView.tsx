@@ -14,8 +14,18 @@ const years = ({ local }: IYearsProps) => {
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
   const calenderState = useCalenderState()
-  const { month, day, hours, minutes } = calenderState
-  const changeMonth = (newYear: number) => {
+  let { month, day, hours, minutes } = calenderState
+  const changeYear = (newYear: number) => {
+    if (minDate) {
+      while (minDate.year === newYear && minDate.month > month) {
+        month++
+      }
+    }
+    if (maxDate) {
+      while (maxDate.year === newYear && month > maxDate.month) {
+        month--
+      }
+    }
     const newDate = {
       year: newYear,
       month: month,
@@ -44,7 +54,7 @@ const years = ({ local }: IYearsProps) => {
     const yearsList = []
     for (let i = fixedMinStartYear(); i <= fixedMaxEndYear(); i++)
       yearsList.push(
-        <li key={i} className='yearList_year' onClick={() => changeMonth(i)}>
+        <li key={i} className='yearList_year' onClick={() => changeYear(i)}>
           {i}
         </li>
       )
