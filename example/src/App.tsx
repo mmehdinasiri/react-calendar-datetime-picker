@@ -17,8 +17,8 @@ const App = () => {
   // const [dateFa, setDateFa] = useState()
   // const [dateEn, setDateEn] = useState({ year: 1398, month: 8, day: 1 })
   // const [dateEn, setDateEn] = useState({
-  //   from: { year: 2000, month: 5, day: 2 },
-  //   to: { year: 2000, month: 5, day: 25 }
+  //   from: { year: 2012, month: 5, day: 2 },
+  //   to: { year: 2012, month: 5, day: 23 }
   // })
   // const [dateEn, setDateEn] = useState({
   //   from: { year: 2008, month: 8, day: 2, minutes: 33 },
@@ -32,29 +32,29 @@ const App = () => {
   //   from: null,
   //   to: null
   // })
-  // const [dateEn, setDateEn] = useState([
-  //   {
-  //     year: 2000,
-  //     month: 5,
-  //     day: 25,
-  //     hours: 18,
-  //     minutes: 11
-  //   },
-  //   {
-  //     year: 2000,
-  //     month: 5,
-  //     day: 1,
-  //     hours: 18,
-  //     minutes: 11
-  //   },
-  //   {
-  //     year: 2000,
-  //     month: 6,
-  //     day: 3,
-  //     hours: 18,
-  //     minutes: 11
-  //   }
-  // ])
+  const [dateEn, setDateEn] = useState([
+    {
+      year: 2012,
+      month: 5,
+      day: 29,
+      hours: 18,
+      minutes: 11
+    },
+    {
+      year: 2012,
+      month: 5,
+      day: 2,
+      hours: 18,
+      minutes: 11
+    },
+    {
+      year: 2012,
+      month: 6,
+      day: 3,
+      hours: 18,
+      minutes: 11
+    }
+  ])
   // const [dateFa, setDateFa] = useState([
   //   {
   //     year: 1399,
@@ -84,20 +84,20 @@ const App = () => {
   //   minutes: 15
   // })
   // const [date, setDate] = useState()
-  const [dateEn, setDateEn] = useState({
-    year: 2010,
-    month: 3,
-    day: 23
-  })
+  // const [dateEn, setDateEn] = useState({
+  //   year: 2010,
+  //  month: 3,
+  // 23
+  // })
   const maxDate = {
     year: 2012,
-    month: 5,
+    month: 6,
     day: 23
   }
   const minDate = {
-    year: 2008,
-    month: 1,
-    day: 5
+    year: 2012,
+    month: 5,
+    day: 2
   }
   const handleCalendarClose = () => console.log('Calendar closed')
   const handleCalendarOpen = () => console.log('Calendar opened')
@@ -107,7 +107,7 @@ const App = () => {
       <DtPicker
         onChange={setDateEn}
         defaultValue={dateEn}
-        type='single'
+        type='multi'
         local='en'
         withTim
         showWeekend

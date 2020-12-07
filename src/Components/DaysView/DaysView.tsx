@@ -237,7 +237,7 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
       minDate &&
       minDate.year === day.date.year &&
       minDate.month === day.date.month &&
-      minDate.day >= day.date.day
+      minDate.day > day.date.day
     ) {
       classes += ' is-minMaxDisabled'
     }
@@ -245,7 +245,7 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
       maxDate &&
       maxDate.year === day.date.year &&
       maxDate.month === day.date.month &&
-      maxDate.day <= day.date.day
+      maxDate.day < day.date.day
     ) {
       classes += ' is-minMaxDisabled'
     }
