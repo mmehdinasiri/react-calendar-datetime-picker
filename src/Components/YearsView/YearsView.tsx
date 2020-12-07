@@ -16,11 +16,13 @@ const years = ({ local }: IYearsProps) => {
   const calenderState = useCalenderState()
   let { month, day, hours, minutes } = calenderState
   const changeYear = (newYear: number) => {
+    // correct month after we changing year if we have min or date
     if (minDate) {
       while (minDate.year === newYear && minDate.month > month) {
         month++
       }
     }
+    // correct month after we changing year if we have min or date
     if (maxDate) {
       while (maxDate.year === newYear && month > maxDate.month) {
         month--
