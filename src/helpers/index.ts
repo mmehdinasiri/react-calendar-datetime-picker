@@ -103,8 +103,8 @@ export const compareDateEN = (date1: IDay, date2: IDay) => {
   return 0
 }
 export const compareDateFA = (date1: IDay, date2: IDay) => {
-  const fixDate1 = new persianDate([date1.year, date1.month, date1.day])
-  const fixDate2 = new persianDate([date2.year, date2.month, date2.day])
+  const fixDate1 = new persianDate([date1.year, date1.month + 1, date1.day])
+  const fixDate2 = new persianDate([date2.year, date2.month + 1, date2.day])
   if (fixDate1.diff(fixDate2) > 0) {
     return 1
   } else if (fixDate1.diff(fixDate2) < 0) {
@@ -192,7 +192,8 @@ export const handelInitialValues = (
   } else {
     if (maxDate) {
       today = new Date(maxDate.year, maxDate.month, maxDate.day)
-      todayP = new persianDate(today).State.persianAstro
+      todayP = new persianDate([maxDate.year, maxDate.month, maxDate.day]).State
+        .persianAstro
     }
   }
 
