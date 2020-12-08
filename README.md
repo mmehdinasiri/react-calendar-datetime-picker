@@ -41,6 +41,7 @@ const App = () => {
         withTim
         showWeekend
         clearBtn
+        todayBtn //if min or max date used todayBtn will shows just when it's between min and max
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
         maxDate={maxDate}
@@ -57,7 +58,7 @@ const App = () => {
 - [ ] check init value and min max (max must be greater than min)
 - [ ] fix header change view form months to years
 - [ ] Portal version ( search portal in https://reactdatepicker.com/)
-- [ ] add today button
+- [x] add today button
 - [ ] add auto close form calender without time
 - [ ] remove disabled date in range date
 - [ ] write test
