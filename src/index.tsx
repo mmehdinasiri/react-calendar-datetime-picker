@@ -17,6 +17,7 @@ export const DtPicker = ({
   local,
   showWeekend,
   clearBtn,
+  todayBtn,
   onCalenderHide,
   onCalenderShow,
   isDisabled,
@@ -76,6 +77,7 @@ export const DtPicker = ({
                       local={correctedLocal}
                       hasDefaultVal={!!defaultValue}
                       showWeekend={!!showWeekend}
+                      todayBtn={!!todayBtn}
                     />
                   </div>
                 )}

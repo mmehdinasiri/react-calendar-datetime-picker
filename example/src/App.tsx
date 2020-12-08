@@ -11,7 +11,7 @@ const App = () => {
   // const day = new Date(2009, 11, 1)
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
-  // const [dateEn, setDateEn] = useState()
+  const [dateEn, setDateEn] = useState()
   // const [dateEn2, setDateEn2] = useState()
   // const [dateEn3, setDateEn3] = useState()
   // const [dateFa, setDateFa] = useState()
@@ -32,29 +32,29 @@ const App = () => {
   //   from: null,
   //   to: null
   // })
-  const [dateEn, setDateEn] = useState([
-    {
-      year: 2012,
-      month: 5,
-      day: 29,
-      hours: 18,
-      minutes: 11
-    },
-    {
-      year: 2012,
-      month: 5,
-      day: 2,
-      hours: 18,
-      minutes: 11
-    },
-    {
-      year: 2012,
-      month: 6,
-      day: 3,
-      hours: 18,
-      minutes: 11
-    }
-  ])
+  // const [dateEn, setDateEn] = useState([
+  //   {
+  //     year: 2012,
+  //     month: 5,
+  //     day: 29,
+  //     hours: 18,
+  //     minutes: 11
+  //   },
+  //   {
+  //     year: 2012,
+  //     month: 5,
+  //     day: 2,
+  //     hours: 18,
+  //     minutes: 11
+  //   },
+  //   {
+  //     year: 2012,
+  //     month: 6,
+  //     day: 3,
+  //     hours: 18,
+  //     minutes: 11
+  //   }
+  // ])
   // const [dateFa, setDateFa] = useState([
   //   {
   //     year: 1399,
@@ -89,16 +89,26 @@ const App = () => {
   //  month: 3,
   // 23
   // })
-  const maxDate = {
-    year: 2012,
-    month: 6,
-    day: 23
-  }
-  const minDate = {
-    year: 2012,
-    month: 5,
-    day: 2
-  }
+  // const maxDate = {
+  //   year: 2012,
+  //   month: 6,
+  //   day: 23
+  // }
+  // const minDate = {
+  //   year: 2012,
+  //   month: 5,
+  //   day: 2
+  // }
+  // const maxDate = {
+  //   year: 1399,
+  //   month: 6,
+  //   day: 23
+  // }
+  // const minDate = {
+  //   year: 1396,
+  //   month: 5,
+  //   day: 2
+  // }
   const handleCalendarClose = () => console.log('Calendar closed')
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
@@ -107,15 +117,16 @@ const App = () => {
       <DtPicker
         onChange={setDateEn}
         defaultValue={dateEn}
-        type='multi'
-        local='en'
-        withTim
+        type='single'
+        local='fa'
+        withTime
         showWeekend
         clearBtn
+        todayBtn //if min or max date used todayBtn will shows just when it's between min and max
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
-        maxDate={maxDate}
-        minDate={minDate}
+        // maxDate={maxDate}
+        // minDate={minDate}
         // isDisabled
       />
       {JSON.stringify(dateEn, null, 4)}
@@ -154,20 +165,6 @@ const App = () => {
       />
       {JSON.stringify(dateFa, null, 4)} */}
       {/* <DtPicker onChange={setDate} defaultValue={date} /> */}
-      {/* <div>
-        {date.from && (
-          <h1>{`${date.from.getFullYear()} / ${
-            date.from.getMonth() + 1
-          } / ${date.from.getDate()} - ${date.from.getHours()} : ${date.from.getMinutes()}`}</h1>
-        )}
-      </div>
-      <div>
-        {date.to && (
-          <h1>{`${date.to.getFullYear()} / ${
-            date.to.getMonth() + 1
-          } / ${date.to.getDate()} - ${date.to.getHours()} : ${date.to.getMinutes()}`}</h1>
-        )}
-      </div> */}
     </div>
   )
 }

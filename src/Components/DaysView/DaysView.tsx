@@ -19,10 +19,10 @@ import { useMinMaxState } from '../../store/MinMaxProvider'
 
 const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
   const { minDate, maxDate } = useMinMaxState()
-  const { today, getDay, WEEK_DAYS } = useLangOption(local)
-  const todayFullDay = `${today.year}${addZero(today.month)}${addZero(
-    today.day
-  )}`
+  const { todayObject, getDay, WEEK_DAYS } = useLangOption(local)
+  const todayFullDay = `${todayObject().year}${addZero(
+    todayObject().month
+  )}${addZero(todayObject().day)}`
   const calenderState = useCalenderState()
   const year = calenderState.year
   const month = calenderState.month

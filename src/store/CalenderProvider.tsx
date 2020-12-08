@@ -5,7 +5,6 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
-// import { todayObject } from '../Helpers'
 
 const CalenderContext = createContext({} as IDay)
 const CalenderContextSetState = createContext(

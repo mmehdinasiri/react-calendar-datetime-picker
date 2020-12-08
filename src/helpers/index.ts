@@ -52,17 +52,17 @@ export const getWeekday = (number: number, local: string) => {
   }
 }
 
-export const todayObject = () => {
-  const todayDate = new Date()
-  const today = {
-    year: todayDate.getFullYear(),
-    month: todayDate.getMonth(),
-    day: todayDate.getDate(),
-    hours: todayDate.getHours(),
-    minutes: todayDate.getMinutes()
-  }
-  return today
-}
+// export const todayObject = () => {
+//   const todayDate = new Date()
+//   const today = {
+//     year: todayDate.getFullYear(),
+//     month: todayDate.getMonth(),
+//     day: todayDate.getDate(),
+//     hours: todayDate.getHours(),
+//     minutes: todayDate.getMinutes()
+//   }
+//   return today
+// }
 
 export const getPreviousSundayDay = (date: IDay, local: string) => {
   const { getDay, getDayOfMonth, today, setDayOfMonth } = useLangOption(local)
@@ -256,6 +256,7 @@ export const handelInitialValues = (
   }
   return { initCalender, initTime }
 }
+
 export const mergeProviders = (
   onChange: (date: any) => void,
   type: string,
@@ -305,4 +306,22 @@ export const addZero = (number: number) => {
   if (number < 10) {
     return `0${number}`
   } else return number
+}
+
+export const isDayBetween = (
+  min: IDay,
+  day: IDay,
+  max: IDay,
+  local: string
+) => {
+  const selectCompar = {
+    en: compareDateEN,
+    fa: compareDateFA
+  }
+  if (
+    selectCompar[local](min, day) === 1 &&
+    selectCompar[local](max, day) === 2
+  )
+    return false
+  return true
 }
