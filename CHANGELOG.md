@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.1] - 12/8/2020
-
+## [1.0.2] - 12/9/2020
 ### Added
-
+- Added today button
+### Added
 - Added min and max date to limit selectable date
 - Added disable option to disable input
