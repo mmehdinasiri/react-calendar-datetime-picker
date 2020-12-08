@@ -58,8 +58,12 @@ export const LOCAL_CONSTANT = {
       return pDate.State.persianAstro
     },
     todayObject: () => {
-      const pDate = new persianDate()
-      return pDate.State.persianAstro
+      const pDate = new persianDate().State.persianAstro
+      return {
+        year: pDate.year,
+        month: pDate.month,
+        day: pDate.day
+      }
     },
     getDayOfMonth: (date: IDay) => {
       return new persianDate([date.year, date.month + 1, date.day]).date()

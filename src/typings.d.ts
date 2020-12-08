@@ -73,6 +73,7 @@ interface IWrapper {
   local: string
   hasDefaultVal: boolean
   showWeekend: boolean
+  todayBtn: boolean
 }
 interface IDtPickerProps {
   defaultValue?: IDay | IRange
@@ -84,6 +85,7 @@ interface IDtPickerProps {
   local?: string
   showWeekend?: boolean
   clearBtn?: boolean
+  todayBtn?: boolean
   isDisabled?: boolean
   maxDate?: IDay
   minDate?: IDay
@@ -116,4 +118,8 @@ interface IDaysProps {
   local: string
   type?: string
   showWeekend: boolean
+}
+interface ITodayBtn {
+  local: string
+  todayBtn: boolean
 }
