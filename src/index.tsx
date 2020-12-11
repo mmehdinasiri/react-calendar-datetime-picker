@@ -17,6 +17,7 @@ export const DtPicker = ({
   local,
   showWeekend,
   clearBtn,
+  isRequired,
   todayBtn,
   onCalenderHide,
   onCalenderShow,
@@ -74,6 +75,7 @@ export const DtPicker = ({
                   onChange={onChange}
                   withTime={withTime}
                   isDisabled={isDisabled}
+                  isRequired={!!isRequired}
                 />
                 {isComponentVisible && (
                   <div ref={ref} className='calender-modal'>

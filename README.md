@@ -41,6 +41,7 @@ const App = () => {
         withTim
         showWeekend
         clearBtn
+        isRequired
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
         maxDate={maxDate}
@@ -56,8 +57,11 @@ const App = () => {
 - [x] min date
 - [x] fix header change view form months to years
 - [x] add today button
-- [x] check init value and default, min, max,from and to
+- [x] check init value and default, min, max, from and to
+- [ ] add isRequired api
 - [ ] add onChange api
+- [ ] add placeholders
+- [ ] add classes options for different component
 - [ ] add auto close form calender without time
 - [ ] add list of disabled date feature
 - [ ] remove disabled date in range date
