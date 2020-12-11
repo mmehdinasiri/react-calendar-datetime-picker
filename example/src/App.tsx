@@ -105,11 +105,6 @@ const App = () => {
       year: 2015,
       month: 6,
       day: 23
-    },
-    to: {
-      year: 2015,
-      month: 6,
-      day: 23
     }
   })
   const maxDate = {

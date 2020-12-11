@@ -57,6 +57,7 @@ const App = () => {
 - [x] fix header change view form months to years
 - [x] add today button
 - [x] check init value and default, min, max,from and to
+- [ ] add onChange api
 - [ ] add auto close form calender without time
 - [ ] add list of disabled date feature
 - [ ] remove disabled date in range date
