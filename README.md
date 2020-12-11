@@ -30,6 +30,10 @@ const App = () => {
     month: 5,
     day: 2
   }
+  const handleCalendarChange = (newDate) => {
+    console.log('Calendar changed')
+    setDate(setDate)
+  }
   const handleCalendarClose = () => console.log('Calendar closed')
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
@@ -41,7 +45,8 @@ const App = () => {
         withTim
         showWeekend
         clearBtn
-        todayBtn //if min or max date used todayBtn will shows just when it's between min and max
+        isRequired
+        todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
         maxDate={maxDate}
@@ -55,11 +60,15 @@ const App = () => {
 
 - [x] max date
 - [x] min date
-- [ ] check init value and min max (max must be greater than min)
-- [ ] fix header change view form months to years
-- [ ] Portal version ( search portal in https://reactdatepicker.com/)
+- [x] fix header change view form months to years
 - [x] add today button
+- [x] check init value and default, min, max, from and to
+- [x] add isRequired api
+- [x] fix onChange api
+- [ ] add placeholders and labels
+- [ ] add classes options for different component
 - [ ] add auto close form calender without time
+- [ ] add list of disabled date feature
 - [ ] remove disabled date in range date
 - [ ] write test
 - [ ] add styles

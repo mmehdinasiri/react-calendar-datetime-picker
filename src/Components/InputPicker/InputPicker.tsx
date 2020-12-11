@@ -1,4 +1,4 @@
-import React, { forwardRef, RefObject, useEffect } from 'react'
+import React, { forwardRef, RefObject } from 'react'
 import { genFullIDay, mergeProviders } from '../../Helpers'
 import {
   useSelectedDayActions,
@@ -16,7 +16,8 @@ const InputPicker = forwardRef(
       clearBtn,
       withTime,
       onChange,
-      isDisabled
+      isDisabled,
+      isRequired
     }: IInputPicker,
     ref: RefObject<HTMLInputElement>
   ) => {
@@ -32,28 +33,40 @@ const InputPicker = forwardRef(
         return genFullIDay(selectedDayState as IDay)
       }
       if (
+        type === 'range' &&
         (selectedDayState as IRange).from &&
         (selectedDayState as IRange).to
       ) {
         return `from:${genFullIDay(
           (selectedDayState as IRange).from
         )} to:${genFullIDay((selectedDayState as IRange).to)}`
+      } else if (type === 'multi') {
+        const listDate = (selectedDayState as IDay[]).map((day) => {
+          return genFullIDay(day)
+        })
+        return listDate
       }
       return ''
     }
     const clearValue = () => {
       if (type === 'single') {
         removeSelectedDay()
+        mergeProviders(onChange, type, null, selectedTime, withTime)
       } else if (type === 'range') {
         changeSelectedDayRange('from', null)
         changeSelectedDayRange('to', null)
+        mergeProviders(
+          onChange,
+          type,
+          { from: null, to: null },
+          selectedTime,
+          withTime
+        )
       } else if (type === 'multi') {
         removeAllSelectedDayMulti()
+        mergeProviders(onChange, type, [], selectedTime, withTime)
       }
     }
-    useEffect(() => {
-      mergeProviders(onChange, type, selectedDayState, selectedTime, withTime)
-    }, [selectedDayState])
 
     return (
       <div className='input-picker'>
@@ -65,6 +78,7 @@ const InputPicker = forwardRef(
           value={correctValue()}
           onClick={() => handelComponentVisible()}
           disabled={isDisabled}
+          required={isRequired}
         />
         {clearBtn && (
           <a className='input-picker--clearBtn' onClick={() => clearValue()}>

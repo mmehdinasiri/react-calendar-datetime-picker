@@ -1,5 +1,6 @@
 import React, { ReactElement, useEffect } from 'react'
 import { useViewActions, useViewState } from '../../store/ViewProvider'
+import useDidMountEffect from '../../hooks/useDidMountEffect'
 import {
   Header,
   YearsView,
@@ -62,9 +63,10 @@ const Wrapper = ({
   const selectedDayState = useSelectedDayState()
   const selectedTime = useSelectedTimeState()
   const { changeView } = useViewActions()
-  useEffect(() => {
+  useDidMountEffect(() => {
     mergeProviders(onChange, type, selectedDayState, selectedTime, withTime)
   }, [selectedDayState, selectedTime])
+
   useEffect(() => {
     return () => {
       changeView(DAYS_VIEW)

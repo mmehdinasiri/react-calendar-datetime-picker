@@ -11,7 +11,7 @@ const App = () => {
   // const day = new Date(2009, 11, 1)
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
-  const [dateEn, setDateEn] = useState()
+  // const [dateEn, setDateEn] = useState()
   // const [dateEn2, setDateEn2] = useState()
   // const [dateEn3, setDateEn3] = useState()
   // const [dateFa, setDateFa] = useState()
@@ -99,34 +99,41 @@ const App = () => {
   //   month: 5,
   //   day: 2
   // }
-  // const maxDate = {
-  //   year: 1399,
-  //   month: 6,
-  //   day: 23
-  // }
-  // const minDate = {
-  //   year: 1396,
-  //   month: 5,
-  //   day: 2
-  // }
+
+  const [dateEn, setDateEn] = useState()
+  const maxDate = {
+    year: 2016,
+    month: 6,
+    day: 23
+  }
+  const minDate = {
+    year: 2012,
+    month: 5,
+    day: 2
+  }
+  const handleCalendarChange = (newDate: any) => {
+    console.log('Calendar changed')
+    setDateEn(newDate)
+  }
   const handleCalendarClose = () => console.log('Calendar closed')
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
     <div style={{ margin: 'auto', width: '720px' }}>
       <p>single en with time</p>
       <DtPicker
-        onChange={setDateEn}
+        onChange={handleCalendarChange}
         defaultValue={dateEn}
         type='single'
-        local='fa'
+        local='en'
         withTime
         showWeekend
         clearBtn
-        todayBtn //if min or max date used todayBtn will shows just when it's between min and max
+        isRequired
+        todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
-        // maxDate={maxDate}
-        // minDate={minDate}
+        maxDate={maxDate}
+        minDate={minDate}
         // isDisabled
       />
       {JSON.stringify(dateEn, null, 4)}

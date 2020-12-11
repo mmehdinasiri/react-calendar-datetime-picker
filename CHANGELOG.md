@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.2] - 12/9/2020
-### Added
+## [1.0.3] - 12/12/2020
+- fix onChange api
+- add isRequired  
+- add function to check all initial values
+
+## [1.0.2] - 12/8/2020
 - Added today button
-### Added
+## [1.0.0] - 12/8/2020
 - Added min and max date to limit selectable date
 - Added disable option to disable input

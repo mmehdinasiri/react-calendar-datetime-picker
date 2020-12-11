@@ -45,7 +45,10 @@ const Header = ({ local }: IHeaderProps) => {
     changeCalender({ ...newDate })
   }
   const handelView = (view: string) => {
-    if (viewState === MONTHS_VIEW || viewState === YEARS_VIEW) {
+    if (
+      (view === MONTHS_VIEW && viewState === MONTHS_VIEW) ||
+      (view === YEARS_VIEW && viewState === YEARS_VIEW)
+    ) {
       changeView(DAYS_VIEW)
     } else {
       changeView(view)
