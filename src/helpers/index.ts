@@ -127,7 +127,6 @@ export const checkInputValues = (
     // eslint-disable-next-line no-throw-literal
     throw 'Max date must be greater than min date'
   }
-  console.log(defaultValue)
   if (
     (correctedType === 'single' &&
       defaultValue &&

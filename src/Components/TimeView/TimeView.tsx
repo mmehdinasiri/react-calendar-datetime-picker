@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-
+import React, { useState } from 'react'
+import useDidMountEffect from '../../hooks/useDidMountEffect'
 import { useSelectedTimeActions } from '../../store/SelectedTimeProvider'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { addZero } from '../../Helpers'
@@ -36,7 +36,7 @@ const TimeView = ({ timeFor, initHour, initMinutes }: ITimeViewProps) => {
       changeSelectedTime({ hours, minutes })
     }
   }
-  useEffect(() => {
+  useDidMountEffect(() => {
     handelChangeHours()
   }, [hours, minutes])
 

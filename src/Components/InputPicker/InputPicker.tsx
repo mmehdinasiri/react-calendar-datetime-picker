@@ -33,12 +33,18 @@ const InputPicker = forwardRef(
         return genFullIDay(selectedDayState as IDay)
       }
       if (
+        type === 'range' &&
         (selectedDayState as IRange).from &&
         (selectedDayState as IRange).to
       ) {
         return `from:${genFullIDay(
           (selectedDayState as IRange).from
         )} to:${genFullIDay((selectedDayState as IRange).to)}`
+      } else if (type === 'multi') {
+        const listDate = (selectedDayState as IDay[]).map((day) => {
+          return genFullIDay(day)
+        })
+        return listDate
       }
       return ''
     }
