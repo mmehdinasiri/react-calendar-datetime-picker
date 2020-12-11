@@ -127,6 +127,21 @@ export const checkInputValues = (
     // eslint-disable-next-line no-throw-literal
     throw 'Max date must be greater than min date'
   }
+  console.log(defaultValue)
+  if (
+    (correctedType === 'single' &&
+      defaultValue &&
+      !(
+        'year' in defaultValue &&
+        'month' in defaultValue &&
+        'day' in defaultValue
+      )) ||
+    defaultValue === 'null' ||
+    defaultValue === 'undefined'
+  ) {
+    // eslint-disable-next-line no-throw-literal
+    throw 'default date in single type must contain at least "year", "month", "day" or null'
+  }
   if (
     correctedType === 'range' &&
     (!('to' in defaultValue) || !('from' in defaultValue))

@@ -30,6 +30,10 @@ const App = () => {
     month: 5,
     day: 2
   }
+  const handleCalendarChange = (newDate) => {
+    console.log('Calendar changed')
+    setDate(setDate)
+  }
   const handleCalendarClose = () => console.log('Calendar closed')
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
@@ -58,7 +62,7 @@ const App = () => {
 - [x] fix header change view form months to years
 - [x] add today button
 - [x] check init value and default, min, max, from and to
-- [ ] add isRequired api
+- [x] add isRequired api
 - [ ] add onChange api
 - [ ] add placeholders
 - [ ] add classes options for different component

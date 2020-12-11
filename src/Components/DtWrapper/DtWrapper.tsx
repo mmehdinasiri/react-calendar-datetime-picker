@@ -65,6 +65,7 @@ const Wrapper = ({
   useEffect(() => {
     mergeProviders(onChange, type, selectedDayState, selectedTime, withTime)
   }, [selectedDayState, selectedTime])
+
   useEffect(() => {
     return () => {
       changeView(DAYS_VIEW)

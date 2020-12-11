@@ -100,13 +100,7 @@ const App = () => {
   //   day: 2
   // }
 
-  const [dateEn, setDateEn] = useState({
-    from: {
-      year: 2015,
-      month: 6,
-      day: 23
-    }
-  })
+  const [dateEn, setDateEn] = useState()
   const maxDate = {
     year: 2016,
     month: 6,
@@ -117,15 +111,19 @@ const App = () => {
     month: 5,
     day: 2
   }
+  const handleCalendarChange = (newDate: any) => {
+    console.log('Calendar changed')
+    setDateEn(newDate)
+  }
   const handleCalendarClose = () => console.log('Calendar closed')
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
     <div style={{ margin: 'auto', width: '720px' }}>
       <p>single en with time</p>
       <DtPicker
-        onChange={setDateEn}
+        onChange={handleCalendarChange}
         defaultValue={dateEn}
-        type='range'
+        type='single'
         local='en'
         withTime
         showWeekend
