@@ -118,7 +118,7 @@ const App = () => {
         onChange={setDateEn}
         defaultValue={dateEn}
         type='single'
-        local='fa'
+        local='en'
         withTime
         showWeekend
         clearBtn
