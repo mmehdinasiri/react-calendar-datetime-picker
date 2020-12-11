@@ -54,10 +54,9 @@ const App = () => {
 
 - [x] max date
 - [x] min date
-- [ ] check init value and min max (max must be greater than min)
 - [x] fix header change view form months to years
-- [ ] Portal version ( search portal in https://reactdatepicker.com/)
 - [x] add today button
+- [ ] check init value and min max (max must be greater than min)
 - [ ] add auto close form calender without time
 - [ ] remove disabled date in range date
 - [ ] write test
