@@ -123,7 +123,7 @@ const App = () => {
       <DtPicker
         onChange={handleCalendarChange}
         defaultValue={dateEn}
-        type='single'
+        type='multi'
         local='en'
         withTime
         showWeekend

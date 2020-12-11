@@ -144,19 +144,11 @@ export const checkInputValues = (
   }
   if (
     correctedType === 'range' &&
+    defaultValue &&
     (!('to' in defaultValue) || !('from' in defaultValue))
   ) {
     // eslint-disable-next-line no-throw-literal
     throw 'default date in range type must contain "from" and "To" object'
-  }
-  if (
-    correctedType === 'range' &&
-    defaultValue.to &&
-    defaultValue.from &&
-    selectCompar[local](defaultValue.to, defaultValue.from) === 2
-  ) {
-    // eslint-disable-next-line no-throw-literal
-    throw 'default "To" date must be greater or equal to default "from" date'
   }
 }
 
