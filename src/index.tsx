@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import './style/main.scss'
 import { DtWrapper, InputPicker } from './Components'
 import CalenderProvider from './store/CalenderProvider'
@@ -6,7 +6,7 @@ import ViewProvider from './store/ViewProvider'
 import SelectedDaysProvider from './store/SelectedDaysProvider'
 import SelectedTimeProvider from './store/SelectedTimeProvider'
 import MinMaxProvider from './store/MinMaxProvider'
-import { handelInitialValues } from './Helpers'
+import { checkInputValues, handelInitialValues } from './Helpers'
 import useComponentVisible from './hooks/useComponentVisible'
 
 export const DtPicker = ({
@@ -48,10 +48,17 @@ export const DtPicker = ({
     defaultValue,
     correctedType,
     correctedLocal,
-    maxDate,
-    minDate
+    maxDate
   )
-
+  useEffect(() => {
+    checkInputValues(
+      defaultValue,
+      correctedLocal,
+      correctedType,
+      maxDate,
+      minDate
+    )
+  }, [])
   return (
     <ViewProvider>
       <CalenderProvider initCalender={initCalender} type={correctedType}>

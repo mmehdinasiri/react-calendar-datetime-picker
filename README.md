@@ -56,8 +56,9 @@ const App = () => {
 - [x] min date
 - [x] fix header change view form months to years
 - [x] add today button
-- [ ] check init value and min max (max must be greater than min)
+- [x] check init value and default, min, max,from and to
 - [ ] add auto close form calender without time
+- [ ] add list of disabled date feature
 - [ ] remove disabled date in range date
 - [ ] write test
 - [ ] add styles

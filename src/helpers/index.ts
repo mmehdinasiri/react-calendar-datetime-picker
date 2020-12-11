@@ -112,8 +112,7 @@ export const compareDateFA = (date1: IDay, date2: IDay) => {
   }
   return 0
 }
-
-const isDefaultDateIsCorrectBaseOnMaxMinDate = (
+export const checkInputValues = (
   defaultValue: any,
   local: string,
   correctedType: string,
@@ -124,13 +123,28 @@ const isDefaultDateIsCorrectBaseOnMaxMinDate = (
     en: compareDateEN,
     fa: compareDateFA
   }
+  if (maxDate && minDate && selectCompar[local](maxDate, minDate) !== 1) {
+    // eslint-disable-next-line no-throw-literal
+    throw 'Max date must be greater than min date'
+  }
+  if (
+    correctedType === 'range' &&
+    selectCompar[local](defaultValue.to, defaultValue.from) === 2
+  ) {
+    // eslint-disable-next-line no-throw-literal
+    throw 'default "To" date must be greater or equal to default "from" date'
+  }
   if (maxDate) {
-    if (correctedType === 'single') {
+    if (correctedType === 'single' && defaultValue?.year) {
       if (selectCompar[local](maxDate, defaultValue) === 2) {
         // eslint-disable-next-line no-throw-literal
         throw 'Max date must be greater than default or selected date'
       }
-    } else if (correctedType === 'range') {
+    } else if (
+      correctedType === 'range' &&
+      defaultValue?.from &&
+      defaultValue?.to
+    ) {
       if (selectCompar[local](maxDate, defaultValue.to) === 2)
         // eslint-disable-next-line no-throw-literal
         throw 'Max date must be greater than default or selected to date'
@@ -138,19 +152,23 @@ const isDefaultDateIsCorrectBaseOnMaxMinDate = (
       const isThereAnyGreater = defaultValue.find(
         (date: IDay) => selectCompar[local](maxDate, date) === 2
       )
-      if (isThereAnyGreater) {
+      if (isThereAnyGreater && defaultValue?.length) {
         // eslint-disable-next-line no-throw-literal
         throw 'Max date must be greater than default or selected to date'
       }
     }
   }
   if (minDate) {
-    if (correctedType === 'single') {
+    if (correctedType === 'single' && defaultValue?.year) {
       if (selectCompar[local](minDate, defaultValue) === 1) {
         // eslint-disable-next-line no-throw-literal
         throw 'Default or selected date must be greater than min date'
       }
-    } else if (correctedType === 'range') {
+    } else if (
+      correctedType === 'range' &&
+      defaultValue?.from &&
+      defaultValue?.to
+    ) {
       if (selectCompar[local](minDate, defaultValue.from) === 1)
         // eslint-disable-next-line no-throw-literal
         throw 'Default or selected date must be greater than min date'
@@ -158,7 +176,7 @@ const isDefaultDateIsCorrectBaseOnMaxMinDate = (
       const isThereAnyGreater = defaultValue.find(
         (date: IDay) => selectCompar[local](minDate, date) === 1
       )
-      if (isThereAnyGreater) {
+      if (defaultValue?.length && isThereAnyGreater) {
         // eslint-disable-next-line no-throw-literal
         throw 'Default or selected date must be greater than min date'
       }
@@ -170,31 +188,17 @@ export const handelInitialValues = (
   defaultValue: any,
   correctedType: string,
   local: string,
-  maxDate?: IDay,
-  minDate?: IDay
+  maxDate?: IDay
 ) => {
   let initTime
   let initCalender
   let today = new Date()
   let todayP = new persianDate(today).State.persianAstro
-  if (
-    (correctedType === 'single' && defaultValue?.year) ||
-    (correctedType === 'range' && defaultValue?.from && defaultValue?.to) ||
-    (correctedType === 'multi' && defaultValue?.length)
-  ) {
-    isDefaultDateIsCorrectBaseOnMaxMinDate(
-      defaultValue,
-      local,
-      correctedType,
-      maxDate,
-      minDate
-    )
-  } else {
-    if (maxDate) {
-      today = new Date(maxDate.year, maxDate.month, maxDate.day)
-      todayP = new persianDate([maxDate.year, maxDate.month, maxDate.day]).State
-        .persianAstro
-    }
+
+  if (maxDate) {
+    today = new Date(maxDate.year, maxDate.month, maxDate.day)
+    todayP = new persianDate([maxDate.year, maxDate.month, maxDate.day]).State
+      .persianAstro
   }
 
   if (correctedType === 'single') {
