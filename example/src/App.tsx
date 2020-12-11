@@ -129,7 +129,7 @@ const App = () => {
         showWeekend
         clearBtn
         isRequired
-        todayBtn //if min or max date used todayBtn will shows just when it's between min and max
+        todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
         maxDate={maxDate}

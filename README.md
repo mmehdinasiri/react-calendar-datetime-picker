@@ -46,6 +46,7 @@ const App = () => {
         showWeekend
         clearBtn
         isRequired
+        todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
         maxDate={maxDate}
@@ -63,8 +64,8 @@ const App = () => {
 - [x] add today button
 - [x] check init value and default, min, max, from and to
 - [x] add isRequired api
-- [ ] add onChange api
-- [ ] add placeholders
+- [x] fix onChange api
+- [ ] add placeholders and labels
 - [ ] add classes options for different component
 - [ ] add auto close form calender without time
 - [ ] add list of disabled date feature

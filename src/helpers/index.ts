@@ -112,44 +112,6 @@ export const compareDateFA = (date1: IDay, date2: IDay) => {
   }
   return 0
 }
-export const checkInputValues = (
-  defaultValue: any,
-  local: string,
-  correctedType: string,
-  maxDate?: IDay,
-  minDate?: IDay
-) => {
-  const selectCompar = {
-    en: compareDateEN,
-    fa: compareDateFA
-  }
-  if (maxDate && minDate && selectCompar[local](maxDate, minDate) !== 1) {
-    // eslint-disable-next-line no-throw-literal
-    throw 'Max date must be greater than min date'
-  }
-  if (
-    (correctedType === 'single' &&
-      defaultValue &&
-      !(
-        'year' in defaultValue &&
-        'month' in defaultValue &&
-        'day' in defaultValue
-      )) ||
-    defaultValue === 'null' ||
-    defaultValue === 'undefined'
-  ) {
-    // eslint-disable-next-line no-throw-literal
-    throw 'default date in single type must contain at least "year", "month", "day" or null'
-  }
-  if (
-    correctedType === 'range' &&
-    defaultValue &&
-    (!('to' in defaultValue) || !('from' in defaultValue))
-  ) {
-    // eslint-disable-next-line no-throw-literal
-    throw 'default date in range type must contain "from" and "To" object'
-  }
-}
 
 export const handelInitialValues = (
   defaultValue: any,
@@ -295,4 +257,116 @@ export const isDayBetween = (
   )
     return false
   return true
+}
+
+// the worst function in this app
+export const checkInputValues = (
+  defaultValue: any,
+  correctedLocal: string,
+  correctedType: string,
+  maxDate?: IDay,
+  minDate?: IDay
+) => {
+  const selectCompar = {
+    en: compareDateEN,
+    fa: compareDateFA
+  }
+  if (!(correctedLocal === 'en' || correctedLocal === 'fa')) {
+    throw Error('Local must be "en" or "fa".')
+  }
+  if (
+    !(
+      correctedType === 'single' ||
+      correctedType === 'range' ||
+      correctedType === 'multi'
+    )
+  ) {
+    throw Error('Type must be "single" or "range" or "multi".')
+  }
+  if (
+    maxDate &&
+    minDate &&
+    selectCompar[correctedLocal](maxDate, minDate) !== 1
+  ) {
+    throw Error('Max date must be greater than min date.')
+  }
+  if (
+    (correctedType === 'single' &&
+      defaultValue &&
+      !(
+        'year' in defaultValue &&
+        'month' in defaultValue &&
+        'day' in defaultValue
+      )) ||
+    defaultValue === 'null' ||
+    defaultValue === 'undefined'
+  ) {
+    throw Error(
+      'Default date in single type must contain at least "year", "month", "day" or null.'
+    )
+  }
+  if (
+    correctedType === 'range' &&
+    defaultValue &&
+    (!('to' in defaultValue) || !('from' in defaultValue))
+  ) {
+    throw Error(
+      'Default date in range type must contain "from" and "To" object.'
+    )
+  }
+  if (
+    correctedType === 'range' &&
+    defaultValue &&
+    selectCompar[correctedLocal](defaultValue.to, defaultValue.from) === 2
+  ) {
+    throw Error('Default "To" date must be grater than default "from" date.')
+  }
+  if (correctedType === 'multi' && defaultValue) {
+    const isThereAnyWrongDate = defaultValue.find((date: any) => {
+      return !('year' in date) || !('month' in date) || !('day' in date)
+    })
+
+    if (isThereAnyWrongDate) {
+      throw Error('Default date in multi type must be a list of dates')
+    }
+  }
+
+  if (maxDate && defaultValue) {
+    if (correctedType === 'single') {
+      if (selectCompar[correctedLocal](maxDate, defaultValue) === 2) {
+        throw Error('Max date must be greater than default or selected date.')
+      }
+    } else if (correctedType === 'range' && defaultValue.to) {
+      if (selectCompar[correctedLocal](maxDate, defaultValue.to) === 2)
+        throw Error(
+          'Max date must be greater than default or selected to date.'
+        )
+    } else if (correctedType === 'multi' && defaultValue.length) {
+      const isThereAnyGreater = defaultValue.find(
+        (date: IDay) => selectCompar[correctedLocal](maxDate, date) === 2
+      )
+      if (isThereAnyGreater) {
+        throw Error(
+          'Max date must be greater than default or selected to date.'
+        )
+      }
+    }
+  }
+  if (minDate && defaultValue) {
+    if (correctedType === 'single') {
+      if (selectCompar[correctedLocal](minDate, defaultValue) === 1) {
+        throw Error('Default or selected date must be greater than min date.')
+      }
+    } else if (correctedType === 'range' && defaultValue.from) {
+      if (selectCompar[correctedLocal](minDate, defaultValue.from) === 1)
+        throw Error('Default or selected date must be greater than min date.')
+    } else if (correctedType === 'multi' && defaultValue.length) {
+      const isThereAnyGreater = defaultValue.find(
+        (date: IDay) => selectCompar[correctedLocal](minDate, date) === 1
+      )
+      if (isThereAnyGreater) {
+        throw Error('Default or selected date must be greater than min date.')
+      }
+    }
+  }
 }
