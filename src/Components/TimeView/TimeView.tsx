@@ -9,7 +9,8 @@ const TimeView = ({
   timeFor,
   initHour,
   initMinutes,
-  timeLabel
+  timeLabel,
+  timeClass
 }: ITimeViewProps) => {
   const today = new Date()
   const selectedDate = useSelectedDayState()
@@ -46,7 +47,7 @@ const TimeView = ({
   }, [hours, minutes])
 
   return (
-    <div dir='ltr'>
+    <div dir={`ltr ${timeClass}`}>
       <span>{timeLabel}</span>
       <div>
         <input

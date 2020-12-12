@@ -15,7 +15,8 @@ const Header = ({
   nextBtnLabel,
   previousBtnLabel,
   nextMonthBtnTitle,
-  previousMonthBtnTitle
+  previousMonthBtnTitle,
+  headerClass
 }: IHeaderProps) => {
   const { minDate, maxDate } = useMinMaxState()
   const { MONTHS, nextMonthBtnTL, previousMonthBtnTL } = useLangOption(local)
@@ -84,7 +85,7 @@ const Header = ({
   }
   useEffect(() => {})
   return (
-    <div className='header'>
+    <div className={`header ${headerClass}`}>
       <a
         className={`header--btn ${!isActiveBack() ? 'is-disabled' : ''}`}
         title={previousMonthBtnTitle || previousMonthBtnTL}

@@ -21,7 +21,9 @@ const InputPicker = forwardRef(
       isDisabled,
       isRequired,
       fromLabel,
-      toLabel
+      toLabel,
+      inputClass,
+      clearBtnClass
     }: IInputPicker,
     ref: RefObject<HTMLInputElement>
   ) => {
@@ -77,7 +79,7 @@ const InputPicker = forwardRef(
       <div className='input-picker'>
         <input
           ref={ref}
-          className='input-picker--input'
+          className={`input-picker--input ${inputClass}`}
           readOnly
           placeholder={placeholder || inputPlaceholder}
           value={correctValue()}
@@ -86,7 +88,10 @@ const InputPicker = forwardRef(
           required={isRequired}
         />
         {clearBtn && (
-          <a className='input-picker--clearBtn' onClick={() => clearValue()}>
+          <a
+            className={`input-picker--clearBtn ${clearBtnClass}`}
+            onClick={() => clearValue()}
+          >
             <Close />
           </a>
         )}

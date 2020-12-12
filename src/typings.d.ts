@@ -92,6 +92,14 @@ interface IDtPickerProps {
   clockLabel?: string
   nextMonthBtnTitle?: string
   previousMonthBtnTitle?: string
+  inputClass?: string
+  clearBtnClass?: string
+  calenderModalClass?: string
+  headerClass?: string
+  daysClass?: string
+  timeClass?: string
+  monthsClass?: string
+  yearsClass?: string
 }
 interface IWrapper {
   onChange: (date: any) => void
@@ -108,6 +116,11 @@ interface IWrapper {
   clockLabel?: string
   nextMonthBtnTitle?: string
   previousMonthBtnTitle?: string
+  headerClass?: string
+  daysClass?: string
+  timeClass?: string
+  monthsClass?: string
+  yearsClass?: string
 }
 interface IInputPicker {
   placeholder?: string
@@ -121,12 +134,15 @@ interface IInputPicker {
   isRequired?: boolean
   fromLabel?: string
   toLabel?: string
+  inputClass?: string
+  clearBtnClass?: string
 }
 interface ITimeViewProps {
   initHour: number | undefined
   initMinutes: number | undefined
   timeFor?: string
   timeLabel?: string
+  timeClass?: string
 }
 interface IHeaderProps {
   local: string
@@ -134,18 +150,22 @@ interface IHeaderProps {
   previousBtnLabel?: string
   nextMonthBtnTitle?: string
   previousMonthBtnTitle?: string
+  headerClass?: string
 }
 interface IYearsProps {
   local: string
+  yearsClass?: string
 }
 interface IMonthsProps {
   local: string
+  monthsClass?: string
 }
 interface IDaysProps {
   hasDefaultVal: boolean
   local: string
   type?: string
   showWeekend: boolean
+  daysClass?: string
 }
 interface ITodayBtn {
   local: string

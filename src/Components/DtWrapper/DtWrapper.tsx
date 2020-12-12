@@ -20,15 +20,18 @@ const viewsSelector = (
   currentView: string,
   local: string,
   showWeekend: boolean,
-  type?: string
+  type?: string,
+  daysClass?: string,
+  monthClass?: string,
+  yearClass?: string
 ) => {
   let view: ReactElement | unknown
   switch (currentView) {
     case YEARS_VIEW:
-      view = <YearsView local={local} />
+      view = <YearsView local={local} yearsClass={yearClass} />
       break
     case MONTHS_VIEW:
-      view = <MonthsView local={local} />
+      view = <MonthsView local={local} monthsClass={monthClass} />
       break
     case DAYS_VIEW:
       view = (
@@ -37,6 +40,7 @@ const viewsSelector = (
           local={local}
           hasDefaultVal={hasDefaultVal}
           showWeekend={showWeekend}
+          daysClass={daysClass}
         />
       )
       break
@@ -47,6 +51,7 @@ const viewsSelector = (
           local={local}
           hasDefaultVal={hasDefaultVal}
           showWeekend={showWeekend}
+          daysClass={daysClass}
         />
       )
   }
@@ -66,7 +71,12 @@ const Wrapper = ({
   clockToLabel,
   clockLabel,
   nextMonthBtnTitle,
-  previousMonthBtnTitle
+  previousMonthBtnTitle,
+  headerClass,
+  timeClass,
+  daysClass,
+  monthsClass,
+  yearsClass
 }: IWrapper) => {
   const selectedDayState = useSelectedDayState()
   const selectedTime = useSelectedTimeState()
@@ -89,8 +99,18 @@ const Wrapper = ({
         previousBtnLabel={previousBtnLabel}
         nextMonthBtnTitle={nextMonthBtnTitle}
         previousMonthBtnTitle={previousMonthBtnTitle}
+        headerClass={headerClass}
       />
-      {viewsSelector(hasDefaultVal, useViewState(), local, showWeekend, type)}
+      {viewsSelector(
+        hasDefaultVal,
+        useViewState(),
+        local,
+        showWeekend,
+        type,
+        daysClass,
+        monthsClass,
+        yearsClass
+      )}
       <TodayBtn local={local} todayBtn={todayBtn} />
 
       {withTime && type === 'single' && (
@@ -99,6 +119,7 @@ const Wrapper = ({
           initHour={(selectedDayState as IDay)?.hours}
           initMinutes={(selectedDayState as IDay)?.minutes}
           timeLabel={clockLabel || clockLB}
+          timeClass={timeClass}
         />
       )}
       {withTime && type === 'range' && (
@@ -108,12 +129,14 @@ const Wrapper = ({
             initHour={(selectedDayState as IRange).from?.hours}
             initMinutes={(selectedDayState as IRange).from?.minutes}
             timeLabel={clockFromLabel || clockFromLB}
+            timeClass={timeClass}
           />
           <TimeView
             timeFor='to'
             initHour={(selectedDayState as IRange).to?.hours}
             initMinutes={(selectedDayState as IRange).to?.minutes}
             timeLabel={clockToLabel || clockToLB}
+            timeClass={timeClass}
           />
         </React.Fragment>
       )}

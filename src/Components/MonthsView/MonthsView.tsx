@@ -8,7 +8,7 @@ import {
 } from '../../store/CalenderProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
 
-const MonthsView = ({ local }: IMonthsProps) => {
+const MonthsView = ({ local, monthsClass }: IMonthsProps) => {
   const { minDate, maxDate } = useMinMaxState()
   const { MONTHS } = useLangOption(local)
   const { changeView } = useViewActions()
@@ -41,7 +41,9 @@ const MonthsView = ({ local }: IMonthsProps) => {
   }
   return (
     <div>
-      <ul className={`monthList ${local === 'fa' ? 'is-rtl' : ''}`}>
+      <ul
+        className={`monthList ${local === 'fa' ? 'is-rtl' : ''} ${monthsClass}`}
+      >
         {MONTHS.map((month: string, index: number) => (
           <div
             key={index}

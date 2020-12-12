@@ -140,6 +140,14 @@ const App = () => {
         clockLabel='cloock'
         nextMonthBtnTitle='next btn Title'
         previousMonthBtnTitle='previous btn Title'
+        inputClass='inputClass'
+        clearBtnClass='clearBtnClass'
+        calenderModalClass='calenderModalClass'
+        headerClass='headerClass'
+        timeClass='timeClass'
+        daysClass='daysClass'
+        monthsClass='monthClass'
+        yearsClass='yearClass'
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
         maxDate={maxDate}

@@ -33,7 +33,15 @@ export const DtPicker = ({
   clockToLabel,
   clockLabel,
   nextMonthBtnTitle,
-  previousMonthBtnTitle
+  previousMonthBtnTitle,
+  inputClass,
+  clearBtnClass,
+  calenderModalClass,
+  headerClass,
+  daysClass,
+  timeClass,
+  monthsClass,
+  yearsClass
 }: IDtPickerProps) => {
   const inputRef = useRef(null)
   const minMaxState = {
@@ -90,9 +98,14 @@ export const DtPicker = ({
                   isRequired={!!isRequired}
                   fromLabel={fromLabel}
                   toLabel={toLabel}
+                  inputClass={inputClass}
+                  clearBtnClass={clearBtnClass}
                 />
                 {isComponentVisible && (
-                  <div ref={ref} className='calender-modal'>
+                  <div
+                    ref={ref}
+                    className={`calender-modal ${calenderModalClass}`}
+                  >
                     <DtWrapper
                       onChange={onChange}
                       type={correctedType}
@@ -108,6 +121,11 @@ export const DtPicker = ({
                       clockLabel={clockLabel}
                       nextMonthBtnTitle={nextMonthBtnTitle}
                       previousMonthBtnTitle={previousMonthBtnTitle}
+                      headerClass={headerClass}
+                      daysClass={daysClass}
+                      timeClass={timeClass}
+                      monthsClass={monthsClass}
+                      yearsClass={yearsClass}
                     />
                   </div>
                 )}
