@@ -17,7 +17,13 @@ import {
 } from '../../store/SelectedDaysProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
 
-const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
+const DaysView = ({
+  type,
+  local,
+  hasDefaultVal,
+  showWeekend,
+  daysClass
+}: IDaysProps) => {
   const { minDate, maxDate } = useMinMaxState()
   const { todayObject, getDay, WEEK_DAYS } = useLangOption(local)
   const todayFullDay = `${todayObject().year}${addZero(
@@ -262,7 +268,7 @@ const DaysView = ({ type, local, hasDefaultVal, showWeekend }: IDaysProps) => {
   }, [year, month])
 
   return (
-    <ul className={`daysList ${local === 'fa' ? 'is-rtl' : ''}`}>
+    <ul className={`daysList ${local === 'fa' ? 'is-rtl' : ''} ${daysClass}`}>
       {WEEK_DAYS.map((day: any) => (
         <li key={day.name} className='daysList-day'>
           {day.short}

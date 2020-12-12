@@ -52,15 +52,23 @@ const App = () => {
         previousBtnLabel='previous'
         fromLabel='from date'
         toLabel='to date'
-        clockFromLabel='froom'
-        clockToLabel='too'
-        clockLabel='cloock'
+        clockFromLabel='froom'  // this is just show in range type
+        clockToLabel='too'      // this is just show in range type
+        clockLabel='cloock'     // this is just show in single type
         nextMonthBtnTitle='next btn Title'
         previousMonthBtnTitle='previous btn Title'
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
         maxDate={maxDate}
         minDate={minDate}
+        inputClass='inputClass'
+        clearBtnClass='clearBtnClass'
+        calenderModalClass='calenderModalClass'
+        headerClass='headerClass'
+        timeClass='timeClass'
+        daysClass='daysClass'
+        monthsClass='monthClass'
+        yearsClass='yearClass'
         // isDisabled
       />
   )
@@ -76,7 +84,7 @@ const App = () => {
 - [x] add isRequired api
 - [x] fix onChange api
 - [x] add placeholders and labels
-- [ ] add classes options for different component
+- [x] add classes options for different component
 - [ ] add auto close form calender without time
 - [ ] add list of disabled date feature
 - [ ] remove disabled date in range date

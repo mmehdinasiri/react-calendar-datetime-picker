@@ -8,7 +8,7 @@ import {
 } from '../../store/CalenderProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
 
-const years = ({ local }: IYearsProps) => {
+const years = ({ local, yearsClass }: IYearsProps) => {
   const { minDate, maxDate } = useMinMaxState()
   const { YEARS_RANGE_START, YEARS_RANGE_END } = useLangOption(local)
   const { changeView } = useViewActions()
@@ -63,7 +63,7 @@ const years = ({ local }: IYearsProps) => {
     return yearsList
   }
   return (
-    <div className='yearWrapper'>
+    <div className={`yearWrapper ${yearsClass}`}>
       <ul className={`yearList ${local === 'fa' ? 'is-rtl' : ''}`}>
         {yearsRange()}
       </ul>
