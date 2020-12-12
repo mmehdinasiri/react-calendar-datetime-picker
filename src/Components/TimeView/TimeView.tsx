@@ -5,7 +5,12 @@ import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { addZero } from '../../Helpers'
 // import useDidMountEffect from '../../hooks/useDidMountEffect'
 
-const TimeView = ({ timeFor, initHour, initMinutes }: ITimeViewProps) => {
+const TimeView = ({
+  timeFor,
+  initHour,
+  initMinutes,
+  timeLabel
+}: ITimeViewProps) => {
   const today = new Date()
   const selectedDate = useSelectedDayState()
   const {
@@ -42,23 +47,26 @@ const TimeView = ({ timeFor, initHour, initMinutes }: ITimeViewProps) => {
 
   return (
     <div dir='ltr'>
-      <input
-        value={addZero(hours)}
-        type='number'
-        max='23'
-        min='0'
-        onChange={(e) => setHours(Number(e.target.value))}
-        disabled={checkIsDisabled()}
-      />
-      :
-      <input
-        value={addZero(minutes)}
-        type='number'
-        max='59'
-        min='0'
-        onChange={(e) => setMinutes(Number(e.target.value))}
-        disabled={checkIsDisabled()}
-      />
+      <span>{timeLabel}</span>
+      <div>
+        <input
+          value={addZero(hours)}
+          type='number'
+          max='23'
+          min='0'
+          onChange={(e) => setHours(Number(e.target.value))}
+          disabled={checkIsDisabled()}
+        />
+        :
+        <input
+          value={addZero(minutes)}
+          type='number'
+          max='59'
+          min='0'
+          onChange={(e) => setMinutes(Number(e.target.value))}
+          disabled={checkIsDisabled()}
+        />
+      </div>
     </div>
   )
 }

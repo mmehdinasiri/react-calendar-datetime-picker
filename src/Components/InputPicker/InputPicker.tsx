@@ -6,21 +6,26 @@ import {
 } from '../../store/SelectedDaysProvider'
 import { ReactComponent as Close } from '../../Icons/close.svg'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
+import { useLangOption } from '../../hooks/useLangOption'
 
 const InputPicker = forwardRef(
   (
     {
       placeholder,
       type,
+      local,
       handelComponentVisible,
       clearBtn,
       withTime,
       onChange,
       isDisabled,
-      isRequired
+      isRequired,
+      fromLabel,
+      toLabel
     }: IInputPicker,
     ref: RefObject<HTMLInputElement>
   ) => {
+    const { inputPlaceholder, fromLB, toLB } = useLangOption(local)
     const selectedDayState = useSelectedDayState()
     const selectedTime = useSelectedTimeState()
     const {
@@ -37,9 +42,9 @@ const InputPicker = forwardRef(
         (selectedDayState as IRange).from &&
         (selectedDayState as IRange).to
       ) {
-        return `from:${genFullIDay(
+        return `${fromLabel || fromLB}:${genFullIDay(
           (selectedDayState as IRange).from
-        )} to:${genFullIDay((selectedDayState as IRange).to)}`
+        )} ${toLabel || toLB}:${genFullIDay((selectedDayState as IRange).to)}`
       } else if (type === 'multi') {
         const listDate = (selectedDayState as IDay[]).map((day) => {
           return genFullIDay(day)
@@ -74,7 +79,7 @@ const InputPicker = forwardRef(
           ref={ref}
           className='input-picker--input'
           readOnly
-          placeholder={placeholder}
+          placeholder={placeholder || inputPlaceholder}
           value={correctValue()}
           onClick={() => handelComponentVisible()}
           disabled={isDisabled}

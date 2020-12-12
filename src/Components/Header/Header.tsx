@@ -10,9 +10,15 @@ import { useLangOption } from '../../hooks/useLangOption'
 import { ReactComponent as Next } from '../../Icons/next.svg'
 import { ReactComponent as Back } from '../../Icons/back.svg'
 
-const Header = ({ local }: IHeaderProps) => {
+const Header = ({
+  local,
+  nextBtnLabel,
+  previousBtnLabel,
+  nextMonthBtnTitle,
+  previousMonthBtnTitle
+}: IHeaderProps) => {
   const { minDate, maxDate } = useMinMaxState()
-  const { MONTHS } = useLangOption(local)
+  const { MONTHS, nextMonthBtnTL, previousMonthBtnTL } = useLangOption(local)
   const dayState = useCalenderState()
   const viewState = useViewState()
   const { changeCalender } = useCalenderActions()
@@ -81,9 +87,10 @@ const Header = ({ local }: IHeaderProps) => {
     <div className='header'>
       <a
         className={`header--btn ${!isActiveBack() ? 'is-disabled' : ''}`}
+        title={previousMonthBtnTitle || previousMonthBtnTL}
         onClick={() => handelNextMonthState('dec')}
       >
-        <Back />
+        {previousBtnLabel || <Back />}
       </a>
       <div>
         <div onClick={() => handelView(YEARS_VIEW)}>{year}</div>
@@ -91,9 +98,10 @@ const Header = ({ local }: IHeaderProps) => {
       </div>
       <a
         className={`header--btn ${!isActiveNext() ? 'is-disabled' : ''}`}
+        title={nextMonthBtnTitle || nextMonthBtnTL}
         onClick={() => handelNextMonthState('inc')}
       >
-        <Next />
+        {nextBtnLabel || <Next />}
       </a>
     </div>
   )

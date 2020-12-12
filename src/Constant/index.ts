@@ -70,7 +70,15 @@ export const LOCAL_CONSTANT = {
     },
     setDayOfMonth: (date: IDay, day: number) => {
       return new persianDate([date.year, date.month, date.day]).date(day)
-    }
+    },
+    inputPlaceholder: 'انتخاب کنید',
+    clockFromLB: 'از ساعت',
+    clockToLB: 'تا ساعت',
+    nextMonthBtnTL: 'ماه بعد',
+    previousMonthBtnTL: 'ماه قبل',
+    fromLB: 'از',
+    toLB: 'تا',
+    clockLB: 'ساعت'
   },
   en: {
     WEEK_DAY: [
@@ -165,7 +173,15 @@ export const LOCAL_CONSTANT = {
     },
     setDayOfMonth: (date: Date, day: number) => {
       return new Date(new Date(date).setDate(day))
-    }
+    },
+    inputPlaceholder: 'select',
+    clockFromLB: 'from',
+    clockToLB: 'to',
+    nextMonthBtnTL: 'next month',
+    previousMonthBtnTL: 'previous month',
+    fromLB: 'from',
+    toLB: 'to',
+    clockLB: 'clock'
   }
 }
 

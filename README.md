@@ -38,15 +38,25 @@ const App = () => {
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
       <DtPicker
-        onChange={setDate}
-        defaultValue={date}
+        onChange={handleCalendarChange}
+        defaultValue={dateEn}
         type='single'
         local='en'
-        withTim
+        withTime
         showWeekend
         clearBtn
         isRequired
         todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
+        placeholder='seleccccccct'
+        nextBtnLabel='next'
+        previousBtnLabel='previous'
+        fromLabel='from date'
+        toLabel='to date'
+        clockFromLabel='froom'
+        clockToLabel='too'
+        clockLabel='cloock'
+        nextMonthBtnTitle='next btn Title'
+        previousMonthBtnTitle='previous btn Title'
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
         maxDate={maxDate}
@@ -65,7 +75,7 @@ const App = () => {
 - [x] check init value and default, min, max, from and to
 - [x] add isRequired api
 - [x] fix onChange api
-- [ ] add placeholders and labels
+- [x] add placeholders and labels
 - [ ] add classes options for different component
 - [ ] add auto close form calender without time
 - [ ] add list of disabled date feature
