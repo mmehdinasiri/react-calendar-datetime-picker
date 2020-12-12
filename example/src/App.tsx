@@ -123,13 +123,23 @@ const App = () => {
       <DtPicker
         onChange={handleCalendarChange}
         defaultValue={dateEn}
-        type='single'
+        type='range'
         local='en'
         withTime
         showWeekend
         clearBtn
         isRequired
         todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
+        placeholder='seleccccccct'
+        nextBtnLabel='next'
+        previousBtnLabel='previous'
+        fromLabel='from date'
+        toLabel='to date'
+        clockFromLabel='froom'
+        clockToLabel='too'
+        clockLabel='cloock'
+        nextMonthBtnTitle='next btn Title'
+        previousMonthBtnTitle='previous btn Title'
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
         maxDate={maxDate}

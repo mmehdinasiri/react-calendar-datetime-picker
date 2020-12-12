@@ -23,7 +23,17 @@ export const DtPicker = ({
   onCalenderShow,
   isDisabled,
   maxDate,
-  minDate
+  minDate,
+  placeholder,
+  nextBtnLabel,
+  previousBtnLabel,
+  fromLabel,
+  toLabel,
+  clockFromLabel,
+  clockToLabel,
+  clockLabel,
+  nextMonthBtnTitle,
+  previousMonthBtnTitle
 }: IDtPickerProps) => {
   const inputRef = useRef(null)
   const minMaxState = {
@@ -69,13 +79,17 @@ export const DtPicker = ({
               <div style={{ position: 'relative' }}>
                 <InputPicker
                   ref={inputRef}
+                  placeholder={placeholder}
                   clearBtn={clearBtn}
                   type={correctedType}
+                  local={correctedLocal}
                   handelComponentVisible={handelComponentVisible}
                   onChange={onChange}
                   withTime={withTime}
                   isDisabled={isDisabled}
                   isRequired={!!isRequired}
+                  fromLabel={fromLabel}
+                  toLabel={toLabel}
                 />
                 {isComponentVisible && (
                   <div ref={ref} className='calender-modal'>
@@ -87,6 +101,13 @@ export const DtPicker = ({
                       hasDefaultVal={!!defaultValue}
                       showWeekend={!!showWeekend}
                       todayBtn={!!todayBtn}
+                      nextBtnLabel={nextBtnLabel}
+                      previousBtnLabel={previousBtnLabel}
+                      clockFromLabel={clockFromLabel}
+                      clockToLabel={clockToLabel}
+                      clockLabel={clockLabel}
+                      nextMonthBtnTitle={nextMonthBtnTitle}
+                      previousMonthBtnTitle={previousMonthBtnTitle}
                     />
                   </div>
                 )}

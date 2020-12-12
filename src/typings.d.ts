@@ -66,15 +66,7 @@ interface IMinMaxProvider {
   }
   children: React.ReactElement | React.ReactElement[]
 }
-interface IWrapper {
-  onChange: (date: any) => void
-  type: string
-  withTime?: boolean
-  local: string
-  hasDefaultVal: boolean
-  showWeekend: boolean
-  todayBtn: boolean
-}
+
 interface IDtPickerProps {
   defaultValue?: IDay | IRange
   onChange: (date: any) => void
@@ -90,24 +82,58 @@ interface IDtPickerProps {
   isDisabled?: boolean
   maxDate?: IDay
   minDate?: IDay
+  placeholder?: string
+  nextBtnLabel?: string
+  previousBtnLabel?: string
+  fromLabel?: string
+  toLabel?: string
+  clockFromLabel?: string
+  clockToLabel?: string
+  clockLabel?: string
+  nextMonthBtnTitle?: string
+  previousMonthBtnTitle?: string
+}
+interface IWrapper {
+  onChange: (date: any) => void
+  type: string
+  withTime?: boolean
+  local: string
+  hasDefaultVal: boolean
+  showWeekend: boolean
+  todayBtn: boolean
+  nextBtnLabel?: string
+  previousBtnLabel?: string
+  clockFromLabel?: string
+  clockToLabel?: string
+  clockLabel?: string
+  nextMonthBtnTitle?: string
+  previousMonthBtnTitle?: string
 }
 interface IInputPicker {
   placeholder?: string
   type: string
+  local: string
   handelComponentVisible: () => void
   onChange: (date: any) => void
   clearBtn?: boolean
   withTime?: boolean
   isDisabled?: boolean
   isRequired?: boolean
+  fromLabel?: string
+  toLabel?: string
 }
 interface ITimeViewProps {
   initHour: number | undefined
   initMinutes: number | undefined
   timeFor?: string
+  timeLabel?: string
 }
 interface IHeaderProps {
   local: string
+  nextBtnLabel?: string
+  previousBtnLabel?: string
+  nextMonthBtnTitle?: string
+  previousMonthBtnTitle?: string
 }
 interface IYearsProps {
   local: string

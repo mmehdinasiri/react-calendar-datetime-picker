@@ -13,6 +13,7 @@ import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { mergeProviders } from '../../Helpers'
+import { useLangOption } from '../../hooks/useLangOption'
 
 const viewsSelector = (
   hasDefaultVal: boolean,
@@ -58,10 +59,18 @@ const Wrapper = ({
   local,
   hasDefaultVal,
   showWeekend,
-  todayBtn
+  todayBtn,
+  nextBtnLabel,
+  previousBtnLabel,
+  clockFromLabel,
+  clockToLabel,
+  clockLabel,
+  nextMonthBtnTitle,
+  previousMonthBtnTitle
 }: IWrapper) => {
   const selectedDayState = useSelectedDayState()
   const selectedTime = useSelectedTimeState()
+  const { clockFromLB, clockToLB, clockLB } = useLangOption(local)
   const { changeView } = useViewActions()
   useDidMountEffect(() => {
     mergeProviders(onChange, type, selectedDayState, selectedTime, withTime)
@@ -74,7 +83,13 @@ const Wrapper = ({
   }, [])
   return (
     <div className='dtWrapper' dir={local === 'fa' ? 'rtl' : 'ltr'}>
-      <Header local={local} />
+      <Header
+        local={local}
+        nextBtnLabel={nextBtnLabel}
+        previousBtnLabel={previousBtnLabel}
+        nextMonthBtnTitle={nextMonthBtnTitle}
+        previousMonthBtnTitle={previousMonthBtnTitle}
+      />
       {viewsSelector(hasDefaultVal, useViewState(), local, showWeekend, type)}
       <TodayBtn local={local} todayBtn={todayBtn} />
 
@@ -83,6 +98,7 @@ const Wrapper = ({
           timeFor='single'
           initHour={(selectedDayState as IDay)?.hours}
           initMinutes={(selectedDayState as IDay)?.minutes}
+          timeLabel={clockLabel || clockLB}
         />
       )}
       {withTime && type === 'range' && (
@@ -91,11 +107,13 @@ const Wrapper = ({
             timeFor='from'
             initHour={(selectedDayState as IRange).from?.hours}
             initMinutes={(selectedDayState as IRange).from?.minutes}
+            timeLabel={clockFromLabel || clockFromLB}
           />
           <TimeView
             timeFor='to'
             initHour={(selectedDayState as IRange).to?.hours}
             initMinutes={(selectedDayState as IRange).to?.minutes}
+            timeLabel={clockToLabel || clockToLB}
           />
         </React.Fragment>
       )}
