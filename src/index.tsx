@@ -76,7 +76,8 @@ export const DtPicker = ({
       correctedLocal,
       correctedType,
       maxDate,
-      minDate
+      minDate,
+      disabledDates
     )
   }, [])
   return (

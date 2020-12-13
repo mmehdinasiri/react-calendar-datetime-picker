@@ -30,6 +30,23 @@ const App = () => {
     month: 5,
     day: 2
   }
+  const disabledDates = [
+    {
+      year: 2015,
+      month: 6,
+      day: 23
+    },
+    {
+      year: 2015,
+      month: 6,
+      day: 12
+    },
+    {
+      year: 2015,
+      month: 6,
+      day: 10
+    }
+  ]
   const handleCalendarChange = (newDate) => {
     console.log('Calendar changed')
     setDate(setDate)
@@ -69,6 +86,7 @@ const App = () => {
         daysClass='daysClass'
         monthsClass='monthClass'
         yearsClass='yearClass'
+        disabledDates={disabledDates}
         // isDisabled
       />
   )
@@ -86,7 +104,7 @@ const App = () => {
 - [x] add placeholders and labels
 - [x] add classes options for different component
 - [ ] add auto close form calender without time
-- [ ] add list of disabled date feature
+- [x] add list of disabled date feature
 - [ ] remove disabled date in range date
 - [ ] write test
 - [ ] add styles

@@ -265,12 +265,14 @@ export const checkInputValues = (
   correctedLocal: string,
   correctedType: string,
   maxDate?: IDay,
-  minDate?: IDay
+  minDate?: IDay,
+  disabledDates?: IDay[]
 ) => {
   const selectCompar = {
     en: compareDateEN,
     fa: compareDateFA
   }
+
   if (!(correctedLocal === 'en' || correctedLocal === 'fa')) {
     throw Error('Local must be "en" or "fa".')
   }
@@ -367,6 +369,55 @@ export const checkInputValues = (
       if (isThereAnyGreater) {
         throw Error('Default or selected date must be greater than min date.')
       }
+    }
+  }
+  if (disabledDates) {
+    if (
+      correctedType === 'single' &&
+      defaultValue &&
+      disabledDates?.find(
+        (date) =>
+          genFullDay(date.year, date.month, date.day) ===
+          genFullDay(defaultValue.year, defaultValue.month, defaultValue.day)
+      )
+    ) {
+      throw Error('Default Date could not be in disabled list')
+    }
+    if (
+      correctedType === 'range' &&
+      defaultValue &&
+      disabledDates?.find(
+        (date) =>
+          genFullDay(date.year, date.month, date.day) ===
+            genFullDay(
+              defaultValue.from.year,
+              defaultValue.from.month,
+              defaultValue.from.day
+            ) ||
+          genFullDay(date.year, date.month, date.day) ===
+            genFullDay(
+              defaultValue.to.year,
+              defaultValue.to.month,
+              defaultValue.to.day
+            )
+      )
+    ) {
+      throw Error(
+        '"FROM" or "TO" in Default Date could not be in disabled list.'
+      )
+    }
+    if (
+      correctedType === 'multi' &&
+      disabledDates?.find((disDate) => {
+        return defaultValue?.find((initDate: IDay) => {
+          return (
+            genFullDay(disDate.year, disDate.month, disDate.day) ===
+            genFullDay(initDate.year, initDate.month, initDate.day)
+          )
+        })
+      })
+    ) {
+      throw Error('Non of Date in Default Date could not be in disabled list.')
     }
   }
 }

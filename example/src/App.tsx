@@ -100,7 +100,18 @@ const App = () => {
   //   day: 2
   // }
 
-  const [dateEn, setDateEn] = useState()
+  const [dateEn, setDateEn] = useState([
+    {
+      year: 2015,
+      month: 6,
+      day: 26
+    },
+    {
+      year: 2015,
+      month: 6,
+      day: 21
+    }
+  ])
   const maxDate = {
     year: 2016,
     month: 6,
@@ -140,7 +151,7 @@ const App = () => {
       <DtPicker
         onChange={handleCalendarChange}
         defaultValue={dateEn}
-        type='range'
+        type='multi'
         local='en'
         withTime
         showWeekend
