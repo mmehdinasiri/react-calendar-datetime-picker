@@ -5,6 +5,7 @@
   "author": "mehdinasiri",
   "license": "MIT",
   "repository": "https://github.com/mmehdinasiri/react-datetime-picker",
+  "homepage":"https://mmehdinasiri.github.io/react-datetime-picker/",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
