@@ -100,7 +100,7 @@ const App = () => {
   //   day: 2
   // }
 
-  const [dateEn, setDateEn] = useState()
+  const [dateEn, setDateEn] = useState({ year: 2016, month: 6, day: 20 })
   const maxDate = {
     year: 2016,
     month: 6,
@@ -136,7 +136,7 @@ const App = () => {
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
     <div style={{ margin: 'auto', width: '720px' }}>
-      <p>single en with time</p>
+      <p>Single type En with time and max-min date also disabled date</p>
       <DtPicker
         onChange={handleCalendarChange}
         defaultValue={dateEn}
@@ -174,7 +174,7 @@ const App = () => {
       />
       {JSON.stringify(dateEn, null, 4)}
       <br />
-      <p>range en no time</p>
+      <p>Range En no time</p>
       <DtPicker
         onChange={setDateEn2}
         defaultValue={dateEn2}
@@ -185,7 +185,7 @@ const App = () => {
       {JSON.stringify(dateEn2, null, 4)}
       <br />
 
-      <p>multi en no time</p>
+      <p>Multi En no time</p>
       <DtPicker
         onChange={setDateEn3}
         defaultValue={dateEn3}
@@ -197,7 +197,7 @@ const App = () => {
       <br />
       <br />
       <br />
-      <p>range fa with time</p>
+      <p>Mange Fa with time</p>
       <DtPicker
         onChange={setDateFa}
         defaultValue={dateFa}
