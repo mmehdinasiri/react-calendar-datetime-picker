@@ -100,7 +100,18 @@ const App = () => {
   //   day: 2
   // }
 
-  const [dateEn, setDateEn] = useState()
+  const [dateEn, setDateEn] = useState([
+    {
+      year: 2015,
+      month: 6,
+      day: 26
+    },
+    {
+      year: 2015,
+      month: 6,
+      day: 21
+    }
+  ])
   const maxDate = {
     year: 2016,
     month: 6,
@@ -111,6 +122,23 @@ const App = () => {
     month: 5,
     day: 2
   }
+  const disabledDates = [
+    {
+      year: 2015,
+      month: 6,
+      day: 23
+    },
+    {
+      year: 2015,
+      month: 6,
+      day: 12
+    },
+    {
+      year: 2015,
+      month: 6,
+      day: 10
+    }
+  ]
   const handleCalendarChange = (newDate: any) => {
     console.log('Calendar changed')
     setDateEn(newDate)
@@ -123,7 +151,7 @@ const App = () => {
       <DtPicker
         onChange={handleCalendarChange}
         defaultValue={dateEn}
-        type='range'
+        type='multi'
         local='en'
         withTime
         showWeekend
@@ -152,6 +180,7 @@ const App = () => {
         onCalenderHide={handleCalendarClose}
         maxDate={maxDate}
         minDate={minDate}
+        disabledDates={disabledDates}
         // isDisabled
       />
       {JSON.stringify(dateEn, null, 4)}

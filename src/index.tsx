@@ -41,7 +41,8 @@ export const DtPicker = ({
   daysClass,
   timeClass,
   monthsClass,
-  yearsClass
+  yearsClass,
+  disabledDates
 }: IDtPickerProps) => {
   const inputRef = useRef(null)
   const minMaxState = {
@@ -75,7 +76,8 @@ export const DtPicker = ({
       correctedLocal,
       correctedType,
       maxDate,
-      minDate
+      minDate,
+      disabledDates
     )
   }, [])
   return (
@@ -126,6 +128,7 @@ export const DtPicker = ({
                       timeClass={timeClass}
                       monthsClass={monthsClass}
                       yearsClass={yearsClass}
+                      disabledDates={disabledDates}
                     />
                   </div>
                 )}

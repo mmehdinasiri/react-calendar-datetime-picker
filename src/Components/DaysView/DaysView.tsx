@@ -7,7 +7,8 @@ import {
   getDateTimeStamp,
   getNumberOfDaysInMonth,
   getPreviousSundayDay,
-  getWeekday
+  getWeekday,
+  genFullDay
 } from '../../Helpers'
 import { useLangOption } from '../../hooks/useLangOption'
 import { useCalenderState } from '../../store/CalenderProvider'
@@ -22,7 +23,8 @@ const DaysView = ({
   local,
   hasDefaultVal,
   showWeekend,
-  daysClass
+  daysClass,
+  disabledDates
 }: IDaysProps) => {
   const { minDate, maxDate } = useMinMaxState()
   const { todayObject, getDay, WEEK_DAYS } = useLangOption(local)
@@ -254,6 +256,14 @@ const DaysView = ({
       maxDate.day < day.date.day
     ) {
       classes += ' is-minMaxDisabled'
+    }
+    if (
+      disabledDates?.find(
+        (date) =>
+          genFullDay(date.year, date.month, date.day) === day.date.fullDay
+      )
+    ) {
+      classes += ' is-disabled-by-user'
     }
     return classes
   }
