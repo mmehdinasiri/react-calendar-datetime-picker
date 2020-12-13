@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [1.0.5] - 12/14/2020
+- add list of disabled date  
 ## [1.0.4] - 12/13/2020
 - add placeholders and labels  
 - add classes options for different component
