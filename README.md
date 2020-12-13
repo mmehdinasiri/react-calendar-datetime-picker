@@ -69,9 +69,9 @@ const App = () => {
         previousBtnLabel='previous'
         fromLabel='from date'
         toLabel='to date'
-        clockFromLabel='froom'  // this is just show in range type
-        clockToLabel='too'      // this is just show in range type
-        clockLabel='cloock'     // this is just show in single type
+        clockFromLabel='froom'  // this is just shows in range type
+        clockToLabel='too'      // this is just shows in range type
+        clockLabel='cloock'     // this is just shows in single type
         nextMonthBtnTitle='next btn Title'
         previousMonthBtnTitle='previous btn Title'
         onCalenderShow={handleCalendarOpen}
@@ -103,9 +103,7 @@ const App = () => {
 - [x] fix onChange api
 - [x] add placeholders and labels
 - [x] add classes options for different component
-- [ ] add auto close form calender without time
 - [x] add list of disabled date feature
-- [ ] remove disabled date in range date
 - [ ] write test
 - [ ] add styles
 
