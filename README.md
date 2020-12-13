@@ -30,6 +30,23 @@ const App = () => {
     month: 5,
     day: 2
   }
+  const disabledDates = [
+    {
+      year: 2015,
+      month: 6,
+      day: 23
+    },
+    {
+      year: 2015,
+      month: 6,
+      day: 12
+    },
+    {
+      year: 2015,
+      month: 6,
+      day: 10
+    }
+  ]
   const handleCalendarChange = (newDate) => {
     console.log('Calendar changed')
     setDate(setDate)
@@ -52,9 +69,9 @@ const App = () => {
         previousBtnLabel='previous'
         fromLabel='from date'
         toLabel='to date'
-        clockFromLabel='froom'  // this is just show in range type
-        clockToLabel='too'      // this is just show in range type
-        clockLabel='cloock'     // this is just show in single type
+        clockFromLabel='froom'  // this is just shows in range type
+        clockToLabel='too'      // this is just shows in range type
+        clockLabel='cloock'     // this is just shows in single type
         nextMonthBtnTitle='next btn Title'
         previousMonthBtnTitle='previous btn Title'
         onCalenderShow={handleCalendarOpen}
@@ -69,6 +86,7 @@ const App = () => {
         daysClass='daysClass'
         monthsClass='monthClass'
         yearsClass='yearClass'
+        disabledDates={disabledDates}
         // isDisabled
       />
   )
@@ -85,9 +103,7 @@ const App = () => {
 - [x] fix onChange api
 - [x] add placeholders and labels
 - [x] add classes options for different component
-- [ ] add auto close form calender without time
-- [ ] add list of disabled date feature
-- [ ] remove disabled date in range date
+- [x] add list of disabled date feature
 - [ ] write test
 - [ ] add styles
 
