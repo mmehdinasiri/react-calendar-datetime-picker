@@ -12,9 +12,9 @@ const App = () => {
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
   // const [dateEn, setDateEn] = useState()
-  // const [dateEn2, setDateEn2] = useState()
-  // const [dateEn3, setDateEn3] = useState()
-  // const [dateFa, setDateFa] = useState()
+  const [dateEn2, setDateEn2] = useState(null)
+  const [dateEn3, setDateEn3] = useState()
+  const [dateFa, setDateFa] = useState()
   // const [dateEn, setDateEn] = useState({ year: 1398, month: 8, day: 1 })
   // const [dateEn, setDateEn] = useState({
   //   from: { year: 2012, month: 5, day: 2 },
@@ -100,18 +100,7 @@ const App = () => {
   //   day: 2
   // }
 
-  const [dateEn, setDateEn] = useState([
-    {
-      year: 2015,
-      month: 6,
-      day: 26
-    },
-    {
-      year: 2015,
-      month: 6,
-      day: 21
-    }
-  ])
+  const [dateEn, setDateEn] = useState()
   const maxDate = {
     year: 2016,
     month: 6,
@@ -151,7 +140,7 @@ const App = () => {
       <DtPicker
         onChange={handleCalendarChange}
         defaultValue={dateEn}
-        type='multi'
+        type='single'
         local='en'
         withTime
         showWeekend
@@ -185,8 +174,8 @@ const App = () => {
       />
       {JSON.stringify(dateEn, null, 4)}
       <br />
-      {/* <p>range en no time</p> */}
-      {/* <DtPicker
+      <p>range en no time</p>
+      <DtPicker
         onChange={setDateEn2}
         defaultValue={dateEn2}
         type='range'
@@ -213,12 +202,11 @@ const App = () => {
         onChange={setDateFa}
         defaultValue={dateFa}
         withTime
-        type='range'
+        type='single'
         local='fa'
         showWeekend
       />
-      {JSON.stringify(dateFa, null, 4)} */}
-      {/* <DtPicker onChange={setDate} defaultValue={date} /> */}
+      {JSON.stringify(dateFa, null, 4)}
     </div>
   )
 }

@@ -5,12 +5,12 @@
   "author": "mehdinasiri",
   "license": "MIT",
   "repository": "https://github.com/mmehdinasiri/react-datetime-picker",
-  "homepage":"https://mmehdinasiri.github.io/react-datetime-picker/",
+  "homepage": "https://mmehdinasiri.github.io/react-datetime-picker/",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs --css-modules false",
@@ -63,7 +63,8 @@
   ],
   "dependencies": {
     "node-sass": "^5.0.0",
-    "persian-date": "^1.1.0",
+    "persian-date": "^0.1.0",
+    "sass": "^1.30.0",
     "sass-rem": "^2.0.1"
   }
 }
