@@ -100,6 +100,7 @@ interface IDtPickerProps {
   timeClass?: string
   monthsClass?: string
   yearsClass?: string
+  disabledDates?: IDay[]
 }
 interface IWrapper {
   onChange: (date: any) => void
@@ -121,6 +122,7 @@ interface IWrapper {
   timeClass?: string
   monthsClass?: string
   yearsClass?: string
+  disabledDates?: IDay[]
 }
 interface IInputPicker {
   placeholder?: string
@@ -166,6 +168,7 @@ interface IDaysProps {
   type?: string
   showWeekend: boolean
   daysClass?: string
+  disabledDates?: IDay[]
 }
 interface ITodayBtn {
   local: string

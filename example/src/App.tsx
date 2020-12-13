@@ -111,6 +111,23 @@ const App = () => {
     month: 5,
     day: 2
   }
+  const disabledDates = [
+    {
+      year: 2015,
+      month: 6,
+      day: 23
+    },
+    {
+      year: 2015,
+      month: 6,
+      day: 12
+    },
+    {
+      year: 2015,
+      month: 6,
+      day: 10
+    }
+  ]
   const handleCalendarChange = (newDate: any) => {
     console.log('Calendar changed')
     setDateEn(newDate)
@@ -152,6 +169,7 @@ const App = () => {
         onCalenderHide={handleCalendarClose}
         maxDate={maxDate}
         minDate={minDate}
+        disabledDates={disabledDates}
         // isDisabled
       />
       {JSON.stringify(dateEn, null, 4)}

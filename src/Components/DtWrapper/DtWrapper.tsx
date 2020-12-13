@@ -23,7 +23,8 @@ const viewsSelector = (
   type?: string,
   daysClass?: string,
   monthClass?: string,
-  yearClass?: string
+  yearClass?: string,
+  disabledDates?: IDay[]
 ) => {
   let view: ReactElement | unknown
   switch (currentView) {
@@ -41,6 +42,7 @@ const viewsSelector = (
           hasDefaultVal={hasDefaultVal}
           showWeekend={showWeekend}
           daysClass={daysClass}
+          disabledDates={disabledDates}
         />
       )
       break
@@ -52,6 +54,7 @@ const viewsSelector = (
           hasDefaultVal={hasDefaultVal}
           showWeekend={showWeekend}
           daysClass={daysClass}
+          disabledDates={disabledDates}
         />
       )
   }
@@ -76,7 +79,8 @@ const Wrapper = ({
   timeClass,
   daysClass,
   monthsClass,
-  yearsClass
+  yearsClass,
+  disabledDates
 }: IWrapper) => {
   const selectedDayState = useSelectedDayState()
   const selectedTime = useSelectedTimeState()
@@ -109,7 +113,8 @@ const Wrapper = ({
         type,
         daysClass,
         monthsClass,
-        yearsClass
+        yearsClass,
+        disabledDates
       )}
       <TodayBtn local={local} todayBtn={todayBtn} />
 
