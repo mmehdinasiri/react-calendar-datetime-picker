@@ -184,6 +184,7 @@ const App = () => {
         type='range'
         local='en'
         showWeekend
+        withTime
       />
       {JSON.stringify(dateEn2, null, 4)}
       <br />

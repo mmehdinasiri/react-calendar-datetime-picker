@@ -128,7 +128,7 @@ const Wrapper = ({
         />
       )}
       {withTime && type === 'range' && (
-        <React.Fragment>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <TimeView
             timeFor='from'
             initHour={(selectedDayState as IRange).from?.hours}
@@ -143,7 +143,7 @@ const Wrapper = ({
             timeLabel={clockToLabel || clockToLB}
             timeClass={timeClass}
           />
-        </React.Fragment>
+        </div>
       )}
     </div>
   )

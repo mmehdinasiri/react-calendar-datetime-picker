@@ -1,5 +1,4 @@
 import persianDate from 'persian-date'
-import { TodayBtn } from '../Components'
 export const LOCAL_CONSTANT = {
   fa: {
     NUMBERS: ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],
@@ -80,7 +79,7 @@ export const LOCAL_CONSTANT = {
     fromLB: 'از',
     toLB: 'تا',
     clockLB: 'ساعت',
-    todayBtnTL: 'اامروز'
+    todayBtnTL: 'امروز'
   },
   en: {
     WEEK_DAY: [
