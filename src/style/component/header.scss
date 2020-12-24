@@ -4,6 +4,8 @@
   align-items: center;
   background-color: $primary-color;
   padding: rem(16px);
+  border-top-left-radius: rem($global-radius-small);
+  border-top-right-radius: rem($global-radius-small);
   .header-date {
     display: flex;
     color: white;

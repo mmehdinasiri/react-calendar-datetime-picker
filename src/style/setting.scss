@@ -5,9 +5,13 @@ $text-color: #444;
 $text-color-light: #666;
 $text-color-lighter: #aaa;
 $light-gray: #efefef;
+$disable-color: #e4e8eb;
+$disable-text: #a9b0bf;
+$is-selected-day: #03bf1f;
+$is-today: #029418;
 
 /////size/////
 $modal-width: 310px;
-$global-radius: rem(8px);
-$global-radius-small: rem(4px);
-$global-radius-large: rem(16px);
+$global-radius: 8px;
+$global-radius-small: 4px;
+$global-radius-large: 16px;

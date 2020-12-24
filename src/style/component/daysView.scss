@@ -1,7 +1,7 @@
 .daysList {
   list-style: none;
   overflow: hidden;
-  padding: rem(8px) 0 0;
+  padding: rem(8px) 0;
   margin: 0;
   text-align: center;
   .daysList-day {
@@ -13,6 +13,8 @@
     box-sizing: border-box;
     cursor: pointer;
     border-radius: 50%;
+    color: $text-color-light;
+    font-size: rem(14px);
   }
   .is-week-days {
     color: $text-color-lighter;
@@ -41,26 +43,30 @@
     clear: left;
   }
   .is-today {
-    border: rem(2px) solid green;
+    // border: rem(2px) solid ;
+    box-shadow: 0px 0px 0px 2px $is-today;
   }
   .is-disabled {
     pointer-events: none;
-    background-color: #aaa;
-    opacity: 0.7;
+    background-color: $disable-color;
+    color: $disable-text;
   }
   .is-disabled-by-user {
     pointer-events: none;
-    background-color: #ccc;
+    background-color: $disable-color;
     opacity: 0.3;
+    color: $disable-text;
   }
   .is-minMaxDisabled {
     pointer-events: none;
-    background-color: #ccc;
+    background-color: $disable-color;
     opacity: 0.3;
+    color: $disable-text;
   }
 
   .is-selected-day {
-    background-color: yellow;
+    background-color: $is-selected-day;
+    color: white;
   }
   .is-selected-day-from {
     background-color: cyan;

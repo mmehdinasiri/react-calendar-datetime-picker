@@ -5,7 +5,7 @@
     line-height: rem(26px);
     height: rem(26px);
     padding: 0 8px;
-    border-radius: $global-radius-small;
+    border-radius: rem($global-radius-small);
     border-width: rem(1px);
     &:focus {
       outline: none;
