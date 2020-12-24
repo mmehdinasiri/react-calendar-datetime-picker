@@ -20,7 +20,7 @@ const useComponentVisible = (
       event.target !== inputRef.current
     ) {
       setIsComponentVisible(false)
-      callBack()
+      if (callBack) callBack()
     }
   }
 

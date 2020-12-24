@@ -57,7 +57,7 @@ export const DtPicker = ({
 
   const handelComponentVisible = () => {
     if (isComponentVisible) return
-    if (!isComponentVisible) {
+    if (!isComponentVisible && onCalenderShow) {
       onCalenderShow()
     }
     setIsComponentVisible(!isComponentVisible)
