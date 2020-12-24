@@ -15,11 +15,12 @@
     border-radius: 50%;
     color: $text-color-light;
     font-size: rem(14px);
+    margin: rem(1px 0);
   }
   .is-week-days {
     color: $text-color-lighter;
     font-size: 14px;
-    // border-bottom: 1px solid $light-gray;
+    font-weight: 500;
     height: 34px;
     line-height: 34px;
     border-radius: 0;
@@ -44,7 +45,7 @@
   }
   .is-today {
     // border: rem(2px) solid ;
-    box-shadow: 0px 0px 0px 2px $is-today;
+    box-shadow: inset 0px 0px 0px 2px $is-today;
   }
   .is-disabled {
     pointer-events: none;
@@ -69,17 +70,23 @@
     color: white;
   }
   .is-selected-day-from {
-    background-color: cyan;
+    background-color: $is-selected-day;
+    border-radius: 0;
     border-top-left-radius: rem(50%);
     border-bottom-left-radius: rem(50%);
+    color: white;
   }
   .is-selected-day-to {
-    background-color: yellowgreen;
+    background-color: $is-selected-day;
+    border-radius: 0;
     border-top-right-radius: rem(50%);
     border-bottom-right-radius: rem(50%);
+    color: white;
   }
   .is-selected-day-range {
-    background-color: yellow;
+    color: $is-selected-day-range-color;
+    border-radius: 0;
+    background-color: $is-selected-day-range;
   }
   .is-pointer {
     cursor: pointer;

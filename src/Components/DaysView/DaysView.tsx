@@ -229,7 +229,7 @@ const DaysView = ({
         (item) => item.fullDay === day.date.fullDay
       )
     ) {
-      classes += ' is-selected-day-range'
+      classes += ' is-selected-day'
     }
     if (showWeekend) {
       if (local === 'fa' && (index + daysForPreviousMonth.length) % 7 === 6) {
