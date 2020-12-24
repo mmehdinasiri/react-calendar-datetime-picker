@@ -101,33 +101,33 @@ const App = () => {
   // }
 
   const [dateEn, setDateEn] = useState({ year: 2016, month: 6, day: 20 })
-  const maxDate = {
-    year: 2016,
-    month: 6,
-    day: 23
-  }
-  const minDate = {
-    year: 2012,
-    month: 5,
-    day: 2
-  }
-  const disabledDates = [
-    {
-      year: 2015,
-      month: 6,
-      day: 23
-    },
-    {
-      year: 2015,
-      month: 6,
-      day: 12
-    },
-    {
-      year: 2015,
-      month: 6,
-      day: 10
-    }
-  ]
+  // const maxDate = {
+  //   year: 2016,
+  //   month: 6,
+  //   day: 23
+  // }
+  // const minDate = {
+  //   year: 2012,
+  //   month: 5,
+  //   day: 2
+  // }
+  // const disabledDates = [
+  //   {
+  //     year: 2015,
+  //     month: 6,
+  //     day: 23
+  //   },
+  //   {
+  //     year: 2015,
+  //     month: 6,
+  //     day: 12
+  //   },
+  //   {
+  //     year: 2015,
+  //     month: 6,
+  //     day: 10
+  //   }
+  // ]
   const handleCalendarChange = (newDate: any) => {
     console.log('Calendar changed')
     setDateEn(newDate)
@@ -151,8 +151,8 @@ const App = () => {
         isRequired
         todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
         placeholder='seleccccccct'
-        nextBtnLabel='next'
-        previousBtnLabel='previous'
+        // nextBtnLabel='next'
+        // previousBtnLabel='previous'
         fromLabel='from date'
         toLabel='to date'
         clockFromLabel='froom'
@@ -170,9 +170,9 @@ const App = () => {
         yearsClass='yearClass'
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
-        maxDate={maxDate}
-        minDate={minDate}
-        disabledDates={disabledDates}
+        // maxDate={maxDate}
+        // minDate={minDate}
+        // disabledDates={disabledDates}
         // isDisabled
       />
       {JSON.stringify(dateEn, null, 4)}

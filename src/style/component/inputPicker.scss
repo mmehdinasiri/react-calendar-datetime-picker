@@ -1,20 +1,25 @@
 .input-picker {
   position: relative;
   display: inline-block;
-  .input-picker--input{
-    height: rem(32px);
-    line-height: rem(32px);
+  .input-picker--input {
+    line-height: rem(26px);
+    height: rem(26px);
     padding: 0 8px;
+    border-radius: rem(4px);
+    border-width: rem(1px);
+    &:focus {
+      outline: none;
+    }
   }
   .input-picker--clearBtn {
     display: block;
-    width: rem(24px);
-    height:  rem(24px);
+    width: rem(20px);
+    height: rem(20px);
     position: absolute;
-    top: 50%;    
+    top: 50%;
     right: rem(5px);
     transform: translateY(-50%);
     cursor: pointer;
-    color: $iconColor
+    color: $iconColor;
   }
 }

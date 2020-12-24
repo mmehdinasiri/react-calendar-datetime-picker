@@ -2,12 +2,35 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .header--btn{
+  background-color: $primary-color;
+  padding: rem(16px);
+  .header-date {
+    display: flex;
+    color: white;
+    font-size: rem(18px);
+    justify-content: center;
+    flex-wrap: wrap;
+    .header-date--month {
+      margin-left: rem(8px);
+      cursor: pointer;
+    }
+    .header-date--year {
+      cursor: pointer;
+    }
+    .header-date--day {
+      font-size: 24px;
+      text-align: center;
+      width: 100%;
+      margin-top: rem(8px);
+    }
+  }
+  .header--btn {
     cursor: pointer;
     display: block;
-    width: rem(24px);
-    height:  rem(24px);
-    &.is-disabled{
+    width: rem(20px);
+    height: rem(20px);
+    color: white;
+    &.is-disabled {
       opacity: 0.2;
       pointer-events: none;
     }
