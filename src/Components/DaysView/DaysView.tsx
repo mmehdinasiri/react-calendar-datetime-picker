@@ -281,13 +281,20 @@ const DaysView = ({
   return (
     <ul className={`daysList ${local === 'fa' ? 'is-rtl' : ''} ${daysClass}`}>
       {WEEK_DAYS.map((day: any) => (
-        <li key={day.name} className='daysList-day'>
+        <li key={day.name} className='daysList-day is-week-days'>
           {day.short}
         </li>
       ))}
       {daysForPreviousMonth.length < 7 &&
-        daysForPreviousMonth.map((day) => (
-          <li key={day.dayOfMonth} className='daysList-day is-disabled'>
+        daysForPreviousMonth.map((day, index) => (
+          <li
+            key={day.dayOfMonth}
+            className={`daysList-day is-disabled is-prev-month ${
+              daysForPreviousMonth.length - 1 === index
+                ? 'is-border-right-0'
+                : ''
+            }`}
+          >
             {day.dayOfMonth}
           </li>
         ))}
@@ -303,8 +310,13 @@ const DaysView = ({
         </li>
       ))}
       {daysForNextMonth.length < 7 &&
-        daysForNextMonth.map((day) => (
-          <li key={day.dayOfMonth} className='daysList-day is-disabled'>
+        daysForNextMonth.map((day, index) => (
+          <li
+            key={day.dayOfMonth}
+            className={`daysList-day is-disabled is-next-month ${
+              index === 0 ? 'is-border-left-0' : ''
+            }`}
+          >
             {day.dayOfMonth}
           </li>
         ))}
