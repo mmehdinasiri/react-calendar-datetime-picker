@@ -267,6 +267,7 @@ const DaysView = ({
     }
     return classes
   }
+
   const daysForCurrentMonth = useMemo(() => {
     return createDaysForCurrentMonth(year, month, day)
   }, [year, month])

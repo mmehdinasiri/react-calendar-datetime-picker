@@ -136,7 +136,10 @@ const App = () => {
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
     <div style={{ margin: 'auto', width: '720px' }}>
-      <p>Single type En with time and max-min date also disabled date</p>
+      <p>
+        Single type En with time and max-min date and disabled date also change
+        icons
+      </p>
       <DtPicker
         onChange={handleCalendarChange}
         defaultValue={dateEn}
@@ -197,7 +200,7 @@ const App = () => {
       <br />
       <br />
       <br />
-      <p>Mange Fa with time</p>
+      <p>Range Fa with time</p>
       <DtPicker
         onChange={setDateFa}
         defaultValue={dateFa}
