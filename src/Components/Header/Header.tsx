@@ -106,7 +106,6 @@ const Header = ({
         >
           {MONTHS[month]}
         </div>
-        <div className='header-date--day'>{dayState.day}</div>
       </div>
       <a
         className={`header--btn ${!isActiveNext() ? 'is-disabled' : ''}`}
