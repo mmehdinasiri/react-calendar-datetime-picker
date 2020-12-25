@@ -63,7 +63,7 @@
   ],
   "dependencies": {
     "node-sass": "^5.0.0",
-    "persian-date": "^0.1.0",
+    "persian-date": "^1.1.0",
     "sass": "^1.30.0",
     "sass-rem": "^2.0.1"
   }

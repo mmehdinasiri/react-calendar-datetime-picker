@@ -55,13 +55,11 @@
   .is-disabled-by-user {
     pointer-events: none;
     background-color: $disable-color;
-    opacity: 0.3;
     color: $disable-text;
   }
   .is-minMaxDisabled {
     pointer-events: none;
     background-color: $disable-color;
-    opacity: 0.3;
     color: $disable-text;
   }
 
@@ -91,8 +89,8 @@
   .is-pointer {
     cursor: pointer;
   }
-  .is-weekends {
-    color: red;
+  .is_weekends {
+    color: $is-weekends !important;
   }
 }
 .is-rtl.daysList {
