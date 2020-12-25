@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 12/25/2020
+
+- fix weekend color
+
 ## [1.1.0] - 12/25/2020
 
 - add style to all components
