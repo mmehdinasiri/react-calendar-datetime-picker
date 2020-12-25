@@ -1,7 +1,9 @@
 .calender-modal {
   position: absolute;
   background-color: #fff;
-  padding: 0.375rem 0;
   z-index: 5000;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.25);
+  font-family: inherit;
+  border-radius: rem($global-radius-small);
+  overflow: hidden;
 }

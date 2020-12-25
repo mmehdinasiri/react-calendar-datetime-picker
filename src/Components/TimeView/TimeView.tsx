@@ -42,31 +42,73 @@ const TimeView = ({
       changeSelectedTime({ hours, minutes })
     }
   }
+  const changeHours = (newHours: number) => {
+    if (newHours > 23) newHours = 0
+    if (newHours < 0) newHours = 23
+    setHours(newHours)
+  }
+  const changeMinutes = (newMinutes: number) => {
+    if (newMinutes > 59) newMinutes = 0
+    if (newMinutes < 0) newMinutes = 59
+    setMinutes(newMinutes)
+  }
   useDidMountEffect(() => {
     handelChangeHours()
   }, [hours, minutes])
 
   return (
-    <div dir={`ltr ${timeClass}`}>
-      <span>{timeLabel}</span>
-      <div>
-        <input
-          value={addZero(hours)}
-          type='number'
-          max='23'
-          min='0'
-          onChange={(e) => setHours(Number(e.target.value))}
-          disabled={checkIsDisabled()}
-        />
+    <div dir='ltr' className={`time ${timeClass}`}>
+      <span className='time--title'>{timeLabel}</span>
+      <div className='field-wrapper'>
+        <fieldset
+          className={`time-fieldset ${checkIsDisabled() ? 'is-disabled' : ''}`}
+        >
+          <button
+            type='button'
+            className='time-fieldset--dec'
+            onClick={() => changeHours(hours - 1)}
+          />
+          <input
+            className='time--input'
+            value={addZero(hours).toString().slice(-2)}
+            type='number'
+            max='23'
+            min='0'
+            onChange={(e) => changeHours(Number(e.target.value))}
+            disabled={checkIsDisabled()}
+          />
+          <button
+            type='button'
+            className='time-fieldset--inc'
+            onClick={() => changeHours(hours + 1)}
+          />
+        </fieldset>
         :
-        <input
-          value={addZero(minutes)}
-          type='number'
-          max='59'
-          min='0'
-          onChange={(e) => setMinutes(Number(e.target.value))}
-          disabled={checkIsDisabled()}
-        />
+        <fieldset
+          className={`time-fieldset ${checkIsDisabled() ? 'is-disabled' : ''}`}
+        >
+          <button
+            type='button'
+            title='Down'
+            className='time-fieldset--dec'
+            onClick={() => changeMinutes(minutes - 1)}
+          />
+          <input
+            className='time--input'
+            value={addZero(minutes).toString().slice(-2)}
+            type='number'
+            max='59'
+            min='0'
+            onChange={(e) => changeMinutes(Number(e.target.value))}
+            disabled={checkIsDisabled()}
+          />
+          <button
+            type='button'
+            title='Up'
+            className='time-fieldset--inc'
+            onClick={() => changeMinutes(minutes + 1)}
+          />
+        </fieldset>
       </div>
     </div>
   )

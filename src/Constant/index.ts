@@ -78,7 +78,8 @@ export const LOCAL_CONSTANT = {
     previousMonthBtnTL: 'ماه قبل',
     fromLB: 'از',
     toLB: 'تا',
-    clockLB: 'ساعت'
+    clockLB: 'ساعت',
+    todayBtnTL: 'امروز'
   },
   en: {
     WEEK_DAY: [
@@ -181,10 +182,11 @@ export const LOCAL_CONSTANT = {
     previousMonthBtnTL: 'previous month',
     fromLB: 'from',
     toLB: 'to',
-    clockLB: 'clock'
+    clockLB: 'clock',
+    todayBtnTL: 'Today'
   }
 }
 
-export const YEARS_VIEW = 'DYEARS_VIEW'
+export const YEARS_VIEW = 'YEARS_VIEW'
 export const MONTHS_VIEW = 'MONTHS_VIEW'
 export const DAYS_VIEW = 'DAYS_VIEW'

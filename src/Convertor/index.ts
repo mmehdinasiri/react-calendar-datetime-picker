@@ -1,4 +1,4 @@
-// export const YEARS_VIEW = 'DYEARS_VIEW'
+// export const YEARS_VIEW = 'YEARS_VIEW'
 // export const MONTHS_VIEW = 'MONTHS_VIEW'
 // export const DAYS_VIEW = 'DAYS_VIEW'
 

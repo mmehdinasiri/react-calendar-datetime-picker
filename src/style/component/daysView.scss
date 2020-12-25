@@ -1,55 +1,92 @@
 .daysList {
   list-style: none;
   overflow: hidden;
-  padding: 0;
+  padding: rem(8px) 0;
+  margin: 0;
   text-align: center;
   .daysList-day {
-    width: rem(calc(340px / 7));
-    height: rem(calc(340px / 7));
-    line-height: rem(calc(340px / 7));
+    width: rem(calc(#{$modal-width} / 7));
+    height: rem(calc(#{$modal-width} / 7));
+    line-height: rem(calc(#{$modal-width} / 7));
     float: left;
     text-align: center;
     box-sizing: border-box;
     cursor: pointer;
+    border-radius: 50%;
+    color: $text-color-light;
+    font-size: rem(14px);
+    margin: rem(1px 0);
+  }
+  .is-week-days {
+    color: $text-color-lighter;
+    font-size: 14px;
+    font-weight: 500;
+    height: 34px;
+    line-height: 34px;
+    border-radius: 0;
+  }
+  .is-prev-month {
+    border-radius: 0;
+  }
+  .is-next-month {
+    border-radius: 0;
+  }
+  .is-border-right-0 {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+  }
+  .is-border-left-0 {
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
   }
 
   .daysList-day:nth-child(7n + 1) {
     clear: left;
   }
   .is-today {
-    border: rem(2px) solid green;
+    // border: rem(2px) solid ;
+    box-shadow: inset 0px 0px 0px 2px $is-today;
   }
   .is-disabled {
     pointer-events: none;
-    background-color: #aaa;
-    opacity: 0.7;
+    background-color: $disable-color;
+    color: $disable-text;
   }
-  .is-disabled-by-user{
+  .is-disabled-by-user {
     pointer-events: none;
-    background-color: #ccc;
-    opacity: 0.3
+    background-color: $disable-color;
+    opacity: 0.3;
+    color: $disable-text;
   }
   .is-minMaxDisabled {
     pointer-events: none;
-    background-color: #ccc;
+    background-color: $disable-color;
     opacity: 0.3;
+    color: $disable-text;
   }
 
   .is-selected-day {
-    background-color: yellow;
+    background-color: $is-selected-day;
+    color: white;
   }
   .is-selected-day-from {
-    background-color: cyan;
+    background-color: $is-selected-day;
+    border-radius: 0;
     border-top-left-radius: rem(50%);
     border-bottom-left-radius: rem(50%);
+    color: white;
   }
   .is-selected-day-to {
-    background-color: yellowgreen;
+    background-color: $is-selected-day;
+    border-radius: 0;
     border-top-right-radius: rem(50%);
     border-bottom-right-radius: rem(50%);
+    color: white;
   }
   .is-selected-day-range {
-    background-color: yellow;
+    color: $is-selected-day-range-color;
+    border-radius: 0;
+    background-color: $is-selected-day-range;
   }
   .is-pointer {
     cursor: pointer;
@@ -66,17 +103,39 @@
     clear: right;
   }
   .is-selected-day-from {
-    background-color: cyan;
     border-top-left-radius: rem(0);
     border-bottom-left-radius: rem(0);
     border-top-right-radius: rem(50%);
     border-bottom-right-radius: rem(50%);
   }
   .is-selected-day-to {
-    background-color: yellowgreen;
     border-top-right-radius: rem(0);
     border-bottom-right-radius: rem(0);
     border-top-left-radius: rem(50%);
     border-bottom-left-radius: rem(50%);
+  }
+}
+.is-rtl {
+  .daysList {
+    .is-border-right-0 {
+      border-radius: 0;
+      border-top-left-radius: 50%;
+      border-bottom-left-radius: 50%;
+    }
+    .is-border-left-0 {
+      border-radius: 0;
+      border-top-right-radius: 50%;
+      border-bottom-right-radius: 50%;
+    }
+    .is-selected-day-from {
+      border-radius: 0;
+      border-top-right-radius: rem(50%);
+      border-bottom-right-radius: rem(50%);
+    }
+    .is-selected-day-to {
+      border-radius: 0;
+      border-top-left-radius: rem(50%);
+      border-bottom-left-radius: rem(50%);
+    }
   }
 }

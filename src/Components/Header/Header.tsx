@@ -93,9 +93,19 @@ const Header = ({
       >
         {previousBtnLabel || <Back />}
       </a>
-      <div>
-        <div onClick={() => handelView(YEARS_VIEW)}>{year}</div>
-        <div onClick={() => handelView(MONTHS_VIEW)}>{MONTHS[month]}</div>
+      <div className='header-date'>
+        <div
+          className='header-date--year'
+          onClick={() => handelView(YEARS_VIEW)}
+        >
+          {year}
+        </div>
+        <div
+          className='header-date--month'
+          onClick={() => handelView(MONTHS_VIEW)}
+        >
+          {MONTHS[month]}
+        </div>
       </div>
       <a
         className={`header--btn ${!isActiveNext() ? 'is-disabled' : ''}`}

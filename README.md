@@ -104,6 +104,7 @@ const App = () => {
 - [x] add placeholders and labels
 - [x] add classes options for different component
 - [x] add list of disabled date feature
+- [ ] scroll to selected year in years component
 - [ ] write test
 - [ ] add styles
 

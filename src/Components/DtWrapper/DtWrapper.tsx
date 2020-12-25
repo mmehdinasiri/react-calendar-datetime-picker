@@ -96,7 +96,12 @@ const Wrapper = ({
     }
   }, [])
   return (
-    <div className='dtWrapper' dir={local === 'fa' ? 'rtl' : 'ltr'}>
+    <div
+      className={`dtWrapper ${local === 'fa' ? 'is-rtl' : 'is-ltr'} ${
+        'is_' + useViewState()
+      }`}
+      dir={local === 'fa' ? 'rtl' : 'ltr'}
+    >
       <Header
         local={local}
         nextBtnLabel={nextBtnLabel}
@@ -116,9 +121,10 @@ const Wrapper = ({
         yearsClass,
         disabledDates
       )}
-      <TodayBtn local={local} todayBtn={todayBtn} />
-
-      {withTime && type === 'single' && (
+      {useViewState() === DAYS_VIEW && (
+        <TodayBtn local={local} todayBtn={todayBtn} />
+      )}
+      {withTime && type === 'single' && useViewState() === DAYS_VIEW && (
         <TimeView
           timeFor='single'
           initHour={(selectedDayState as IDay)?.hours}
@@ -127,8 +133,8 @@ const Wrapper = ({
           timeClass={timeClass}
         />
       )}
-      {withTime && type === 'range' && (
-        <React.Fragment>
+      {withTime && type === 'range' && useViewState() === DAYS_VIEW && (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <TimeView
             timeFor='from'
             initHour={(selectedDayState as IRange).from?.hours}
@@ -143,7 +149,7 @@ const Wrapper = ({
             timeLabel={clockToLabel || clockToLB}
             timeClass={timeClass}
           />
-        </React.Fragment>
+        </div>
       )}
     </div>
   )

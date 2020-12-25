@@ -12,9 +12,10 @@ const App = () => {
   // const day = new Date(1984, 1, 25)
   // const day = new Date(2000, 11, 9)
   // const [dateEn, setDateEn] = useState()
-  // const [dateEn2, setDateEn2] = useState()
-  // const [dateEn3, setDateEn3] = useState()
-  // const [dateFa, setDateFa] = useState()
+  const [dateEn2, setDateEn2] = useState(null)
+  const [dateEn3, setDateEn3] = useState()
+  const [dateFa1, setDateFa1] = useState()
+  const [dateFa2, setDateFa2] = useState()
   // const [dateEn, setDateEn] = useState({ year: 1398, month: 8, day: 1 })
   // const [dateEn, setDateEn] = useState({
   //   from: { year: 2012, month: 5, day: 2 },
@@ -100,45 +101,34 @@ const App = () => {
   //   day: 2
   // }
 
-  const [dateEn, setDateEn] = useState([
-    {
-      year: 2015,
-      month: 6,
-      day: 26
-    },
-    {
-      year: 2015,
-      month: 6,
-      day: 21
-    }
-  ])
-  const maxDate = {
-    year: 2016,
-    month: 6,
-    day: 23
-  }
-  const minDate = {
-    year: 2012,
-    month: 5,
-    day: 2
-  }
-  const disabledDates = [
-    {
-      year: 2015,
-      month: 6,
-      day: 23
-    },
-    {
-      year: 2015,
-      month: 6,
-      day: 12
-    },
-    {
-      year: 2015,
-      month: 6,
-      day: 10
-    }
-  ]
+  const [dateEn, setDateEn] = useState({ year: 2016, month: 6, day: 20 })
+  // const maxDate = {
+  //   year: 2016,
+  //   month: 6,
+  //   day: 23
+  // }
+  // const minDate = {
+  //   year: 2012,
+  //   month: 5,
+  //   day: 2
+  // }
+  // const disabledDates = [
+  //   {
+  //     year: 2015,
+  //     month: 6,
+  //     day: 23
+  //   },
+  //   {
+  //     year: 2015,
+  //     month: 6,
+  //     day: 12
+  //   },
+  //   {
+  //     year: 2015,
+  //     month: 6,
+  //     day: 10
+  //   }
+  // ]
   const handleCalendarChange = (newDate: any) => {
     console.log('Calendar changed')
     setDateEn(newDate)
@@ -147,11 +137,14 @@ const App = () => {
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
     <div style={{ margin: 'auto', width: '720px' }}>
-      <p>single en with time</p>
+      <p>
+        Single type En with time and max-min date and disabled date also change
+        icons
+      </p>
       <DtPicker
         onChange={handleCalendarChange}
         defaultValue={dateEn}
-        type='multi'
+        type='single'
         local='en'
         withTime
         showWeekend
@@ -159,8 +152,8 @@ const App = () => {
         isRequired
         todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
         placeholder='seleccccccct'
-        nextBtnLabel='next'
-        previousBtnLabel='previous'
+        // nextBtnLabel='next'
+        // previousBtnLabel='previous'
         fromLabel='from date'
         toLabel='to date'
         clockFromLabel='froom'
@@ -178,25 +171,26 @@ const App = () => {
         yearsClass='yearClass'
         onCalenderShow={handleCalendarOpen}
         onCalenderHide={handleCalendarClose}
-        maxDate={maxDate}
-        minDate={minDate}
-        disabledDates={disabledDates}
+        // maxDate={maxDate}
+        // minDate={minDate}
+        // disabledDates={disabledDates}
         // isDisabled
       />
       {JSON.stringify(dateEn, null, 4)}
       <br />
-      {/* <p>range en no time</p> */}
-      {/* <DtPicker
+      <p>Range En no time</p>
+      <DtPicker
         onChange={setDateEn2}
         defaultValue={dateEn2}
         type='range'
         local='en'
         showWeekend
+        withTime
       />
       {JSON.stringify(dateEn2, null, 4)}
       <br />
 
-      <p>multi en no time</p>
+      <p>Multi En no time</p>
       <DtPicker
         onChange={setDateEn3}
         defaultValue={dateEn3}
@@ -208,17 +202,30 @@ const App = () => {
       <br />
       <br />
       <br />
-      <p>range fa with time</p>
+      <p>Single Fa with time</p>
       <DtPicker
-        onChange={setDateFa}
-        defaultValue={dateFa}
+        onChange={setDateFa1}
+        defaultValue={dateFa1}
+        withTime
+        type='single'
+        local='fa'
+        showWeekend
+      />
+      {JSON.stringify(dateFa1, null, 4)}
+      <br />
+      <br />
+      <br />
+      <p>Range Fa with time</p>
+      <DtPicker
+        onChange={setDateFa2}
+        defaultValue={dateFa2}
         withTime
         type='range'
         local='fa'
         showWeekend
+        todayBtn
       />
-      {JSON.stringify(dateFa, null, 4)} */}
-      {/* <DtPicker onChange={setDate} defaultValue={date} /> */}
+      {JSON.stringify(dateFa2, null, 4)}
     </div>
   )
 }

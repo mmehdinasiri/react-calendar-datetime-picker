@@ -1,8 +1,7 @@
 /* add css module styles here (optional) */
 .dtWrapper {
   margin: auto;
-  width: rem(340px);
+  width: $modal-width;
   position: relative;
-  padding: rem(8px);
-  border-radius: rem(4px);
+  // border-radius: rem($global-radius-small);
 }
