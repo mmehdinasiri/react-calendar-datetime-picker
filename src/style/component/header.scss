@@ -38,3 +38,13 @@
     }
   }
 }
+.is-rtl {
+  .header {
+    .header-date {
+      direction: ltr;
+    }
+    .header--btn {
+      transform: scale(-1);
+    }
+  }
+}

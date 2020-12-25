@@ -14,7 +14,8 @@ const App = () => {
   // const [dateEn, setDateEn] = useState()
   const [dateEn2, setDateEn2] = useState(null)
   const [dateEn3, setDateEn3] = useState()
-  const [dateFa, setDateFa] = useState()
+  const [dateFa1, setDateFa1] = useState()
+  const [dateFa2, setDateFa2] = useState()
   // const [dateEn, setDateEn] = useState({ year: 1398, month: 8, day: 1 })
   // const [dateEn, setDateEn] = useState({
   //   from: { year: 2012, month: 5, day: 2 },
@@ -201,16 +202,30 @@ const App = () => {
       <br />
       <br />
       <br />
-      <p>Range Fa with time</p>
+      <p>Single Fa with time</p>
       <DtPicker
-        onChange={setDateFa}
-        defaultValue={dateFa}
+        onChange={setDateFa1}
+        defaultValue={dateFa1}
         withTime
         type='single'
         local='fa'
         showWeekend
       />
-      {JSON.stringify(dateFa, null, 4)}
+      {JSON.stringify(dateFa1, null, 4)}
+      <br />
+      <br />
+      <br />
+      <p>Range Fa with time</p>
+      <DtPicker
+        onChange={setDateFa2}
+        defaultValue={dateFa2}
+        withTime
+        type='range'
+        local='fa'
+        showWeekend
+        todayBtn
+      />
+      {JSON.stringify(dateFa2, null, 4)}
     </div>
   )
 }

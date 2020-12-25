@@ -5,7 +5,7 @@ import { useMinMaxState } from '../../store/MinMaxProvider'
 import { compareDateEN, compareDateFA } from '../../Helpers'
 
 const TodayBtn = ({ local, todayBtn }: ITodayBtn) => {
-  const { todayObject, TodayBtnTL } = useLangOption(local)
+  const { todayObject, todayBtnTL } = useLangOption(local)
   const { changeCalender } = useCalenderActions()
   const { minDate, maxDate } = useMinMaxState()
   const today = todayObject()
@@ -30,7 +30,7 @@ const TodayBtn = ({ local, todayBtn }: ITodayBtn) => {
     <Fragment>
       {isShowTodayBtn() && (
         <a className='todayBtn' onClick={goToday}>
-          {TodayBtnTL}
+          {todayBtnTL}
         </a>
       )}
     </Fragment>

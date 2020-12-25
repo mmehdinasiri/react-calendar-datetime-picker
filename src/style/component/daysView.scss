@@ -103,17 +103,39 @@
     clear: right;
   }
   .is-selected-day-from {
-    background-color: cyan;
     border-top-left-radius: rem(0);
     border-bottom-left-radius: rem(0);
     border-top-right-radius: rem(50%);
     border-bottom-right-radius: rem(50%);
   }
   .is-selected-day-to {
-    background-color: yellowgreen;
     border-top-right-radius: rem(0);
     border-bottom-right-radius: rem(0);
     border-top-left-radius: rem(50%);
     border-bottom-left-radius: rem(50%);
+  }
+}
+.is-rtl {
+  .daysList {
+    .is-border-right-0 {
+      border-radius: 0;
+      border-top-left-radius: 50%;
+      border-bottom-left-radius: 50%;
+    }
+    .is-border-left-0 {
+      border-radius: 0;
+      border-top-right-radius: 50%;
+      border-bottom-right-radius: 50%;
+    }
+    .is-selected-day-from {
+      border-radius: 0;
+      border-top-right-radius: rem(50%);
+      border-bottom-right-radius: rem(50%);
+    }
+    .is-selected-day-to {
+      border-radius: 0;
+      border-top-left-radius: rem(50%);
+      border-bottom-left-radius: rem(50%);
+    }
   }
 }

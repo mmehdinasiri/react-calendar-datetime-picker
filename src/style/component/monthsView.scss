@@ -3,16 +3,24 @@
   overflow: hidden;
   padding: 0;
   text-align: center;
+  will-change: transform;
+  transition: 800ms;
+  // transform: translateY(-100%);
 }
 .monthList_month {
-  width: rem(calc(340px / 3));
+  width: rem(calc(#{$modal-width} / 3));
   height: rem(72px);
   line-height: rem(72px);
   float: left;
   text-align: center;
   box-sizing: border-box;
   cursor: pointer;
-  &.is-disabled{
+  color: $text-color-light;
+  transition: color 200ms ease-in-out;
+  &:hover {
+    color: $text-color;
+  }
+  &.is-disabled {
     opacity: 0.2;
     pointer-events: none;
   }
