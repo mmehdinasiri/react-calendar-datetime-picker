@@ -54,44 +54,45 @@ const App = () => {
   const handleCalendarClose = () => console.log('Calendar closed')
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
-      <DtPicker
-        onChange={handleCalendarChange}
-        defaultValue={dateEn}
-        type='single'
-        local='en'
-        withTime
-        showWeekend
-        clearBtn
-        isRequired
-        todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
-        placeholder='seleccccccct'
-        nextBtnLabel='next'
-        previousBtnLabel='previous'
-        fromLabel='from date'
-        toLabel='to date'
-        clockFromLabel='froom'  // this is just shows in range type
-        clockToLabel='too'      // this is just shows in range type
-        clockLabel='cloock'     // this is just shows in single type
-        nextMonthBtnTitle='next btn Title'
-        previousMonthBtnTitle='previous btn Title'
-        onCalenderShow={handleCalendarOpen}
-        onCalenderHide={handleCalendarClose}
-        maxDate={maxDate}
-        minDate={minDate}
-        inputClass='inputClass'
-        clearBtnClass='clearBtnClass'
-        calenderModalClass='calenderModalClass'
-        headerClass='headerClass'
-        timeClass='timeClass'
-        daysClass='daysClass'
-        monthsClass='monthClass'
-        yearsClass='yearClass'
-        disabledDates={disabledDates}
-        // isDisabled
-      />
+    <DtPicker
+      onChange={handleCalendarChange}
+      defaultValue={dateEn}
+      type='single'
+      local='en'
+      withTime
+      showWeekend
+      clearBtn
+      isRequired
+      todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
+      placeholder='seleccccccct'
+      nextBtnLabel='next'
+      previousBtnLabel='previous'
+      fromLabel='from date'
+      toLabel='to date'
+      clockFromLabel='froom' // this is just shows in range type
+      clockToLabel='too' // this is just shows in range type
+      clockLabel='cloock' // this is just shows in single type
+      nextMonthBtnTitle='next btn Title'
+      previousMonthBtnTitle='previous btn Title'
+      onCalenderShow={handleCalendarOpen}
+      onCalenderHide={handleCalendarClose}
+      maxDate={maxDate}
+      minDate={minDate}
+      inputClass='inputClass'
+      clearBtnClass='clearBtnClass'
+      calenderModalClass='calenderModalClass'
+      headerClass='headerClass'
+      timeClass='timeClass'
+      daysClass='daysClass'
+      monthsClass='monthClass'
+      yearsClass='yearClass'
+      disabledDates={disabledDates}
+      // isDisabled
+    />
   )
 }
 ```
+
 ### TODO
 
 - [x] max date
@@ -104,9 +105,9 @@ const App = () => {
 - [x] add placeholders and labels
 - [x] add classes options for different component
 - [x] add list of disabled date feature
-- [ ] scroll to selected year in years component
+- [x] scroll to selected year in years component
+- [x] add styles
 - [ ] write test
-- [ ] add styles
 
 ## License
 
