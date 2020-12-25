@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { DAYS_VIEW } from '../../Constant'
 import { useViewActions } from '../../store/ViewProvider'
 import { useLangOption } from '../../hooks/useLangOption'
@@ -56,12 +56,30 @@ const years = ({ local, yearsClass }: IYearsProps) => {
     const yearsList = []
     for (let i = fixedMinStartYear(); i <= fixedMaxEndYear(); i++)
       yearsList.push(
-        <li key={i} className='yearList_year' onClick={() => changeYear(i)}>
+        <li
+          key={i}
+          className={`yearList_year ${
+            i === calenderState.year ? 'is-selectedYearRef' : ''
+          }`}
+          onClick={() => changeYear(i)}
+        >
           {i}
         </li>
       )
     return yearsList
   }
+  useEffect(() => {
+    const node: HTMLElement | null = document.querySelector(
+      '.is-selectedYearRef'
+    )
+    if (node) {
+      node.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center'
+      })
+    }
+  }, [])
   return (
     <div className={`yearWrapper ${yearsClass}`}>
       <ul className={`yearList ${local === 'fa' ? 'is-rtl' : ''}`}>
