@@ -185,6 +185,7 @@ const App = () => {
         type='range'
         local='en'
         showWeekend
+        clearBtn
         withTime
       />
       {JSON.stringify(dateEn2, null, 4)}
@@ -210,6 +211,7 @@ const App = () => {
         type='single'
         local='fa'
         showWeekend
+        clearBtn
       />
       {JSON.stringify(dateFa1, null, 4)}
       <br />

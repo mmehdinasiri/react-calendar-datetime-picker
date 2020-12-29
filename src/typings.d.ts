@@ -138,6 +138,7 @@ interface IInputPicker {
   toLabel?: string
   inputClass?: string
   clearBtnClass?: string
+  maxDate: IDay | null | undefined
 }
 interface ITimeViewProps {
   initHour: number | undefined
