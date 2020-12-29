@@ -102,6 +102,7 @@ export const DtPicker = ({
                   toLabel={toLabel}
                   inputClass={inputClass}
                   clearBtnClass={clearBtnClass}
+                  maxDate={maxDate}
                 />
                 {isComponentVisible && (
                   <div

@@ -54,13 +54,15 @@
   }
   .is-disabled-by-user {
     pointer-events: none;
-    background-color: $disable-color;
-    color: $disable-text;
+    // background-color: $disable-color;
+    opacity: 0.6;
+    // color: $disable-text;
   }
   .is-minMaxDisabled {
     pointer-events: none;
-    background-color: $disable-color;
-    color: $disable-text;
+    // background-color: $disable-color;
+    opacity: 0.6;
+    // color: $disable-text;
   }
 
   .is-selected-day {
@@ -81,6 +83,10 @@
     border-bottom-right-radius: rem(50%);
     color: white;
   }
+  .is-selected-day-from.is-selected-day-to {
+    border-radius: rem(50%);
+  }
+
   .is-selected-day-range {
     color: $is-selected-day-range-color;
     border-radius: 0;

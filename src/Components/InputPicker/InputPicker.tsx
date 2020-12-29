@@ -7,6 +7,7 @@ import {
 import { ReactComponent as Close } from '../../Icons/close.svg'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { useLangOption } from '../../hooks/useLangOption'
+import { useCalenderActions } from '../../store/CalenderProvider'
 
 const InputPicker = forwardRef(
   (
@@ -23,11 +24,13 @@ const InputPicker = forwardRef(
       fromLabel,
       toLabel,
       inputClass,
-      clearBtnClass
+      clearBtnClass,
+      maxDate
     }: IInputPicker,
     ref: RefObject<HTMLInputElement>
   ) => {
-    const { inputPlaceholder, fromLB, toLB } = useLangOption(local)
+    const { inputPlaceholder, fromLB, toLB, todayObject } = useLangOption(local)
+    const { changeCalender } = useCalenderActions()
     const selectedDayState = useSelectedDayState()
     const selectedTime = useSelectedTimeState()
     const {
@@ -73,8 +76,21 @@ const InputPicker = forwardRef(
         removeAllSelectedDayMulti()
         mergeProviders(onChange, type, [], selectedTime, withTime)
       }
+      if (maxDate) {
+        changeCalender({
+          year: maxDate?.year,
+          month: maxDate?.month,
+          day: maxDate?.day
+        })
+      } else {
+        const today = todayObject()
+        changeCalender({
+          year: today.year,
+          month: today.month,
+          day: today.day
+        })
+      }
     }
-
     return (
       <div className='input-picker'>
         <input

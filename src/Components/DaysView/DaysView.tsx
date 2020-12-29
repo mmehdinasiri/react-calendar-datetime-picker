@@ -223,6 +223,7 @@ const DaysView = ({
     ) {
       classes += ' is-selected-day-range'
     }
+
     if (
       type === 'multi' &&
       (selectedDayState as IDay[]).find(

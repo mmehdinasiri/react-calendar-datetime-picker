@@ -152,8 +152,8 @@ const App = () => {
         isRequired
         todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
         placeholder='seleccccccct'
-        // nextBtnLabel='next'
-        // previousBtnLabel='previous'
+        nextBtnLabel='next'
+        previousBtnLabel='previous'
         fromLabel='from date'
         toLabel='to date'
         clockFromLabel='froom'
@@ -178,13 +178,14 @@ const App = () => {
       />
       {JSON.stringify(dateEn, null, 4)}
       <br />
-      <p>Range En no time</p>
+      <p>Range En with time</p>
       <DtPicker
         onChange={setDateEn2}
         defaultValue={dateEn2}
         type='range'
         local='en'
         showWeekend
+        clearBtn
         withTime
       />
       {JSON.stringify(dateEn2, null, 4)}
@@ -210,6 +211,7 @@ const App = () => {
         type='single'
         local='fa'
         showWeekend
+        clearBtn
       />
       {JSON.stringify(dateFa1, null, 4)}
       <br />
