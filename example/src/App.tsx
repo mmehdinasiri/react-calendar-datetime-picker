@@ -178,7 +178,7 @@ const App = () => {
       />
       {JSON.stringify(dateEn, null, 4)}
       <br />
-      <p>Range En no time</p>
+      <p>Range En with time</p>
       <DtPicker
         onChange={setDateEn2}
         defaultValue={dateEn2}
