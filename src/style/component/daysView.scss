@@ -54,14 +54,14 @@
   }
   .is-disabled-by-user {
     pointer-events: none;
-    background-color: $disable-color;
-    opacity: 0.3;
-    color: $disable-text;
+    // background-color: $disable-color;
+    opacity: 0.6;
+    // color: $disable-text;
   }
   .is-minMaxDisabled {
     pointer-events: none;
-    background-color: $disable-color;
-    opacity: 0.3;
+    // background-color: $disable-color;
+    opacity: 0.6;
     color: $disable-text;
   }
 

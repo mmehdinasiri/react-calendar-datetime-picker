@@ -55,7 +55,9 @@ const TimeView = ({
   useDidMountEffect(() => {
     handelChangeHours()
   }, [hours, minutes])
-
+  const scrollEvent = (e: any) => {
+    console.log(e)
+  }
   return (
     <div dir='ltr' className={`time ${timeClass}`}>
       <span className='time--title'>{timeLabel}</span>
@@ -69,6 +71,7 @@ const TimeView = ({
             onClick={() => changeHours(hours - 1)}
           />
           <input
+            onScroll={(e) => scrollEvent(e)}
             className='time--input'
             value={addZero(hours).toString().slice(-2)}
             type='number'
