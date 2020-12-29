@@ -83,6 +83,10 @@
     border-bottom-right-radius: rem(50%);
     color: white;
   }
+  .is-selected-day-from.is-selected-day-to {
+    border-radius: rem(50%);
+  }
+
   .is-selected-day-range {
     color: $is-selected-day-range-color;
     border-radius: 0;
