@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.2] - 12/30/2020
+
+- fix date style when from date is equal to to date
+- fix calender date after user use clear btn
+- change disabled date style
+
 ## [1.1.1] - 12/25/2020
 
 - fix weekend color
