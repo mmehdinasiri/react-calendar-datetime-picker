@@ -55,13 +55,13 @@
   .is-disabled-by-user {
     pointer-events: none;
     // background-color: $disable-color;
-    opacity: 0.6;
+    opacity: 0.5;
     // color: $disable-text;
   }
   .is-minMaxDisabled {
     pointer-events: none;
     // background-color: $disable-color;
-    opacity: 0.6;
+    opacity: 0.5;
     color: $disable-text;
   }
 
