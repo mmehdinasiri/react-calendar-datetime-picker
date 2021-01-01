@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run watch:css && node ../node_modules/react-scripts/bin/react-scripts.js start",
-    "build": "npm run watch:css && node ../node_modules/react-scripts/bin/react-scripts.js build",
+    "start": "SET NODE_ENV=development && npm run watch:css && node ../node_modules/react-scripts/bin/react-scripts.js start",
+    "build": "SET NODE_ENV=production && npm run watch:css && node ../node_modules/react-scripts/bin/react-scripts.js build",
     "test": "node ../node_modules/react-scripts/bin/react-scripts.js test",
     "eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject",
     "watch:css": "postcss src/style/styles.scss -o src/style/main.scss"

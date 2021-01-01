@@ -1,6 +1,6 @@
 module.exports = {
   purge: {
-    enabled: true,
+    enabled: process.env.node_env.trim() === 'production' ? true : false,
     content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html']
   },
   theme: {
