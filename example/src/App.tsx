@@ -8,20 +8,17 @@ import './style/main.scss'
 
 export default function App() {
   return (
-    <div className='container mx-auto'>
-      <Router>
-        <div>
-          <Switch>
-            <Route path='/doc'>
-              <Doc />
-            </Route>
-            <Route path='/'>
-              <Home />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
-      <button className='btn'>Sign up</button>
-    </div>
+    <Router>
+      <div>
+        <Switch>
+          <Route path='/doc'>
+            <Doc />
+          </Route>
+          <Route path='/'>
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   )
 }
