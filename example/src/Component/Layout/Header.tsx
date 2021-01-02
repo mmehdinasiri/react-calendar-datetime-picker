@@ -2,7 +2,7 @@ import React from 'react'
 
 const Header = () => {
   return (
-    <nav className='flex items-center justify-between flex-wrap bg-teal p-4'>
+    <nav className='flex items-center justify-between flex-wrap bg-teal p-4 '>
       <div className='flex items-center flex-no-shrink text-white mr-6'>
         <span className='text-xl text-text-light font-medium'>
           React date-time picker

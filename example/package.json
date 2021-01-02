@@ -8,7 +8,7 @@
     "build": "SET NODE_ENV=production && npm run watch:css && node ../node_modules/react-scripts/bin/react-scripts.js build",
     "test": "node ../node_modules/react-scripts/bin/react-scripts.js test",
     "eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject",
-    "watch:css": "postcss src/style/styles.scss -o src/style/main.scss"
+    "watch:css": "postcss src/style/tailwind.scss -o src/style/tailwindPurge.scss "
   },
   "dependencies": {
     "@testing-library/jest-dom": "link:../node_modules/@testing-library/jest-dom",
