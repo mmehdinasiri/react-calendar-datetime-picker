@@ -12,6 +12,14 @@ version: "1.1.1"
 npm install --save react-datetime-picker
 ```
 
+## Documentation 📄
+
+You can find documentation on [the website.](https://mmehdinasiri.github.io/react-datetime-picker/)
+
+The documentation is divided into several sections:
+
+- [Getting Started](https://mmehdinasiri.github.io/react-datetime-picker/docs/getting-started)
+
 ## Usage
 
 ```tsx
