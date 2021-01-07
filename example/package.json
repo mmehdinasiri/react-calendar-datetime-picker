@@ -1,7 +1,7 @@
 {
   "name": "react-datetime-picker-example",
   "homepage": "https://mmehdinasiri.github.io/react-datetime-picker/",
-  "version": "0.0.0",
+  "version": "1.1.2",
   "private": true,
   "scripts": {
     "start": "SET NODE_ENV=development && npm run watch:css && node ../node_modules/react-scripts/bin/react-scripts.js start",

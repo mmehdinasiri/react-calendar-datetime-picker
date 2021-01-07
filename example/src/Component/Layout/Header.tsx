@@ -6,7 +6,7 @@ const Header = () => {
     <nav className='flex items-center justify-between flex-wrap bg-teal p-4 bg-primary text-text-lightest'>
       <div className='flex items-center flex-no-shrink text-text-lightest mr-6'>
         <span className='text-xl text-text-lightest font-medium'>
-          <Link to='/'>
+          <Link to='https://mmehdinasiri.github.io/react-datetime-picker/'>
             React date-time picker <span className='text-xs ml-2'>v1.1.2</span>
           </Link>
         </span>
@@ -23,7 +23,7 @@ const Header = () => {
           <NavLink
             className='block inline-block mt-0 text-text-lightest hover:text-white mr-4 font-extralight'
             activeClassName='is-active'
-            to='/doc'
+            to='/docs/quick-start'
           >
             Docs
           </NavLink>

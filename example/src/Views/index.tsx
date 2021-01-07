@@ -1,3 +1,6 @@
 export { default as Home } from './Home'
-export { default as Doc } from './Doc'
+export { default as QuickStart } from './QuickStart'
 export { default as Example } from './Example'
+export { default as Api } from './Api'
+export { default as Props } from './Props'
+export { default as Customization } from './Customization'
