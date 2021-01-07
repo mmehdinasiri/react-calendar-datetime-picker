@@ -2,5 +2,5 @@
 @tailwind components;
 @tailwind utilities;
 .btn {
-  @apply px-20;
+  @apply px-8 py-1 rounded-full border border-primary text-primary max-w-max shadow-sm hover:shadow-lg;
 }

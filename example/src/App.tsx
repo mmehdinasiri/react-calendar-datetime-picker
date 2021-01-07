@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { Home, Doc } from './Views'
+import { Home, Doc, Example } from './Views'
 import './style/tailwindPurge.scss'
 import './style/main.scss'
 
@@ -14,6 +14,9 @@ export default function App() {
         <Switch>
           <Route path='/doc'>
             <Doc />
+          </Route>
+          <Route path='/examples'>
+            <Example />
           </Route>
           <Route path='/'>
             <Home />

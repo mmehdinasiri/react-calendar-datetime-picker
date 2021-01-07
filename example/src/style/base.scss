@@ -3,3 +3,7 @@ body {
   background-color: $body-bg;
   font-size: 16px;
 }
+
+.main-content {
+  min-height: calc(100vh - 90px);
+}

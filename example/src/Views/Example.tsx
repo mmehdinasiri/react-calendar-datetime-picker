@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import { DtPicker } from 'react-datetime-picker'
 import 'react-datetime-picker/dist/index.css'
+import { Layout } from '../Component'
 
 const App = () => {
   // const day = new Date(1999, 1, 12)
@@ -136,99 +137,101 @@ const App = () => {
   const handleCalendarClose = () => console.log('Calendar closed')
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
-    <div style={{ margin: 'auto', width: '720px' }}>
-      <p>
-        Single type En with time and max-min date and disabled date also change
-        icons
-      </p>
-      <DtPicker
-        onChange={handleCalendarChange}
-        defaultValue={dateEn}
-        type='single'
-        local='en'
-        withTime
-        showWeekend
-        clearBtn
-        isRequired
-        todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
-        placeholder='seleccccccct'
-        nextBtnLabel='next'
-        previousBtnLabel='previous'
-        fromLabel='from date'
-        toLabel='to date'
-        clockFromLabel='froom'
-        clockToLabel='too'
-        clockLabel='cloock'
-        nextMonthBtnTitle='next btn Title'
-        previousMonthBtnTitle='previous btn Title'
-        inputClass='inputClass'
-        clearBtnClass='clearBtnClass'
-        calenderModalClass='calenderModalClass'
-        headerClass='headerClass'
-        timeClass='timeClass'
-        daysClass='daysClass'
-        monthsClass='monthClass'
-        yearsClass='yearClass'
-        onCalenderShow={handleCalendarOpen}
-        onCalenderHide={handleCalendarClose}
-        maxDate={maxDate}
-        minDate={minDate}
-        disabledDates={disabledDates}
-        // isDisabled
-      />
-      {JSON.stringify(dateEn, null, 4)}
-      <br />
-      <p>Range En with time</p>
-      <DtPicker
-        onChange={setDateEn2}
-        defaultValue={dateEn2}
-        type='range'
-        local='en'
-        showWeekend
-        clearBtn
-        withTime
-      />
-      {JSON.stringify(dateEn2, null, 4)}
-      <br />
+    <Layout>
+      <div>
+        <p>
+          Single type En with time and max-min date and disabled date also
+          change icons
+        </p>
+        <DtPicker
+          onChange={handleCalendarChange}
+          defaultValue={dateEn}
+          type='single'
+          local='en'
+          withTime
+          showWeekend
+          clearBtn
+          isRequired
+          todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
+          placeholder='seleccccccct'
+          nextBtnLabel='next'
+          previousBtnLabel='previous'
+          fromLabel='from date'
+          toLabel='to date'
+          clockFromLabel='froom'
+          clockToLabel='too'
+          clockLabel='cloock'
+          nextMonthBtnTitle='next btn Title'
+          previousMonthBtnTitle='previous btn Title'
+          inputClass='inputClass'
+          clearBtnClass='clearBtnClass'
+          calenderModalClass='calenderModalClass'
+          headerClass='headerClass'
+          timeClass='timeClass'
+          daysClass='daysClass'
+          monthsClass='monthClass'
+          yearsClass='yearClass'
+          onCalenderShow={handleCalendarOpen}
+          onCalenderHide={handleCalendarClose}
+          maxDate={maxDate}
+          minDate={minDate}
+          disabledDates={disabledDates}
+          // isDisabled
+        />
+        {JSON.stringify(dateEn, null, 4)}
+        <br />
+        <p>Range En with time</p>
+        <DtPicker
+          onChange={setDateEn2}
+          defaultValue={dateEn2}
+          type='range'
+          local='en'
+          showWeekend
+          clearBtn
+          withTime
+        />
+        {JSON.stringify(dateEn2, null, 4)}
+        <br />
 
-      <p>Multi En no time</p>
-      <DtPicker
-        onChange={setDateEn3}
-        defaultValue={dateEn3}
-        type='multi'
-        local='en'
-        showWeekend
-      />
-      {JSON.stringify(dateEn3, null, 4)}
-      <br />
-      <br />
-      <br />
-      <p>Single Fa with time</p>
-      <DtPicker
-        onChange={setDateFa1}
-        defaultValue={dateFa1}
-        withTime
-        type='single'
-        local='fa'
-        showWeekend
-        clearBtn
-      />
-      {JSON.stringify(dateFa1, null, 4)}
-      <br />
-      <br />
-      <br />
-      <p>Range Fa with time</p>
-      <DtPicker
-        onChange={setDateFa2}
-        defaultValue={dateFa2}
-        withTime
-        type='range'
-        local='fa'
-        showWeekend
-        todayBtn
-      />
-      {JSON.stringify(dateFa2, null, 4)}
-    </div>
+        <p>Multi En no time</p>
+        <DtPicker
+          onChange={setDateEn3}
+          defaultValue={dateEn3}
+          type='multi'
+          local='en'
+          showWeekend
+        />
+        {JSON.stringify(dateEn3, null, 4)}
+        <br />
+        <br />
+        <br />
+        <p>Single Fa with time</p>
+        <DtPicker
+          onChange={setDateFa1}
+          defaultValue={dateFa1}
+          withTime
+          type='single'
+          local='fa'
+          showWeekend
+          clearBtn
+        />
+        {JSON.stringify(dateFa1, null, 4)}
+        <br />
+        <br />
+        <br />
+        <p>Range Fa with time</p>
+        <DtPicker
+          onChange={setDateFa2}
+          defaultValue={dateFa2}
+          withTime
+          type='range'
+          local='fa'
+          showWeekend
+          todayBtn
+        />
+        {JSON.stringify(dateFa2, null, 4)}
+      </div>
+    </Layout>
   )
 }
 

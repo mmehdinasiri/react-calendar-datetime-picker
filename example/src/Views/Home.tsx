@@ -1,10 +1,61 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Layout } from '../Component'
 
 const Home = () => {
   return (
     <Layout>
-      <h1>home page</h1>
+      <div className='mx-auto text-center '>
+        <h1 className='text-4xl text-primary font-extrabold mb-2'>
+          React Date-Time Picker
+        </h1>
+        <h2 className='text-lg text-primary font-medium '>
+          The English and Persian calender for React
+        </h2>
+        <div className='mx-auto w-60 my-4 my-6'>
+          <img
+            src='/image/react-datetime-picker.jpg'
+            alt='react-datetime-picker'
+          />
+        </div>
+        <div>
+          <Link to='/examples' className='btn mr-2 font-bold'>
+            Get Start
+          </Link>
+          <a
+            className='btn font-bold'
+            target='_black'
+            href='https://github.com/mmehdinasiri/react-datetime-picker'
+          >
+            Github
+          </a>
+        </div>
+        <div className='mt-10'>
+          <h3 className='text-3xl text-primary font-bold  mb-4'>Features</h3>
+          <ul className='mx-auto table list-disc text-text'>
+            <li className='text-left'>
+              Support English and Persian(Jalali) calender
+            </li>
+            <li className='text-left'>
+              Support Three type of calender: single day - range dates - multi
+              dates
+            </li>
+            <li className='text-left'>Fully customizable</li>
+            <li className='text-left'>Support maximum and minimum dates </li>
+            <li className='text-left'>
+              Capability to add a list of disable dates
+            </li>
+            <li className='text-left'>
+              Support Time for single and range type
+            </li>
+            <li className='text-left'>
+              Capability to show days of weekend and today button
+            </li>
+            <li className='text-left'>Api for open and close events</li>
+            <li className='text-left'>Support Tyepscript</li>
+          </ul>
+        </div>
+      </div>
     </Layout>
   )
 }

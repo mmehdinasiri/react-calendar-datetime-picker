@@ -1,6 +1,11 @@
 import React from 'react'
+import { Layout } from '../Component'
 
 const Doc = () => {
-  return <div>dox</div>
+  return (
+    <Layout>
+      <h1>dox</h1>
+    </Layout>
+  )
 }
 export default Doc
