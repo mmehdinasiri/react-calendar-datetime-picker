@@ -6,7 +6,9 @@ const Header = () => {
     <nav className='flex items-center justify-between flex-wrap bg-teal p-4 bg-primary text-text-lightest'>
       <div className='flex items-center flex-no-shrink text-text-lightest mr-6'>
         <span className='text-xl text-text-lightest font-medium'>
-          <Link to='/'>React date-time picker</Link>
+          <Link to='/'>
+            React date-time picker <span className='text-xs ml-2'>v1.1.2</span>
+          </Link>
         </span>
       </div>
       {/* <div className='block lg:hidden'>
