@@ -28,16 +28,16 @@ const DocLayout = ({ children }: IDocLayout) => {
             <NavLink
               className='block  text-text hover:text-text-light  my-2'
               activeClassName='is-active'
-              to='/docs/props'
+              to='/docs/customization'
             >
-              Props
+              Customization
             </NavLink>
             <NavLink
               className='block  text-text hover:text-text-light  my-2'
               activeClassName='is-active'
-              to='/docs/customization'
+              to='/docs/Examples'
             >
-              Customization
+              Examples
             </NavLink>
           </div>
         </div>

@@ -30,7 +30,7 @@ const Header = () => {
           <NavLink
             className='block inline-block mt-0 text-text-lightest hover:text-white mr-4 font-extralight'
             activeClassName='is-active'
-            to='/examples'
+            to='/docs/examples'
           >
             Examples
           </NavLink>

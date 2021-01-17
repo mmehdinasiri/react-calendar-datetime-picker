@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { DtPicker } from 'react-datetime-picker'
 import 'react-datetime-picker/dist/index.css'
-import { Layout } from '../Component'
+import { DocLayout } from '../Component'
 
 const App = () => {
   // const day = new Date(1999, 1, 12)
@@ -137,7 +137,7 @@ const App = () => {
   const handleCalendarClose = () => console.log('Calendar closed')
   const handleCalendarOpen = () => console.log('Calendar opened')
   return (
-    <Layout>
+    <DocLayout>
       <div>
         <p>
           Single type En with time and max-min date and disabled date also
@@ -231,7 +231,7 @@ const App = () => {
         />
         {JSON.stringify(dateFa2, null, 4)}
       </div>
-    </Layout>
+    </DocLayout>
   )
 }
 

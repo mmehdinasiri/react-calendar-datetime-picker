@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { Home, QuickStart, Example, Api, Props, Customization } from './Views'
+import { Home, QuickStart, Example, Api, Customization } from './Views'
 import './style/tailwindPurge.scss'
 import './style/main.scss'
 
@@ -15,17 +15,14 @@ export default function App() {
           <Route path='/docs/api'>
             <Api />
           </Route>
-          <Route path='/docs/props'>
-            <Props />
+          <Route path='/docs/examples'>
+            <Example />
           </Route>
           <Route path='/docs/quick-start'>
             <QuickStart />
           </Route>
           <Route path='/docs/Customization'>
             <Customization />
-          </Route>
-          <Route path='/examples'>
-            <Example />
           </Route>
           <Route path='/'>
             <Home />
