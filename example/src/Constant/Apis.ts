@@ -3,12 +3,14 @@ export const APIS = [
     property: 'defaultValue',
     type: 'IDay | null',
     default: 'null',
+    required: 'true',
     description: 'You can set default value for your date by this property.'
   },
   {
     property: 'onChange',
     type: 'func',
     default: 'null',
+    required: 'true',
     description:
       'A function that return the object of selected date/dates. The type returned object can be one of these are: IDay | IRange | IDay[]'
   },
