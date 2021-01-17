@@ -15,8 +15,8 @@ const DatePicker = () => {
   const [date, setDate] = useState(null)
   return (
       <DtPicker
-        onChange={setDateEn}
-        defaultValue={dateEn}
+        onChange={setDate}
+        defaultValue={date}
         type='single'
         local='en'
         withTime
