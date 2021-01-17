@@ -19,7 +19,7 @@ const Home = () => {
           />
         </div>
         <div>
-          <Link to='/examples' className='btn mr-2 font-bold'>
+          <Link to='/docs/quick-start' className='btn mr-2 font-bold'>
             Get Start
           </Link>
           <a
