@@ -11,8 +11,8 @@ const Customization = () => {
         style that you want. This is a list of Api's that you can use in
         React-DateTime-Picker to customize you calender:
       </p>
-      <div>
-        <table className='table-fixed border border-primary rounded  w-full'>
+      <div className='overflow-x-auto'>
+        <table className='border border-primary rounded  w-full'>
           <thead>
             <tr className='text-left'>
               <th className='w-3/12 border border-primary p-3'>Property</th>

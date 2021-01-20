@@ -9,8 +9,8 @@ const Api = () => {
       <p className='text-base mb-1'>
         This is a list of Api's that you can use in React-DateTime-Picker:
       </p>
-      <div>
-        <table className='table-fixed border border-primary rounded  w-full'>
+      <div className='overflow-x-auto'>
+        <table className='border border-primary rounded  w-full'>
           <thead>
             <tr className='text-left'>
               <th className='w-2/12 border border-primary p-3'>Property</th>
