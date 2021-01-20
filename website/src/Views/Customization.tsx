@@ -26,8 +26,8 @@ const Customization = () => {
             </tr>
           </thead>
           <tbody>
-            {CUSTOMIZATION_APIS.map((item) => (
-              <tr>
+            {CUSTOMIZATION_APIS.map((item, index) => (
+              <tr key={index}>
                 <td className='w-3/12 border border-primary p-2'>
                   {item.property}
                 </td>

@@ -19,5 +19,5 @@
     "downlevelIteration": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "example"]
+  "exclude": ["node_modules", "dist", "website"]
 }

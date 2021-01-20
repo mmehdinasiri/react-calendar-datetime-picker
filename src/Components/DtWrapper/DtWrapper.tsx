@@ -68,8 +68,8 @@ const Wrapper = ({
   hasDefaultVal,
   showWeekend,
   todayBtn,
-  nextBtnLabel,
-  previousBtnLabel,
+  NextBtnIcon,
+  PreviousBtnIcon,
   clockFromLabel,
   clockToLabel,
   clockLabel,
@@ -104,8 +104,8 @@ const Wrapper = ({
     >
       <Header
         local={local}
-        nextBtnLabel={nextBtnLabel}
-        previousBtnLabel={previousBtnLabel}
+        NextBtnIcon={NextBtnIcon}
+        PreviousBtnIcon={PreviousBtnIcon}
         nextMonthBtnTitle={nextMonthBtnTitle}
         previousMonthBtnTitle={previousMonthBtnTitle}
         headerClass={headerClass}

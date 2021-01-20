@@ -83,8 +83,8 @@ interface IDtPickerProps {
   maxDate?: IDay
   minDate?: IDay
   placeholder?: string
-  nextBtnLabel?: string
-  previousBtnLabel?: string
+  NextBtnIcon?: any
+  PreviousBtnIcon?: any
   fromLabel?: string
   toLabel?: string
   clockFromLabel?: string
@@ -110,8 +110,8 @@ interface IWrapper {
   hasDefaultVal: boolean
   showWeekend: boolean
   todayBtn: boolean
-  nextBtnLabel?: string
-  previousBtnLabel?: string
+  NextBtnIcon?: any
+  PreviousBtnIcon?: any
   clockFromLabel?: string
   clockToLabel?: string
   clockLabel?: string
@@ -149,8 +149,8 @@ interface ITimeViewProps {
 }
 interface IHeaderProps {
   local: string
-  nextBtnLabel?: string
-  previousBtnLabel?: string
+  NextBtnIcon?: any
+  PreviousBtnIcon?: any
   nextMonthBtnTitle?: string
   previousMonthBtnTitle?: string
   headerClass?: string

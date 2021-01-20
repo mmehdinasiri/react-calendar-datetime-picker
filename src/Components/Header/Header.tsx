@@ -12,8 +12,8 @@ import { ReactComponent as Back } from '../../Icons/back.svg'
 
 const Header = ({
   local,
-  nextBtnLabel,
-  previousBtnLabel,
+  NextBtnIcon,
+  PreviousBtnIcon,
   nextMonthBtnTitle,
   previousMonthBtnTitle,
   headerClass
@@ -91,7 +91,7 @@ const Header = ({
         title={previousMonthBtnTitle || previousMonthBtnTL}
         onClick={() => handelNextMonthState('dec')}
       >
-        {previousBtnLabel || <Back />}
+        {PreviousBtnIcon ? <PreviousBtnIcon /> : <Back />}
       </a>
       <div className='header-date'>
         <div
@@ -112,7 +112,7 @@ const Header = ({
         title={nextMonthBtnTitle || nextMonthBtnTL}
         onClick={() => handelNextMonthState('inc')}
       >
-        {nextBtnLabel || <Next />}
+        {NextBtnIcon ? <NextBtnIcon /> : <Next />}
       </a>
     </div>
   )

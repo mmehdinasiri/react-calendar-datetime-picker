@@ -27,8 +27,8 @@ const Api = () => {
             </tr>
           </thead>
           <tbody>
-            {APIS.map((item) => (
-              <tr>
+            {APIS.map((item, index) => (
+              <tr key={index}>
                 <td className='w-2/12 border border-primary p-2'>
                   {item.property}
                 </td>

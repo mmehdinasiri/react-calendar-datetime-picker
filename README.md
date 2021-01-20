@@ -75,8 +75,8 @@ const App = () => {
       isRequired
       todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
       placeholder='seleccccccct'
-      nextBtnLabel='next'
-      previousBtnLabel='previous'
+      NextBtnIcon='next'
+      PreviousBtnIcon='previous'
       fromLabel='from date'
       toLabel='to date'
       clockFromLabel='froom' // this is just shows in range type

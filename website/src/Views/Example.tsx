@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { DtPicker } from 'react-datetime-picker'
 import 'react-datetime-picker/dist/index.css'
 import { DocLayout } from '../Component'
+import { ReactComponent as arrowLeft } from '../Component/Icons/arrow-left.svg'
+import { ReactComponent as arrowRight } from '../Component/Icons/arrow-right.svg'
 
 const App = () => {
   // const day = new Date(1999, 1, 12)
@@ -154,8 +156,8 @@ const App = () => {
           isRequired
           todayBtn //if min or max date used, todayBtn will shows just when it's between min and max
           placeholder='seleccccccct'
-          nextBtnLabel='next'
-          previousBtnLabel='previous'
+          NextBtnIcon={arrowRight}
+          PreviousBtnIcon={arrowLeft}
           fromLabel='from date'
           toLabel='to date'
           clockFromLabel='froom'

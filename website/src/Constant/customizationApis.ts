@@ -55,14 +55,14 @@ export const CUSTOMIZATION_APIS = [
   },
 
   {
-    property: 'nextBtnLabel',
-    type: 'string | svg as component',
+    property: 'NextBtnIcon',
+    type: 'svg as component',
     default: '">"',
     description: 'To change next month button.'
   },
   {
-    property: 'previousBtnLabel',
-    type: 'string | svg as component',
+    property: 'PreviousBtnIcon',
+    type: 'svg as component',
     default: '"<"',
     description: 'To change previous month button.'
   },

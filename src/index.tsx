@@ -25,8 +25,8 @@ export const DtPicker = ({
   maxDate,
   minDate,
   placeholder,
-  nextBtnLabel,
-  previousBtnLabel,
+  NextBtnIcon,
+  PreviousBtnIcon,
   fromLabel,
   toLabel,
   clockFromLabel,
@@ -117,8 +117,8 @@ export const DtPicker = ({
                       hasDefaultVal={!!defaultValue}
                       showWeekend={!!showWeekend}
                       todayBtn={!!todayBtn}
-                      nextBtnLabel={nextBtnLabel}
-                      previousBtnLabel={previousBtnLabel}
+                      NextBtnIcon={NextBtnIcon}
+                      PreviousBtnIcon={PreviousBtnIcon}
                       clockFromLabel={clockFromLabel}
                       clockToLabel={clockToLabel}
                       clockLabel={clockLabel}
