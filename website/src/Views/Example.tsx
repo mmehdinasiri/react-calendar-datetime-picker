@@ -113,7 +113,7 @@ const App = () => {
   return (
     <DocLayout>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='SimpleExample' className='font-lg font-bold mb-4'>
+        <h3 id='selectSingleDay' className='text-2xl font-bold mb-4'>
           Select single day
         </h3>
         <div className='bloc md:flex '>
@@ -136,7 +136,7 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='SimpleExample' className='font-lg font-bold mb-4'>
+        <h3 id='SingleDayWithInitialDate' className='text-2xl font-bold mb-4'>
           Single day with initial date
         </h3>
         <div className='bloc md:flex '>
@@ -159,7 +159,10 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='SimpleExample' className='font-lg font-bold mb-4'>
+        <h3
+          id='selectSinglePersian(Jalali)day'
+          className='text-2xl font-bold mb-4'
+        >
           Select single Persian(Jalali) day
         </h3>
         <div className='bloc md:flex '>
@@ -183,7 +186,10 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='rangeExample' className='font-lg font-bold mb-4'>
+        <h3
+          id='selectAListOfDaysBetweenTwoDays'
+          className='text-2xl font-bold mb-4'
+        >
           Select a list of days between two days
         </h3>
         <div className='bloc md:flex '>
@@ -207,7 +213,7 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='rangeExample' className='font-lg font-bold mb-4'>
+        <h3 id='rangeOfDaysWithInitialDate' className='text-2xl font-bold mb-4'>
           Range of days with initial date
         </h3>
         <div className='bloc md:flex '>
@@ -231,7 +237,7 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='MultiExample' className='font-lg font-bold mb-4'>
+        <h3 id='selectMultiDays' className='text-2xl font-bold mb-4'>
           Select multi days
         </h3>
         <div className='bloc md:flex '>
@@ -255,8 +261,11 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='MultiExample' className='font-lg font-bold mb-4'>
-          Select multi days
+        <h3
+          id='selectMultiDaysWithInitialDate'
+          className='text-2xl font-bold mb-4'
+        >
+          Select multi days with initial date
         </h3>
         <div className='bloc md:flex '>
           <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
@@ -279,8 +288,8 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='SimpleExample' className='font-lg font-bold mb-4'>
-          Select multi days
+        <h3 id='singleDayWithTime' className='text-2xl font-bold mb-4'>
+          Single day with time
         </h3>
         <div className='bloc md:flex '>
           <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
@@ -303,7 +312,10 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='SimpleExample' className='font-lg font-bold mb-4'>
+        <h3
+          id='showWeekendClearBtnAndTodayBtnOptions'
+          className='text-2xl font-bold mb-4'
+        >
           ShowWeekend, clearBtn and todayBtn options
         </h3>
         <div className='bloc md:flex '>
@@ -329,7 +341,10 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='SimpleExample' className='font-lg font-bold mb-4'>
+        <h3
+          id='openCloseAndChangeCallbackApi'
+          className='text-2xl font-bold mb-4'
+        >
           Open, close and change callback api
         </h3>
         <div className='bloc md:flex '>
@@ -356,7 +371,7 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='SimpleExample' className='font-lg font-bold mb-4'>
+        <h3 id='setMinimumAndMaximumDate' className='text-2xl font-bold mb-4'>
           Set minimum and maximum date
         </h3>
         <div className='bloc md:flex '>
@@ -381,7 +396,7 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='SimpleExample' className='font-lg font-bold mb-4'>
+        <h3 id='setAListOfDisabledDates' className='text-2xl font-bold mb-4'>
           Set a list of disabled dates
         </h3>
         <div className='bloc md:flex '>
