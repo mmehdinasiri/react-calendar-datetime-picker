@@ -33,7 +33,7 @@ export const APIS = [
     type: 'boolean',
     default: 'false',
     description:
-      'If you want to use Time in you date picker you must set this prop to true.This prop works just in single and range type.'
+      'If you want to use Time in your date picker you must set this prop to true.This prop works just in single and range type.'
   },
   {
     property: 'showWeekend',
