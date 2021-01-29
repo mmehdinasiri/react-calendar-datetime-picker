@@ -24,8 +24,6 @@ import {
   withoutInputStr
 } from '../Constant/sampleString'
 
-// import { ReactComponent as arrowRight } from '../Component/Icons/arrow-right.svg'
-
 const App = () => {
   const [singleExample, setSingleExample] = useState(null)
   const [singleInitValueExample, setSingleInitValueExample] = useState({
@@ -118,12 +116,12 @@ const App = () => {
   const [customIcons, setCustomIcons] = useState(null)
   return (
     <DocLayout>
-      <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
+      <div className='mb-10 pb-4 border-b border-primary border-opacity-50 '>
         <h3 id='selectSingleDay' className='text-2xl font-bold mb-4'>
           Select single day
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 lg:w-3/4 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -132,7 +130,7 @@ const App = () => {
               {singleExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker initValue={singleExample} onChange={setSingleExample} />
             <pre>{JSON.stringify(singleExample, null, 2)}</pre>
           </div>
@@ -142,8 +140,8 @@ const App = () => {
         <h3 id='SingleDayWithInitialDate' className='text-2xl font-bold mb-4'>
           Single day with initial date
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -152,7 +150,7 @@ const App = () => {
               {singleInitValueExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               initValue={singleInitValueExample}
               onChange={setSingleInitValueExample}
@@ -168,8 +166,8 @@ const App = () => {
         >
           Select single Persian(Jalali) day
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -178,7 +176,7 @@ const App = () => {
               {singlePersianExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               initValue={singlePersianExample}
               onChange={setSinglePersianExample}
@@ -195,8 +193,8 @@ const App = () => {
         >
           Select a list of days between two days
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -205,7 +203,7 @@ const App = () => {
               {rangeExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               initValue={rangeExample}
               onChange={setRangeExample}
@@ -219,8 +217,8 @@ const App = () => {
         <h3 id='rangeOfDaysWithInitialDate' className='text-2xl font-bold mb-4'>
           Range of days with initial date
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -229,7 +227,7 @@ const App = () => {
               {rangeInitValueEExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               initValue={rangeInitValueExample}
               onChange={setRangeInitValueExample}
@@ -243,8 +241,8 @@ const App = () => {
         <h3 id='selectMultiDays' className='text-2xl font-bold mb-4'>
           Select multi days
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -253,7 +251,7 @@ const App = () => {
               {multiExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               initValue={multiExample}
               onChange={setMultiExample}
@@ -270,8 +268,8 @@ const App = () => {
         >
           Select multi days with initial date
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -280,7 +278,7 @@ const App = () => {
               {multiInitialValueExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               initValue={multiInitialValueExample}
               onChange={setMultiInitialValueExample}
@@ -294,8 +292,8 @@ const App = () => {
         <h3 id='singleDayWithTime' className='text-2xl font-bold mb-4'>
           Single day with time
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -304,7 +302,7 @@ const App = () => {
               {singleTimeExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               initValue={singleTimeExample}
               onChange={setSingleTimeExample}
@@ -321,8 +319,8 @@ const App = () => {
         >
           ShowWeekend, clearBtn and todayBtn options
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -331,7 +329,7 @@ const App = () => {
               {displayingOptionExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               initValue={displayingOption}
               onChange={setDisplayingOption}
@@ -350,8 +348,8 @@ const App = () => {
         >
           Open, close and change callback api
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -360,7 +358,7 @@ const App = () => {
               {callbackApiExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <span className='block'>open: {open}</span>
             <span className='block'>change: {change}</span>
             <span className='block'>close: {close}</span>
@@ -377,8 +375,8 @@ const App = () => {
         <h3 id='setMinimumAndMaximumDate' className='text-2xl font-bold mb-4'>
           Set minimum and maximum date
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -387,7 +385,7 @@ const App = () => {
               {minMaxExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               onChange={setMinMax}
               initValue={minMax}
@@ -402,8 +400,8 @@ const App = () => {
         <h3 id='setAListOfDisabledDates' className='text-2xl font-bold mb-4'>
           Set a list of disabled dates
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -412,7 +410,7 @@ const App = () => {
               {disabledExampleStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               onChange={setDisabledDate}
               initValue={disabledDate}
@@ -425,11 +423,11 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
-        <h3 id='setAListOfDisabledDates' className='text-2xl font-bold mb-4'>
+        <h3 id='WithoutInput' className='text-2xl font-bold mb-4'>
           Without input
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -438,8 +436,8 @@ const App = () => {
               {withoutInputStr}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
-            <div>
+          <div className='w-2/2 xl:w-1/2'>
+            <div className='mt-4'>
               <DtCalendar onChange={setWithoutInput} initValue={withoutInput} />
             </div>
             <pre className='mt-4'>{JSON.stringify(withoutInput, null, 2)}</pre>
@@ -447,11 +445,11 @@ const App = () => {
         </div>
       </div>
       <div className='my-10 pb-4'>
-        <h3 id='setAListOfDisabledDates' className='text-2xl font-bold mb-4'>
+        <h3 id='CustomCalender' className='text-2xl font-bold mb-4'>
           Custom calender: icons - input placeholder - styles
         </h3>
-        <div className='bloc md:flex '>
-          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
             <SyntaxHighlighter
               className='rounded'
               style={tomorrowNightEighties}
@@ -469,7 +467,7 @@ const App = () => {
               {customCalenderStyle}
             </SyntaxHighlighter>
           </div>
-          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               onChange={setCustomIcons}
               initValue={customIcons}
