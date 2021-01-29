@@ -7,3 +7,31 @@ body {
 .main-content {
   min-height: calc(100vh - 90px);
 }
+
+.custom-input {
+  text-align: right;
+  color: $primary-color;
+  height: 46px !important;
+  line-height: 46px !important;
+  &::-webkit-input-placeholder {
+    color: $primary-color;
+  }
+  &:-ms-input-placeholder {
+    color: $primary-color;
+  }
+  &::placeholder {
+    color: $primary-color;
+  }
+}
+.custom-days {
+  background-color: $light-blue;
+  .is-week-days {
+    color: $is-weekends;
+  }
+  .is-disabled {
+    color: $text-color;
+  }
+}
+.custom-header {
+  background-color: $blue;
+}

@@ -4,7 +4,8 @@ import 'react-datetime-picker/dist/index.css'
 import { DocLayout } from '../Component'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 import { tomorrowNightEighties } from 'react-syntax-highlighter/dist/esm/styles/hljs'
-// import { ReactComponent as arrowLeft } from '../Component/Icons/arrow-left.svg'
+import { ReactComponent as arrowLeft } from '../Component/Icons/arrow-left.svg'
+import { ReactComponent as arrowRight } from '../Component/Icons/arrow-right.svg'
 import {
   singleExampleStr,
   singlePersianExampleStr,
@@ -17,7 +18,9 @@ import {
   disabledExampleStr,
   singleInitValueExampleStr,
   rangeInitValueEExampleStr,
-  multiInitialValueExampleStr
+  multiInitialValueExampleStr,
+  customCalender,
+  customCalenderStyle
 } from '../Constant/sampleString'
 
 // import { ReactComponent as arrowRight } from '../Component/Icons/arrow-right.svg'
@@ -110,6 +113,7 @@ const App = () => {
       day: 10
     }
   ]
+  const [customIcons, setCustomIcons] = useState(null)
   return (
     <DocLayout>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
@@ -418,6 +422,47 @@ const App = () => {
               maxDate={maxDate}
             />
             <pre>{JSON.stringify(minMax, null, 2)}</pre>
+          </div>
+        </div>
+      </div>
+      <div className='my-10 pb-4'>
+        <h3 id='setAListOfDisabledDates' className='text-2xl font-bold mb-4'>
+          Custom calender: icons - input placeholder - styles
+        </h3>
+        <div className='bloc md:flex '>
+          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+            <SyntaxHighlighter
+              className='rounded'
+              style={tomorrowNightEighties}
+              language='javascript'
+            >
+              {customCalender}
+            </SyntaxHighlighter>
+            <br />
+            <h4 className='text-lg'>Style</h4>
+            <SyntaxHighlighter
+              className='rounded'
+              style={tomorrowNightEighties}
+              language='css'
+            >
+              {customCalenderStyle}
+            </SyntaxHighlighter>
+          </div>
+          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+            <DtPicker
+              onChange={setCustomIcons}
+              defaultValue={customIcons}
+              NextBtnIcon={arrowRight}
+              PreviousBtnIcon={arrowLeft}
+              placeholder='select date'
+              fromLabel='From date'
+              toLabel='To date'
+              type='range'
+              inputClass='custom-input'
+              headerClass='custom-header'
+              daysClass='custom-days'
+            />
+            <pre>{JSON.stringify(customIcons, null, 2)}</pre>
           </div>
         </div>
       </div>
