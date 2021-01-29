@@ -6,4 +6,8 @@
   font-family: inherit;
   border-radius: rem($global-radius-small);
   overflow: hidden;
+  width: $modal-width;
+  &.is-calender {
+    position: relative;
+  }
 }

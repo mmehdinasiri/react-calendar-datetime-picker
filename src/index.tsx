@@ -9,7 +9,7 @@ import MinMaxProvider from './store/MinMaxProvider'
 import { checkInputValues, handelInitialValues } from './Helpers'
 import useComponentVisible from './hooks/useComponentVisible'
 
-export const DtPicker = ({
+const DtPicker = ({
   defaultValue,
   onChange,
   type,
@@ -141,3 +141,93 @@ export const DtPicker = ({
     </ViewProvider>
   )
 }
+const DtCalender = ({
+  defaultValue,
+  onChange,
+  type,
+  withTime,
+  local,
+  showWeekend,
+  todayBtn,
+  maxDate,
+  minDate,
+  NextBtnIcon,
+  PreviousBtnIcon,
+  clockFromLabel,
+  clockToLabel,
+  clockLabel,
+  nextMonthBtnTitle,
+  previousMonthBtnTitle,
+  calenderModalClass,
+  headerClass,
+  daysClass,
+  timeClass,
+  monthsClass,
+  yearsClass,
+  disabledDates
+}: IDtPickerProps) => {
+  const minMaxState = {
+    minDate: minDate,
+    maxDate: maxDate
+  }
+
+  const correctedType = type ? type.toLocaleLowerCase() : 'single'
+  const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
+  const { initCalender, initTime } = handelInitialValues(
+    defaultValue,
+    correctedType,
+    correctedLocal,
+    maxDate
+  )
+  useEffect(() => {
+    checkInputValues(
+      defaultValue,
+      correctedLocal,
+      correctedType,
+      maxDate,
+      minDate,
+      disabledDates
+    )
+  }, [])
+  return (
+    <ViewProvider>
+      <CalenderProvider initCalender={initCalender} type={correctedType}>
+        <MinMaxProvider initState={minMaxState}>
+          <SelectedDaysProvider initState={defaultValue} type={correctedType}>
+            <SelectedTimeProvider initState={initTime} type={correctedType}>
+              <div
+                className={`calender-modal is-calender ${calenderModalClass}`}
+              >
+                <DtWrapper
+                  onChange={onChange}
+                  type={correctedType}
+                  withTime={withTime}
+                  local={correctedLocal}
+                  hasDefaultVal={!!defaultValue}
+                  showWeekend={!!showWeekend}
+                  todayBtn={!!todayBtn}
+                  NextBtnIcon={NextBtnIcon}
+                  PreviousBtnIcon={PreviousBtnIcon}
+                  clockFromLabel={clockFromLabel}
+                  clockToLabel={clockToLabel}
+                  clockLabel={clockLabel}
+                  nextMonthBtnTitle={nextMonthBtnTitle}
+                  previousMonthBtnTitle={previousMonthBtnTitle}
+                  headerClass={headerClass}
+                  daysClass={daysClass}
+                  timeClass={timeClass}
+                  monthsClass={monthsClass}
+                  yearsClass={yearsClass}
+                  disabledDates={disabledDates}
+                />
+              </div>
+            </SelectedTimeProvider>
+          </SelectedDaysProvider>
+        </MinMaxProvider>
+      </CalenderProvider>
+    </ViewProvider>
+  )
+}
+
+export { DtCalender }
+export default DtPicker

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { DtPicker } from 'react-datetime-picker'
+import DtPicker, { DtCalender } from 'react-datetime-picker'
 import 'react-datetime-picker/dist/index.css'
 import { DocLayout } from '../Component'
 import SyntaxHighlighter from 'react-syntax-highlighter'
@@ -20,7 +20,8 @@ import {
   rangeInitValueEExampleStr,
   multiInitialValueExampleStr,
   customCalender,
-  customCalenderStyle
+  customCalenderStyle,
+  withoutInputStr
 } from '../Constant/sampleString'
 
 // import { ReactComponent as arrowRight } from '../Component/Icons/arrow-right.svg'
@@ -113,6 +114,7 @@ const App = () => {
       day: 10
     }
   ]
+  const [withoutInput, setWithoutInput] = useState(null)
   const [customIcons, setCustomIcons] = useState(null)
   return (
     <DocLayout>
@@ -422,6 +424,31 @@ const App = () => {
               maxDate={maxDate}
             />
             <pre>{JSON.stringify(minMax, null, 2)}</pre>
+          </div>
+        </div>
+      </div>
+      <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
+        <h3 id='setAListOfDisabledDates' className='text-2xl font-bold mb-4'>
+          Without input
+        </h3>
+        <div className='bloc md:flex '>
+          <div className='w-2/2 md:w-3/4 lg:w-1/2 pr-10 mb-4 md:mb-0'>
+            <SyntaxHighlighter
+              className='rounded'
+              style={tomorrowNightEighties}
+              language='javascript'
+            >
+              {withoutInputStr}
+            </SyntaxHighlighter>
+          </div>
+          <div className='w-2/2 md:w-1/4 lg:w-1/2'>
+            <div>
+              <DtCalender
+                onChange={setWithoutInput}
+                defaultValue={withoutInput}
+              />
+            </div>
+            <pre className='mt-4'>{JSON.stringify(withoutInput, null, 2)}</pre>
           </div>
         </div>
       </div>
