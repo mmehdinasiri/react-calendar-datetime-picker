@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react'
+import React, { FC, useEffect, useLayoutEffect, useRef } from 'react'
 import './style/main.scss'
 import { DtWrapper, InputPicker } from './Components'
 import CalenderProvider from './store/CalenderProvider'
@@ -106,6 +106,30 @@ const DtPicker: FC<IDtPickerProps> = ({
     maxDate
   )
 
+  useLayoutEffect(() => {
+    if (!isComponentVisible) return
+    const currentCalender: HTMLElement | null = ref.current
+    if (currentCalender) {
+      const { clientWidth, clientHeight } = document.documentElement
+      const {
+        left,
+        width,
+        height,
+        top
+      } = currentCalender.getBoundingClientRect()
+      const rightOverflow = width + left > clientWidth
+      const bottomOverflow = top + height > clientHeight
+
+      console.log('rightOverflow :', rightOverflow)
+
+      if (rightOverflow) {
+        currentCalender.style.left = -(left + width + 10 - clientWidth) + 'px'
+      }
+      if (bottomOverflow) {
+        currentCalender.style.bottom = 0 + 'px'
+      }
+    }
+  }, [isComponentVisible])
   useEffect(() => {
     checkInputValues(
       defaultValue,
