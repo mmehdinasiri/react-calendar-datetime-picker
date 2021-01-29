@@ -66,7 +66,7 @@ const App = () => {
   return (
     <DtPicker
       onChange={handleCalendarChange}
-      defaultValue={dateEn}
+      initValue={dateEn}
       type='single'
       local='en'
       withTime

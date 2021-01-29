@@ -115,7 +115,7 @@ export const compareDateFA = (date1: IDay, date2: IDay) => {
 }
 
 export const handelInitialValues = (
-  defaultValue: any,
+  initValue: any,
   correctedType: string,
   local: string,
   maxDate?: IDay
@@ -132,44 +132,44 @@ export const handelInitialValues = (
   }
 
   if (correctedType === 'single') {
-    if (defaultValue?.year) {
+    if (initValue?.year) {
       initCalender = {
-        year: defaultValue.year,
-        month: defaultValue.month,
-        day: defaultValue.day
+        year: initValue.year,
+        month: initValue.month,
+        day: initValue.day
       }
     }
     initTime = {
-      hours: defaultValue?.hours || today.getHours(),
-      minutes: defaultValue?.minutes || today.getMinutes()
+      hours: initValue?.hours || today.getHours(),
+      minutes: initValue?.minutes || today.getMinutes()
     }
   }
   if (correctedType === 'range') {
-    if (defaultValue?.from) {
+    if (initValue?.from) {
       initCalender = {
-        year: defaultValue.from.year,
-        month: defaultValue.from.month,
-        day: defaultValue.from.day
+        year: initValue.from.year,
+        month: initValue.from.month,
+        day: initValue.from.day
       }
     }
 
     initTime = {
       from: {
-        hours: defaultValue?.from?.hours || today.getHours(),
-        minutes: defaultValue?.from?.minutes || today.getMinutes()
+        hours: initValue?.from?.hours || today.getHours(),
+        minutes: initValue?.from?.minutes || today.getMinutes()
       },
       to: {
-        hours: defaultValue?.to?.hours || today.getHours(),
-        minutes: defaultValue?.to?.minutes || today.getMinutes()
+        hours: initValue?.to?.hours || today.getHours(),
+        minutes: initValue?.to?.minutes || today.getMinutes()
       }
     }
   }
   if (correctedType === 'multi') {
-    if (defaultValue && defaultValue.length && defaultValue[0]?.year) {
+    if (initValue && initValue.length && initValue[0]?.year) {
       initCalender = {
-        year: defaultValue[0].year,
-        month: defaultValue[0].month,
-        day: defaultValue[0].day
+        year: initValue[0].year,
+        month: initValue[0].month,
+        day: initValue[0].day
       }
     }
   }
@@ -262,7 +262,7 @@ export const isDayBetween = (
 
 // the worst function in this app
 export const checkInputValues = (
-  defaultValue: any,
+  initValue: any,
   correctedLocal: string,
   correctedType: string,
   maxDate?: IDay,
@@ -295,14 +295,10 @@ export const checkInputValues = (
   }
   if (
     (correctedType === 'single' &&
-      defaultValue &&
-      !(
-        'year' in defaultValue &&
-        'month' in defaultValue &&
-        'day' in defaultValue
-      )) ||
-    defaultValue === 'null' ||
-    defaultValue === 'undefined'
+      initValue &&
+      !('year' in initValue && 'month' in initValue && 'day' in initValue)) ||
+    initValue === 'null' ||
+    initValue === 'undefined'
   ) {
     throw Error(
       'Default date in single type must contain at least "year", "month", "day" or null.'
@@ -310,8 +306,8 @@ export const checkInputValues = (
   }
   if (
     correctedType === 'range' &&
-    defaultValue &&
-    (!('to' in defaultValue) || !('from' in defaultValue))
+    initValue &&
+    (!('to' in initValue) || !('from' in initValue))
   ) {
     throw Error(
       'Default date in range type must contain "from" and "To" object.'
@@ -319,13 +315,13 @@ export const checkInputValues = (
   }
   if (
     correctedType === 'range' &&
-    defaultValue &&
-    selectCompar[correctedLocal](defaultValue.to, defaultValue.from) === 2
+    initValue &&
+    selectCompar[correctedLocal](initValue.to, initValue.from) === 2
   ) {
     throw Error('Default "To" date must be grater than default "from" date.')
   }
-  if (correctedType === 'multi' && defaultValue) {
-    const isThereAnyWrongDate = defaultValue.find((date: any) => {
+  if (correctedType === 'multi' && initValue) {
+    const isThereAnyWrongDate = initValue.find((date: any) => {
       return !('year' in date) || !('month' in date) || !('day' in date)
     })
 
@@ -334,18 +330,18 @@ export const checkInputValues = (
     }
   }
 
-  if (maxDate && defaultValue) {
+  if (maxDate && initValue) {
     if (correctedType === 'single') {
-      if (selectCompar[correctedLocal](maxDate, defaultValue) === 2) {
+      if (selectCompar[correctedLocal](maxDate, initValue) === 2) {
         throw Error('Max date must be greater than default or selected date.')
       }
-    } else if (correctedType === 'range' && defaultValue.to) {
-      if (selectCompar[correctedLocal](maxDate, defaultValue.to) === 2)
+    } else if (correctedType === 'range' && initValue.to) {
+      if (selectCompar[correctedLocal](maxDate, initValue.to) === 2)
         throw Error(
           'Max date must be greater than default or selected to date.'
         )
-    } else if (correctedType === 'multi' && defaultValue.length) {
-      const isThereAnyGreater = defaultValue.find(
+    } else if (correctedType === 'multi' && initValue.length) {
+      const isThereAnyGreater = initValue.find(
         (date: IDay) => selectCompar[correctedLocal](maxDate, date) === 2
       )
       if (isThereAnyGreater) {
@@ -355,16 +351,16 @@ export const checkInputValues = (
       }
     }
   }
-  if (minDate && defaultValue) {
+  if (minDate && initValue) {
     if (correctedType === 'single') {
-      if (selectCompar[correctedLocal](minDate, defaultValue) === 1) {
+      if (selectCompar[correctedLocal](minDate, initValue) === 1) {
         throw Error('Default or selected date must be greater than min date.')
       }
-    } else if (correctedType === 'range' && defaultValue.from) {
-      if (selectCompar[correctedLocal](minDate, defaultValue.from) === 1)
+    } else if (correctedType === 'range' && initValue.from) {
+      if (selectCompar[correctedLocal](minDate, initValue.from) === 1)
         throw Error('Default or selected date must be greater than min date.')
-    } else if (correctedType === 'multi' && defaultValue.length) {
-      const isThereAnyGreater = defaultValue.find(
+    } else if (correctedType === 'multi' && initValue.length) {
+      const isThereAnyGreater = initValue.find(
         (date: IDay) => selectCompar[correctedLocal](minDate, date) === 1
       )
       if (isThereAnyGreater) {
@@ -375,32 +371,28 @@ export const checkInputValues = (
   if (disabledDates) {
     if (
       correctedType === 'single' &&
-      defaultValue &&
+      initValue &&
       disabledDates?.find(
         (date) =>
           genFullDay(date.year, date.month, date.day) ===
-          genFullDay(defaultValue.year, defaultValue.month, defaultValue.day)
+          genFullDay(initValue.year, initValue.month, initValue.day)
       )
     ) {
       throw Error('Default Date could not be in disabled list')
     }
     if (
       correctedType === 'range' &&
-      defaultValue &&
+      initValue &&
       disabledDates?.find(
         (date) =>
           genFullDay(date.year, date.month, date.day) ===
             genFullDay(
-              defaultValue.from.year,
-              defaultValue.from.month,
-              defaultValue.from.day
+              initValue.from.year,
+              initValue.from.month,
+              initValue.from.day
             ) ||
           genFullDay(date.year, date.month, date.day) ===
-            genFullDay(
-              defaultValue.to.year,
-              defaultValue.to.month,
-              defaultValue.to.day
-            )
+            genFullDay(initValue.to.year, initValue.to.month, initValue.to.day)
       )
     ) {
       throw Error(
@@ -410,7 +402,7 @@ export const checkInputValues = (
     if (
       correctedType === 'multi' &&
       disabledDates?.find((disDate) => {
-        return defaultValue?.find((initDate: IDay) => {
+        return initValue?.find((initDate: IDay) => {
           return (
             genFullDay(disDate.year, disDate.month, disDate.day) ===
             genFullDay(initDate.year, initDate.month, initDate.day)

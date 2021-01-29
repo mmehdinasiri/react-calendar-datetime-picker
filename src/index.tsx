@@ -10,7 +10,7 @@ import { checkInputValues, handelInitialValues } from './Helpers'
 import useComponentVisible from './hooks/useComponentVisible'
 import { IDay, IRange } from './Types'
 interface IDtPickerProps {
-  defaultValue?: IDay | IDay[] | IRange | null | undefined
+  initValue?: IDay | IDay[] | IRange | null | undefined
   onChange: (date: any) => void
   onCalenderHide?: any
   onCalenderShow?: any
@@ -45,7 +45,7 @@ interface IDtPickerProps {
   disabledDates?: IDay[]
 }
 const DtPicker: FC<IDtPickerProps> = ({
-  defaultValue,
+  initValue,
   onChange,
   type,
   withTime,
@@ -100,7 +100,7 @@ const DtPicker: FC<IDtPickerProps> = ({
   const correctedType = type ? type.toLocaleLowerCase() : 'single'
   const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
   const { initCalender, initTime } = handelInitialValues(
-    defaultValue,
+    initValue,
     correctedType,
     correctedLocal,
     maxDate
@@ -119,9 +119,6 @@ const DtPicker: FC<IDtPickerProps> = ({
       } = currentCalender.getBoundingClientRect()
       const rightOverflow = width + left > clientWidth
       const bottomOverflow = top + height > clientHeight
-
-      console.log('rightOverflow :', rightOverflow)
-
       if (rightOverflow) {
         currentCalender.style.left = -(left + width + 10 - clientWidth) + 'px'
       }
@@ -132,7 +129,7 @@ const DtPicker: FC<IDtPickerProps> = ({
   }, [isComponentVisible])
   useEffect(() => {
     checkInputValues(
-      defaultValue,
+      initValue,
       correctedLocal,
       correctedType,
       maxDate,
@@ -144,7 +141,7 @@ const DtPicker: FC<IDtPickerProps> = ({
     <ViewProvider>
       <CalenderProvider initCalender={initCalender} type={correctedType}>
         <MinMaxProvider initState={minMaxState}>
-          <SelectedDaysProvider initState={defaultValue} type={correctedType}>
+          <SelectedDaysProvider initState={initValue} type={correctedType}>
             <SelectedTimeProvider initState={initTime} type={correctedType}>
               <div style={{ position: 'relative' }}>
                 <InputPicker
@@ -174,7 +171,7 @@ const DtPicker: FC<IDtPickerProps> = ({
                       type={correctedType}
                       withTime={withTime}
                       local={correctedLocal}
-                      hasDefaultVal={!!defaultValue}
+                      hasDefaultVal={!!initValue}
                       showWeekend={!!showWeekend}
                       todayBtn={!!todayBtn}
                       NextBtnIcon={NextBtnIcon}
@@ -201,8 +198,8 @@ const DtPicker: FC<IDtPickerProps> = ({
     </ViewProvider>
   )
 }
-const DtCalender: FC<IDtPickerProps> = ({
-  defaultValue,
+const DtCalendar: FC<IDtPickerProps> = ({
+  initValue,
   onChange,
   type,
   withTime,
@@ -234,14 +231,14 @@ const DtCalender: FC<IDtPickerProps> = ({
   const correctedType = type ? type.toLocaleLowerCase() : 'single'
   const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
   const { initCalender, initTime } = handelInitialValues(
-    defaultValue,
+    initValue,
     correctedType,
     correctedLocal,
     maxDate
   )
   useEffect(() => {
     checkInputValues(
-      defaultValue,
+      initValue,
       correctedLocal,
       correctedType,
       maxDate,
@@ -253,7 +250,7 @@ const DtCalender: FC<IDtPickerProps> = ({
     <ViewProvider>
       <CalenderProvider initCalender={initCalender} type={correctedType}>
         <MinMaxProvider initState={minMaxState}>
-          <SelectedDaysProvider initState={defaultValue} type={correctedType}>
+          <SelectedDaysProvider initState={initValue} type={correctedType}>
             <SelectedTimeProvider initState={initTime} type={correctedType}>
               <div
                 className={`calender-modal is-calender ${calenderModalClass}`}
@@ -263,7 +260,7 @@ const DtCalender: FC<IDtPickerProps> = ({
                   type={correctedType}
                   withTime={withTime}
                   local={correctedLocal}
-                  hasDefaultVal={!!defaultValue}
+                  hasDefaultVal={!!initValue}
                   showWeekend={!!showWeekend}
                   todayBtn={!!todayBtn}
                   NextBtnIcon={NextBtnIcon}
@@ -290,4 +287,4 @@ const DtCalender: FC<IDtPickerProps> = ({
 }
 
 export default DtPicker
-export { DtCalender, IDay, IRange }
+export { DtCalendar, IDay, IRange }

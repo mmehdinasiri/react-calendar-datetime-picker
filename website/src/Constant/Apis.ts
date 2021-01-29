@@ -1,6 +1,6 @@
 export const APIS = [
   {
-    property: 'defaultValue',
+    property: 'initValue',
     type: 'IDay | null',
     default: 'null',
     required: 'true',

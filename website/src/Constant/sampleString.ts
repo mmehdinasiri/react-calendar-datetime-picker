@@ -5,7 +5,7 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
     />
   )
 }
@@ -18,7 +18,7 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
     />
   )
 }
@@ -32,7 +32,7 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
       local="fa"
     />
   )
@@ -46,7 +46,7 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
       type='range'
     />
   )
@@ -63,7 +63,7 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
       type='range'
     />
   )
@@ -77,7 +77,7 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
       type='multi'
     />
   )
@@ -113,7 +113,7 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
       type='multi'
     />
   )
@@ -127,7 +127,7 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
       withTime
     />
   )
@@ -141,7 +141,7 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
       showWeekend
       clearBtn
       todayBtn
@@ -168,7 +168,7 @@ const DatePicker = () => {
     <DtPicker
       onChange={handleCalendarChange}
       onChange={handleCalendarChange}
-      defaultValue={callBackApi}
+      initValue={callBackApi}
       onCalenderShow={handleCalendarOpen}
       onCalenderHide={handleCalendarClose}
     />
@@ -193,7 +193,7 @@ const maxDate = {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
       minDate={minDate}
       maxDate={maxDate}
     />
@@ -225,7 +225,7 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
       disabledDates={disabledDatesList}
       minDate={minDate}
       maxDate={maxDate}
@@ -235,13 +235,13 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const withoutInputStr = `
-import  { DtCalender } from 'react-datetime-picker'
+import  { DtCalendar } from 'react-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   return (
-    <DtCalender
+    <DtCalendar
       onChange={setDate}
-      defaultValue={data}
+      initValue={data}
     />
   )
 }
@@ -254,7 +254,7 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      defaultValue={date}
+      initValue={date}
       NextBtnIcon={arrowRight}
       PreviousBtnIcon={arrowLeft}
       placeholder='select date'

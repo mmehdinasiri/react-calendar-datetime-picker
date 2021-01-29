@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import DtPicker, { DtCalender } from 'react-datetime-picker'
+import DtPicker, { DtCalendar } from 'react-datetime-picker'
 import 'react-datetime-picker/dist/index.css'
 import { DocLayout } from '../Component'
 import SyntaxHighlighter from 'react-syntax-highlighter'
@@ -133,10 +133,7 @@ const App = () => {
             </SyntaxHighlighter>
           </div>
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
-            <DtPicker
-              defaultValue={singleExample}
-              onChange={setSingleExample}
-            />
+            <DtPicker initValue={singleExample} onChange={setSingleExample} />
             <pre>{JSON.stringify(singleExample, null, 2)}</pre>
           </div>
         </div>
@@ -157,7 +154,7 @@ const App = () => {
           </div>
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <DtPicker
-              defaultValue={singleInitValueExample}
+              initValue={singleInitValueExample}
               onChange={setSingleInitValueExample}
             />
             <pre>{JSON.stringify(singleInitValueExample, null, 2)}</pre>
@@ -183,7 +180,7 @@ const App = () => {
           </div>
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <DtPicker
-              defaultValue={singlePersianExample}
+              initValue={singlePersianExample}
               onChange={setSinglePersianExample}
               local='fa'
             />
@@ -210,7 +207,7 @@ const App = () => {
           </div>
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <DtPicker
-              defaultValue={rangeExample}
+              initValue={rangeExample}
               onChange={setRangeExample}
               type='range'
             />
@@ -234,7 +231,7 @@ const App = () => {
           </div>
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <DtPicker
-              defaultValue={rangeInitValueExample}
+              initValue={rangeInitValueExample}
               onChange={setRangeInitValueExample}
               type='range'
             />
@@ -258,7 +255,7 @@ const App = () => {
           </div>
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <DtPicker
-              defaultValue={multiExample}
+              initValue={multiExample}
               onChange={setMultiExample}
               type='multi'
             />
@@ -285,7 +282,7 @@ const App = () => {
           </div>
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <DtPicker
-              defaultValue={multiInitialValueExample}
+              initValue={multiInitialValueExample}
               onChange={setMultiInitialValueExample}
               type='multi'
             />
@@ -309,7 +306,7 @@ const App = () => {
           </div>
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <DtPicker
-              defaultValue={singleTimeExample}
+              initValue={singleTimeExample}
               onChange={setSingleTimeExample}
               withTime
             />
@@ -336,7 +333,7 @@ const App = () => {
           </div>
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <DtPicker
-              defaultValue={displayingOption}
+              initValue={displayingOption}
               onChange={setDisplayingOption}
               showWeekend
               clearBtn
@@ -369,7 +366,7 @@ const App = () => {
             <span className='block'>close: {close}</span>
             <DtPicker
               onChange={handleCalendarChange}
-              defaultValue={callBackApi}
+              initValue={callBackApi}
               onCalenderShow={handleCalendarOpen}
               onCalenderHide={handleCalendarClose}
             />
@@ -393,7 +390,7 @@ const App = () => {
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <DtPicker
               onChange={setMinMax}
-              defaultValue={minMax}
+              initValue={minMax}
               minDate={minDate}
               maxDate={maxDate}
             />
@@ -418,7 +415,7 @@ const App = () => {
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <DtPicker
               onChange={setDisabledDate}
-              defaultValue={disabledDate}
+              initValue={disabledDate}
               disabledDates={disabledDatesList}
               minDate={minDate}
               maxDate={maxDate}
@@ -443,10 +440,7 @@ const App = () => {
           </div>
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <div>
-              <DtCalender
-                onChange={setWithoutInput}
-                defaultValue={withoutInput}
-              />
+              <DtCalendar onChange={setWithoutInput} initValue={withoutInput} />
             </div>
             <pre className='mt-4'>{JSON.stringify(withoutInput, null, 2)}</pre>
           </div>
@@ -478,7 +472,7 @@ const App = () => {
           <div className='w-2/2 md:w-1/4 lg:w-1/2'>
             <DtPicker
               onChange={setCustomIcons}
-              defaultValue={customIcons}
+              initValue={customIcons}
               NextBtnIcon={arrowRight}
               PreviousBtnIcon={arrowLeft}
               placeholder='select date'

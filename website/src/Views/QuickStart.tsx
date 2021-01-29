@@ -16,7 +16,7 @@ const DatePicker = () => {
   return (
       <DtPicker
         onChange={setDate}
-        defaultValue={date}
+        initValue={date}
         type='single'
         local='en'
         withTime
