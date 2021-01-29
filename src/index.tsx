@@ -109,6 +109,7 @@ const DtPicker: FC<IDtPickerProps> = ({
   useLayoutEffect(() => {
     if (!isComponentVisible) return
     const currentCalender: HTMLElement | null = ref.current
+    const currentInput: HTMLElement | null = inputRef.current
     if (currentCalender) {
       const { clientWidth, clientHeight } = document.documentElement
       const {
@@ -123,7 +124,12 @@ const DtPicker: FC<IDtPickerProps> = ({
         currentCalender.style.left = -(left + width + 10 - clientWidth) + 'px'
       }
       if (bottomOverflow) {
-        currentCalender.style.bottom = 0 + 'px'
+        if (currentInput) {
+          const { height: inputHeight } = currentInput!.getBoundingClientRect()
+          currentCalender.style.bottom = inputHeight + 'px'
+        } else {
+          currentCalender.style.bottom = 0 + 'px'
+        }
       }
     }
   }, [isComponentVisible])
