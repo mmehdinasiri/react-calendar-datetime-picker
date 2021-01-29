@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { DAYS_VIEW } from '../../Constant'
 import { useViewActions } from '../../store/ViewProvider'
 import { useLangOption } from '../../hooks/useLangOption'
@@ -7,8 +7,11 @@ import {
   useCalenderState
 } from '../../store/CalenderProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
-
-const years = ({ local, yearsClass }: IYearsProps) => {
+interface IYearsProps {
+  local: string
+  yearsClass?: string
+}
+const years: FC<IYearsProps> = ({ local, yearsClass }) => {
   const { minDate, maxDate } = useMinMaxState()
   const { YEARS_RANGE_START, YEARS_RANGE_END } = useLangOption(local)
   const { changeView } = useViewActions()

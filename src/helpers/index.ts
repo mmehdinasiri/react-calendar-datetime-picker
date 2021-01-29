@@ -1,6 +1,7 @@
 import persianDate from 'persian-date'
 // import persianDate from 'persian-date'
 import { useLangOption } from '../hooks/useLangOption'
+import { IDay, IRange, ITime, ITimeRange } from '../Types/index'
 
 export const getNumberOfDaysInMonth = (
   year: number,

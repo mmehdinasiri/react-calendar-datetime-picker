@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { FC, useMemo } from 'react'
 import persianDate from 'persian-date'
 
 import {
@@ -17,15 +17,23 @@ import {
   useSelectedDayState
 } from '../../store/SelectedDaysProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
-
-const DaysView = ({
+import { IDay, IRange } from '../../Types'
+interface IDaysProps {
+  hasDefaultVal: boolean
+  local: string
+  type?: string
+  showWeekend: boolean
+  daysClass?: string
+  disabledDates?: IDay[]
+}
+const DaysView: FC<IDaysProps> = ({
   type,
   local,
   hasDefaultVal,
   showWeekend,
   daysClass,
   disabledDates
-}: IDaysProps) => {
+}) => {
   const { minDate, maxDate } = useMinMaxState()
   const { todayObject, getDay, WEEK_DAYS } = useLangOption(local)
   const todayFullDay = `${todayObject().year}${addZero(

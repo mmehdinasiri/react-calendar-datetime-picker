@@ -6,6 +6,7 @@ import React, {
   SetStateAction
 } from 'react'
 import { addZero } from '../Helpers'
+import { IDay, IRange } from '../Types'
 
 const SelectedDaysContext = createContext(
   {} as IDay | IRange | IDay[] | null | undefined
@@ -15,7 +16,11 @@ const SelectedDaysContextSetState = createContext(
     SetStateAction<IDay | IDay[] | null | undefined>
   >
 )
-
+interface ISelectedDayProvider {
+  type?: string
+  initState?: IDay | IRange | IDay[] | null | undefined
+  children: React.ReactElement | React.ReactElement[]
+}
 function SelectedDaysProvider({
   children,
   initState,

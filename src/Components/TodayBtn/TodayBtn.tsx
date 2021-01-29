@@ -1,10 +1,13 @@
-import React, { Fragment } from 'react'
+import React, { FC, Fragment } from 'react'
 import { useCalenderActions } from '../../store/CalenderProvider'
 import { useLangOption } from '../../hooks/useLangOption'
 import { useMinMaxState } from '../../store/MinMaxProvider'
 import { compareDateEN, compareDateFA } from '../../Helpers'
-
-const TodayBtn = ({ local, todayBtn }: ITodayBtn) => {
+interface ITodayBtn {
+  local: string
+  todayBtn: boolean
+}
+const TodayBtn: FC<ITodayBtn> = ({ local, todayBtn }) => {
   const { todayObject, todayBtnTL } = useLangOption(local)
   const { changeCalender } = useCalenderActions()
   const { minDate, maxDate } = useMinMaxState()

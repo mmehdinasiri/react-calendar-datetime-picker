@@ -5,7 +5,12 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
-
+import { IDay } from '../Types'
+interface ICalenderProvider {
+  type?: string
+  initCalender: IDay
+  children: React.ReactElement | React.ReactElement[]
+}
 const CalenderContext = createContext({} as IDay)
 const CalenderContextSetState = createContext(
   (Function as unknown) as Dispatch<SetStateAction<IDay>>

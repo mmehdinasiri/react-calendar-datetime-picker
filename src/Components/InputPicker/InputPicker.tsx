@@ -8,7 +8,23 @@ import { ReactComponent as Close } from '../../Icons/close.svg'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { useLangOption } from '../../hooks/useLangOption'
 import { useCalenderActions } from '../../store/CalenderProvider'
-
+import { IDay, IRange } from '../../Types'
+interface IInputPicker {
+  placeholder?: string
+  type: string
+  local: string
+  handelComponentVisible: () => void
+  onChange: (date: any) => void
+  clearBtn?: boolean
+  withTime?: boolean
+  isDisabled?: boolean
+  isRequired?: boolean
+  fromLabel?: string
+  toLabel?: string
+  inputClass?: string
+  clearBtnClass?: string
+  maxDate: IDay | null | undefined
+}
 const InputPicker = forwardRef(
   (
     {

@@ -1,5 +1,12 @@
 import React, { useState, createContext, useContext } from 'react'
-
+import { IDay } from '../Types'
+interface IMinMaxProvider {
+  initState: {
+    minDate: IDay | null | undefined
+    maxDate: IDay | null | undefined
+  }
+  children: React.ReactElement | React.ReactElement[]
+}
 const MinMaxContext = createContext(
   {} as { minDate: IDay | null | undefined; maxDate: IDay | null | undefined }
 )

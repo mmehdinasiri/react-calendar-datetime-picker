@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { FC, ReactElement, useEffect } from 'react'
 import { useViewActions, useViewState } from '../../store/ViewProvider'
 import useDidMountEffect from '../../hooks/useDidMountEffect'
 import {
@@ -14,7 +14,29 @@ import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { mergeProviders } from '../../Helpers'
 import { useLangOption } from '../../hooks/useLangOption'
-
+import { IDay, IRange } from '../../Types'
+interface IWrapper {
+  onChange: (date: any) => void
+  type: string
+  withTime?: boolean
+  local: string
+  hasDefaultVal: boolean
+  showWeekend: boolean
+  todayBtn: boolean
+  NextBtnIcon?: any
+  PreviousBtnIcon?: any
+  clockFromLabel?: string
+  clockToLabel?: string
+  clockLabel?: string
+  nextMonthBtnTitle?: string
+  previousMonthBtnTitle?: string
+  headerClass?: string
+  daysClass?: string
+  timeClass?: string
+  monthsClass?: string
+  yearsClass?: string
+  disabledDates?: IDay[]
+}
 const viewsSelector = (
   hasDefaultVal: boolean,
   currentView: string,
@@ -60,7 +82,7 @@ const viewsSelector = (
   }
   return view
 }
-const Wrapper = ({
+const Wrapper: FC<IWrapper> = ({
   onChange,
   type,
   withTime,
@@ -81,7 +103,7 @@ const Wrapper = ({
   monthsClass,
   yearsClass,
   disabledDates
-}: IWrapper) => {
+}) => {
   const selectedDayState = useSelectedDayState()
   const selectedTime = useSelectedTimeState()
   const { clockFromLB, clockToLB, clockLB } = useLangOption(local)

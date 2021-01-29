@@ -1,4 +1,5 @@
 import persianDate from 'persian-date'
+import { IDay } from '../Types'
 export const LOCAL_CONSTANT = {
   fa: {
     NUMBERS: ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],

@@ -1,17 +1,24 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import useDidMountEffect from '../../hooks/useDidMountEffect'
 import { useSelectedTimeActions } from '../../store/SelectedTimeProvider'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { addZero } from '../../Helpers'
+import { IRange } from '../../Types'
 // import useDidMountEffect from '../../hooks/useDidMountEffect'
-
-const TimeView = ({
+interface ITimeViewProps {
+  initHour: number | undefined
+  initMinutes: number | undefined
+  timeFor?: string
+  timeLabel?: string
+  timeClass?: string
+}
+const TimeView: FC<ITimeViewProps> = ({
   timeFor,
   initHour,
   initMinutes,
   timeLabel,
   timeClass
-}: ITimeViewProps) => {
+}) => {
   const today = new Date()
   const selectedDate = useSelectedDayState()
   const {

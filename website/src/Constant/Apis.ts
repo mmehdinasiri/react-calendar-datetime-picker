@@ -12,7 +12,7 @@ export const APIS = [
     default: 'null',
     required: 'true',
     description:
-      'A function that return the object of selected date/dates. The type returned object can be one of these are: IDay | IRange | IDay[]'
+      'A function that return the object of selected date/dates. The type returned object can be one of these are: IDay | IRange | IDay[] | null | undefined,'
   },
   {
     property: 'type',

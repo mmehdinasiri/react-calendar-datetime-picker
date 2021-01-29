@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { DAYS_VIEW } from '../../Constant'
 import { useViewActions } from '../../store/ViewProvider'
 import { useLangOption } from '../../hooks/useLangOption'
@@ -7,8 +7,11 @@ import {
   useCalenderState
 } from '../../store/CalenderProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
-
-const MonthsView = ({ local, monthsClass }: IMonthsProps) => {
+interface IMonthsProps {
+  local: string
+  monthsClass?: string
+}
+const MonthsView: FC<IMonthsProps> = ({ local, monthsClass }) => {
   const { minDate, maxDate } = useMinMaxState()
   const { MONTHS } = useLangOption(local)
   const { changeView } = useViewActions()

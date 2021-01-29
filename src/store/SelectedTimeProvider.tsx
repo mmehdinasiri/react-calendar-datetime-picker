@@ -5,7 +5,12 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
-
+import { ITime, ITimeRange } from '../Types'
+interface ISelectedTimeProvider {
+  type?: string
+  initState?: ITime | ITimeRange | null
+  children: React.ReactElement | React.ReactElement[]
+}
 const SelectedTimeContext = createContext(
   {} as ITime | ITimeRange | null | undefined
 )

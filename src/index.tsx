@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 import './style/main.scss'
 import { DtWrapper, InputPicker } from './Components'
 import CalenderProvider from './store/CalenderProvider'
@@ -8,8 +8,43 @@ import SelectedTimeProvider from './store/SelectedTimeProvider'
 import MinMaxProvider from './store/MinMaxProvider'
 import { checkInputValues, handelInitialValues } from './Helpers'
 import useComponentVisible from './hooks/useComponentVisible'
-
-const DtPicker = ({
+import { IDay, IRange } from './Types'
+interface IDtPickerProps {
+  defaultValue?: IDay | IDay[] | IRange | null | undefined
+  onChange: (date: any) => void
+  onCalenderHide?: any
+  onCalenderShow?: any
+  type?: string
+  withTime?: boolean
+  local?: string
+  showWeekend?: boolean
+  clearBtn?: boolean
+  isRequired?: boolean
+  todayBtn?: boolean
+  isDisabled?: boolean
+  maxDate?: IDay
+  minDate?: IDay
+  placeholder?: string
+  NextBtnIcon?: any
+  PreviousBtnIcon?: any
+  fromLabel?: string
+  toLabel?: string
+  clockFromLabel?: string
+  clockToLabel?: string
+  clockLabel?: string
+  nextMonthBtnTitle?: string
+  previousMonthBtnTitle?: string
+  inputClass?: string
+  clearBtnClass?: string
+  calenderModalClass?: string
+  headerClass?: string
+  daysClass?: string
+  timeClass?: string
+  monthsClass?: string
+  yearsClass?: string
+  disabledDates?: IDay[]
+}
+const DtPicker: FC<IDtPickerProps> = ({
   defaultValue,
   onChange,
   type,
@@ -43,7 +78,7 @@ const DtPicker = ({
   monthsClass,
   yearsClass,
   disabledDates
-}: IDtPickerProps) => {
+}) => {
   const inputRef = useRef(null)
   const minMaxState = {
     minDate: minDate,
@@ -70,6 +105,7 @@ const DtPicker = ({
     correctedLocal,
     maxDate
   )
+
   useEffect(() => {
     checkInputValues(
       defaultValue,
@@ -141,7 +177,7 @@ const DtPicker = ({
     </ViewProvider>
   )
 }
-const DtCalender = ({
+const DtCalender: FC<IDtPickerProps> = ({
   defaultValue,
   onChange,
   type,
@@ -165,7 +201,7 @@ const DtCalender = ({
   monthsClass,
   yearsClass,
   disabledDates
-}: IDtPickerProps) => {
+}) => {
   const minMaxState = {
     minDate: minDate,
     maxDate: maxDate
@@ -229,5 +265,5 @@ const DtCalender = ({
   )
 }
 
-export { DtCalender }
 export default DtPicker
+export { DtCalender, IDay, IRange }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import {
   useCalenderActions,
   useCalenderState
@@ -9,15 +9,22 @@ import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useLangOption } from '../../hooks/useLangOption'
 import { ReactComponent as Next } from '../../Icons/next.svg'
 import { ReactComponent as Back } from '../../Icons/back.svg'
-
-const Header = ({
+interface IHeaderProps {
+  local: string
+  NextBtnIcon?: any
+  PreviousBtnIcon?: any
+  nextMonthBtnTitle?: string
+  previousMonthBtnTitle?: string
+  headerClass?: string
+}
+const Header: FC<IHeaderProps> = ({
   local,
   NextBtnIcon,
   PreviousBtnIcon,
   nextMonthBtnTitle,
   previousMonthBtnTitle,
   headerClass
-}: IHeaderProps) => {
+}) => {
   const { minDate, maxDate } = useMinMaxState()
   const { MONTHS, nextMonthBtnTL, previousMonthBtnTL } = useLangOption(local)
   const dayState = useCalenderState()
