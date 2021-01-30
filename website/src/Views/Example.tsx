@@ -275,10 +275,10 @@ const App = () => {
       </div>
       <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
         <h3
-          id='selectMultiDaysWithInitialDate'
+          id='multiDaysWithInitialDate'
           className='text-2xl font-bold mb-4 scroll-offset'
         >
-          Select multi days with initial date
+          Multi days with initial date
         </h3>
         <div className='block xl:flex '>
           <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
