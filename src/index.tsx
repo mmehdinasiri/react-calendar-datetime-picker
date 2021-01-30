@@ -6,7 +6,12 @@ import ViewProvider from './store/ViewProvider'
 import SelectedDaysProvider from './store/SelectedDaysProvider'
 import SelectedTimeProvider from './store/SelectedTimeProvider'
 import MinMaxProvider from './store/MinMaxProvider'
-import { checkInputValues, handelInitialValues } from './Helpers'
+import {
+  checkInputValues,
+  convertToEn,
+  convertToFa,
+  handelInitialValues
+} from './Helpers'
 import useComponentVisible from './hooks/useComponentVisible'
 import { IDay, IRange } from './Types'
 interface IDtPickerProps {
@@ -293,4 +298,4 @@ const DtCalendar: FC<IDtPickerProps> = ({
 }
 
 export default DtPicker
-export { DtCalendar, IDay, IRange }
+export { DtCalendar, IDay, IRange, convertToEn, convertToFa }

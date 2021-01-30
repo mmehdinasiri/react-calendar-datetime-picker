@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
-import DtPicker, { DtCalendar } from 'react-datetime-picker'
+import DtPicker, {
+  convertToEn,
+  convertToFa,
+  DtCalendar
+} from 'react-datetime-picker'
 import 'react-datetime-picker/dist/index.css'
 import { DocLayout } from '../Component'
 import SyntaxHighlighter from 'react-syntax-highlighter'
