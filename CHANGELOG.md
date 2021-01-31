@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 12/30/2020
+
+- add documenting website
+- fix some issues
+- add calender component
+- add two helper function to convert EN to FA and vice versa
+
 ## [1.1.2] - 12/30/2020
 
 - fix date style when from date is equal to to date
