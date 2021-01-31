@@ -14,7 +14,10 @@ Thanks to [PersianDate](https://github.com/babakhani/PersianDate), the only depe
 ## Install
 
 ```bash
-npm install --save react-datetime-picker
+npm install react-datetime-picker
+or
+yarn add react-datetime-picker
+
 ```
 
 ## Documentation 📄
