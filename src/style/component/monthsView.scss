@@ -24,6 +24,10 @@
     opacity: 0.2;
     pointer-events: none;
   }
+  &.is-selected-month {
+    color: $is-selected-day;
+    font-weight: bold;
+  }
 }
 
 .monthList_month:nth-child(3n + 1) {

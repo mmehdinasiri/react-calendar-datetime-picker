@@ -17,7 +17,8 @@ const MonthsView: FC<IMonthsProps> = ({ local, monthsClass }) => {
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
   const calenderState = useCalenderState()
-  const { year, day, hours, minutes } = calenderState
+  const { year, month, day, hours, minutes } = calenderState
+  const preSelectedMonth = month
   const changeMonth = (newMonth: number) => {
     const newDate = {
       year: year,
@@ -52,7 +53,8 @@ const MonthsView: FC<IMonthsProps> = ({ local, monthsClass }) => {
             key={index}
             className={`monthList_month ${
               isDisabled(index) ? 'is-disabled' : ''
-            }`}
+            }
+            ${index === preSelectedMonth ? 'is-selected-month' : ''}`}
             onClick={() => changeMonth(index)}
           >
             {month}
