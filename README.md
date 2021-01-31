@@ -30,7 +30,7 @@ You can find documentation on [the website.](https://mmehdinasiri.github.io/reac
 ```tsx
 import React, { Component } from 'react'
 
-import { DtPicker } from 'react-calendar-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/index.css'
 
 const App = () => {
