@@ -7,7 +7,7 @@ version: "1.2.0"
 
 [![NPM](https://img.shields.io/npm/v/react-datetime-picker.svg)](https://www.npmjs.com/package/react-datetime-picker) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-![alt text](https://github.com/mmehdinasiri/react-datetime-picker/blob/main/image/react-datetime-picker.jpg?raw=true)
+![alt text](./website/public/image/react-datetime-picker.jpg?raw=true)
 
 Thanks to [PersianDate](https://github.com/babakhani/PersianDate), the only dependency of this date picker.
 
