@@ -406,7 +406,7 @@ const App = () => {
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               onChange={setMinMax}
-              initValue={maDate}
+              initValue={minMax}
               minDate={minDate}
               maxDate={maxDate}
             />

@@ -91,6 +91,13 @@ const DtPicker: FC<IDtPickerProps> = ({
     minDate: fixedMonth(minDate),
     maxDate: fixedMonth(maxDate)
   }
+  let fixedDisabledDates: any
+  if (disabledDates?.length) {
+    fixedDisabledDates = disabledDates?.map((date) => {
+      return fixedMonth(date)
+    })
+  }
+
   const {
     ref,
     isComponentVisible,
@@ -202,7 +209,7 @@ const DtPicker: FC<IDtPickerProps> = ({
                       timeClass={timeClass}
                       monthsClass={monthsClass}
                       yearsClass={yearsClass}
-                      disabledDates={disabledDates}
+                      disabledDates={fixedDisabledDates}
                     />
                   </div>
                 )}
@@ -243,7 +250,12 @@ const DtCalendar: FC<IDtPickerProps> = ({
     minDate: fixedMonth(minDate),
     maxDate: fixedMonth(maxDate)
   }
-
+  let fixedDisabledDates: any
+  if (disabledDates?.length) {
+    fixedDisabledDates = disabledDates?.map((date) => {
+      return fixedMonth(date)
+    })
+  }
   const correctedType = type ? type.toLocaleLowerCase() : 'single'
   const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
   const { initCalender, initTime } = handelInitialValues(
@@ -294,7 +306,7 @@ const DtCalendar: FC<IDtPickerProps> = ({
                   timeClass={timeClass}
                   monthsClass={monthsClass}
                   yearsClass={yearsClass}
-                  disabledDates={disabledDates}
+                  disabledDates={fixedDisabledDates}
                 />
               </div>
             </SelectedTimeProvider>
