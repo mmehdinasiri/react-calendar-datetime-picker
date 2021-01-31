@@ -98,6 +98,14 @@ const DtPicker: FC<IDtPickerProps> = ({
     })
   }
 
+  const correctedType = type ? type.toLocaleLowerCase() : 'single'
+  const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
+  const { initCalender, initTime } = handelInitialValues(
+    fixedMonthInitValue(initValue, correctedType),
+    correctedType,
+    correctedLocal,
+    fixedMonth(maxDate)
+  )
   const {
     ref,
     isComponentVisible,
@@ -111,15 +119,6 @@ const DtPicker: FC<IDtPickerProps> = ({
     }
     setIsComponentVisible(!isComponentVisible)
   }
-  const correctedType = type ? type.toLocaleLowerCase() : 'single'
-  const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
-  const { initCalender, initTime } = handelInitialValues(
-    fixedMonthInitValue(initValue, correctedType),
-    correctedType,
-    correctedLocal,
-    fixedMonth(maxDate)
-  )
-
   useLayoutEffect(() => {
     if (!isComponentVisible) return
     const currentCalender: HTMLElement | null = ref.current
@@ -210,6 +209,7 @@ const DtPicker: FC<IDtPickerProps> = ({
                       monthsClass={monthsClass}
                       yearsClass={yearsClass}
                       disabledDates={fixedDisabledDates}
+                      initCalender={initCalender}
                     />
                   </div>
                 )}

@@ -15,6 +15,7 @@ import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { mergeProviders } from '../../Helpers'
 import { useLangOption } from '../../hooks/useLangOption'
 import { IDay, IRange } from '../../Types'
+import { useCalenderActions } from '../../store/CalenderProvider'
 interface IWrapper {
   onChange: (date: any) => void
   type: string
@@ -36,6 +37,7 @@ interface IWrapper {
   monthsClass?: string
   yearsClass?: string
   disabledDates?: IDay[]
+  initCalender?: IDay
 }
 const viewsSelector = (
   hasDefaultVal: boolean,
@@ -102,9 +104,11 @@ const Wrapper: FC<IWrapper> = ({
   daysClass,
   monthsClass,
   yearsClass,
-  disabledDates
+  disabledDates,
+  initCalender
 }) => {
   const selectedDayState = useSelectedDayState()
+  const { changeCalender } = useCalenderActions()
   const selectedTime = useSelectedTimeState()
   const { clockFromLB, clockToLB, clockLB } = useLangOption(local)
   const { changeView } = useViewActions()
@@ -117,6 +121,15 @@ const Wrapper: FC<IWrapper> = ({
       changeView(DAYS_VIEW)
     }
   }, [])
+  useEffect(() => {
+    if (
+      initCalender &&
+      (!selectedDayState ||
+        (Array.isArray(selectedDayState) && !selectedDayState.length))
+    ) {
+      changeCalender({ ...initCalender })
+    }
+  }, [selectedDayState])
   return (
     <div
       className={`dtWrapper ${local === 'fa' ? 'is-rtl' : 'is-ltr'} ${
