@@ -34,13 +34,13 @@ const QuickStart = () => {
         <h1 className='text-3xl my-3'>Installation:</h1>
         <p className='text-base mb-1'>The package can be installed via NPM:</p>
         <div className='w-2/3'>
-          <SyntaxHighlighter style={tomorrowNightEighties}>
+          <SyntaxHighlighter style={tomorrowNightEighties} className='rounded'>
             {'npm install react-datetime-picker'}
           </SyntaxHighlighter>
         </div>
         <p className='text-base mb-1'>Or by using Yarn:</p>
         <div className='w-2/3'>
-          <SyntaxHighlighter style={tomorrowNightEighties}>
+          <SyntaxHighlighter style={tomorrowNightEighties} className='rounded'>
             {'yarn add react-datetime-picker'}
           </SyntaxHighlighter>
         </div>
@@ -50,6 +50,7 @@ const QuickStart = () => {
         <p className='text-base mb-1'>Here's an example of basic usage:</p>
         <div className='w-2/3'>
           <SyntaxHighlighter
+            className='rounded'
             style={tomorrowNightEighties}
             language='javascript '
           >

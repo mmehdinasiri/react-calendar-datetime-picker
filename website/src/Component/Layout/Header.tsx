@@ -3,13 +3,13 @@ import { Link, NavLink } from 'react-router-dom'
 
 const Header = () => {
   return (
-    <div className=' fixed w-full z-10'>
+    <div className=' fixed w-full z-20'>
       <nav className='flex items-center justify-between flex-wrap bg-teal p-4 bg-primary text-text-lightest'>
         <div className='flex items-center flex-no-shrink text-text-lightest mr-6'>
           <span className='text-xl text-text-lightest font-medium'>
             <Link to='/'>
               React date-time picker{' '}
-              <span className='text-xs ml-2'>v1.1.2</span>
+              <span className='text-xs ml-2'>v1.2.0</span>
             </Link>
           </span>
         </div>
@@ -24,15 +24,15 @@ const Header = () => {
           <div className='text-sm flex-grow'>
             <NavLink
               className='block inline-block mt-0 text-text-lightest hover:text-white mr-4 font-extralight'
-              activeClassName='is-active'
+              // activeClassName='is-active'
               to='/docs/quick-start'
             >
               Docs
             </NavLink>
             <NavLink
               className='block inline-block mt-0 text-text-lightest hover:text-white mr-4 font-extralight'
-              activeClassName='is-active'
-              to='/docs/examples'
+              // activeClassName='is-active'
+              to='/docs/Examples'
             >
               Examples
             </NavLink>

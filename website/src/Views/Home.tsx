@@ -10,7 +10,7 @@ const Home = () => {
           React Date-Time Picker
         </h1>
         <h2 className='text-lg text-primary font-medium '>
-          The Simple English and Persian calender for React
+          The Simple and fast English and Persian calender for React
         </h2>
         <div className='mx-auto w-60 my-4 my-6'>
           <img
@@ -36,6 +36,7 @@ const Home = () => {
             <li className='text-left'>
               Support English and Persian(Jalali) calender
             </li>
+            <li className='text-left'>Use context api to share data</li>
             <li className='text-left'>
               Support Three type of calender: single day - range dates - multi
               dates
