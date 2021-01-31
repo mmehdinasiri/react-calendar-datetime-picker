@@ -1,9 +1,5 @@
 import React, { useState } from 'react'
-import DtPicker, {
-  convertToEn,
-  convertToFa,
-  DtCalendar
-} from 'react-datetime-picker'
+import DtPicker, { DtCalendar } from 'react-datetime-picker'
 import 'react-datetime-picker/dist/index.css'
 import { DocLayout } from '../Component'
 import SyntaxHighlighter from 'react-syntax-highlighter'
@@ -410,7 +406,7 @@ const App = () => {
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               onChange={setMinMax}
-              initValue={minMax}
+              initValue={maDate}
               minDate={minDate}
               maxDate={maxDate}
             />

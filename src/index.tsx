@@ -10,6 +10,8 @@ import {
   checkInputValues,
   convertToEn,
   convertToFa,
+  fixedMonth,
+  fixedMonthInitValue,
   handelInitialValues
 } from './Helpers'
 import useComponentVisible from './hooks/useComponentVisible'
@@ -86,8 +88,8 @@ const DtPicker: FC<IDtPickerProps> = ({
 }) => {
   const inputRef = useRef(null)
   const minMaxState = {
-    minDate: minDate,
-    maxDate: maxDate
+    minDate: fixedMonth(minDate),
+    maxDate: fixedMonth(maxDate)
   }
   const {
     ref,
@@ -105,10 +107,10 @@ const DtPicker: FC<IDtPickerProps> = ({
   const correctedType = type ? type.toLocaleLowerCase() : 'single'
   const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
   const { initCalender, initTime } = handelInitialValues(
-    initValue,
+    fixedMonthInitValue(initValue, correctedType),
     correctedType,
     correctedLocal,
-    maxDate
+    fixedMonth(maxDate)
   )
 
   useLayoutEffect(() => {
@@ -152,7 +154,10 @@ const DtPicker: FC<IDtPickerProps> = ({
     <ViewProvider>
       <CalenderProvider initCalender={initCalender} type={correctedType}>
         <MinMaxProvider initState={minMaxState}>
-          <SelectedDaysProvider initState={initValue} type={correctedType}>
+          <SelectedDaysProvider
+            initState={fixedMonthInitValue(initValue, correctedType)}
+            type={correctedType}
+          >
             <SelectedTimeProvider initState={initTime} type={correctedType}>
               <div style={{ position: 'relative' }}>
                 <InputPicker
@@ -235,17 +240,17 @@ const DtCalendar: FC<IDtPickerProps> = ({
   disabledDates
 }) => {
   const minMaxState = {
-    minDate: minDate,
-    maxDate: maxDate
+    minDate: fixedMonth(minDate),
+    maxDate: fixedMonth(maxDate)
   }
 
   const correctedType = type ? type.toLocaleLowerCase() : 'single'
   const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
   const { initCalender, initTime } = handelInitialValues(
-    initValue,
+    fixedMonthInitValue(initValue, correctedType),
     correctedType,
     correctedLocal,
-    maxDate
+    fixedMonth(maxDate)
   )
   useEffect(() => {
     checkInputValues(
@@ -261,7 +266,10 @@ const DtCalendar: FC<IDtPickerProps> = ({
     <ViewProvider>
       <CalenderProvider initCalender={initCalender} type={correctedType}>
         <MinMaxProvider initState={minMaxState}>
-          <SelectedDaysProvider initState={initValue} type={correctedType}>
+          <SelectedDaysProvider
+            initState={fixedMonthInitValue(initValue, correctedType)}
+            type={correctedType}
+          >
             <SelectedTimeProvider initState={initTime} type={correctedType}>
               <div
                 className={`calender-modal is-calender ${calenderModalClass}`}

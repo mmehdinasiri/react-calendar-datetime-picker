@@ -56,7 +56,7 @@ const InputPicker = forwardRef(
     } = useSelectedDayActions()
     const correctValue = () => {
       if (type === 'single') {
-        return genFullIDay(selectedDayState as IDay)
+        return genFullIDay(selectedDayState as IDay, true)
       }
       if (
         type === 'range' &&
@@ -64,11 +64,15 @@ const InputPicker = forwardRef(
         (selectedDayState as IRange).to
       ) {
         return `${fromLabel || fromLB}:${genFullIDay(
-          (selectedDayState as IRange).from
-        )} ${toLabel || toLB}:${genFullIDay((selectedDayState as IRange).to)}`
+          (selectedDayState as IRange).from,
+          true
+        )} ${toLabel || toLB}:${genFullIDay(
+          (selectedDayState as IRange).to,
+          true
+        )}`
       } else if (type === 'multi') {
         const listDate = (selectedDayState as IDay[]).map((day) => {
-          return genFullIDay(day)
+          return genFullIDay(day, true)
         })
         return listDate
       }

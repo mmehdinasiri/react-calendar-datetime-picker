@@ -21,15 +21,18 @@ export const genFullDay = (year: number, month: number, day: number) => {
 
 export const genFullIDay = (
   date: IDay | null | undefined,
+  isCorrectMonth: boolean = false,
   withTime?: boolean
 ) => {
   if (date) {
     if (withTime && date.hours && date.minutes) {
-      return `${date.year}/${addZero(date.month)}/${addZero(
-        date.day
-      )} ${addZero(date.hours)}:${addZero(date.minutes)}`
+      return `${date.year}/${addZero(
+        date.month + (isCorrectMonth ? +1 : 0)
+      )}/${addZero(date.day)} ${addZero(date.hours)}:${addZero(date.minutes)}`
     } else {
-      return `${date.year}/${addZero(date.month)}/${addZero(date.day)}`
+      return `${date.year}/${addZero(
+        date.month + (isCorrectMonth ? +1 : 0)
+      )}/${addZero(date.day)}`
     }
   }
   return ''
@@ -201,9 +204,16 @@ export const mergeProviders = (
   if (type === 'single') {
     if ((selectedDate as IDay)?.year) {
       if (withTime) {
-        onChange({ ...selectedDate, ...selectedTime })
+        onChange({
+          ...selectedDate,
+          month: (selectedDate as IDay)?.month + 1,
+          ...selectedTime
+        })
       } else {
-        onChange(selectedDate)
+        onChange({
+          ...selectedDate,
+          month: (selectedDate as IDay)?.month + 1
+        })
       }
     } else {
       onChange(selectedDate)
@@ -218,21 +228,38 @@ export const mergeProviders = (
         onChange({
           from: {
             ...(selectedDate as IRange).from,
+            month: (selectedDate as IRange).from?.month! + 1,
             ...(selectedTime as ITimeRange).from
           },
           to: {
             ...(selectedDate as IRange).to,
+            month: (selectedDate as IRange).to?.month! + 1,
             ...(selectedTime as ITimeRange).to
           }
         })
       } else {
-        onChange(selectedDate)
+        onChange({
+          from: {
+            ...(selectedDate as IRange).from,
+            month: (selectedDate as IRange).from?.month! + 1
+          },
+          to: {
+            ...(selectedDate as IRange).to,
+            month: (selectedDate as IRange).to?.month! + 1
+          }
+        })
       }
     } else {
       onChange(selectedDate)
     }
   } else if (type === 'multi') {
-    onChange(selectedDate)
+    const newDate = (selectedDate as IDay[]).map((d: IDay) => {
+      return {
+        ...d,
+        month: d.month + 1
+      }
+    })
+    onChange(newDate)
   }
 }
 
@@ -453,4 +480,34 @@ export const convertToFa = (date: IDay | null, divider: string = '/') => {
     return fixedDate
   }
   return ''
+}
+
+export const fixedMonth = (date: IDay | undefined) => {
+  if (date && date.year) {
+    return {
+      ...date,
+      month: date.month - 1
+    }
+  }
+  return date
+}
+export const fixedMonthInitValue = (initDate: any, type: string) => {
+  let newDate
+  if (initDate) {
+    if (type === 'single' && initDate.year) {
+      newDate = fixedMonth(initDate)
+    }
+    if (type === 'range' && initDate.from && initDate.to) {
+      newDate = {
+        from: { ...fixedMonth(initDate.from) },
+        to: { ...fixedMonth(initDate.to) }
+      }
+    }
+    if (type === 'multi') {
+      newDate = initDate.map((d: IDay) => {
+        return { ...fixedMonth(d) }
+      })
+    }
+  }
+  return newDate
 }
