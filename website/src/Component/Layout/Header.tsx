@@ -38,7 +38,7 @@ const Header = () => {
             </NavLink>
             <a
               className='block inline-block mt-0 text-text-lightest hover:text-white mr-4 font-extralight'
-              href='https://github.com/mmehdinasiri/react-datetime-picker'
+              href='https://github.com/mmehdinasiri/react-calendar-datetime-picker'
               target='_blank'
             >
               Github

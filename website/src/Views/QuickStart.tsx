@@ -8,8 +8,8 @@ import {
 } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 
 const usageString = `
-import { DtPicker } from 'react-datetime-picker'
-import 'react-datetime-picker/dist/index.css'
+import { DtPicker } from 'react-calendar-datetime-picker'
+import 'react-calendar-datetime-picker/dist/index.css'
 
 const DatePicker = () => {
   const [date, setDate] = useState(null)
@@ -35,13 +35,13 @@ const QuickStart = () => {
         <p className='text-base mb-1'>The package can be installed via NPM:</p>
         <div className='w-2/3'>
           <SyntaxHighlighter style={tomorrowNightEighties} className='rounded'>
-            {'npm install react-datetime-picker'}
+            {'npm install react-calendar-datetime-picker'}
           </SyntaxHighlighter>
         </div>
         <p className='text-base mb-1'>Or by using Yarn:</p>
         <div className='w-2/3'>
           <SyntaxHighlighter style={tomorrowNightEighties} className='rounded'>
-            {'yarn add react-datetime-picker'}
+            {'yarn add react-calendar-datetime-picker'}
           </SyntaxHighlighter>
         </div>
       </section>

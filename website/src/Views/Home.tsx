@@ -14,8 +14,8 @@ const Home = () => {
         </h2>
         <div className='mx-auto w-60 my-4 my-6'>
           <img
-            src={`${process.env.PUBLIC_URL}/image/react-datetime-picker.jpg`}
-            alt='react-datetime-picker'
+            src={`${process.env.PUBLIC_URL}/image/react-calendar-datetime-picker.jpg`}
+            alt='react-calendar-datetime-picker'
           />
         </div>
         <div>
@@ -25,7 +25,7 @@ const Home = () => {
           <a
             className='btn font-bold'
             target='_black'
-            href='https://github.com/mmehdinasiri/react-datetime-picker'
+            href='https://github.com/mmehdinasiri/react-calendar-datetime-picker'
           >
             Github
           </a>

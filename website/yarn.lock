@@ -9621,7 +9621,7 @@ react-app-polyfill@^1.0.6:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
-"react-datetime-picker@link:..":
+"react-calendar-datetime-picker@link:..":
   version "0.0.0"
   uid ""
 

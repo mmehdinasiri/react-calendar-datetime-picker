@@ -4,8 +4,8 @@ import { Home, QuickStart, Example, Api, Customization } from './Views'
 import './style/tailwindPurge.scss'
 import './style/main.scss'
 
-// import { DtPicker } from 'react-datetime-picker'
-// import 'react-datetime-picker/dist/index.css'
+// import { DtPicker } from 'react-calendar-datetime-picker'
+// import 'react-calendar-datetime-picker/dist/index.css'
 
 export default function App() {
   return (

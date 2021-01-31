@@ -1,5 +1,5 @@
 export const singleExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   return (
@@ -12,7 +12,7 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const singleInitValueExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState({ year: 2016, month: 6, day: 20 })
   return (
@@ -26,7 +26,7 @@ export default DatePicker
 `
 
 export const singlePersianExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   return (
@@ -40,7 +40,7 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const rangeExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   return (
@@ -54,7 +54,7 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const rangeInitValueEExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState({
     from: { year: 2012, month: 5, day: 2 },
@@ -71,7 +71,7 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const multiExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   return (
@@ -85,7 +85,7 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const multiInitialValueExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState([
     {
@@ -121,7 +121,7 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const singleTimeExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   return (
@@ -135,7 +135,7 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const displayingOptionExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   return (
@@ -151,7 +151,7 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const callbackApiExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   const handleCalendarChange = (newDate: any) => {
@@ -177,7 +177,7 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const minMaxExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
 const maxDate = {
     year: 2016,
@@ -202,7 +202,7 @@ const maxDate = {
 export default DatePicker
 `
 export const disabledExampleStr = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   const disabledDates = [
@@ -235,7 +235,7 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const withoutInputStr = `
-import  { DtCalendar } from 'react-datetime-picker'
+import  { DtCalendar } from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   return (
@@ -248,7 +248,7 @@ const DatePicker = () => {
 export default DatePicker
 `
 export const customCalender = `
-import DtPicker from 'react-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   return (

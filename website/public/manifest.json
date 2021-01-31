@@ -1,6 +1,6 @@
 {
-  "short_name": "react-datetime-picker",
-  "name": "react-datetime-picker",
+  "short_name": "react-calendar-datetime-picker",
+  "name": "react-calendar-datetime-picker",
   "icons": [
     {
       "src": "favicon.ico",

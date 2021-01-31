@@ -1,45 +1,41 @@
-# react-datetime-picker
+# react-calendar-datetime-picker
 
 > Made with create-react-library
+
 ### The Simple and fast English and Persian calender for React
 
 version: "1.2.0"
 
-[![NPM](https://img.shields.io/npm/v/react-datetime-picker.svg)](https://www.npmjs.com/package/react-datetime-picker) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/react-calendar-datetime-picker.svg)](https://www.npmjs.com/package/react-calendar-datetime-picker) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-![alt text](./website/public/image/react-datetime-picker.jpg?raw=true)
+![alt text](./website/public/image/react-calendar-datetime-picker.jpg?raw=true)
 
 Thanks to [PersianDate](https://github.com/babakhani/PersianDate), the only dependency of this date picker.
 
 ## Install
 
 ```bash
-npm install react-datetime-picker
+npm install react-calendar-datetime-picker
 or
-yarn add react-datetime-picker
+yarn add react-calendar-datetime-picker
 
 ```
 
 ## Documentation 📄
 
-You can find documentation on [the website.](https://mmehdinasiri.github.io/react-datetime-picker/)
-
-The documentation is divided into several sections:
-
-- [Getting Started](https://mmehdinasiri.github.io/react-datetime-picker/docs/getting-started)
-- [Examples](https://mmehdinasiri.github.io/react-datetime-picker/docs/Examples)
+You can find documentation on [the website.](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)
 
 ## Usage
 
 ```tsx
 import React, { Component } from 'react'
 
-import { DtPicker } from 'react-datetime-picker'
-import 'react-datetime-picker/dist/index.css'
+import { DtPicker } from 'react-calendar-datetime-picker'
+import 'react-calendar-datetime-picker/dist/index.css'
 
 const App = () => {
-  const [date, setDate] = useState()
-  return <DtPicker onChange={handleCalendarChange} initValue={dateEn} />
+  const [date, setDate] = useState(null)
+  return <DtPicker onChange={setDate} initValue={date} />
 }
 ```
 
