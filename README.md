@@ -1,7 +1,7 @@
 # react-datetime-picker
 
 > Made with create-react-library
-> The Simple and fast English and Persian calender for React
+### The Simple and fast English and Persian calender for React
 
 version: "1.2.0"
 
