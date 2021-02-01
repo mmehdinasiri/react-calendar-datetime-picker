@@ -1,5 +1,5 @@
-import persianDate from 'persian-date'
-// import persianDate from 'persian-date'
+import PersianDate from 'persian-date'
+// import PersianDate from 'persian-date'
 import { useLangOption } from '../hooks/useLangOption'
 import { IDay, IRange, ITime, ITimeRange } from '../Types/index'
 
@@ -9,7 +9,7 @@ export const getNumberOfDaysInMonth = (
   local?: string
 ): number => {
   if (local === 'fa') {
-    return new persianDate([year, month + 1]).daysInMonth()
+    return new PersianDate([year, month + 1]).daysInMonth()
   } else {
     return new Date(year, month + 1, 0).getDate()
   }
@@ -92,7 +92,7 @@ export const getPreviousSundayDay = (date: IDay, local: string) => {
 
 export const getDateTimeStamp = (date: IDay, local?: string) => {
   if (local === 'fa') {
-    return new persianDate([date.year, date.month + 1, date.day])
+    return new PersianDate([date.year, date.month + 1, date.day])
   }
   return new Date(date.year, date.month, date.day).setHours(0, 0, 0, 0)
 }
@@ -107,8 +107,8 @@ export const compareDateEN = (date1: IDay, date2: IDay) => {
   return 0
 }
 export const compareDateFA = (date1: IDay, date2: IDay) => {
-  const fixDate1 = new persianDate([date1.year, date1.month + 1, date1.day])
-  const fixDate2 = new persianDate([date2.year, date2.month + 1, date2.day])
+  const fixDate1 = new PersianDate([date1.year, date1.month + 1, date1.day])
+  const fixDate2 = new PersianDate([date2.year, date2.month + 1, date2.day])
   if (fixDate1.diff(fixDate2) > 0) {
     return 1
   } else if (fixDate1.diff(fixDate2) < 0) {
@@ -126,11 +126,11 @@ export const handelInitialValues = (
   let initTime
   let initCalender
   let today = new Date()
-  let todayP = new persianDate(today).State.persianAstro
+  let todayP = new PersianDate(today).State.persianAstro
 
   if (maxDate) {
     today = new Date(maxDate.year, maxDate.month, maxDate.day)
-    todayP = new persianDate([maxDate.year, maxDate.month, maxDate.day]).State
+    todayP = new PersianDate([maxDate.year, maxDate.month, maxDate.day]).State
       .persianAstro
   }
 
@@ -444,7 +444,7 @@ export const checkInputValues = (
 
 export const convertToEn = (date: IDay | null, divider: string = '/') => {
   if (date) {
-    const faDate = new persianDate([
+    const faDate = new PersianDate([
       date?.year,
       date?.month + 1,
       date?.day
@@ -466,7 +466,7 @@ export const convertToEn = (date: IDay | null, divider: string = '/') => {
 export const convertToFa = (date: IDay | null, divider: string = '/') => {
   if (date) {
     const day = new Date(date.year, date.month, date.day)
-    const faDate = new persianDate(day).State.persianAstro
+    const faDate = new PersianDate(day).State.persianAstro
     let fixedDate =
       faDate.year +
       divider +

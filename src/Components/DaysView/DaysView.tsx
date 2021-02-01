@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react'
-import persianDate from 'persian-date'
+import PersianDate from 'persian-date'
 
 import {
   addZero,
@@ -68,7 +68,7 @@ const DaysView: FC<IDaysProps> = ({
     day: number
   ) => {
     if (local === 'fa' && !hasDefaultVal) {
-      const dayP = new persianDate([year, month + 1, day]).State.persianAstro
+      const dayP = new PersianDate([year, month + 1, day]).State.persianAstro
       year = dayP.year
       month = dayP.month
       day = dayP.day

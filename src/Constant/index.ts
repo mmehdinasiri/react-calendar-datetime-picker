@@ -1,4 +1,4 @@
-import persianDate from 'persian-date'
+import PersianDate from 'persian-date'
 import { IDay } from '../Types'
 export const LOCAL_CONSTANT = {
   fa: {
@@ -52,14 +52,14 @@ export const LOCAL_CONSTANT = {
     YEARS_RANGE_START: 1302,
     YEARS_RANGE_END: 1450,
     getDay: (date: IDay) => {
-      return new persianDate([date.year, date.month + 1, date.day]).day() - 1
+      return new PersianDate([date.year, date.month + 1, date.day]).day() - 1
     },
     today: () => {
-      const pDate = new persianDate()
+      const pDate = new PersianDate()
       return pDate.State.persianAstro
     },
     todayObject: () => {
-      const pDate = new persianDate().State.persianAstro
+      const pDate = new PersianDate().State.persianAstro
       return {
         year: pDate.year,
         month: pDate.month,
@@ -67,10 +67,10 @@ export const LOCAL_CONSTANT = {
       }
     },
     getDayOfMonth: (date: IDay) => {
-      return new persianDate([date.year, date.month + 1, date.day]).date()
+      return new PersianDate([date.year, date.month + 1, date.day]).date()
     },
     setDayOfMonth: (date: IDay, day: number) => {
-      return new persianDate([date.year, date.month, date.day]).date(day)
+      return new PersianDate([date.year, date.month, date.day]).date(day)
     },
     inputPlaceholder: 'انتخاب کنید',
     clockFromLB: 'از ساعت',
