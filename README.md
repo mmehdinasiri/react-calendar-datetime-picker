@@ -8,9 +8,9 @@ version: "1.2.0"
 
 [![NPM](https://img.shields.io/npm/v/react-calendar-datetime-picker.svg)](https://www.npmjs.com/package/react-calendar-datetime-picker) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-![alt text](./website/public/image/react-calendar-datetime-picker.jpg?raw=true)
+![alt text](./website/public/image/react-datetime-picker.jpg?raw=true)
 
-Thanks to [PersianDate](https://github.com/babakhani/PersianDate), the only dependency of this date picker.
+Thanks to [PersianDate](https://github.com/babakhani/PersianDate){:target="\_blank"}, the only dependency of this date picker.
 
 ## Install
 
@@ -23,7 +23,7 @@ yarn add react-calendar-datetime-picker
 
 ## Documentation 📄
 
-You can find documentation on [the website.](https://mmehdinasiri.github.io/react-datetime-picker/)
+You can find documentation on [the website.](https://mmehdinasiri.github.io/react-datetime-picker/){:target="\_blank"}
 
 ## Usage
 
