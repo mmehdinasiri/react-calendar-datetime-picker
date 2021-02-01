@@ -73,8 +73,9 @@ const DaysView: FC<IDaysProps> = ({
       month = dayP.month
       day = dayP.day
     }
-    return [...Array(getNumberOfDaysInMonth(year, month, local))].map(
-      (_, index) => {
+    return Array(getNumberOfDaysInMonth(year, month, local))
+      .fill(undefined)
+      .map((_, index) => {
         const date = genDayObject(year, month, index + 1)
         date.fullDay = `${date.year}${addZero(date.month)}${addZero(index + 1)}`
         return {
@@ -83,8 +84,7 @@ const DaysView: FC<IDaysProps> = ({
           dayOfMonth: index + 1,
           isCurrentMonth: true
         }
-      }
-    )
+      })
   }
   const createDaysForPreviousMonth = (year: number, month: number) => {
     const firsDayOfMonth = {
@@ -103,21 +103,23 @@ const DaysView: FC<IDaysProps> = ({
       local
     )
 
-    return [...Array(visibleNumberOfDaysFromPreviousMonth)].map((_, index) => {
-      const date = {
-        year: year,
-        month: month,
-        day: index,
-        fullDay: `${previousMonth.getFullYear()}${addZero(
-          previousMonth.getMonth()
-        )}${addZero(index)}`
-      }
-      return {
-        date,
-        dayOfMonth: previousMonthLastSundayDayOfMonth + index,
-        isCurrentMonth: false
-      }
-    })
+    return Array(visibleNumberOfDaysFromPreviousMonth)
+      .fill(undefined)
+      .map((_, index) => {
+        const date = {
+          year: year,
+          month: month,
+          day: index,
+          fullDay: `${previousMonth.getFullYear()}${addZero(
+            previousMonth.getMonth()
+          )}${addZero(index)}`
+        }
+        return {
+          date,
+          dayOfMonth: previousMonthLastSundayDayOfMonth + index,
+          isCurrentMonth: false
+        }
+      })
   }
   const createDaysForNextMonth = (year: number, month: number) => {
     const lastDayOfTheMonthWeekday = getWeekday(
@@ -133,21 +135,23 @@ const DaysView: FC<IDaysProps> = ({
       ? 6 - lastDayOfTheMonthWeekday.weekDayIndex
       : 6
 
-    return [...Array(visibleNumberOfDaysFromNextMonth)].map((_, index) => {
-      const date = {
-        year: year,
-        month: month,
-        day: index,
-        fullDay: `${nextMonth.getFullYear()}${addZero(
-          nextMonth.getMonth()
-        )}${addZero(index + 1)}`
-      }
-      return {
-        date,
-        dayOfMonth: index + 1,
-        isCurrentMonth: false
-      }
-    })
+    return Array(visibleNumberOfDaysFromNextMonth)
+      .fill(undefined)
+      .map((_, index) => {
+        const date = {
+          year: year,
+          month: month,
+          day: index,
+          fullDay: `${nextMonth.getFullYear()}${addZero(
+            nextMonth.getMonth()
+          )}${addZero(index + 1)}`
+        }
+        return {
+          date,
+          dayOfMonth: index + 1,
+          isCurrentMonth: false
+        }
+      })
   }
   const handelChangeDay = (date: any) => {
     const newDate = { ...date }
