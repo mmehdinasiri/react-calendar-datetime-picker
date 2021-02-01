@@ -9,7 +9,7 @@ const Header = () => {
           <span className='text-xl text-text-lightest font-medium'>
             <Link to='/'>
               React date-time picker{' '}
-              <span className='text-xs ml-2'>v1.2.2</span>
+              <span className='text-xs ml-2'>v1.2.3</span>
             </Link>
           </span>
         </div>
