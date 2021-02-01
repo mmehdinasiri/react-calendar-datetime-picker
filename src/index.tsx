@@ -317,5 +317,5 @@ const DtCalendar: FC<IDtPickerProps> = ({
   )
 }
 
-export default DtPicker
 export { DtCalendar, IDay, IRange, convertToEn, convertToFa }
+export default DtPicker
