@@ -5,8 +5,8 @@ import { APIS } from '../Constant/Apis'
 const Api = () => {
   return (
     <DocLayout>
-      <h1 className='text-3xl my-3'>Api</h1>
-      <p className='text-base mb-1'>
+      <h1 className='text-3xl mb-6'>Api</h1>
+      <p className='text-lg mb-1'>
         This is a list of Api's that you can use in React-DateTime-Picker:
       </p>
       <div className='overflow-x-auto'>

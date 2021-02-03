@@ -13,9 +13,9 @@ const Utilities = () => {
   const [convertToFaDate, setConvertToFaDate] = useState(null)
   return (
     <DocLayout>
-      <section className='my-10'>
-        <h1 className='text-3xl my-3'>Utilities:</h1>
-        <p>
+      <section className=''>
+        <h1 className='text-3xl mb-6'>Utilities:</h1>
+        <p className='text-lg'>
           You can import and use these two function to convert En date to jalali
           date and vice versa.
           <br />
@@ -55,7 +55,7 @@ const Utilities = () => {
               </div>
             </div>
           </div>
-          <div className='mb-10 pb-4 border-b border-primary border-opacity-50 '>
+          <div className='mb-10 pb-4'>
             <h3
               id='selectSingleDay'
               className='text-2xl font-bold mb-4 scroll-offset font-semibold'

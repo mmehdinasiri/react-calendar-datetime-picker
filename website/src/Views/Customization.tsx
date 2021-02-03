@@ -5,8 +5,8 @@ import { CUSTOMIZATION_APIS } from '../Constant/customizationApis'
 const Customization = () => {
   return (
     <DocLayout>
-      <h1 className='text-3xl my-3'>Customization</h1>
-      <p className='text-base mb-1'>
+      <h1 className='text-3xl mb-6'>Customization</h1>
+      <p className='text-lg mb-1'>
         React-DateTime-Picker is very customizable, you can change any label or
         style that you want. This is a list of Api's that you can use in
         React-DateTime-Picker to customize you calender:
