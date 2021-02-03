@@ -9,7 +9,7 @@ export const APIS = [
   {
     property: 'onChange',
     type: 'func',
-    default: 'null',
+    default: '-',
     required: 'true',
     description:
       'A function that return the object of selected date/dates. The type returned object can be one of these are: IDay | IRange | IDay[] | null | undefined,'

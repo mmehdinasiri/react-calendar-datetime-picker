@@ -4,7 +4,7 @@ import {
   Home,
   QuickStart,
   Example,
-  Api,
+  Props,
   Customization,
   Utilities
 } from './Views'
@@ -20,7 +20,7 @@ export default function App() {
       <div>
         <Switch>
           <Route path='/docs/api'>
-            <Api />
+            <Props />
           </Route>
           <Route path='/docs/examples'>
             <Example />

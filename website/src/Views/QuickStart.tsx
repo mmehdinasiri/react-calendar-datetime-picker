@@ -30,11 +30,10 @@ export default DatePicker
 const QuickStart = () => {
   return (
     <DocLayout>
-      <h1 className='text-3xl mb-6'>Getting start:</h1>
+      <h1 className='text-3xl mb-6'>Get start:</h1>
       <h2 className='text-xl mb-3'>
         welcome to react calendar date time picker documentation
       </h2>
-
       <p className='text-lg mb-6'>
         This package provide three type fo selecting date,{' '}
         <strong>a single day</strong>, <strong>range of days </strong>and{' '}
@@ -43,6 +42,10 @@ const QuickStart = () => {
         All three type are available in both English and Persian, like all other
         props.
       </p>
+      <section className=''>
+        <h2 className='text-2xl mb-3'>Localization:</h2>
+        <p className='text-lg mb-1'></p>
+      </section>
       <section className=''>
         <h2 className='text-2xl mb-3'>Dependencies:</h2>
         <p className='text-lg mb-1'>

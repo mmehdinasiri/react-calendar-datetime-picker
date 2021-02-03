@@ -2,12 +2,12 @@ import React from 'react'
 import { DocLayout } from '../Component'
 import { APIS } from '../Constant/Apis'
 
-const Api = () => {
+const Props = () => {
   return (
     <DocLayout>
-      <h1 className='text-3xl mb-6'>Api</h1>
-      <p className='text-lg mb-1'>
-        This is a list of Api's that you can use in React-DateTime-Picker:
+      <h1 className='text-3xl mb-6'>Props</h1>
+      <p className='text-lg mb-3'>
+        This is a list of props are available in React-Calendar-DateTime-Picker:
       </p>
       <div className='overflow-x-auto'>
         <table className='border border-primary rounded  w-full'>
@@ -53,4 +53,4 @@ const Api = () => {
   )
 }
 
-export default Api
+export default Props
