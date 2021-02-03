@@ -332,3 +332,21 @@ const DatePicker = () => {
 }
 export default DatePicker
 `
+export const typescriptStr = `
+import DtPicker, { Day, Range, Multi  } from 'react-calendar-datetime-picker'
+
+const DatePicker = () => {
+  const [date, setDate] = useState<Day>(null)
+  const [dateRange, setDateRange] = useState<Range>(null)
+  const [dateMulti, setDateMulti] = useState<Multi>(null)
+
+  return (
+    <div>
+      <DtPicker initValue={date} onChange={setDate} />
+      <DtPicker initValue={dateRange} onChange={setDateRange} type="range"/>
+      <DtPicker initValue={dateMulti} onChange={setDateMulti} type='muti'/>
+    </div>
+  )
+}
+export default DatePicker
+`

@@ -6,6 +6,7 @@ interface ITimeRange {
   from: ITime
   to: ITime
 }
+
 interface IDay {
   year: number
   month: number
@@ -14,9 +15,14 @@ interface IDay {
   hours?: number
   minutes?: number
 }
+
+type Day = IDay | null
 interface IRange {
-  from: IDay | null
-  to: IDay | null
+  from: Day
+  to: Day
 }
 
-export { ITime, ITimeRange, IDay, IRange }
+type Range = IRange | null
+type Multi = IDay[] | null
+
+export { ITime, ITimeRange, IDay, Day, IRange, Range, Multi }

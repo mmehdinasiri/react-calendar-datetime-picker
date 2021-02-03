@@ -24,9 +24,9 @@ const DocLayout = ({ children }: IDocLayout) => {
               <NavLink
                 className='block  text-text hover:text-primary  my-2'
                 activeClassName='is-active'
-                to='/docs/api'
+                to='/docs/props'
               >
-                Api
+                Props
               </NavLink>
               <NavLink
                 className='block  text-text hover:text-primary  my-2'
@@ -38,14 +38,21 @@ const DocLayout = ({ children }: IDocLayout) => {
               <NavLink
                 className='block  text-text hover:text-primary  my-2'
                 activeClassName='is-active'
-                to='/docs/Utilities'
+                to='/docs/utilities'
               >
                 Utilities
               </NavLink>
               <NavLink
                 className='block  text-text hover:text-primary  my-2'
                 activeClassName='is-active'
-                to='/docs/Examples'
+                to='/docs/typescript'
+              >
+                Typescript
+              </NavLink>
+              <NavLink
+                className='block  text-text hover:text-primary  my-2'
+                activeClassName='is-active'
+                to='/docs/examples'
               >
                 Examples
               </NavLink>

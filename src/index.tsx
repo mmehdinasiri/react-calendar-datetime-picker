@@ -15,9 +15,9 @@ import {
   handelInitialValues
 } from './Helpers'
 import useComponentVisible from './hooks/useComponentVisible'
-import { IDay, IRange } from './Types'
+import { IDay, IRange, Day, Range, Multi } from './Types'
 interface IDtPickerProps {
-  initValue?: IDay | IDay[] | IRange | null | undefined
+  initValue?: IDay | Multi | IRange | null | undefined
   onChange: (date: any) => void
   onCalenderHide?: any
   onCalenderShow?: any
@@ -317,5 +317,5 @@ const DtCalendar: FC<IDtPickerProps> = ({
   )
 }
 
-export { DtCalendar, IDay, IRange, convertToEn, convertToFa }
+export { DtCalendar, Day, Range, Multi, convertToEn, convertToFa }
 export default DtPicker

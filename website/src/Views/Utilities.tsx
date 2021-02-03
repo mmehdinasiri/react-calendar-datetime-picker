@@ -22,7 +22,6 @@ const Utilities = () => {
           These functions accept date object as first argument and divider sign
           as second argument('/' is default value)
         </p>
-        <hr />
         <div className='mt-10'>
           <div className='mb-10 pb-4 border-b border-primary border-opacity-50 '>
             <h3

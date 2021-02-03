@@ -6,7 +6,8 @@ import {
   Example,
   Props,
   Customization,
-  Utilities
+  Utilities,
+  Typescript
 } from './Views'
 import './style/tailwindPurge.scss'
 import './style/main.scss'
@@ -19,7 +20,7 @@ export default function App() {
     <Router>
       <div>
         <Switch>
-          <Route path='/docs/api'>
+          <Route path='/docs/props'>
             <Props />
           </Route>
           <Route path='/docs/examples'>
@@ -28,8 +29,11 @@ export default function App() {
           <Route path='/docs/quick-start'>
             <QuickStart />
           </Route>
-          <Route path='/docs/Utilities'>
+          <Route path='/docs/utilities'>
             <Utilities />
+          </Route>
+          <Route path='/docs/typescript'>
+            <Typescript />
           </Route>
           <Route path='/docs/Customization'>
             <Customization />
