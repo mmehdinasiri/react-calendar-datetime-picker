@@ -446,7 +446,7 @@ export const convertToEn = (date: IDay | null, divider: string = '/') => {
   if (date) {
     const faDate = new PersianDate([
       date?.year,
-      date?.month + 1,
+      date?.month,
       date?.day
     ]).toCalendar('gregorian').State.gregorian
     let fixedDate =
@@ -465,7 +465,7 @@ export const convertToEn = (date: IDay | null, divider: string = '/') => {
 }
 export const convertToFa = (date: IDay | null, divider: string = '/') => {
   if (date) {
-    const day = new Date(date.year, date.month, date.day)
+    const day = new Date(date.year, date.month - 1, date.day)
     const faDate = new PersianDate(day).State.persianAstro
     let fixedDate =
       faDate.year +

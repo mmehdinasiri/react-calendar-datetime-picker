@@ -38,6 +38,13 @@ const DocLayout = ({ children }: IDocLayout) => {
               <NavLink
                 className='block  text-text hover:text-primary  my-2'
                 activeClassName='is-active'
+                to='/docs/Utilities'
+              >
+                Utilities
+              </NavLink>
+              <NavLink
+                className='block  text-text hover:text-primary  my-2'
+                activeClassName='is-active'
                 to='/docs/Examples'
               >
                 Examples

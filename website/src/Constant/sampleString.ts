@@ -292,3 +292,42 @@ export const customCalenderStyle = `
   background-color: #538bff;
 }
 `
+export const convertToFaStr = `
+import DtPicker, {
+  convertToFa
+} from 'react-calendar-datetime-picker'
+
+const DatePicker = () => {
+  const [date, setDate] = useState(null)
+  return (
+    <div>
+      <DtPicker
+        onChange={setDate}
+        initValue={date}
+      />
+      <p>convertToFa(date)</p>
+    </div>
+  )
+}
+export default DatePicker
+`
+export const convertToEnStr = `
+import DtPicker, {
+  convertToEn
+} from 'react-calendar-datetime-picker'
+
+const DatePicker = () => {
+  const [date, setDate] = useState(null)
+  return (
+    <div>
+      <DtPicker
+        onChange={setDate}
+        initValue={date}
+        local="fa"
+      />
+      <p>convertToEn(date)</p>
+    </div>
+  )
+}
+export default DatePicker
+`
