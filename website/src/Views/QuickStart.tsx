@@ -42,11 +42,16 @@ const QuickStart = () => {
         All three type are available in both English and Persian, like all other
         props.
       </p>
-      <section className=''>
+      <section className='my-10'>
         <h2 className='text-2xl mb-3'>Localization:</h2>
-        <p className='text-lg mb-1'></p>
+        <p className='text-lg mb-1'>
+          This package support Gregorian and Jalali calendar.
+          <br />
+          With 'local' prop to set 'En' or 'Fa' you can select calender each
+          that you need.
+        </p>
       </section>
-      <section className=''>
+      <section className='my-10'>
         <h2 className='text-2xl mb-3'>Dependencies:</h2>
         <p className='text-lg mb-1'>
           This package used context api and hooks, so base on react
