@@ -16,8 +16,11 @@ const Utilities = () => {
       <section className='my-10'>
         <h1 className='text-3xl my-3'>Utilities:</h1>
         <p>
-          You can use this two function to convert En date to jalali date and
-          vice versa
+          You can import and use these two function to convert En date to jalali
+          date and vice versa.
+          <br />
+          These functions accept date object as first argument and divider sign
+          as second argument('/' is default value)
         </p>
         <hr />
         <div className='mt-10'>
@@ -44,6 +47,7 @@ const Utilities = () => {
                   onChange={setConvertToEnDate}
                 />
                 value: <pre>{JSON.stringify(convertToEnDate, null, 2)}</pre>
+                <br />
                 converted value:
                 <pre>
                   {JSON.stringify(convertToFa(convertToEnDate), null, 2)}
@@ -72,9 +76,11 @@ const Utilities = () => {
                 <DtPicker
                   initValue={convertToFaDate}
                   onChange={setConvertToFaDate}
+                  withTime
                   local='fa'
                 />
                 value: <pre>{JSON.stringify(convertToFaDate, null, 2)}</pre>
+                <br />
                 converted value:
                 <pre>
                   {JSON.stringify(convertToEn(convertToFaDate, '-'), null, 2)}
