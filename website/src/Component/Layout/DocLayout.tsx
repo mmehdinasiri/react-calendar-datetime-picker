@@ -64,7 +64,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                     }`}
                     href='#selectSingleDay'
                   >
-                    single day
+                    Single day
                   </a>
                   <a
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -80,7 +80,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                     }`}
                     href='#selectSinglePersian(Jalali)day'
                   >
-                    Persian(Jalali) day
+                    Jalali day
                   </a>
                   <a
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${

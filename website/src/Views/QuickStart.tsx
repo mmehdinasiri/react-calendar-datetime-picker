@@ -73,6 +73,7 @@ const QuickStart = () => {
           <a
             href='https://github.com/babakhani/PersianDate'
             className='underline'
+            target='_blank'
           >
             Persian-date
           </a>{' '}
@@ -80,6 +81,7 @@ const QuickStart = () => {
           <a
             href='https://bundlephobia.com/result?p=persian-date@1.1.0'
             className='underline'
+            target='_blank'
           >
             10kb (MINIFIED + GZIPPED)
           </a>

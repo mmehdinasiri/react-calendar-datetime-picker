@@ -39,16 +39,16 @@ const App = () => {
 }
 ```
 
-- Support English and Persian(Jalali) calender
-- Use context api to share data
-- Support Three type of calender: single day - range dates - multi dates
+- Supports Gregorian and Jalali calender
+- Uses context api to share data
+- Supports three types of calender: single day - date range - multiple dates
 - Fully customizable
-- Support maximum and minimum dates
-- Capability to add a list of disable dates
-- Support Time for single and range type
-- Capability to show days of weekend and today button
-- Api for open and close events
-- Support Tyepscript
+- Supports maximum and minimum dates
+- Capability to add a list of disabled dates
+- Supports time for single and range type
+- Capability to mark weekends
+- Function called for change, open and close events
+- Supports Typescript
 
 ## License
 

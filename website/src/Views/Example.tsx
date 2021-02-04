@@ -170,7 +170,7 @@ const App = () => {
           id='selectSinglePersian(Jalali)day'
           className='text-2xl font-bold mb-4 scroll-offset'
         >
-          Select single Persian(Jalali) day
+          Select single Jalali day
         </h3>
         <div className='block xl:flex '>
           <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
