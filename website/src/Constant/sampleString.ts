@@ -342,9 +342,24 @@ const DatePicker = () => {
 
   return (
     <div>
-      <DtPicker initValue={date} onChange={setDate} />
-      <DtPicker initValue={dateRange} onChange={setDateRange} type="range"/>
-      <DtPicker initValue={dateMulti} onChange={setDateMulti} type='muti'/>
+      <DtPicker 
+        initValue={date} 
+        onChange={setDate} 
+        type="single"
+        placeholder='select single day'
+      />
+      <DtPicker 
+        initValue={dateRange} 
+        onChange={setDateRange} 
+        type="range"
+        placeholder='select range of days' 
+      />
+      <DtPicker 
+        initValue={dateMulti} 
+        onChange={setDateMulti} 
+        type='multi'
+        placeholder='select multi days'
+      />
     </div>
   )
 }

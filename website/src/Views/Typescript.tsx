@@ -18,8 +18,8 @@ const Typescript = () => {
         </p>
         <p className='text-lg'>
           <strong>Day</strong>, <strong>Range</strong> and{' '}
-          <strong>Multi</strong> are three type of value that you can initial to
-          your date picker base on your date picker type{' '}
+          <strong>Multi</strong> are the three types of value that you can
+          initialize to your date picker based on the date picker type{' '}
           <span className='text-base'>( single, range, multi )</span> that you
           choose to use.
         </p>

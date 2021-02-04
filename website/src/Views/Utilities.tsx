@@ -16,11 +16,11 @@ const Utilities = () => {
       <section className=''>
         <h1 className='text-3xl mb-6'>Utilities:</h1>
         <p className='text-lg'>
-          You can import and use these two function to convert En date to jalali
-          date and vice versa.
+          One can import and use these two functions to convert Gregorian date
+          to Jalali date and vice versa.
           <br />
-          These functions accept date object as first argument and divider sign
-          as second argument('/' is default value)
+          These functions accept date object as the first argument and divider
+          sign as the second argument('/' is the default value).
         </p>
         <div className='mt-10'>
           <div className='mb-10 pb-4 border-b border-primary border-opacity-50 '>
