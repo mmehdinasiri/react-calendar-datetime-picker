@@ -30,31 +30,31 @@ export default DatePicker
 const QuickStart = () => {
   return (
     <DocLayout>
-      <h1 className='text-3xl mb-6'>Get start:</h1>
+      <h1 className='text-3xl mb-6'>Get started:</h1>
       <h2 className='text-xl mb-3'>
-        welcome to react calendar date time picker documentation
+        Welcome to react calendar date-time picker documentation
       </h2>
       <p className='text-lg mb-6'>
-        This package provide three type fo selecting date,{' '}
+        This package provides three types for selecting dates, including{' '}
         <strong>a single day</strong>, <strong>range of days </strong>and{' '}
-        <strong>multi days</strong>.
+        <strong>multiple days</strong>.
         <br />
-        All three type are available in both English and Persian, like all other
-        props.
+        All the three types, like all other props, are available in both
+        Gregorian and Jalali calendars.
       </p>
       <section className='my-10'>
         <h2 className='text-2xl mb-3'>Localization:</h2>
         <p className='text-lg mb-1'>
-          This package support Gregorian and Jalali calendar.
+          This package supports Gregorian and Jalali calendars.
           <br />
-          With 'local' prop to set 'En' or 'Fa' you can select calender each
-          that you need.
+          'En' and 'Fa' can be assigned as the 'local' props to determine the
+          calendar type.
         </p>
       </section>
       <section className='my-10'>
         <h2 className='text-2xl mb-3'>Dependencies:</h2>
         <p className='text-lg mb-1'>
-          This package used context api and hooks, so base on react
+          This package enjoys context api and hooks; therefore, based on react
           documentation you need at least{'  '}
           <code className='bg-text-light text-white rounded'>
             <a
@@ -69,14 +69,14 @@ const QuickStart = () => {
           or later.
         </p>
         <p className='text-lg mb-1'>
-          Also the only dependencies is used in this package is{' '}
+          Moreover, the only dependency used in this package is{' '}
           <a
             href='https://github.com/babakhani/PersianDate'
             className='underline'
           >
             Persian-date
           </a>{' '}
-          and it is jus{' '}
+          and it is just{' '}
           <a
             href='https://bundlephobia.com/result?p=persian-date@1.1.0'
             className='underline'

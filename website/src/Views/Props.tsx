@@ -7,7 +7,8 @@ const Props = () => {
     <DocLayout>
       <h1 className='text-3xl mb-6'>Props</h1>
       <p className='text-lg mb-3'>
-        This is a list of props are available in React-Calendar-DateTime-Picker:
+        This is a list of props that are available in
+        React-Calendar-DateTime-Picker:
       </p>
       <div className='overflow-x-auto'>
         <table className='border border-primary rounded  w-full'>
