@@ -8,7 +8,7 @@ const Header = () => {
         <div className='flex items-center flex-no-shrink text-text-lightest mr-6'>
           <span className='text-xl text-text-lightest font-medium'>
             <Link to='/'>
-              React Calendar date-time picker{' '}
+              React calendar date-time picker{' '}
               <span className='text-xs ml-2'>v1.2.4</span>
             </Link>
           </span>

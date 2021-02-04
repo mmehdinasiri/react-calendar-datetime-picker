@@ -1,64 +1,65 @@
 export const APIS = [
   {
     property: 'initValue',
-    type: 'IDay | null',
+    type: 'Day | null',
     default: 'null',
     required: 'true',
-    description: 'You can set default value for your date by this property.'
+    description:
+      'You can set a default value for your date using this property.'
   },
   {
     property: 'onChange',
     type: 'func',
     default: '-',
     required: 'true',
-    description:
-      'A function that return the object of selected date/dates. The type returned object can be one of these are: IDay | IRange | IDay[] | null | undefined,'
+    description: 'A function that returns an object of selected date/dates.'
   },
   {
     property: 'type',
     type: 'string',
     default: 'single',
     description:
-      'You can choose which type of calender that you want to use. There are 3 types of calender exist: single, range, multi'
+      'You can choose the selection type that you need to use. There exist 3 types: "single", "range", "multi"'
   },
   {
     property: 'local',
     type: 'string',
     default: 'en',
     description:
-      'This date picker support both English and Persian(Jalali) calender.To select English calender you have to set "local" to "en" and "fa"for Persian.'
+      'This date picker supports both Gregorian and Jalali calenders.To select Gregorian calender you have to set "local" to "en" and to "fa" for Persian.'
   },
   {
     property: 'withTime',
     type: 'boolean',
     default: 'false',
     description:
-      'If you want to use Time in your date picker you must set this prop to true.This prop works just in single and range type.'
+      'Should you need to use time in your date picker you can set this prop to true.This prop works only in single and range types.'
   },
   {
     property: 'showWeekend',
     type: 'boolean',
     default: 'false',
-    description: 'Bold weekends with changing color of weekends.'
+    description: 'Marks weekends by changing the color.'
   },
   {
     property: 'clearBtn',
     type: 'boolean',
     default: 'false',
-    description: 'Add clear button to your input to reset you calender dates.'
+    description:
+      'Add a button to your input to clear you calender initial date/dates.'
   },
   {
     property: 'isRequired',
     type: 'boolean',
     default: 'false',
     description:
-      "It' props make your input as required field in you form validation"
+      'This prop makes your input as a required field in the form validation'
   },
   {
     property: 'todayBtn',
     type: 'boolean',
     default: 'false',
-    description: 'A button to move fast to current date in the calender'
+    description: 'A button to move fast to the date of today in the calender.'
   },
   {
     property: 'onCalenderShow',
@@ -74,28 +75,28 @@ export const APIS = [
   },
   {
     property: 'maxDate',
-    type: 'IDay',
+    type: 'Day',
     default: '',
     description:
-      'Maximum date that the user can select. Periods partially overlapped by maxDate will also be selectable, although React-DateTime-Picker will ensure that no later date is selected.'
+      'You can set this prop to limit the maximum date that the user can select.Periods partially overlapped by maxDate will also be selectable, although React-calendar-dateTime-picker will ensure that no later date is selected.'
   },
   {
     property: 'minDate',
-    type: 'IDay',
+    type: 'Day',
     default: '',
     description:
-      'Minimum date that the user can select. Periods partially overlapped by minDate will also be selectable, although React-DateTime-Picker will ensure that no earlier date is selected.	'
+      'You can set this prop to limit the minimum date that the user can select. Periods partially overlapped by minDate will also be selectable, although React-calendar-dateTime-picker will ensure that no earlier date is selected.	'
   },
   {
     property: 'disabledDates',
-    type: 'IDay[]',
+    type: 'Day[]',
     default: '',
-    description: "A list of that you want user can't selected them."
+    description: 'A list of dates that you want the user not to select.'
   },
   {
     property: 'isDisabled',
     type: 'boolean',
     default: 'false',
-    description: 'Use to disable input of React-DateTime-Picker'
+    description: 'Use to disable the calendar input'
   }
 ]
