@@ -38,8 +38,8 @@ const Home = () => {
             </li>
             <li className='text-left'>Uses context api to share data</li>
             <li className='text-left'>
-              Supports three types of calender: single day - date range - multi
-              dates
+              Supports three types of calender: single day - date range -
+              multiple dates
             </li>
             <li className='text-left'>Fully customizable</li>
             <li className='text-left'>Supports maximum and minimum dates </li>
