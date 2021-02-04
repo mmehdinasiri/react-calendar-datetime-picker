@@ -3,68 +3,68 @@ export const CUSTOMIZATION_APIS = [
     property: 'placeholder',
     type: 'string',
     default: '"select"',
-    description: 'To change input picker placeholder'
+    description: 'To change input date picker placeholder'
   },
   {
     property: 'inputClass',
     type: 'string',
     default: '',
-    description: "Use to pass custom class to calender's input"
+    description: "To change calender's input style"
   },
   {
     property: 'clearBtnClass',
     type: 'string',
     default: '',
-    description: "Use to pass custom class to calender's clear button"
+    description: "To change calender's clear button style"
   },
   {
     property: 'calenderModalClass',
     type: 'string',
     default: '',
-    description: "Use to pass custom class to calender's main modal"
+    description: "To change calender's main modal style"
   },
   {
     property: 'headerClass',
     type: 'string',
     default: '',
-    description: "Use to pass custom class to calender's green header"
+    description: "To change calender's green header style"
   },
   {
     property: 'timeClass',
     type: 'string',
     default: '',
-    description: "Use to pass custom class to calender's time view"
+    description: "To change calender's time view style"
   },
   {
     property: 'daysClass',
     type: 'string',
     default: '',
-    description: "Use to pass custom class to calender's days view"
+    description: "To change calender's days view style"
   },
   {
     property: 'monthsClass',
     type: 'string',
     default: '',
-    description: "Use to pass custom class to calender's months view"
+    description: "To change calender's months view style"
   },
   {
     property: 'yearsClass',
     type: 'string',
     default: '',
-    description: "Use to pass custom class to calender's years view"
+    description: "To change calender's years view style"
   },
 
   {
     property: 'NextBtnIcon',
     type: 'svg as component',
     default: '">"',
-    description: 'To change next month button.'
+    description: 'To change next month button icon.'
   },
   {
     property: 'PreviousBtnIcon',
     type: 'svg as component',
     default: '"<"',
-    description: 'To change previous month button.'
+    description: 'To change previous month button icon.'
   },
   {
     property: 'nextMonthBtnTitle',
@@ -82,33 +82,34 @@ export const CUSTOMIZATION_APIS = [
     property: 'fromLabel',
     type: 'string',
     default: '"from"',
-    description: 'Date start label in input result.It just works in range type'
+    description:
+      'Starting date label in input result(works only in range type).'
   },
   {
     property: 'toLabel',
     type: 'string',
     default: '"to"',
-    description: 'Date end label in input result.It just works in range type'
+    description: 'Ending date label in input result(works only in range type).'
   },
   {
     property: 'clockFromLabel',
     type: 'string',
     default: '"from"',
     description:
-      'Title for start time in the time component.It just works in range type'
+      'Title for starting time in the time component(works only in range type).'
   },
   {
     property: 'clockToLabel',
     type: 'string',
     default: '"to"',
     description:
-      'Title for end time in the time component.It just works in range type'
+      'Title for ending time in the time component(works only in range type).'
   },
   {
     property: 'clockLabel',
     type: 'string',
     default: '"clock"',
     description:
-      'Label for time in the time component.It just works in range type'
+      'Label for time in the time component(works in single and range type).'
   }
 ]
