@@ -20,8 +20,9 @@
     "node": ">=12"
   },
   "scripts": {
-    "build": "microbundle-crl --compress --format modern,cjs --css-modules false --sourcemap false",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs --css-modules false",
+    "delete-dist": "rimraf ./dist",
+    "build": "npm run delete-dist && microbundle-crl --compress --format modern,cjs --css-modules false --sourcemap false",
+    "start": "npm run delete-dist && microbundle-crl watch --no-compress --format modern,cjs --css-modules false",
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
@@ -72,6 +73,7 @@
     "dist"
   ],
   "dependencies": {
-    "persian-date": "^1.1.0"
+    "persian-date": "^1.1.0",
+    "rimraf": "^3.0.2"
   }
 }
