@@ -61,6 +61,7 @@ const QuickStart = () => {
               href='https://reactjs.org/blog/2019/02/06/react-v16.8.0.html'
               target='_blank'
               className='px-2'
+              rel='noopener noreferrer'
             >
               React v16.8
             </a>
@@ -74,6 +75,7 @@ const QuickStart = () => {
             href='https://github.com/babakhani/PersianDate'
             className='underline'
             target='_blank'
+            rel='noopener noreferrer'
           >
             Persian-date
           </a>{' '}
@@ -82,6 +84,7 @@ const QuickStart = () => {
             href='https://bundlephobia.com/result?p=persian-date@1.1.0'
             className='underline'
             target='_blank'
+            rel='noopener noreferrer'
           >
             10kb (MINIFIED + GZIPPED)
           </a>

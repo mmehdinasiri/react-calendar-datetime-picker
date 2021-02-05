@@ -40,7 +40,7 @@ const Header = () => {
               className='block inline-block mt-0 text-text-lightest hover:text-white mr-4 font-extralight'
               href='https://github.com/mmehdinasiri/react-calendar-datetime-picker'
               target='_blank'
-              rel=''
+              rel='noopener noreferrer'
             >
               Github
             </a>

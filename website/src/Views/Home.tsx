@@ -25,6 +25,7 @@ const Home = () => {
           <a
             className='btn font-bold'
             target='_black'
+            rel='noopener noreferrer'
             href='https://github.com/mmehdinasiri/react-calendar-datetime-picker'
           >
             Github
