@@ -17,7 +17,7 @@ import './style/main.scss'
 
 export default function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <div>
         <Switch>
           <Route path='/docs/props'>
@@ -26,7 +26,7 @@ export default function App() {
           <Route path='/docs/examples'>
             <Example />
           </Route>
-          <Route path='/docs/quick-start'>
+          <Route path='/docs/get-started'>
             <QuickStart />
           </Route>
           <Route path='/docs/utilities'>

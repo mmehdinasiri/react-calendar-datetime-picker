@@ -25,6 +25,13 @@ yarn add react-calendar-datetime-picker
 
 [Documentation with examples](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)
 
+- [Getting Started](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/get-started)
+- [Props](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/Props)
+- [Customization](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/customization)
+- [Utilities](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/Utilities)
+- [Typescript](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/typescript)
+- [Typescript](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/examples)
+
 ## Usage
 
 ```tsx

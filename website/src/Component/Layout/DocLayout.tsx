@@ -17,9 +17,9 @@ const DocLayout = ({ children }: IDocLayout) => {
               <NavLink
                 className='block  text-text hover:text-primary  my-2'
                 activeClassName='is-active'
-                to='/docs/quick-start'
+                to='/docs/get-started'
               >
-                Quick-start
+                Get started
               </NavLink>
               <NavLink
                 className='block  text-text hover:text-primary  my-2'
