@@ -25,7 +25,7 @@ yarn add react-calendar-datetime-picker
 
 [Documentation with examples](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)
 
-- [Getting Started](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/get-started)
+- [Getting Started](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/quick-start)
 - [Props](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/Props)
 - [Customization](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/customization)
 - [Utilities](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/Utilities)
