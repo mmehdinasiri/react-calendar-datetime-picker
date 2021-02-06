@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useLayoutEffect, useRef } from 'react'
+import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import './style/main.scss'
 import { DtWrapper, InputPicker } from './Components'
 import CalenderProvider from './store/CalenderProvider'
@@ -12,7 +12,8 @@ import {
   convertToFa,
   fixedMonth,
   fixedMonthInitValue,
-  handelInitialValues
+  handelInitialValues,
+  mergeProviders
 } from './Helpers'
 import useComponentVisible from './hooks/useComponentVisible'
 import { IDay, IRange, Day, Range, Multi } from './Types'
@@ -86,6 +87,8 @@ const DtPicker: FC<IDtPickerProps> = ({
   yearsClass,
   disabledDates
 }) => {
+  const [prevInitDate, setPrevInitDate] = useState<any>(null)
+  const [isUpdate, setIsUpdate] = useState<number>(0)
   const inputRef = useRef(null)
   const minMaxState = {
     minDate: fixedMonth(minDate),
@@ -97,9 +100,11 @@ const DtPicker: FC<IDtPickerProps> = ({
       return fixedMonth(date)
     })
   }
-
   const correctedType = type ? type.toLocaleLowerCase() : 'single'
   const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
+  const [fixedInitValue, setFixedInitValue] = useState(
+    fixedMonthInitValue(initValue, correctedType)
+  )
   const { initCalender, initTime } = handelInitialValues(
     fixedMonthInitValue(initValue, correctedType),
     correctedType,
@@ -156,69 +161,83 @@ const DtPicker: FC<IDtPickerProps> = ({
       disabledDates
     )
   }, [])
+  useEffect(() => {
+    if (
+      isUpdate === 0 ||
+      (initValue && JSON.stringify(prevInitDate) !== JSON.stringify(initValue))
+    ) {
+      setPrevInitDate(initValue)
+      setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
+      setIsUpdate(isUpdate + 1)
+      mergeProviders(onChange, correctedType, initValue, initTime, withTime)
+    }
+  }, [initValue])
+
   return (
-    <ViewProvider>
-      <CalenderProvider initCalender={initCalender} type={correctedType}>
-        <MinMaxProvider initState={minMaxState}>
-          <SelectedDaysProvider
-            initState={fixedMonthInitValue(initValue, correctedType)}
-            type={correctedType}
-          >
-            <SelectedTimeProvider initState={initTime} type={correctedType}>
-              <div style={{ position: 'relative' }}>
-                <InputPicker
-                  ref={inputRef}
-                  placeholder={placeholder}
-                  clearBtn={clearBtn}
-                  type={correctedType}
-                  local={correctedLocal}
-                  handelComponentVisible={handelComponentVisible}
-                  onChange={onChange}
-                  withTime={withTime}
-                  isDisabled={isDisabled}
-                  isRequired={!!isRequired}
-                  fromLabel={fromLabel}
-                  toLabel={toLabel}
-                  inputClass={inputClass}
-                  clearBtnClass={clearBtnClass}
-                  maxDate={maxDate}
-                />
-                {isComponentVisible && (
-                  <div
-                    ref={ref}
-                    className={`calender-modal ${calenderModalClass}`}
-                  >
-                    <DtWrapper
-                      onChange={onChange}
-                      type={correctedType}
-                      withTime={withTime}
-                      local={correctedLocal}
-                      hasDefaultVal={!!initValue}
-                      showWeekend={!!showWeekend}
-                      todayBtn={!!todayBtn}
-                      NextBtnIcon={NextBtnIcon}
-                      PreviousBtnIcon={PreviousBtnIcon}
-                      clockFromLabel={clockFromLabel}
-                      clockToLabel={clockToLabel}
-                      clockLabel={clockLabel}
-                      nextMonthBtnTitle={nextMonthBtnTitle}
-                      previousMonthBtnTitle={previousMonthBtnTitle}
-                      headerClass={headerClass}
-                      daysClass={daysClass}
-                      timeClass={timeClass}
-                      monthsClass={monthsClass}
-                      yearsClass={yearsClass}
-                      disabledDates={fixedDisabledDates}
-                      initCalender={initCalender}
-                    />
-                  </div>
-                )}
-              </div>
-            </SelectedTimeProvider>
-          </SelectedDaysProvider>
-        </MinMaxProvider>
-      </CalenderProvider>
-    </ViewProvider>
+    <div className='react-calendar-datetime-picker' key={isUpdate}>
+      <ViewProvider>
+        <CalenderProvider initCalender={initCalender} type={correctedType}>
+          <MinMaxProvider initState={minMaxState}>
+            <SelectedDaysProvider
+              initState={fixedInitValue}
+              type={correctedType}
+            >
+              <SelectedTimeProvider initState={initTime} type={correctedType}>
+                <div style={{ position: 'relative' }}>
+                  <InputPicker
+                    ref={inputRef}
+                    placeholder={placeholder}
+                    clearBtn={clearBtn}
+                    type={correctedType}
+                    local={correctedLocal}
+                    handelComponentVisible={handelComponentVisible}
+                    onChange={onChange}
+                    withTime={withTime}
+                    isDisabled={isDisabled}
+                    isRequired={!!isRequired}
+                    fromLabel={fromLabel}
+                    toLabel={toLabel}
+                    inputClass={inputClass}
+                    clearBtnClass={clearBtnClass}
+                    maxDate={maxDate}
+                  />
+                  {isComponentVisible && (
+                    <div
+                      ref={ref}
+                      className={`calender-modal ${calenderModalClass}`}
+                    >
+                      <DtWrapper
+                        onChange={onChange}
+                        type={correctedType}
+                        withTime={withTime}
+                        local={correctedLocal}
+                        hasDefaultVal={!!initValue}
+                        showWeekend={!!showWeekend}
+                        todayBtn={!!todayBtn}
+                        NextBtnIcon={NextBtnIcon}
+                        PreviousBtnIcon={PreviousBtnIcon}
+                        clockFromLabel={clockFromLabel}
+                        clockToLabel={clockToLabel}
+                        clockLabel={clockLabel}
+                        nextMonthBtnTitle={nextMonthBtnTitle}
+                        previousMonthBtnTitle={previousMonthBtnTitle}
+                        headerClass={headerClass}
+                        daysClass={daysClass}
+                        timeClass={timeClass}
+                        monthsClass={monthsClass}
+                        yearsClass={yearsClass}
+                        disabledDates={fixedDisabledDates}
+                        initCalender={initCalender}
+                      />
+                    </div>
+                  )}
+                </div>
+              </SelectedTimeProvider>
+            </SelectedDaysProvider>
+          </MinMaxProvider>
+        </CalenderProvider>
+      </ViewProvider>
+    </div>
   )
 }
 const DtCalendar: FC<IDtPickerProps> = ({
@@ -246,6 +265,8 @@ const DtCalendar: FC<IDtPickerProps> = ({
   yearsClass,
   disabledDates
 }) => {
+  const [prevInitDate, setPrevInitDate] = useState<any>(null)
+  const [isUpdate, setIsUpdate] = useState<number>(0)
   const minMaxState = {
     minDate: fixedMonth(minDate),
     maxDate: fixedMonth(maxDate)
@@ -258,6 +279,9 @@ const DtCalendar: FC<IDtPickerProps> = ({
   }
   const correctedType = type ? type.toLocaleLowerCase() : 'single'
   const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
+  const [fixedInitValue, setFixedInitValue] = useState(
+    fixedMonthInitValue(initValue, correctedType)
+  )
   const { initCalender, initTime } = handelInitialValues(
     fixedMonthInitValue(initValue, correctedType),
     correctedType,
@@ -274,46 +298,60 @@ const DtCalendar: FC<IDtPickerProps> = ({
       disabledDates
     )
   }, [])
+  useEffect(() => {
+    if (
+      isUpdate === 0 ||
+      (initValue && JSON.stringify(prevInitDate) !== JSON.stringify(initValue))
+    ) {
+      setPrevInitDate(initValue)
+      setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
+      setIsUpdate(isUpdate + 1)
+      mergeProviders(onChange, correctedType, initValue, initTime, withTime)
+    }
+  }, [initValue])
+
   return (
-    <ViewProvider>
-      <CalenderProvider initCalender={initCalender} type={correctedType}>
-        <MinMaxProvider initState={minMaxState}>
-          <SelectedDaysProvider
-            initState={fixedMonthInitValue(initValue, correctedType)}
-            type={correctedType}
-          >
-            <SelectedTimeProvider initState={initTime} type={correctedType}>
-              <div
-                className={`calender-modal is-calender ${calenderModalClass}`}
-              >
-                <DtWrapper
-                  onChange={onChange}
-                  type={correctedType}
-                  withTime={withTime}
-                  local={correctedLocal}
-                  hasDefaultVal={!!initValue}
-                  showWeekend={!!showWeekend}
-                  todayBtn={!!todayBtn}
-                  NextBtnIcon={NextBtnIcon}
-                  PreviousBtnIcon={PreviousBtnIcon}
-                  clockFromLabel={clockFromLabel}
-                  clockToLabel={clockToLabel}
-                  clockLabel={clockLabel}
-                  nextMonthBtnTitle={nextMonthBtnTitle}
-                  previousMonthBtnTitle={previousMonthBtnTitle}
-                  headerClass={headerClass}
-                  daysClass={daysClass}
-                  timeClass={timeClass}
-                  monthsClass={monthsClass}
-                  yearsClass={yearsClass}
-                  disabledDates={fixedDisabledDates}
-                />
-              </div>
-            </SelectedTimeProvider>
-          </SelectedDaysProvider>
-        </MinMaxProvider>
-      </CalenderProvider>
-    </ViewProvider>
+    <div className='react-calendar-datetime-picker' key={isUpdate}>
+      <ViewProvider>
+        <CalenderProvider initCalender={initCalender} type={correctedType}>
+          <MinMaxProvider initState={minMaxState}>
+            <SelectedDaysProvider
+              initState={fixedInitValue}
+              type={correctedType}
+            >
+              <SelectedTimeProvider initState={initTime} type={correctedType}>
+                <div
+                  className={`calender-modal  is-calender ${calenderModalClass}`}
+                >
+                  <DtWrapper
+                    onChange={onChange}
+                    type={correctedType}
+                    withTime={withTime}
+                    local={correctedLocal}
+                    hasDefaultVal={!!initValue}
+                    showWeekend={!!showWeekend}
+                    todayBtn={!!todayBtn}
+                    NextBtnIcon={NextBtnIcon}
+                    PreviousBtnIcon={PreviousBtnIcon}
+                    clockFromLabel={clockFromLabel}
+                    clockToLabel={clockToLabel}
+                    clockLabel={clockLabel}
+                    nextMonthBtnTitle={nextMonthBtnTitle}
+                    previousMonthBtnTitle={previousMonthBtnTitle}
+                    headerClass={headerClass}
+                    daysClass={daysClass}
+                    timeClass={timeClass}
+                    monthsClass={monthsClass}
+                    yearsClass={yearsClass}
+                    disabledDates={fixedDisabledDates}
+                  />
+                </div>
+              </SelectedTimeProvider>
+            </SelectedDaysProvider>
+          </MinMaxProvider>
+        </CalenderProvider>
+      </ViewProvider>
+    </div>
   )
 }
 

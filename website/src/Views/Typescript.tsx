@@ -38,24 +38,25 @@ const Typescript = () => {
               </div>
               <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
                 <DtPicker
-                  initValue={date}
                   onChange={setDate}
                   placeholder='select single day'
                   inputClass='mb-2'
                 />
+                value: <pre>{JSON.stringify(date, null, 2)}</pre>
+                <br />
                 <DtPicker
-                  initValue={dateRange}
                   onChange={setDateRange}
                   type='range'
                   placeholder='select range of days'
                   inputClass='mb-2'
                 />
+                value: <pre>{JSON.stringify(dateRange, null, 2)}</pre>
                 <DtPicker
-                  initValue={dateMulti}
                   onChange={setDateMulti}
                   placeholder='select multi days'
                   type='multi'
                 />
+                value: <pre>{JSON.stringify(dateMulti, null, 2)}</pre>
               </div>
             </div>
           </div>

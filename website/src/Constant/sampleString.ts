@@ -5,7 +5,6 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
     />
   )
 }
@@ -14,11 +13,11 @@ export default DatePicker
 export const singleInitValueExampleStr = `
 import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
-  const [date, setDate] = useState({ year: 2016, month: 6, day: 20 })
+  const [date, setDate] = useState(null)
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
+      initValue={{ year: 2016, month: 6, day: 20 }}
     />
   )
 }
@@ -32,7 +31,6 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
       local="fa"
     />
   )
@@ -46,7 +44,6 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
       type='range'
     />
   )
@@ -56,14 +53,14 @@ export default DatePicker
 export const rangeInitValueEExampleStr = `
 import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
-  const [date, setDate] = useState({
-    from: { year: 2012, month: 5, day: 2 },
-    to: { year: 2012, month: 5, day: 23 }
-  })
+  const [date, setDate] = useState(null)
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
+      initValue={{
+        from: { year: 2012, month: 5, day: 2 },
+        to: { year: 2012, month: 5, day: 23 }
+      }}
       type='range'
     />
   )
@@ -77,7 +74,6 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
       type='multi'
     />
   )
@@ -87,33 +83,33 @@ export default DatePicker
 export const multiInitialValueExampleStr = `
 import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
-  const [date, setDate] = useState([
-    {
-      year: 2012,
-      month: 5,
-      day: 29,
-      hours: 18,
-      minutes: 11
-    },
-    {
-     year: 2012,
-     month: 5,
-     day: 2,
-     hours: 18,
-     minutes: 11
-   },
-   {
-     year: 2012,
-     month: 6,
-     day: 3,
-     hours: 18,
-     minutes: 11
-     }
-  ])
+  const [date, setDate] = useState(null)
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
+      initValue={[
+        {
+          year: 2012,
+          month: 5,
+          day: 29,
+          hours: 18,
+          minutes: 11
+        },
+        {
+          year: 2012,
+          month: 5,
+          day: 2,
+          hours: 18,
+          minutes: 11
+        },
+        {
+          year: 2012,
+          month: 6,
+          day: 3,
+          hours: 18,
+          minutes: 11
+        }
+      ]}
       type='multi'
     />
   )
@@ -127,7 +123,6 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
       withTime
     />
   )
@@ -141,7 +136,6 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
       showWeekend
       clearBtn
       todayBtn
@@ -168,7 +162,6 @@ const DatePicker = () => {
     <DtPicker
       onChange={handleCalendarChange}
       onChange={handleCalendarChange}
-      initValue={callBackApi}
       onCalenderShow={handleCalendarOpen}
       onCalenderHide={handleCalendarClose}
     />
@@ -193,7 +186,6 @@ const maxDate = {
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
       minDate={minDate}
       maxDate={maxDate}
     />
@@ -225,7 +217,6 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
       disabledDates={disabledDatesList}
       minDate={minDate}
       maxDate={maxDate}
@@ -241,7 +232,6 @@ const DatePicker = () => {
   return (
     <DtCalendar
       onChange={setDate}
-      initValue={data}
     />
   )
 }
@@ -254,7 +244,6 @@ const DatePicker = () => {
   return (
     <DtPicker
       onChange={setDate}
-      initValue={date}
       NextBtnIcon={arrowRight}
       PreviousBtnIcon={arrowLeft}
       placeholder='select date'
@@ -303,7 +292,6 @@ const DatePicker = () => {
     <div>
       <DtPicker
         onChange={setDate}
-        initValue={date}
       />
       <p>convertToFa(date)</p>
     </div>
@@ -322,7 +310,6 @@ const DatePicker = () => {
     <div>
       <DtPicker
         onChange={setDate}
-        initValue={date}
         withTime
         local="fa"
       />
@@ -343,19 +330,16 @@ const DatePicker = () => {
   return (
     <div>
       <DtPicker 
-        initValue={date} 
         onChange={setDate} 
         type="single"
         placeholder='select single day'
       />
       <DtPicker 
-        initValue={dateRange} 
         onChange={setDateRange} 
         type="range"
         placeholder='select range of days' 
       />
       <DtPicker 
-        initValue={dateMulti} 
         onChange={setDateMulti} 
         type='multi'
         placeholder='select multi days'

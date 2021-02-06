@@ -26,44 +26,14 @@ import {
 
 const App = () => {
   const [singleExample, setSingleExample] = useState(null)
-  const [singleInitValueExample, setSingleInitValueExample] = useState({
-    year: 2019,
-    month: 3,
-    day: 20
-  })
+  const [singleInitValueExample, setSingleInitValueExample] = useState(null)
   const [singlePersianExample, setSinglePersianExample] = useState(null)
   const [rangeExample, setRangeExample] = useState(null)
-  const [rangeInitValueExample, setRangeInitValueExample] = useState({
-    from: { year: 2012, month: 5, day: 2 },
-    to: { year: 2012, month: 5, day: 23 }
-  })
+  const [rangeInitValueExample, setRangeInitValueExample] = useState(null)
   const [multiExample, setMultiExample] = useState(null)
-  const [multiInitialValueExample, setMultiInitialValueExample] = useState([
-    {
-      year: 2012,
-      month: 5,
-      day: 29,
-      hours: 18,
-      minutes: 11
-    },
-    {
-      year: 2012,
-      month: 5,
-      day: 2,
-      hours: 18,
-      minutes: 11
-    },
-    {
-      year: 2012,
-      month: 6,
-      day: 3,
-      hours: 18,
-      minutes: 11
-    }
-  ])
+  const [multiInitialValueExample, setMultiInitialValueExample] = useState(null)
   const [singleTimeExample, setSingleTimeExample] = useState(null)
   const [displayingOption, setDisplayingOption] = useState(null)
-
   const [callBackApi, setCallBackApi] = useState(null)
   const [open, setOpen] = useState(0)
   const [close, setClose] = useState(0)
@@ -134,7 +104,7 @@ const App = () => {
             </SyntaxHighlighter>
           </div>
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
-            <DtPicker initValue={singleExample} onChange={setSingleExample} />
+            <DtPicker onChange={setSingleExample} />
             <pre>{JSON.stringify(singleExample, null, 2)}</pre>
           </div>
         </div>
@@ -158,7 +128,11 @@ const App = () => {
           </div>
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
-              initValue={singleInitValueExample}
+              initValue={{
+                year: 2019,
+                month: 3,
+                day: 20
+              }}
               onChange={setSingleInitValueExample}
             />
             <pre>{JSON.stringify(singleInitValueExample, null, 2)}</pre>
@@ -183,11 +157,7 @@ const App = () => {
             </SyntaxHighlighter>
           </div>
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
-            <DtPicker
-              initValue={singlePersianExample}
-              onChange={setSinglePersianExample}
-              local='fa'
-            />
+            <DtPicker onChange={setSinglePersianExample} local='fa' />
             <pre>{JSON.stringify(singlePersianExample, null, 2)}</pre>
           </div>
         </div>
@@ -210,11 +180,7 @@ const App = () => {
             </SyntaxHighlighter>
           </div>
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
-            <DtPicker
-              initValue={rangeExample}
-              onChange={setRangeExample}
-              type='range'
-            />
+            <DtPicker onChange={setRangeExample} type='range' />
             <pre>{JSON.stringify(rangeExample, null, 2)}</pre>
           </div>
         </div>
@@ -238,7 +204,10 @@ const App = () => {
           </div>
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
-              initValue={rangeInitValueExample}
+              initValue={{
+                from: { year: 2012, month: 5, day: 2 },
+                to: { year: 2012, month: 5, day: 23 }
+              }}
               onChange={setRangeInitValueExample}
               type='range'
             />
@@ -264,11 +233,7 @@ const App = () => {
             </SyntaxHighlighter>
           </div>
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
-            <DtPicker
-              initValue={multiExample}
-              onChange={setMultiExample}
-              type='multi'
-            />
+            <DtPicker onChange={setMultiExample} type='multi' />
             <pre>{JSON.stringify(multiExample, null, 2)}</pre>
           </div>
         </div>
@@ -292,7 +257,29 @@ const App = () => {
           </div>
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
-              initValue={multiInitialValueExample}
+              initValue={[
+                {
+                  year: 2012,
+                  month: 5,
+                  day: 29,
+                  hours: 18,
+                  minutes: 11
+                },
+                {
+                  year: 2012,
+                  month: 5,
+                  day: 2,
+                  hours: 18,
+                  minutes: 11
+                },
+                {
+                  year: 2012,
+                  month: 6,
+                  day: 3,
+                  hours: 18,
+                  minutes: 11
+                }
+              ]}
               onChange={setMultiInitialValueExample}
               type='multi'
             />
@@ -318,11 +305,7 @@ const App = () => {
             </SyntaxHighlighter>
           </div>
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
-            <DtPicker
-              initValue={singleTimeExample}
-              onChange={setSingleTimeExample}
-              withTime
-            />
+            <DtPicker onChange={setSingleTimeExample} withTime />
             <pre>{JSON.stringify(singleTimeExample, null, 2)}</pre>
           </div>
         </div>
@@ -346,7 +329,6 @@ const App = () => {
           </div>
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
-              initValue={displayingOption}
               onChange={setDisplayingOption}
               showWeekend
               clearBtn
@@ -379,10 +361,10 @@ const App = () => {
             <span className='block'>close: {close}</span>
             <DtPicker
               onChange={handleCalendarChange}
-              initValue={callBackApi}
               onCalenderShow={handleCalendarOpen}
               onCalenderHide={handleCalendarClose}
             />
+            <pre>{JSON.stringify(callBackApi, null, 2)}</pre>
           </div>
         </div>
       </div>
@@ -406,7 +388,6 @@ const App = () => {
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               onChange={setMinMax}
-              initValue={minMax}
               minDate={minDate}
               maxDate={maxDate}
             />
@@ -434,12 +415,11 @@ const App = () => {
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               onChange={setDisabledDate}
-              initValue={disabledDate}
               disabledDates={disabledDatesList}
               minDate={minDate}
               maxDate={maxDate}
             />
-            <pre>{JSON.stringify(minMax, null, 2)}</pre>
+            <pre>{JSON.stringify(disabledDate, null, 2)}</pre>
           </div>
         </div>
       </div>
@@ -459,7 +439,7 @@ const App = () => {
           </div>
           <div className='w-2/2 xl:w-1/2'>
             <div className='mt-4'>
-              <DtCalendar onChange={setWithoutInput} initValue={withoutInput} />
+              <DtCalendar onChange={setWithoutInput} />
             </div>
             <pre className='mt-4'>{JSON.stringify(withoutInput, null, 2)}</pre>
           </div>
@@ -494,7 +474,6 @@ const App = () => {
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
             <DtPicker
               onChange={setCustomIcons}
-              initValue={customIcons}
               NextBtnIcon={arrowRight}
               PreviousBtnIcon={arrowLeft}
               placeholder='select date'

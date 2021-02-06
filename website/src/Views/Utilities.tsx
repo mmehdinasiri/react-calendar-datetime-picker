@@ -41,10 +41,7 @@ const Utilities = () => {
                 </SyntaxHighlighter>
               </div>
               <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
-                <DtPicker
-                  initValue={convertToEnDate}
-                  onChange={setConvertToEnDate}
-                />
+                <DtPicker onChange={setConvertToEnDate} />
                 value: <pre>{JSON.stringify(convertToEnDate, null, 2)}</pre>
                 <br />
                 converted value:
@@ -72,12 +69,7 @@ const Utilities = () => {
                 </SyntaxHighlighter>
               </div>
               <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
-                <DtPicker
-                  initValue={convertToFaDate}
-                  onChange={setConvertToFaDate}
-                  withTime
-                  local='fa'
-                />
+                <DtPicker onChange={setConvertToFaDate} withTime local='fa' />
                 value: <pre>{JSON.stringify(convertToFaDate, null, 2)}</pre>
                 <br />
                 converted value:

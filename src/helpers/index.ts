@@ -221,6 +221,7 @@ export const mergeProviders = (
   }
   if (type === 'range') {
     if (
+      selectedDate &&
       (selectedDate as IRange).from?.year &&
       (selectedDate as IRange).to?.year
     ) {
@@ -252,7 +253,7 @@ export const mergeProviders = (
     } else {
       onChange(selectedDate)
     }
-  } else if (type === 'multi') {
+  } else if (type === 'multi' && selectedDate) {
     const newDate = (selectedDate as IDay[]).map((d: IDay) => {
       return {
         ...d,
