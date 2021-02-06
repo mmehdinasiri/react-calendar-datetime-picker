@@ -13,11 +13,12 @@ export default DatePicker
 export const singleInitValueExampleStr = `
 import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
+  const defaultValue = { year: 2019, month: 3, day: 20 }
   const [date, setDate] = useState(null)
   return (
     <DtPicker
       onChange={setDate}
-      initValue={{ year: 2016, month: 6, day: 20 }}
+      initValue={defaultValue}
     />
   )
 }
@@ -53,14 +54,15 @@ export default DatePicker
 export const rangeInitValueEExampleStr = `
 import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
+  const defaultValue = {
+    from: { year: 2012, month: 5, day: 2 },
+    to: { year: 2012, month: 5, day: 23 }
+  }
   const [date, setDate] = useState(null)
   return (
     <DtPicker
       onChange={setDate}
-      initValue={{
-        from: { year: 2012, month: 5, day: 2 },
-        to: { year: 2012, month: 5, day: 23 }
-      }}
+      initValue={defaultValue}
       type='range'
     />
   )
@@ -83,33 +85,34 @@ export default DatePicker
 export const multiInitialValueExampleStr = `
 import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
+  const defaultValue = {[
+    {
+      year: 2012,
+      month: 5,
+      day: 29,
+      hours: 18,
+      minutes: 11
+    },
+    {
+      year: 2012,
+      month: 5,
+      day: 2,
+      hours: 18,
+      minutes: 11
+    },
+    {
+      year: 2012,
+      month: 6,
+      day: 3,
+      hours: 18,
+      minutes: 11
+    }
+  ]}
   const [date, setDate] = useState(null)
   return (
     <DtPicker
       onChange={setDate}
-      initValue={[
-        {
-          year: 2012,
-          month: 5,
-          day: 29,
-          hours: 18,
-          minutes: 11
-        },
-        {
-          year: 2012,
-          month: 5,
-          day: 2,
-          hours: 18,
-          minutes: 11
-        },
-        {
-          year: 2012,
-          month: 6,
-          day: 3,
-          hours: 18,
-          minutes: 11
-        }
-      ]}
+      initValue={defaultValue}
       type='multi'
     />
   )
