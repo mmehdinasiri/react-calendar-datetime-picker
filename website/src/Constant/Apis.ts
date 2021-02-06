@@ -1,18 +1,17 @@
 export const APIS = [
   {
-    property: 'initValue',
-    type: 'Day | null',
-    default: 'null',
-    required: 'true',
-    description:
-      'You can set a default value for your date using this property.'
-  },
-  {
     property: 'onChange',
     type: 'func',
     default: '-',
     required: 'true',
     description: 'A function that returns an object of selected date/dates.'
+  },
+  {
+    property: 'initValue',
+    type: 'Day | null',
+    default: 'null',
+    description:
+      'You can set a default value for your date using this property.'
   },
   {
     property: 'type',

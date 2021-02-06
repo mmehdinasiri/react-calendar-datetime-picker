@@ -17,6 +17,7 @@ import { useLangOption } from '../../hooks/useLangOption'
 import { IDay, IRange } from '../../Types'
 import { useCalenderActions } from '../../store/CalenderProvider'
 interface IWrapper {
+  onCalenderChange?: any
   onChange: (date: any) => void
   type: string
   withTime?: boolean
@@ -85,6 +86,7 @@ const viewsSelector = (
   return view
 }
 const Wrapper: FC<IWrapper> = ({
+  onCalenderChange,
   onChange,
   type,
   withTime,
@@ -113,7 +115,14 @@ const Wrapper: FC<IWrapper> = ({
   const { clockFromLB, clockToLB, clockLB } = useLangOption(local)
   const { changeView } = useViewActions()
   useDidMountEffect(() => {
-    mergeProviders(onChange, type, selectedDayState, selectedTime, withTime)
+    mergeProviders(
+      onChange,
+      type,
+      selectedDayState,
+      selectedTime,
+      onCalenderChange,
+      withTime
+    )
   }, [selectedDayState, selectedTime])
 
   useEffect(() => {

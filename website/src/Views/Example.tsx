@@ -39,9 +39,9 @@ const App = () => {
   const [close, setClose] = useState(0)
   const [change, setChange] = useState(0)
   const handleCalendarChange = (newDate: any) => {
+    console.log(newDate)
     console.log('Calendar changed')
     setChange(change + 1)
-    setCallBackApi(newDate)
   }
   const handleCalendarClose = () => {
     setClose(close + 1)
@@ -360,7 +360,9 @@ const App = () => {
             <span className='block'>change: {change}</span>
             <span className='block'>close: {close}</span>
             <DtPicker
-              onChange={handleCalendarChange}
+              type='single'
+              onChange={setCallBackApi}
+              onCalenderChange={handleCalendarChange}
               onCalenderShow={handleCalendarOpen}
               onCalenderHide={handleCalendarClose}
             />

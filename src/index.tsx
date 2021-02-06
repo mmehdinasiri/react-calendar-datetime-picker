@@ -20,6 +20,7 @@ import { IDay, IRange, Day, Range, Multi } from './Types'
 interface IDtPickerProps {
   initValue?: IDay | Multi | IRange | null | undefined
   onChange: (date: any) => void
+  onCalenderChange?: any
   onCalenderHide?: any
   onCalenderShow?: any
   type?: string
@@ -62,6 +63,7 @@ const DtPicker: FC<IDtPickerProps> = ({
   clearBtn,
   isRequired,
   todayBtn,
+  onCalenderChange,
   onCalenderHide,
   onCalenderShow,
   isDisabled,
@@ -169,7 +171,17 @@ const DtPicker: FC<IDtPickerProps> = ({
       setPrevInitDate(initValue)
       setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
       setIsUpdate(isUpdate + 1)
-      mergeProviders(onChange, correctedType, initValue, initTime, withTime)
+      if (isUpdate === 0) {
+        mergeProviders(onChange, correctedType, initValue, initTime)
+      } else {
+        mergeProviders(
+          onChange,
+          correctedType,
+          initValue,
+          initTime,
+          onCalenderChange
+        )
+      }
     }
   }, [initValue])
 
@@ -207,6 +219,7 @@ const DtPicker: FC<IDtPickerProps> = ({
                       className={`calender-modal ${calenderModalClass}`}
                     >
                       <DtWrapper
+                        onCalenderChange={onCalenderChange}
                         onChange={onChange}
                         type={correctedType}
                         withTime={withTime}
@@ -242,6 +255,7 @@ const DtPicker: FC<IDtPickerProps> = ({
 }
 const DtCalendar: FC<IDtPickerProps> = ({
   initValue,
+  onCalenderChange,
   onChange,
   type,
   withTime,
@@ -306,7 +320,17 @@ const DtCalendar: FC<IDtPickerProps> = ({
       setPrevInitDate(initValue)
       setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
       setIsUpdate(isUpdate + 1)
-      mergeProviders(onChange, correctedType, initValue, initTime, withTime)
+      if (isUpdate === 0) {
+        mergeProviders(onChange, correctedType, initValue, initTime)
+      } else {
+        mergeProviders(
+          onChange,
+          correctedType,
+          initValue,
+          initTime,
+          onCalenderChange
+        )
+      }
     }
   }, [initValue])
 
@@ -324,6 +348,7 @@ const DtCalendar: FC<IDtPickerProps> = ({
                   className={`calender-modal  is-calender ${calenderModalClass}`}
                 >
                   <DtWrapper
+                    onCalenderChange={onCalenderChange}
                     onChange={onChange}
                     type={correctedType}
                     withTime={withTime}

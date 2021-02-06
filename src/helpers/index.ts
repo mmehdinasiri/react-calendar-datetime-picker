@@ -199,24 +199,24 @@ export const mergeProviders = (
   type: string,
   selectedDate: IDay | IRange | IDay[] | null | undefined,
   selectedTime: ITime | ITimeRange | null | undefined,
+  onCalenderChange?: any,
   withTime?: boolean
 ) => {
+  let updatedValue = null
   if (type === 'single') {
     if ((selectedDate as IDay)?.year) {
       if (withTime) {
-        onChange({
+        updatedValue = {
           ...selectedDate,
           month: (selectedDate as IDay)?.month + 1,
           ...selectedTime
-        })
+        }
       } else {
-        onChange({
+        updatedValue = {
           ...selectedDate,
           month: (selectedDate as IDay)?.month + 1
-        })
+        }
       }
-    } else {
-      onChange(selectedDate)
     }
   }
   if (type === 'range') {
@@ -226,7 +226,7 @@ export const mergeProviders = (
       (selectedDate as IRange).to?.year
     ) {
       if (withTime) {
-        onChange({
+        updatedValue = {
           from: {
             ...(selectedDate as IRange).from,
             month: (selectedDate as IRange).from?.month! + 1,
@@ -237,9 +237,9 @@ export const mergeProviders = (
             month: (selectedDate as IRange).to?.month! + 1,
             ...(selectedTime as ITimeRange).to
           }
-        })
+        }
       } else {
-        onChange({
+        updatedValue = {
           from: {
             ...(selectedDate as IRange).from,
             month: (selectedDate as IRange).from?.month! + 1
@@ -248,19 +248,26 @@ export const mergeProviders = (
             ...(selectedDate as IRange).to,
             month: (selectedDate as IRange).to?.month! + 1
           }
-        })
+        }
       }
-    } else {
-      onChange(selectedDate)
     }
   } else if (type === 'multi' && selectedDate) {
-    const newDate = (selectedDate as IDay[]).map((d: IDay) => {
+    updatedValue = (selectedDate as IDay[]).map((d: IDay) => {
       return {
         ...d,
         month: d.month + 1
       }
     })
-    onChange(newDate)
+  }
+  onChange(updatedValue || selectedDate)
+  if (onCalenderChange) {
+    if (type === 'range') {
+      if ((selectedDate as IRange).from && (selectedDate as IRange).to) {
+        onCalenderChange(updatedValue)
+      }
+    } else {
+      onCalenderChange(updatedValue)
+    }
   }
 }
 

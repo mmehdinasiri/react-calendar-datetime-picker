@@ -149,8 +149,8 @@ import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {
   const [date, setDate] = useState(null)
   const handleCalendarChange = (newDate: any) => {
+    console.log(newDate)
     console.log('Calendar changed')
-    setDateEn(newDate)
   }
   const handleCalendarClose = () => {
     console.log('Calendar closed')
@@ -160,8 +160,8 @@ const DatePicker = () => {
   }
   return (
     <DtPicker
-      onChange={handleCalendarChange}
-      onChange={handleCalendarChange}
+      onChange={setDate}
+      onCalenderChange={handleCalendarChange}
       onCalenderShow={handleCalendarOpen}
       onCalenderHide={handleCalendarClose}
     />
