@@ -63,10 +63,10 @@ const InputPicker = forwardRef(
         (selectedDayState as IRange).from &&
         (selectedDayState as IRange).to
       ) {
-        return `${fromLabel || fromLB}:${genFullIDay(
+        return `${fromLabel || fromLB} : ${genFullIDay(
           (selectedDayState as IRange).from,
           true
-        )} ${toLabel || toLB}:${genFullIDay(
+        )}    ${toLabel || toLB} : ${genFullIDay(
           (selectedDayState as IRange).to,
           true
         )}`
@@ -74,7 +74,7 @@ const InputPicker = forwardRef(
         const listDate = (selectedDayState as IDay[]).map((day) => {
           return genFullIDay(day, true)
         })
-        return listDate
+        return listDate.join(' , ')
       }
       return ''
     }
