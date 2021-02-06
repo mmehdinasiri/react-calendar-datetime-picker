@@ -168,16 +168,17 @@ const DtPicker: FC<IDtPickerProps> = ({
       isUpdate === 0 ||
       (initValue && JSON.stringify(prevInitDate) !== JSON.stringify(initValue))
     ) {
+      const fixedInitVal = fixedMonthInitValue(initValue, correctedType)
       setPrevInitDate(initValue)
-      setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
+      setFixedInitValue(fixedInitVal)
       setIsUpdate(isUpdate + 1)
       if (isUpdate === 0) {
-        mergeProviders(onChange, correctedType, initValue, initTime)
+        mergeProviders(onChange, correctedType, fixedInitVal, initTime)
       } else {
         mergeProviders(
           onChange,
           correctedType,
-          initValue,
+          fixedInitVal,
           initTime,
           onCalenderChange
         )
