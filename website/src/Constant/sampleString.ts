@@ -319,7 +319,7 @@ const DatePicker = () => {
       <DtPicker
         onChange={setDate}
       />
-      <p>convertToFa(date)</p>
+      <p>{convertToFa(date)}</p>
     </div>
   )
 }
@@ -339,7 +339,7 @@ const DatePicker = () => {
         withTime
         local="fa"
       />
-      <p>convertToEn(date,'-')</p>
+      <p>{convertToEn(date,'-')}</p>
     </div>
   )
 }
