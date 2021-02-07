@@ -76,7 +76,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   </a>
                   <a
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
-                      hash.includes('#updateInitialDate') && 'is-active'
+                      hash.includes('#updateinitialdate') && 'is-active'
                     }`}
                     href='#updateInitialDate'
                   >
