@@ -242,6 +242,7 @@ const DtPicker: FC<IDtPickerProps> = ({
                         yearsClass={yearsClass}
                         disabledDates={fixedDisabledDates}
                         initCalender={initCalender}
+                        isComponentVisible={isComponentVisible}
                       />
                     </div>
                   )}
