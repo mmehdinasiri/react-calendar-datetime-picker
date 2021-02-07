@@ -4,7 +4,7 @@
 
 ### The Simple and fast English and Persian calender for React
 
-version: "1.2.9"
+version: "1.3.0"
 
 [![NPM](https://img.shields.io/npm/v/react-calendar-datetime-picker.svg)](https://www.npmjs.com/package/react-calendar-datetime-picker) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -30,19 +30,19 @@ yarn add react-calendar-datetime-picker
 - [Customization](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/customization)
 - [Utilities](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/Utilities)
 - [Typescript](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/typescript)
-- [Typescript](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/examples)
+- [Examples](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/examples)
 
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import React from 'react'
 
 import DtPicker from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/index.css'
 
 const App = () => {
   const [date, setDate] = useState(null)
-  return <DtPicker onChange={setDate} initValue={date} />
+  return <DtPicker onChange={setDate} />
 }
 ```
 
