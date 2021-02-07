@@ -24,7 +24,30 @@ const DatePicker = () => {
 }
 export default DatePicker
 `
-
+export const singleUpdateInitValueExampleStr = `
+import DtPicker from 'react-calendar-datetime-picker'
+const DatePicker = () => {
+  const [initValue,setInitValue] = useState({ year: 2010, month: 3, day: 22 })
+  const [date, setDate] = useState(null)
+  const updateInitValue = () => {
+    setInitValue({
+      year: 2020,
+      month: 12,
+      day: 25
+    })
+  }
+  return (
+    <button onClick={updateInitValue} >
+      Update init value
+    </button>
+    <DtPicker
+      onChange={setDate}
+      initValue={initValue}
+    />
+  )
+}
+export default DatePicker
+`
 export const singlePersianExampleStr = `
 import DtPicker from 'react-calendar-datetime-picker'
 const DatePicker = () => {

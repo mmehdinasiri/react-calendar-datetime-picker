@@ -46,3 +46,8 @@ body {
 a.is-active {
   color: $primary-color;
 }
+.btn {
+  &:focus {
+    outline: none;
+  }
+}

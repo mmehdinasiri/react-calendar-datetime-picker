@@ -21,12 +21,21 @@ import {
   multiInitialValueExampleStr,
   customCalender,
   customCalenderStyle,
-  withoutInputStr
+  withoutInputStr,
+  singleUpdateInitValueExampleStr
 } from '../Constant/sampleString'
 
 const App = () => {
   const [singleExample, setSingleExample] = useState(null)
   const [singleInitValueExample, setSingleInitValueExample] = useState(null)
+  const [
+    singleInitValueExampleAsync,
+    setSingleInitValueExampleAsync
+  ] = useState(null)
+  const [
+    singleInitValueExampleAsyncInitValue,
+    setSingleInitValueExampleAsyncInitValue
+  ] = useState({ year: 2010, month: 3, day: 22 })
   const [singlePersianExample, setSinglePersianExample] = useState(null)
   const [rangeExample, setRangeExample] = useState(null)
   const [rangeInitValueExample, setRangeInitValueExample] = useState(null)
@@ -84,6 +93,14 @@ const App = () => {
   ]
   const [withoutInput, setWithoutInput] = useState(null)
   const [customIcons, setCustomIcons] = useState(null)
+  const updateInitValue = () => {
+    setSingleInitValueExampleAsyncInitValue({
+      year: 2020,
+      month: 12,
+      day: 25
+    })
+  }
+
   return (
     <DocLayout>
       <div className='mb-10 pb-4 border-b border-primary border-opacity-50 '>
@@ -136,6 +153,35 @@ const App = () => {
               onChange={setSingleInitValueExample}
             />
             <pre>{JSON.stringify(singleInitValueExample, null, 2)}</pre>
+          </div>
+        </div>
+      </div>
+      <div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
+        <h3
+          id='updateInitialDate'
+          className='text-2xl font-bold mb-4 scroll-offset'
+        >
+          Update initial date
+        </h3>
+        <div className='block xl:flex '>
+          <div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
+            <SyntaxHighlighter
+              className='rounded'
+              style={tomorrowNightEighties}
+              language='javascript'
+            >
+              {singleUpdateInitValueExampleStr}
+            </SyntaxHighlighter>
+          </div>
+          <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
+            <button onClick={updateInitValue} className='btn rounded-0 mb-2'>
+              Update init value
+            </button>
+            <DtPicker
+              initValue={singleInitValueExampleAsyncInitValue}
+              onChange={setSingleInitValueExampleAsync}
+            />
+            <pre>{JSON.stringify(singleInitValueExampleAsync, null, 2)}</pre>
           </div>
         </div>
       </div>

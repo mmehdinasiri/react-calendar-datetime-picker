@@ -39,6 +39,7 @@ interface IWrapper {
   yearsClass?: string
   disabledDates?: IDay[]
   initCalender?: IDay
+  isComponentVisible?: boolean
 }
 const viewsSelector = (
   hasDefaultVal: boolean,
@@ -107,7 +108,8 @@ const Wrapper: FC<IWrapper> = ({
   monthsClass,
   yearsClass,
   disabledDates,
-  initCalender
+  initCalender,
+  isComponentVisible
 }) => {
   const selectedDayState = useSelectedDayState()
   const { changeCalender } = useCalenderActions()
@@ -132,13 +134,14 @@ const Wrapper: FC<IWrapper> = ({
   }, [])
   useEffect(() => {
     if (
+      isComponentVisible &&
       initCalender &&
       (!selectedDayState ||
         (Array.isArray(selectedDayState) && !selectedDayState.length))
     ) {
       changeCalender({ ...initCalender })
     }
-  }, [selectedDayState])
+  }, [isComponentVisible])
   return (
     <div
       className={`dtWrapper ${local === 'fa' ? 'is-rtl' : 'is-ltr'} ${
