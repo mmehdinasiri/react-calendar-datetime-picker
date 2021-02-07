@@ -8,7 +8,7 @@ import {
 } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 
 const usageString = `
-import { DtPicker } from 'react-calendar-datetime-picker'
+import  DtPicker  from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/index.css'
 
 const DatePicker = () => {
