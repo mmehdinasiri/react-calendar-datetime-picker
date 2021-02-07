@@ -35,14 +35,14 @@ yarn add react-calendar-datetime-picker
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import React from 'react'
 
 import DtPicker from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/index.css'
 
 const App = () => {
   const [date, setDate] = useState(null)
-  return <DtPicker onChange={setDate} initValue={date} />
+  return <DtPicker onChange={setDate} />
 }
 ```
 
