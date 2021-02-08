@@ -203,7 +203,11 @@ const App = () => {
             </SyntaxHighlighter>
           </div>
           <div className='w-2/2 lg:w-1/4 xl:w-1/2'>
-            <DtPicker onChange={setSinglePersianExample} local='fa' withTime />
+            <DtPicker
+              onChange={setSinglePersianExample}
+              local='fa'
+              showWeekend
+            />
             <pre>{JSON.stringify(singlePersianExample, null, 2)}</pre>
           </div>
         </div>
