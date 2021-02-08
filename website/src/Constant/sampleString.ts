@@ -56,6 +56,7 @@ const DatePicker = () => {
     <DtPicker
       onChange={setDate}
       local="fa"
+      showWeekend
     />
   )
 }
