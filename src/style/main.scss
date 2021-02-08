@@ -1,12 +1,14 @@
 @import './setting.scss';
 @import '~sass-rem';
 
-@import './component/dtWrapper.scss';
-@import './component/header.scss';
-@import './component/yearsView.scss';
-@import './component/monthsView.scss';
-@import './component/daysView.scss';
-@import './component/calenderModal.scss';
-@import './component/inputPicker.scss';
-@import './component/todayBtn.scss';
-@import './component/timeView.scss';
+.react-calendar-datetime-picker {
+  @import './component/dtWrapper.scss';
+  @import './component/header.scss';
+  @import './component/yearsView.scss';
+  @import './component/monthsView.scss';
+  @import './component/daysView.scss';
+  @import './component/calenderModal.scss';
+  @import './component/inputPicker.scss';
+  @import './component/todayBtn.scss';
+  @import './component/timeView.scss';
+}
