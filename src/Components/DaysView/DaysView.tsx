@@ -296,7 +296,7 @@ const DaysView: FC<IDaysProps> = ({
       {WEEK_DAYS.map((day: any) => (
         <li key={day.name} className='daysList-day is-week-days'>
           {day.short}
-                  </li>
+        </li>
       ))}
       {daysForPreviousMonth.length < 7 &&
         daysForPreviousMonth.map((day, index) => (
@@ -308,7 +308,9 @@ const DaysView: FC<IDaysProps> = ({
                 : ''
             }`}
           >
-                 {local === 'fa' ? day.dayOfMonth.toLocaleString('fa-IR') : day.dayOfMonth}
+            {local === 'fa'
+              ? day.dayOfMonth.toLocaleString('fa-IR')
+              : day.dayOfMonth}
           </li>
         ))}
       {daysForCurrentMonth.map((day, index) => (
@@ -319,7 +321,9 @@ const DaysView: FC<IDaysProps> = ({
             handelChangeDay(day.date)
           }}
         >
-         {local === 'fa' ? day.dayOfMonth.toLocaleString('fa-IR') : day.dayOfMonth}
+          {local === 'fa'
+            ? day.dayOfMonth.toLocaleString('fa-IR')
+            : day.dayOfMonth}
         </li>
       ))}
       {daysForNextMonth.length < 7 &&
@@ -330,7 +334,9 @@ const DaysView: FC<IDaysProps> = ({
               index === 0 ? 'is-border-left-0' : ''
             }`}
           >
-      {local === 'fa' ? day.dayOfMonth.toLocaleString('fa-IR') : day.dayOfMonth}
+            {local === 'fa'
+              ? day.dayOfMonth.toLocaleString('fa-IR')
+              : day.dayOfMonth}
           </li>
         ))}
     </ul>
