@@ -66,7 +66,9 @@ const years: FC<IYearsProps> = ({ local, yearsClass }) => {
           }`}
           onClick={() => changeYear(i)}
         >
-         {local === 'fa' ? i.toLocaleString('fa-IR').replace('٬','')  : i}
+          {local === 'fa'
+            ? new Intl.NumberFormat('fa', { useGrouping: false }).format(i)
+            : i}
         </li>
       )
     return yearsList

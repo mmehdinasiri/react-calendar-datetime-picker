@@ -105,7 +105,9 @@ const Header: FC<IHeaderProps> = ({
           className='header-date--year'
           onClick={() => handelView(YEARS_VIEW)}
         >
-        {local === 'fa' ? year.toLocaleString('fa-IR').replace('٬','')  : year}
+          {local === 'fa'
+            ? new Intl.NumberFormat('fa', { useGrouping: false }).format(year)
+            : year}
         </div>
         <div
           className='header-date--month'
