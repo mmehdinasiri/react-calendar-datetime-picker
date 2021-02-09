@@ -18,6 +18,8 @@ import {
 } from '../../store/SelectedDaysProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
 import { IDay, IRange } from '../../Types'
+import { toPersianNumber } from '../../helpers/index'
+
 interface IDaysProps {
   hasDefaultVal: boolean
   local: string
@@ -308,11 +310,7 @@ const DaysView: FC<IDaysProps> = ({
                 : ''
             }`}
           >
-            {local === 'fa'
-              ? new Intl.NumberFormat('fa', { useGrouping: false }).format(
-                  day.dayOfMonth
-                )
-              : day.dayOfMonth}
+            {local === 'fa' ? toPersianNumber(day.dayOfMonth) : day.dayOfMonth}
           </li>
         ))}
       {daysForCurrentMonth.map((day, index) => (
@@ -323,11 +321,7 @@ const DaysView: FC<IDaysProps> = ({
             handelChangeDay(day.date)
           }}
         >
-          {local === 'fa'
-            ? new Intl.NumberFormat('fa', { useGrouping: false }).format(
-                day.dayOfMonth
-              )
-            : day.dayOfMonth}
+          {local === 'fa' ? toPersianNumber(day.dayOfMonth) : day.dayOfMonth}
         </li>
       ))}
       {daysForNextMonth.length < 7 &&

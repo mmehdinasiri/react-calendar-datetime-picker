@@ -7,6 +7,8 @@ import {
   useCalenderState
 } from '../../store/CalenderProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
+import { toPersianNumber } from '../../helpers/index'
+
 interface IYearsProps {
   local: string
   yearsClass?: string
@@ -66,9 +68,7 @@ const years: FC<IYearsProps> = ({ local, yearsClass }) => {
           }`}
           onClick={() => changeYear(i)}
         >
-          {local === 'fa'
-            ? new Intl.NumberFormat('fa', { useGrouping: false }).format(i)
-            : i}
+          {local === 'fa' ? toPersianNumber(i) : i}
         </li>
       )
     return yearsList

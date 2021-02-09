@@ -9,6 +9,8 @@ import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useLangOption } from '../../hooks/useLangOption'
 import { ReactComponent as Next } from '../../Icons/next.svg'
 import { ReactComponent as Back } from '../../Icons/back.svg'
+import { toPersianNumber } from '../../helpers/index'
+
 interface IHeaderProps {
   local: string
   NextBtnIcon?: any
@@ -105,9 +107,7 @@ const Header: FC<IHeaderProps> = ({
           className='header-date--year'
           onClick={() => handelView(YEARS_VIEW)}
         >
-          {local === 'fa'
-            ? new Intl.NumberFormat('fa', { useGrouping: false }).format(year)
-            : year}
+          {local === 'fa' ? toPersianNumber(year) : year}
         </div>
         <div
           className='header-date--month'
