@@ -339,7 +339,9 @@ const DaysView: FC<IDaysProps> = ({
             }`}
           >
             {local === 'fa'
-              ? day.dayOfMonth.toLocaleString('fa-IR')
+              ? new Intl.NumberFormat('fa', { useGrouping: false }).format(
+                  day.dayOfMonth
+                )
               : day.dayOfMonth}
           </li>
         ))}
