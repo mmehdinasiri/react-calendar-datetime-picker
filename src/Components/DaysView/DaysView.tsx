@@ -332,11 +332,7 @@ const DaysView: FC<IDaysProps> = ({
               index === 0 ? 'is-border-left-0' : ''
             }`}
           >
-            {local === 'fa'
-              ? new Intl.NumberFormat('fa', { useGrouping: false }).format(
-                  day.dayOfMonth
-                )
-              : day.dayOfMonth}
+            {local === 'fa' ? toPersianNumber(day.dayOfMonth) : day.dayOfMonth}
           </li>
         ))}
     </ul>
