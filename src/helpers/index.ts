@@ -520,10 +520,10 @@ export const fixedMonthInitValue = (initDate: any, type: string) => {
   return newDate
 }
 
-export const toPersianNumber = (engilshNumber: number | string): string => {
-  if (!engilshNumber) return ''
+export const toPersianNumber = (englishNumber: number | string): string => {
+  if (!englishNumber) return ''
 
-  const persianNumber = String(engilshNumber).replace(
+  const persianNumber = String(englishNumber).replace(
     /\d/g,
     (d) => '۰۱۲۳۴۵۶۷۸۹'[d]
   )
