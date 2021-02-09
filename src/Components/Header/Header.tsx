@@ -28,7 +28,7 @@ const Header: FC<IHeaderProps> = ({
   headerClass
 }) => {
   const { minDate, maxDate } = useMinMaxState()
-  const { MONTHS, nextMonthBtnTL, previousMonthBtnTL } = useLangOption(local)
+  const { MONTHS } = useLangOption(local)
   const dayState = useCalenderState()
   const viewState = useViewState()
   const { changeCalender } = useCalenderActions()
@@ -97,7 +97,7 @@ const Header: FC<IHeaderProps> = ({
     <div className={`header ${headerClass}`}>
       <a
         className={`header--btn ${!isActiveBack() ? 'is-disabled' : ''}`}
-        title={previousMonthBtnTitle || previousMonthBtnTL}
+        title={previousMonthBtnTitle || MONTHS[month - 1 < 0 ? 11 : month - 1]}
         onClick={() => handelNextMonthState('dec')}
       >
         {PreviousBtnIcon ? <PreviousBtnIcon /> : <Back />}
@@ -118,7 +118,7 @@ const Header: FC<IHeaderProps> = ({
       </div>
       <a
         className={`header--btn ${!isActiveNext() ? 'is-disabled' : ''}`}
-        title={nextMonthBtnTitle || nextMonthBtnTL}
+        title={nextMonthBtnTitle || MONTHS[month + 1 > 11 ? 0 : month + 1]}
         onClick={() => handelNextMonthState('inc')}
       >
         {NextBtnIcon ? <NextBtnIcon /> : <Next />}
