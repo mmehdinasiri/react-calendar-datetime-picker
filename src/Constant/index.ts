@@ -70,7 +70,7 @@ export const LOCAL_CONSTANT = {
       return new PersianDate([date.year, date.month + 1, date.day]).date()
     },
     setDayOfMonth: (date: IDay, day: number) => {
-      return new PersianDate([date.year, date.month, date.day]).date(day)
+      return new PersianDate([date.year, date.month + 1, date.day]).date(day)
     },
     inputPlaceholder: 'انتخاب کنید',
     clockFromLB: 'از ساعت',
