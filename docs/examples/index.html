@@ -1,0 +1,311 @@
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width"/><meta name="next-head-count" content="2"/><link rel="preload" href="/_next/static/css/39c884fde5850f593932.css" as="style"/><link rel="stylesheet" href="/_next/static/css/39c884fde5850f593932.css" data-n-g=""/><noscript data-n-css=""></noscript><link rel="preload" href="/_next/static/chunks/main-5c5713b0f16f66007dba.js" as="script"/><link rel="preload" href="/_next/static/chunks/webpack-50bee04d1dc61f8adf5b.js" as="script"/><link rel="preload" href="/_next/static/chunks/framework.b4d107e0ffe7c3efd870.js" as="script"/><link rel="preload" href="/_next/static/chunks/commons.24b5517cc8928cdf8183.js" as="script"/><link rel="preload" href="/_next/static/chunks/pages/_app-9587615d505200359034.js" as="script"/><link rel="preload" href="/_next/static/chunks/bf12fe7197fa603fec1c84bd2c09259f4170e623.494fdee6bfb1f068b2b5.js" as="script"/><link rel="preload" href="/_next/static/chunks/b2ebb3ca4021f78319b786d9b4eca676a9f17fd4.de442848eb1bdba53498.js" as="script"/><link rel="preload" href="/_next/static/chunks/pages/docs/examples-4dd1b6a98073e523c22b.js" as="script"/></head><body><div id="__next"><div class=" fixed w-full z-20"><nav class="flex items-center justify-between flex-wrap bg-teal p-4 bg-primary text-text-lightest"><div class="flex items-center flex-no-shrink text-text-lightest mr-6"><span class="text-xl text-text-lightest font-medium">React calendar date-time picker<!-- --> <span class="text-xs ml-2">v1.3.3</span></span></div><div class="flex-grow flex items-center w-auto text-right"><div class="text-sm flex-grow"><a class="block inline-block mt-0 text-text-lightest hover:text-white mr-4 font-extralight" href="/docs/get-started/">Docs</a><a class="block inline-block mt-0 text-text-lightest hover:text-white mr-4 font-extralight" href="/docs/examples/">Examples</a><a class="block inline-block mt-0 text-text-lightest hover:text-white mr-4 font-extralight" href="https://github.com/mmehdinasiri/react-calendar-datetime-picker" target="_blank" rel="noopener noreferrer">Github</a></div><div></div></div></nav></div><div class="container mx-auto min-h-full px-2 pt-16"><div class="main-content py-4"><div class="flex "><div class="w-2/6 2xl:w-1/6"><div class="fixed" style="width:240px"><h2 class="font-bold text-text text-lg">Usage</h2><div class="pl-2"><a class="block text-text hover:text-primary  my-2" href="/docs/get-started/">Get started</a><a class="block text-text hover:text-primary  my-2" href="/docs/props/">Props</a><a class="block text-text hover:text-primary  my-2" href="/docs/customization/">Customization</a><a class="block text-text hover:text-primary  my-2" href="/docs/utilities/">Utilities</a><a class="block text-text hover:text-primary  my-2" href="/docs/typescript/">Typescript</a><a class="block text-text hover:text-primary  my-2" href="/docs/examples/">Examples</a></div></div></div><div class="w-4/6 2xl:w-5/6 pl-4 2xl:pl-12  xl:pl-6"><div class="mb-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="selectSingleDay" class="text-2xl font-bold mb-4 scroll-offset">Select single day</h3><div class="block xl:flex "><div class="w-2/2 lg:w-3/4 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value=""/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="SingleDayWithInitialDate" class="text-2xl font-bold mb-4 scroll-offset">Single day with initial date</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> defaultValue = { </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2019</span><span>, </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">3</span><span>, </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">20</span><span> }
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">initValue</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{defaultValue}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value="2019/03/20"/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="updateInitialDate" class="text-2xl font-bold mb-4 scroll-offset">Update initial date</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [initValue,setInitValue] = useState({ </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2010</span><span>, </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">3</span><span>, </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">22</span><span> })
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">const</span><span> updateInitValue = </span><span class="hljs-function">() =&gt;</span><span> {
+</span>    setInitValue({
+<span>      </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2020</span><span>,
+</span><span>      </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">12</span><span>,
+</span><span>      </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">25</span><span>
+</span>    })
+<!-- -->  }
+<span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">button</span><span class="xml" style="color:#f2777a"> </span><span class="xml hljs-attr" style="color:#f2777a">onClick</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{updateInitValue}</span><span class="xml" style="color:#f2777a"> &gt;</span><span class="xml">
+</span><span class="xml">      Update init value
+</span><span class="xml">    </span><span class="xml" style="color:#f2777a">&lt;/</span><span class="xml" style="color:#f2777a">button</span><span class="xml" style="color:#f2777a">&gt;</span><span>
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">initValue</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{initValue}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><button class="btn rounded-0 mb-2">Update init value</button><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value="2010/03/22"/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="selectSinglePersian(Jalali)day" class="text-2xl font-bold mb-4 scroll-offset">Select single Jalali day</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">local</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&quot;fa&quot;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">showWeekend</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="انتخاب کنید" value=""/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="selectAListOfDaysBetweenTwoDays" class="text-2xl font-bold mb-4 scroll-offset">Select a list of days between two days</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">type</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&#x27;range&#x27;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value=""/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="rangeOfDaysWithInitialDate" class="text-2xl font-bold mb-4 scroll-offset">Range of days with initial date</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> defaultValue = {
+</span><span>    </span><span class="hljs-attr">from</span><span>: { </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2012</span><span>, </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">5</span><span>, </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">2</span><span> },
+</span><span>    </span><span class="hljs-attr">to</span><span>: { </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2012</span><span>, </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">5</span><span>, </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">23</span><span> }
+</span>  }
+<span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">initValue</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{defaultValue}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">type</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&#x27;range&#x27;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value="from : 2012/05/02    to : 2012/05/23"/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="selectMultiDays" class="text-2xl font-bold mb-4  scroll-offset">Select multi days</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">type</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&#x27;multi&#x27;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value=""/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="multiDaysWithInitialDate" class="text-2xl font-bold mb-4 scroll-offset">Multi days with initial date</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> defaultValue = {[
+</span>    {
+<span>      </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2012</span><span>,
+</span><span>      </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">5</span><span>,
+</span><span>      </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">29</span><span>,
+</span><span>      </span><span class="hljs-attr">hours</span><span>: </span><span style="color:#f99157">18</span><span>,
+</span><span>      </span><span class="hljs-attr">minutes</span><span>: </span><span style="color:#f99157">11</span><span>
+</span>    },
+<!-- -->    {
+<span>      </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2012</span><span>,
+</span><span>      </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">5</span><span>,
+</span><span>      </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">2</span><span>,
+</span><span>      </span><span class="hljs-attr">hours</span><span>: </span><span style="color:#f99157">18</span><span>,
+</span><span>      </span><span class="hljs-attr">minutes</span><span>: </span><span style="color:#f99157">11</span><span>
+</span>    },
+<!-- -->    {
+<span>      </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2012</span><span>,
+</span><span>      </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">6</span><span>,
+</span><span>      </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">3</span><span>,
+</span><span>      </span><span class="hljs-attr">hours</span><span>: </span><span style="color:#f99157">18</span><span>,
+</span><span>      </span><span class="hljs-attr">minutes</span><span>: </span><span style="color:#f99157">11</span><span>
+</span>    }
+<!-- -->  ]}
+<span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">initValue</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{defaultValue}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">type</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&#x27;multi&#x27;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value="2012/05/29 , 2012/05/02 , 2012/06/03"/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="singleDayWithTime" class="text-2xl font-bold mb-4 scroll-offset">Single day with time</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">withTime</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value=""/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="showWeekendClearBtnAndTodayBtnOptions" class="text-2xl font-bold mb-4 scroll-offset">ShowWeekend, clearBtn and todayBtn options</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">showWeekend</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">clearBtn</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">todayBtn</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value=""/><a class="input-picker--clearBtn undefined"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="/assets/file.svg#img"></use><path d="M17.459 16.014l8.239-8.194a.992.992 0 000-1.414 1.016 1.016 0 00-1.428 0l-8.232 8.187L7.73 6.284a1.009 1.009 0 00-1.428 0 1.015 1.015 0 000 1.432l8.302 8.303-8.332 8.286a.994.994 0 000 1.414 1.016 1.016 0 001.428 0l8.325-8.279 8.275 8.276a1.009 1.009 0 001.428 0 1.015 1.015 0 000-1.432l-8.269-8.27z" fill="currentColor"></path></svg></a></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="openCloseAndChangeCallbackApi" class="text-2xl font-bold mb-4 scroll-offset">Open, close and change callback api</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">const</span><span> handleCalendarChange = </span><span class="hljs-function">(</span><span class="hljs-function" style="color:#f99157">newDate: any</span><span class="hljs-function">) =&gt;</span><span> {
+</span><span>    </span><span style="color:#f99157">console</span><span>.log(newDate)
+</span><span>    </span><span style="color:#f99157">console</span><span>.log(</span><span style="color:#99cc99">&#x27;Calendar changed&#x27;</span><span>)
+</span>  }
+<span>  </span><span style="color:#cc99cc">const</span><span> handleCalendarClose = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>    </span><span style="color:#f99157">console</span><span>.log(</span><span style="color:#99cc99">&#x27;Calendar closed&#x27;</span><span>)
+</span>  }
+<span>  </span><span style="color:#cc99cc">const</span><span> handleCalendarOpen = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>    </span><span style="color:#f99157">console</span><span>.log(</span><span style="color:#99cc99">&#x27;Calendar opened&#x27;</span><span>)
+</span>  }
+<span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onCalenderChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{handleCalendarChange}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onCalenderShow</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{handleCalendarOpen}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onCalenderHide</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{handleCalendarClose}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><span class="block">open: <!-- -->0</span><span class="block">change: <!-- -->0</span><span class="block">close: <!-- -->0</span><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value=""/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="setMinimumAndMaximumDate" class="text-2xl font-bold mb-4 scroll-offset">Set minimum and maximum date</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span></span><span style="color:#cc99cc">const</span><span> maxDate = {
+</span><span>    </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2016</span><span>,
+</span><span>    </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">6</span><span>,
+</span><span>    </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">23</span><span>
+</span>  }
+<span>  </span><span style="color:#cc99cc">const</span><span> minDate = {
+</span><span>    </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2012</span><span>,
+</span><span>    </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">5</span><span>,
+</span><span>    </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">2</span><span>
+</span>  }
+<span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">minDate</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{minDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">maxDate</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{maxDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value=""/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="setAListOfDisabledDates" class="text-2xl font-bold mb-4 scroll-offset">Set a list of disabled dates</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">const</span><span> disabledDates = [
+</span>    {
+<span>      </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2015</span><span>,
+</span><span>      </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">6</span><span>,
+</span><span>      </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">23</span><span>
+</span>    },
+<!-- -->    {
+<span>      </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2015</span><span>,
+</span><span>      </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">6</span><span>,
+</span><span>      </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">12</span><span>
+</span>    },
+<!-- -->    {
+<span>      </span><span class="hljs-attr">year</span><span>: </span><span style="color:#f99157">2015</span><span>,
+</span><span>      </span><span class="hljs-attr">month</span><span>: </span><span style="color:#f99157">6</span><span>,
+</span><span>      </span><span class="hljs-attr">day</span><span>: </span><span style="color:#f99157">10</span><span>
+</span>    }
+<!-- -->  ]
+<span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">disabledDates</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{disabledDatesList}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">minDate</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{minDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">maxDate</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{maxDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input undefined" readonly="" placeholder="select" value=""/></div></div></div><pre>null</pre></div></div></div><div class="my-10 pb-4 border-b border-primary border-opacity-50 "><h3 id="WithoutInput" class="text-2xl font-bold mb-4 scroll-offset">Without input</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span>  { DtCalendar } </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtCalendar</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre></div><div class="w-2/2 xl:w-1/2"><div class="mt-4"><div class="react-calendar-datetime-picker"><div class="calender-modal  is-calender undefined"><div class="dtWrapper is-ltr is_DAYS_VIEW" dir="ltr"><div class="header undefined"><a class="header--btn " title="March"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175"><path d="M145.188 238.575l215.5-215.5c5.3-5.3 5.3-13.8 0-19.1s-13.8-5.3-19.1 0l-225.1 225.1c-5.3 5.3-5.3 13.8 0 19.1l225.1 225c2.6 2.6 6.1 4 9.5 4s6.9-1.3 9.5-4c5.3-5.3 5.3-13.8 0-19.1l-215.4-215.5z"></path></svg></a><div class="header-date"><div class="header-date--year">2021</div><div class="header-date--month">April</div></div><a class="header--btn " title="May"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 477.175 477.175"><path d="M360.731 229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1 0s-5.3 13.8 0 19.1l215.5 215.5-215.5 215.5c-5.3 5.3-5.3 13.8 0 19.1 2.6 2.6 6.1 4 9.5 4 3.4 0 6.9-1.3 9.5-4l225.1-225.1c5.3-5.2 5.3-13.8.1-19z"></path></svg></a></div><ul class="daysList  undefined"><li class="daysList-day is-week-days">Su</li><li class="daysList-day is-week-days">Mo</li><li class="daysList-day is-week-days">Tu</li><li class="daysList-day is-week-days">We</li><li class="daysList-day is-week-days">Th</li><li class="daysList-day is-week-days">Fr</li><li class="daysList-day is-week-days">Sa</li><li class="daysList-day is-disabled is-prev-month ">28</li><li class="daysList-day is-disabled is-prev-month ">29</li><li class="daysList-day is-disabled is-prev-month ">30</li><li class="daysList-day is-disabled is-prev-month is-border-right-0">31</li><li class="daysList-day is-pointer ">1</li><li class="daysList-day is-pointer ">2</li><li class="daysList-day is-pointer ">3</li><li class="daysList-day is-pointer ">4</li><li class="daysList-day is-pointer ">5</li><li class="daysList-day is-pointer ">6</li><li class="daysList-day is-pointer ">7</li><li class="daysList-day is-pointer ">8</li><li class="daysList-day is-pointer ">9</li><li class="daysList-day is-pointer ">10</li><li class="daysList-day is-pointer ">11</li><li class="daysList-day is-pointer ">12</li><li class="daysList-day is-pointer ">13</li><li class="daysList-day is-pointer ">14</li><li class="daysList-day is-pointer ">15</li><li class="daysList-day is-pointer ">16</li><li class="daysList-day is-pointer ">17</li><li class="daysList-day is-pointer ">18</li><li class="daysList-day is-pointer ">19</li><li class="daysList-day is-pointer ">20</li><li class="daysList-day is-pointer ">21</li><li class="daysList-day is-pointer ">22</li><li class="daysList-day is-pointer ">23</li><li class="daysList-day is-pointer ">24</li><li class="daysList-day is-pointer ">25</li><li class="daysList-day is-pointer ">26</li><li class="daysList-day is-pointer  is-today">27</li><li class="daysList-day is-pointer ">28</li><li class="daysList-day is-pointer ">29</li><li class="daysList-day is-pointer ">30</li><li class="daysList-day is-disabled is-next-month is-border-left-0">1</li></ul></div></div></div></div><pre class="mt-4">null</pre></div></div></div><div class="my-10 pb-4"><h3 id="CustomCalender" class="text-2xl font-bold mb-4 scroll-offset">Custom calender: icons - input placeholder - styles</h3><div class="block xl:flex "><div class="w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0"><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-javascript" style="white-space:pre"><span>
+</span><span></span><span style="color:#cc99cc">import</span><span> DtPicker </span><span style="color:#cc99cc">from</span><span> </span><span style="color:#99cc99">&#x27;react-calendar-datetime-picker&#x27;</span><span>
+</span><span></span><span style="color:#cc99cc">const</span><span> DatePicker = </span><span class="hljs-function">() =&gt;</span><span> {
+</span><span>  </span><span style="color:#cc99cc">const</span><span> [date, setDate] = useState(</span><span style="color:#f99157">null</span><span>)
+</span><span>  </span><span style="color:#cc99cc">return</span><span> (
+</span><span>    </span><span class="xml" style="color:#f2777a">&lt;</span><span class="xml" style="color:#f2777a">DtPicker</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">onChange</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{setDate}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">NextBtnIcon</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{arrowRight}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">PreviousBtnIcon</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">{arrowLeft}</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">placeholder</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&#x27;select date&#x27;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">fromLabel</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&#x27;From date&#x27;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">toLabel</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&#x27;To date&#x27;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">type</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&#x27;range&#x27;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">inputClass</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&#x27;custom-input&#x27;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">daysClass</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&#x27;custom-days&#x27;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">      </span><span class="xml hljs-attr" style="color:#f2777a">headerClass</span><span class="xml" style="color:#f2777a">=</span><span class="xml" style="color:#99cc99">&#x27;custom-header&#x27;</span><span class="xml" style="color:#f2777a">
+</span><span class="xml" style="color:#f2777a">    /&gt;</span><span>
+</span>  )
+<!-- -->}
+<span></span><span style="color:#cc99cc">export</span><span> </span><span style="color:#cc99cc">default</span><span> DatePicker
+</span>
+</code></pre><br/><h4 class="text-lg">Style</h4><pre class="rounded" style="display:block;overflow-x:auto;background:#2d2d2d;color:#cccccc;padding:0.5em"><code class="language-css" style="white-space:pre"><span>
+</span><span></span><span style="color:#f2777a">.custom-input</span><span> {
+</span><span>  </span><span style="color:#ffcc66">text-align</span><span>: right;
+</span><span>  </span><span style="color:#ffcc66">color</span><span>: </span><span style="color:#f99157">#009a17</span><span>;
+</span><span>  </span><span style="color:#ffcc66">height</span><span>: </span><span style="color:#f99157">46px</span><span> </span><span style="color:#f99157">!important</span><span>;
+</span><span>  </span><span style="color:#ffcc66">line-height</span><span>: </span><span style="color:#f99157">46px</span><span> </span><span style="color:#f99157">!important</span><span>;
+</span><span>  &amp;</span><span class="hljs-selector-pseudo">::placeholder</span><span> {
+</span><span>    </span><span style="color:#ffcc66">color</span><span>: </span><span style="color:#f99157">#009a17</span><span>;
+</span>  }
+<!-- -->}
+<span></span><span style="color:#f2777a">.custom-days</span><span> {
+</span><span>  </span><span style="color:#ffcc66">background-color</span><span>: </span><span style="color:#f99157">#c8daff</span><span>;
+</span><span>  </span><span style="color:#f2777a">.is-week-days</span><span> {
+</span><span>    </span><span style="color:#ffcc66">color</span><span>: </span><span style="color:#f99157">#d20000</span><span>;
+</span>  }
+<span>  </span><span style="color:#f2777a">.is-disabled</span><span> {
+</span><span>    </span><span style="color:#ffcc66">color</span><span>: </span><span style="color:#f99157">#444</span><span>;
+</span>  }
+<!-- -->}
+<span></span><span style="color:#f2777a">.custom-header</span><span> {
+</span><span>  </span><span style="color:#ffcc66">background-color</span><span>: </span><span style="color:#f99157">#538bff</span><span>;
+</span>}
+<!-- -->
+</code></pre></div><div class="w-2/2 lg:w-1/4 xl:w-1/2"><div class="react-calendar-datetime-picker"><div style="position:relative"><div class="input-picker"><input class="input-picker--input custom-input" readonly="" placeholder="select date" value=""/></div></div></div><pre>null</pre></div></div></div></div></div></div></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{}},"page":"/docs/examples","query":{},"buildId":"soLA7OHARUsRDA5gvAS4K","nextExport":true,"autoExport":true,"isFallback":false}</script><script nomodule="" src="/_next/static/chunks/polyfills-28654a8145d7603786fc.js"></script><script src="/_next/static/chunks/main-5c5713b0f16f66007dba.js" async=""></script><script src="/_next/static/chunks/webpack-50bee04d1dc61f8adf5b.js" async=""></script><script src="/_next/static/chunks/framework.b4d107e0ffe7c3efd870.js" async=""></script><script src="/_next/static/chunks/commons.24b5517cc8928cdf8183.js" async=""></script><script src="/_next/static/chunks/pages/_app-9587615d505200359034.js" async=""></script><script src="/_next/static/chunks/bf12fe7197fa603fec1c84bd2c09259f4170e623.494fdee6bfb1f068b2b5.js" async=""></script><script src="/_next/static/chunks/b2ebb3ca4021f78319b786d9b4eca676a9f17fd4.de442848eb1bdba53498.js" async=""></script><script src="/_next/static/chunks/pages/docs/examples-4dd1b6a98073e523c22b.js" async=""></script><script src="/_next/static/soLA7OHARUsRDA5gvAS4K/_buildManifest.js" async=""></script><script src="/_next/static/soLA7OHARUsRDA5gvAS4K/_ssgManifest.js" async=""></script></body></html>
