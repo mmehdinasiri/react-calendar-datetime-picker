@@ -17,15 +17,18 @@ import {
 } from './helpers'
 import useComponentVisible from './hooks/useComponentVisible'
 import { IDay, IRange, Day, Range, Multi } from './Types'
+
+type local = 'fa' | 'en'
+type type = 'single' | 'range' | 'multi'
 interface IDtPickerProps {
   initValue?: IDay | Multi | IRange | null | undefined
   onChange: (date: any) => void
   onCalenderChange?: any
   onCalenderHide?: any
   onCalenderShow?: any
-  type?: string
+  type?: type
   withTime?: boolean
-  local?: string
+  local?: local
   showWeekend?: boolean
   clearBtn?: boolean
   isRequired?: boolean
@@ -102,8 +105,8 @@ const DtPicker: FC<IDtPickerProps> = ({
       return fixedMonth(date)
     })
   }
-  const correctedType = type ? type.toLocaleLowerCase() : 'single'
-  const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
+  const correctedType = (type ? type.toLocaleLowerCase() : 'single') as type
+  const correctedLocal = (local ? local.toLocaleLowerCase() : 'en') as local
   const [fixedInitValue, setFixedInitValue] = useState(
     fixedMonthInitValue(initValue, correctedType)
   )
@@ -293,8 +296,8 @@ const DtCalendar: FC<IDtPickerProps> = ({
       return fixedMonth(date)
     })
   }
-  const correctedType = type ? type.toLocaleLowerCase() : 'single'
-  const correctedLocal = local ? local.toLocaleLowerCase() : 'en'
+  const correctedType = (type ? type.toLocaleLowerCase() : 'single') as type
+  const correctedLocal = (local ? local.toLocaleLowerCase() : 'en') as local
   const [fixedInitValue, setFixedInitValue] = useState(
     fixedMonthInitValue(initValue, correctedType)
   )

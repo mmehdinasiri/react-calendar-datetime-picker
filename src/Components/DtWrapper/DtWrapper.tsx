@@ -16,12 +16,15 @@ import { mergeProviders } from '../../helpers'
 import { useLangOption } from '../../hooks/useLangOption'
 import { IDay, IRange } from '../../Types'
 import { useCalenderActions } from '../../store/CalenderProvider'
+
+type local = 'fa' | 'en'
+type type = 'single' | 'range' | 'multi'
 interface IWrapper {
   onCalenderChange?: any
   onChange: (date: any) => void
-  type: string
+  type: type
   withTime?: boolean
-  local: string
+  local: local
   hasDefaultVal: boolean
   showWeekend: boolean
   todayBtn: boolean
