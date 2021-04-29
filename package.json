@@ -20,6 +20,8 @@
     "node": ">=12"
   },
   "scripts": {
+    "example": "cd ./example && npm run start",
+    "dev": "concurrently --kill-others \"npm run start\" \"npm run example\" ",
     "delete-dist": "rimraf ./dist",
     "delete-cjs-file": "rimraf ./dist/index.js",
     "build": "npm run delete-dist && microbundle-crl --compress --format modern,cjs --css-modules false --sourcemap false && npm run delete-cjs-file",
@@ -30,11 +32,10 @@
     "test:lint": "eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
-    "predeploy": "cd website && yarn install && yarn run build",
-    "deploy": "gh-pages -d website/build"
+    "deploy:website": "cd ./website && rimraf out && yarn build && yarn export && touch out/.nojekyll && gh-pages -d out -t true"
   },
   "peerDependencies": {
-    "react": "^16.0.0"
+    "react": ">= 16.8"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -47,6 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "babel-eslint": "^10.0.3",
+    "concurrently": "^6.0.2",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.7.0",
@@ -66,10 +68,10 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
+    "rimraf": "^3.0.2",
     "sass": "^1.30.0",
     "sass-rem": "^2.0.1",
-    "typescript": "^3.7.5",
-    "rimraf": "^3.0.2"
+    "typescript": "^3.7.5"
   },
   "files": [
     "dist"

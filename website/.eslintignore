@@ -1,0 +1,7 @@
+build/
+dist/
+.next/
+node_modules/
+.snapshots/
+*.min.js
+*.d.ts 
