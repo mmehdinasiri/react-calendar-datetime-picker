@@ -46,6 +46,7 @@ export default function App() {
             local='en'
             type='range'
             inputClass='mx-2'
+            withTime
           />
           <pre className='mt-4'>{JSON.stringify(ex3, null, 2)}</pre>
         </div>
@@ -56,6 +57,7 @@ export default function App() {
             local='fa'
             type='range'
             inputClass='mx-2'
+            withTime
           />
         </div>
       </div>

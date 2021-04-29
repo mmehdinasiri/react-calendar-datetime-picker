@@ -68,3 +68,19 @@
     -webkit-appearance: none;
   }
 }
+.is-rtl {
+  .time {
+    direction: rtl;
+  }
+  .time--title {
+    margin-left: rem(8px);
+  }
+}
+.is-ltr {
+  .time {
+    direction: ltr;
+  }
+  .time--title {
+    margin-right: rem(8px);
+  }
+}

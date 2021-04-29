@@ -84,7 +84,7 @@
     color: white;
   }
   .is-selected-day-from.is-selected-day-to {
-    border-radius: rem(50%);
+    border-radius: rem(50%) !important;
   }
 
   .is-selected-day-range {
@@ -120,6 +120,24 @@
   }
 }
 .is-rtl {
+  .daysList-day {
+    float: right;
+  }
+  .daysList-day:nth-child(7n + 1) {
+    clear: right;
+  }
+  .is-selected-day-from {
+    border-top-left-radius: rem(0);
+    border-bottom-left-radius: rem(0);
+    border-top-right-radius: rem(50%);
+    border-bottom-right-radius: rem(50%);
+  }
+  .is-selected-day-to {
+    border-top-right-radius: rem(0);
+    border-bottom-right-radius: rem(0);
+    border-top-left-radius: rem(50%);
+    border-bottom-left-radius: rem(50%);
+  }
   .daysList {
     .is-border-right-0 {
       border-radius: 0;
