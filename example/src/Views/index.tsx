@@ -1,7 +1,0 @@
-export { default as Home } from './Home'
-export { default as QuickStart } from './QuickStart'
-export { default as Example } from './Example'
-export { default as Props } from './Props'
-export { default as Utilities } from './Utilities'
-export { default as Typescript } from './Typescript'
-export { default as Customization } from './Customization'
