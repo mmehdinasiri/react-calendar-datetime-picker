@@ -1,5 +1,5 @@
 import React, { forwardRef, RefObject } from 'react'
-import { genFullIDay, mergeProviders } from '../../Helpers'
+import { genFullIDay, mergeProviders } from '../../helpers'
 import {
   useSelectedDayActions,
   useSelectedDayState

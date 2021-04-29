@@ -8,8 +8,9 @@ import {
   getNumberOfDaysInMonth,
   getPreviousSundayDay,
   getWeekday,
-  genFullDay
-} from '../../Helpers'
+  genFullDay,
+  toPersianNumber
+} from '../../helpers'
 import { useLangOption } from '../../hooks/useLangOption'
 import { useCalenderState } from '../../store/CalenderProvider'
 import {
@@ -18,7 +19,6 @@ import {
 } from '../../store/SelectedDaysProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
 import { IDay, IRange } from '../../Types'
-import { toPersianNumber } from '../../helpers/index'
 
 interface IDaysProps {
   hasDefaultVal: boolean

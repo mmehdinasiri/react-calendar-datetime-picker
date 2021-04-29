@@ -14,7 +14,7 @@ import {
   fixedMonthInitValue,
   handelInitialValues,
   mergeProviders
-} from './Helpers'
+} from './helpers'
 import useComponentVisible from './hooks/useComponentVisible'
 import { IDay, IRange, Day, Range, Multi } from './Types'
 interface IDtPickerProps {

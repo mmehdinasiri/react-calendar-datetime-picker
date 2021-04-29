@@ -5,7 +5,7 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
-import { addZero } from '../Helpers'
+import { addZero } from '../helpers'
 import { IDay, IRange } from '../Types'
 
 const SelectedDaysContext = createContext(

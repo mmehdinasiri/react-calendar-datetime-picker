@@ -12,7 +12,7 @@ import {
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
-import { mergeProviders } from '../../Helpers'
+import { mergeProviders } from '../../helpers'
 import { useLangOption } from '../../hooks/useLangOption'
 import { IDay, IRange } from '../../Types'
 import { useCalenderActions } from '../../store/CalenderProvider'
