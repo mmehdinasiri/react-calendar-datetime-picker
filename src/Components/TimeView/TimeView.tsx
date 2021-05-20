@@ -3,6 +3,9 @@ import useDidMountEffect from '../../hooks/useDidMountEffect'
 import { useSelectedTimeActions } from '../../store/SelectedTimeProvider'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { addZero } from '../../helpers'
+
+import { ReactComponent as ChevronUp } from '../../Icons/chevron-up.svg'
+import { ReactComponent as ChevronDown } from '../../Icons/chevron-down.svg'
 // import useDidMountEffect from '../../hooks/useDidMountEffect'
 interface ITimeViewProps {
   initHour: number | undefined
@@ -20,10 +23,8 @@ const TimeView: FC<ITimeViewProps> = ({
 }) => {
   const today = new Date()
   const selectedDate = useSelectedDayState()
-  const {
-    changeSelectedTime,
-    changeSelectedTimeRange
-  } = useSelectedTimeActions()
+  const { changeSelectedTime, changeSelectedTimeRange } =
+    useSelectedTimeActions()
   const [hours, setHours] = useState<number>(initHour || today.getHours())
   const [minutes, setMinutes] = useState<number>(
     initMinutes || today.getMinutes()
@@ -75,7 +76,9 @@ const TimeView: FC<ITimeViewProps> = ({
             type='button'
             className='time-fieldset--dec'
             onClick={() => changeHours(hours - 1)}
-          />
+          >
+            <ChevronDown />
+          </button>
           <input
             onScroll={(e) => scrollEvent(e)}
             className='time--input'
@@ -90,7 +93,9 @@ const TimeView: FC<ITimeViewProps> = ({
             type='button'
             className='time-fieldset--inc'
             onClick={() => changeHours(hours + 1)}
-          />
+          >
+            <ChevronUp />
+          </button>
         </fieldset>
         :
         <fieldset
@@ -101,7 +106,9 @@ const TimeView: FC<ITimeViewProps> = ({
             title='Down'
             className='time-fieldset--dec'
             onClick={() => changeMinutes(minutes - 1)}
-          />
+          >
+            <ChevronDown />
+          </button>
           <input
             className='time--input'
             value={addZero(minutes).toString().slice(-2)}
@@ -116,7 +123,9 @@ const TimeView: FC<ITimeViewProps> = ({
             title='Up'
             className='time-fieldset--inc'
             onClick={() => changeMinutes(minutes + 1)}
-          />
+          >
+            <ChevronUp />
+          </button>
         </fieldset>
       </div>
     </div>

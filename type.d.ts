@@ -23,7 +23,6 @@ interface IRange {
   to: Day
 }
 
-// type Range = IRange | null
 type Multi = IDay[] | null
 
 type local = 'fa' | 'en'
