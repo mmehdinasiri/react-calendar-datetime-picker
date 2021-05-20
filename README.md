@@ -2,15 +2,13 @@
 
 ### The Simple and fast English and Persian calender for React
 
-version: "1.3.4"
+version: "1.4.0"
 
 [![NPM](https://img.shields.io/npm/v/react-calendar-datetime-picker.svg)](https://www.npmjs.com/package/react-calendar-datetime-picker) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-![alt text](./website/public/image/react-datetime-picker.jpg?raw=true)
+<img src="./website/public/image/react-datetime-picker.jpg?raw=true" width="200" height="auto" >
 
-Thanks to [PersianDate](https://github.com/babakhani/PersianDate), the only dependency of this date picker.
-
-## Install
+## ⚙️ Install
 
 ```bash
 npm install react-calendar-datetime-picker
@@ -19,18 +17,18 @@ yarn add react-calendar-datetime-picker
 
 ```
 
-## Documentation 📄
+## 📄 Documentation
 
 [Documentation with examples](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)
 
 - [Getting Started](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/quick-start)
-- [Props](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/Props)
+- [Props](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/props)
 - [Customization](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/customization)
-- [Utilities](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/Utilities)
+- [Utilities](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/utilities)
 - [Typescript](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/typescript)
 - [Examples](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/examples)
 
-## Usage
+## ⚡️ Usage
 
 ```tsx
 import React from 'react'
@@ -44,6 +42,8 @@ const App = () => {
 }
 ```
 
+## 🎯 Features
+
 - Supports Gregorian and Jalali calender
 - Uses context api to share data
 - Supports three types of calender: single day - date range - multiple dates
@@ -55,6 +55,16 @@ const App = () => {
 - Function called for change, open and close events
 - Supports Typescript
 
-## License
+## 🙇 Special Thanks
+
+Thanks to [PersianDate](https://github.com/babakhani/PersianDate), the only dependency of this date picker.
+
+## 👨🏽‍💻 Team
+
+| [![Mehdi Nasiri](https://avatars.githubusercontent.com/u/24561712?v=3&s=144)](https://github.com/mmehdinasiri) | [![Omid Rafiee](https://avatars.githubusercontent.com/u/25098596?v=3&s=144)](https://github.com/OmidRafiee) | [![Esmaeil jafari](https://avatars.githubusercontent.com/u/40715465?v=3&s=144)](https://github.com/pokerface71) |
+| -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| [Mehdi Nasiri ](https://github.com/iharsh234)                                                                  | [Omid Rafiee](https://github.com/OmidRafiee)                                                                | [Esmaeil jafari](https://github.com/pokerface71)                                                                |
+
+## 📋 License
 
 MIT © [mehdinasiri](https://github.com/mehdinasiri)
