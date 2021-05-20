@@ -18,7 +18,6 @@ import {
   useSelectedDayState
 } from '../../store/SelectedDaysProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
-import { IDay, IRange } from '../../Types'
 
 interface IDaysProps {
   hasDefaultVal: boolean

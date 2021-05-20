@@ -1,5 +1,4 @@
 import React, { useState, createContext, useContext } from 'react'
-import { IDay } from '../Types'
 interface IMinMaxProvider {
   initState: {
     minDate: IDay | null | undefined

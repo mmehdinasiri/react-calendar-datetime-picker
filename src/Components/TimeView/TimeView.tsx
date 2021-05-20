@@ -3,7 +3,6 @@ import useDidMountEffect from '../../hooks/useDidMountEffect'
 import { useSelectedTimeActions } from '../../store/SelectedTimeProvider'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { addZero } from '../../helpers'
-import { IRange } from '../../Types'
 // import useDidMountEffect from '../../hooks/useDidMountEffect'
 interface ITimeViewProps {
   initHour: number | undefined

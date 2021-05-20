@@ -14,7 +14,6 @@ import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { mergeProviders } from '../../helpers'
 import { useLangOption } from '../../hooks/useLangOption'
-import { IDay, IRange } from '../../Types'
 import { useCalenderActions } from '../../store/CalenderProvider'
 
 type local = 'fa' | 'en'

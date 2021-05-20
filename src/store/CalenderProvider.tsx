@@ -5,7 +5,6 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
-import { IDay } from '../Types'
 interface ICalenderProvider {
   type?: string
   initCalender: IDay

@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
     "outDir": "dist",
     "module": "esnext",
     "lib": ["dom", "esnext"],
@@ -18,6 +20,6 @@
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "website"]
+  "include": ["src", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist", "website", "example"]
 }
