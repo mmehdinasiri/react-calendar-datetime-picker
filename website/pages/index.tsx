@@ -6,7 +6,6 @@ import { DtCalendar } from 'react-calendar-datetime-picker'
 const Home = () => {
 	const [withoutInputEn, setWithoutInputEn] = useState(null)
 	const [withoutInputFa, setWithoutInputFa] = useState(null)
-	console.log(withoutInputFa, withoutInputEn)
 	return (
 		<Layout>
 			<div className='mx-auto text-center '>
