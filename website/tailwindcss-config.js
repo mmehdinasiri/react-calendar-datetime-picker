@@ -5,7 +5,7 @@ module.exports = {
 	},
 	purge: {
 		layers: ['utilities'],
-		enabled: process.env.node_env.trim() === 'production',
+		enabled: process.env.node_env === 'production',
 		content: ['./**/*.{js,jsx,ts,tsx}', './public/index.html']
 	},
 	theme: {
