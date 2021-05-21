@@ -75,11 +75,8 @@ const DtPicker: FC<IDtPickerProps> = ({
     correctedLocal,
     fixedMonth(maxDate)
   )
-  const {
-    ref,
-    isComponentVisible,
-    setIsComponentVisible
-  } = useComponentVisible(false, onCalenderHide, inputRef)
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useComponentVisible(false, onCalenderHide, inputRef)
 
   const handelComponentVisible = () => {
     if (isComponentVisible) return
@@ -94,12 +91,8 @@ const DtPicker: FC<IDtPickerProps> = ({
     const currentInput: HTMLElement | null = inputRef.current
     if (currentCalender) {
       const { clientWidth, clientHeight } = document.documentElement
-      const {
-        left,
-        width,
-        height,
-        top
-      } = currentCalender.getBoundingClientRect()
+      const { left, width, height, top } =
+        currentCalender.getBoundingClientRect()
       const rightOverflow = width + left > clientWidth
       const bottomOverflow = top + height > clientHeight
       if (rightOverflow) {
@@ -149,7 +142,12 @@ const DtPicker: FC<IDtPickerProps> = ({
   }, [initValue])
 
   return (
-    <div className='react-calendar-datetime-picker' key={isUpdate}>
+    <div
+      className={`react-calendar-datetime-picker ${
+        local === 'fa' ? 'is-jalali' : ''
+      }`}
+      key={isUpdate}
+    >
       <ViewProvider>
         <CalenderProvider initCalender={initCalender} type={correctedType}>
           <MinMaxProvider initState={minMaxState}>
