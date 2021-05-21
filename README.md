@@ -37,7 +37,7 @@ const App = () => {
 
 [Documentation with examples](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)
 
-- [Getting Started](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/quick-start)
+- [Getting Started](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/get-started)
 - [Props](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/props)
 - [Customization](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/customization)
 - [Utilities](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/utilities)
