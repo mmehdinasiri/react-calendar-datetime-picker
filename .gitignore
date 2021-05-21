@@ -22,6 +22,7 @@ yarn-debug.log*
 yarn-error.log*
 
 tailwindPurge.scss
+bundle-analysis.html
 
 .next
 _next

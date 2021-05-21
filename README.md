@@ -19,17 +19,6 @@ yarn add react-calendar-datetime-picker
 
 ```
 
-## 📄 Documentation
-
-[Documentation with examples](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)
-
-- [Getting Started](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/quick-start)
-- [Props](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/props)
-- [Customization](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/customization)
-- [Utilities](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/utilities)
-- [Typescript](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/typescript)
-- [Examples](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/examples)
-
 ## ⚡️ Usage
 
 ```tsx
@@ -43,6 +32,17 @@ const App = () => {
   return <DtPicker onChange={setDate} />
 }
 ```
+
+## 📄 Documentation
+
+[Documentation with examples](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)
+
+- [Getting Started](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/quick-start)
+- [Props](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/props)
+- [Customization](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/customization)
+- [Utilities](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/utilities)
+- [Typescript](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/typescript)
+- [Examples](https://mmehdinasiri.github.io/react-calendar-datetime-picker/docs/examples)
 
 ## 🎯 Features
 
