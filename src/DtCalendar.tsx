@@ -96,7 +96,12 @@ const DtCalendar: FC<IDtPickerProps> = ({
   }, [initValue])
 
   return (
-    <div className='react-calendar-datetime-picker' key={isUpdate}>
+    <div
+      className={`react-calendar-datetime-picker ${
+        local === 'fa' ? 'is-jalali' : ''
+      }`}
+      key={isUpdate}
+    >
       <ViewProvider>
         <CalenderProvider initCalender={initCalender} type={correctedType}>
           <MinMaxProvider initState={minMaxState}>
