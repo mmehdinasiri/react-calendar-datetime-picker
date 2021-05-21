@@ -1,12 +1,14 @@
-# react-calendar-datetime-picker
+# <img src="./website/public/favicon/android-chrome-96x96.png?raw=true" width="26" height="auto" > react-calendar-datetime-picker
 
+<p align="center">
+<img src="./website/public/image/react-datetime-picker.png?raw=true" width="200" height="auto" >
+<img src="./website/public/image/react-datetime-picker-jalali.png?raw=true" width="200" height="auto" >
+</p>
 ### The Simple and fast English and Persian calender for React
 
-version: "1.4.1"
+version: "1.4.2"
 
 [![NPM](https://img.shields.io/npm/v/react-calendar-datetime-picker.svg)](https://www.npmjs.com/package/react-calendar-datetime-picker) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-
-<img src="./website/public/image/react-datetime-picker.jpg?raw=true" width="200" height="auto" >
 
 ## ⚙️ Install
 
