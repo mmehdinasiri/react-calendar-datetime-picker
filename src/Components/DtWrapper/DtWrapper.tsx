@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useViewActions, useViewState } from '../../store/ViewProvider'
 import useDidMountEffect from '../../hooks/useDidMountEffect'
 import {
@@ -43,51 +43,6 @@ interface IWrapper {
   initCalender?: IDay
   isComponentVisible?: boolean
 }
-const viewsSelector = (
-  hasDefaultVal: boolean,
-  currentView: string,
-  local: string,
-  showWeekend: boolean,
-  type?: string,
-  daysClass?: string,
-  monthClass?: string,
-  yearClass?: string,
-  disabledDates?: IDay[]
-) => {
-  let view: ReactElement | unknown
-  switch (currentView) {
-    case YEARS_VIEW:
-      view = <YearsView local={local} yearsClass={yearClass} />
-      break
-    case MONTHS_VIEW:
-      view = <MonthsView local={local} monthsClass={monthClass} />
-      break
-    case DAYS_VIEW:
-      view = (
-        <DaysView
-          type={type}
-          local={local}
-          hasDefaultVal={hasDefaultVal}
-          showWeekend={showWeekend}
-          daysClass={daysClass}
-          disabledDates={disabledDates}
-        />
-      )
-      break
-    default:
-      view = (
-        <DaysView
-          type={type}
-          local={local}
-          hasDefaultVal={hasDefaultVal}
-          showWeekend={showWeekend}
-          daysClass={daysClass}
-          disabledDates={disabledDates}
-        />
-      )
-  }
-  return view
-}
 const Wrapper: FC<IWrapper> = ({
   onCalenderChange,
   onChange,
@@ -113,6 +68,7 @@ const Wrapper: FC<IWrapper> = ({
   initCalender,
   isComponentVisible
 }) => {
+  const currentView = useViewState()
   const selectedDayState = useSelectedDayState()
   const { changeCalender } = useCalenderActions()
   const selectedTime = useSelectedTimeState()
@@ -159,16 +115,21 @@ const Wrapper: FC<IWrapper> = ({
         previousMonthBtnTitle={previousMonthBtnTitle}
         headerClass={headerClass}
       />
-      {viewsSelector(
-        hasDefaultVal,
-        useViewState(),
-        local,
-        showWeekend,
-        type,
-        daysClass,
-        monthsClass,
-        yearsClass,
-        disabledDates
+      {YEARS_VIEW === currentView && (
+        <YearsView local={local} yearsClass={yearsClass} />
+      )}
+      {MONTHS_VIEW === currentView && (
+        <MonthsView local={local} monthsClass={monthsClass} />
+      )}
+      {DAYS_VIEW === currentView && (
+        <DaysView
+          type={type}
+          local={local}
+          hasDefaultVal={hasDefaultVal}
+          showWeekend={showWeekend}
+          daysClass={daysClass}
+          disabledDates={disabledDates}
+        />
       )}
       {useViewState() === DAYS_VIEW && (
         <TodayBtn local={local} todayBtn={todayBtn} />
