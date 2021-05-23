@@ -24,10 +24,10 @@ export const genFullIDay = (
   withTime?: boolean
 ) => {
   if (date) {
-    if (withTime && date.hours && date.minutes) {
+    if (withTime && date.hour && date.minute) {
       return `${date.year}/${addZero(
         date.month + (isCorrectMonth ? +1 : 0)
-      )}/${addZero(date.day)} ${addZero(date.hours)}:${addZero(date.minutes)}`
+      )}/${addZero(date.day)} ${addZero(date.hour)}:${addZero(date.minute)}`
     } else {
       return `${date.year}/${addZero(
         date.month + (isCorrectMonth ? +1 : 0)
@@ -61,8 +61,8 @@ export const getWeekday = (number: number, local: string) => {
 //     year: todayDate.getFullYear(),
 //     month: todayDate.getMonth(),
 //     day: todayDate.getDate(),
-//     hours: todayDate.getHours(),
-//     minutes: todayDate.getMinutes()
+//     hour: todayDate.getHours(),
+//     minute: todayDate.getMinutes()
 //   }
 //   return today
 // }
@@ -142,8 +142,8 @@ export const handelInitialValues = (
       }
     }
     initTime = {
-      hours: initValue?.hours || today.getHours(),
-      minutes: initValue?.minutes || today.getMinutes()
+      hour: initValue?.hour,
+      minute: initValue?.minute
     }
   }
   if (correctedType === 'range') {
@@ -157,12 +157,12 @@ export const handelInitialValues = (
 
     initTime = {
       from: {
-        hours: initValue?.from?.hours || today.getHours(),
-        minutes: initValue?.from?.minutes || today.getMinutes()
+        hour: initValue?.from?.hour,
+        minute: initValue?.from?.minute
       },
       to: {
-        hours: initValue?.to?.hours || today.getHours(),
-        minutes: initValue?.to?.minutes || today.getMinutes()
+        hour: initValue?.to?.hour,
+        minute: initValue?.to?.minute
       }
     }
   }
@@ -487,4 +487,11 @@ export const toPersianNumber = (englishNumber: number | string): string => {
     (d) => '۰۱۲۳۴۵۶۷۸۹'[d]
   )
   return persianNumber
+}
+
+export const isNotUndefined = (value: any, alternativeValue: any) => {
+  if (typeof value !== 'undefined') {
+    return value
+  }
+  return alternativeValue
 }

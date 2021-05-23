@@ -14,9 +14,9 @@ export const convertToEn = (date: IDay | null, divider: string = '/') => {
       addZero(faDate.month + 1) +
       divider +
       addZero(faDate.day)
-    if (date.hours !== undefined && date.minutes !== undefined) {
+    if (date.hour !== undefined && date.minute !== undefined) {
       fixedDate =
-        fixedDate + ' ' + addZero(date.hours) + ':' + addZero(date.minutes)
+        fixedDate + ' ' + addZero(date.hour) + ':' + addZero(date.minute)
     }
     return fixedDate
   }
@@ -32,9 +32,9 @@ export const convertToFa = (date: IDay | null, divider: string = '/') => {
       addZero(faDate.month + 1) +
       divider +
       addZero(faDate.day)
-    if (date.hours !== undefined && date.minutes !== undefined) {
+    if (date.hour !== undefined && date.minute !== undefined) {
       fixedDate =
-        fixedDate + ' ' + addZero(date.hours) + ':' + addZero(date.minutes)
+        fixedDate + ' ' + addZero(date.hour) + ':' + addZero(date.minute)
     }
     return fixedDate
   }

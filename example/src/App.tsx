@@ -3,11 +3,27 @@ import './style/tailwindPurge.scss'
 import './style/main.scss'
 import CenterLayout from './Component/Layout/CenterLayout'
 
-import DtPicker, { DtCalendar } from 'react-calendar-datetime-picker'
+import DtPicker, { Range, DtCalendar } from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/index.css'
 
 export default function App() {
   const [ex1, setEx1] = useState(null)
+  const [ex1init] = useState<Range>({
+    from: {
+      year: 1399,
+      month: 1,
+      day: 22,
+      hour: 0,
+      minute: 22
+    },
+    to: {
+      year: 1399,
+      month: 2,
+      day: 22,
+      hour: 11,
+      minute: 2
+    }
+  })
   const [ex2, setEx2] = useState(null)
 
   const [ex3, setEx3] = useState(null)
@@ -31,11 +47,12 @@ export default function App() {
         <div className='flex my-10'>
           <pre className='mt-4'>{JSON.stringify(ex2, null, 2)}</pre>
           <DtCalendar
+            initValue={ex1init}
             onChange={setEx2}
             local='fa'
             withTime
             calenderModalClass='mx-2'
-            type='single'
+            type='range'
           />
         </div>
       </div>

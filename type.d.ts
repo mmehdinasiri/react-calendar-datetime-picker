@@ -1,6 +1,6 @@
 interface ITime {
-  hours: number
-  minutes: number
+  hour: number
+  minute: number
 }
 interface ITimeRange {
   from: ITime
@@ -12,8 +12,8 @@ interface IDay {
   month: number
   day: number
   fullDay?: string
-  hours?: number
-  minutes?: number
+  hour?: number
+  minute?: number
 }
 
 type Day = IDay | null

@@ -14,13 +14,12 @@ const SelectedTimeContext = createContext(
   {} as ITime | ITimeRange | null | undefined
 )
 const SelectedTimeContextSetState = createContext(
-  (Function as unknown) as Dispatch<SetStateAction<ITime>>
+  Function as unknown as Dispatch<SetStateAction<ITime>>
 )
 
 function SelectedTimeProvider({ children, initState }: ISelectedTimeProvider) {
-  const [selectedDays, setSelectedDays] = useState<
-    ITime | ITimeRange | null | undefined
-  >(initState)
+  const [selectedDays, setSelectedDays] =
+    useState<ITime | ITimeRange | null | undefined>(initState)
   return (
     <SelectedTimeContext.Provider value={selectedDays}>
       <SelectedTimeContextSetState.Provider value={setSelectedDays}>

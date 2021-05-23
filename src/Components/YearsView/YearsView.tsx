@@ -19,7 +19,7 @@ const years: FC<IYearsProps> = ({ local, yearsClass }) => {
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
   const calenderState = useCalenderState()
-  let { month, day, hours, minutes } = calenderState
+  let { month, day, hour, minute } = calenderState
   const changeYear = (newYear: number) => {
     // correct month after we changing year if we have min or date
     if (minDate) {
@@ -37,8 +37,8 @@ const years: FC<IYearsProps> = ({ local, yearsClass }) => {
       year: newYear,
       month: month,
       day: day,
-      hour: hours,
-      minutes: minutes
+      hour: hour,
+      minutes: minute
     }
     changeCalender({ ...newDate })
     changeView(DAYS_VIEW)

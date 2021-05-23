@@ -311,22 +311,22 @@ const App = () => {
 									year: 2012,
 									month: 5,
 									day: 29,
-									hours: 18,
-									minutes: 11
+									hour: 18,
+									minute: 11
 								},
 								{
 									year: 2012,
 									month: 5,
 									day: 2,
-									hours: 18,
-									minutes: 11
+									hour: 18,
+									minute: 11
 								},
 								{
 									year: 2012,
 									month: 6,
 									day: 3,
-									hours: 18,
-									minutes: 11
+									hour: 18,
+									minute: 11
 								}
 							]}
 							onChange={setMultiInitialValueExample}

@@ -17,15 +17,15 @@ const MonthsView: FC<IMonthsProps> = ({ local, monthsClass }) => {
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
   const calenderState = useCalenderState()
-  const { year, month, day, hours, minutes } = calenderState
+  const { year, month, day, hour, minute } = calenderState
   const preSelectedMonth = month
   const changeMonth = (newMonth: number) => {
     const newDate = {
       year: year,
       month: newMonth,
       day: day,
-      hour: hours,
-      minutes: minutes
+      hour: hour,
+      minutes: minute
     }
     changeCalender({ ...newDate })
     changeView(DAYS_VIEW)

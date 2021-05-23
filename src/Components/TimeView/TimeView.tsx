@@ -2,14 +2,14 @@ import React, { FC, useState } from 'react'
 import useDidMountEffect from '../../hooks/useDidMountEffect'
 import { useSelectedTimeActions } from '../../store/SelectedTimeProvider'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
-import { addZero } from '../../helpers'
+import { addZero, isNotUndefined } from '../../helpers'
 
 import { ReactComponent as ChevronUp } from '../../Icons/chevron-up.svg'
 import { ReactComponent as ChevronDown } from '../../Icons/chevron-down.svg'
 // import useDidMountEffect from '../../hooks/useDidMountEffect'
 interface ITimeViewProps {
   initHour: number | undefined
-  initMinutes: number | undefined
+  initMinute: number | undefined
   timeFor?: string
   timeLabel?: string
   timeClass?: string
@@ -17,7 +17,7 @@ interface ITimeViewProps {
 const TimeView: FC<ITimeViewProps> = ({
   timeFor,
   initHour,
-  initMinutes,
+  initMinute,
   timeLabel,
   timeClass
 }) => {
@@ -25,9 +25,11 @@ const TimeView: FC<ITimeViewProps> = ({
   const selectedDate = useSelectedDayState()
   const { changeSelectedTime, changeSelectedTimeRange } =
     useSelectedTimeActions()
-  const [hours, setHours] = useState<number>(initHour || today.getHours())
-  const [minutes, setMinutes] = useState<number>(
-    initMinutes || today.getMinutes()
+  const [hour, setHour] = useState<number>(
+    isNotUndefined(initHour, today.getHours())
+  )
+  const [minute, setMinute] = useState<number>(
+    isNotUndefined(initMinute, today.getMinutes())
   )
   const checkIsDisabled = () => {
     let isDisabled = false
@@ -40,31 +42,29 @@ const TimeView: FC<ITimeViewProps> = ({
     }
     return isDisabled
   }
-  const handelChangeHours = () => {
+  const handelChangeHour = () => {
     if (timeFor === 'from') {
-      changeSelectedTimeRange('from', { hours, minutes })
+      changeSelectedTimeRange('from', { hour, minute })
     } else if (timeFor === 'to') {
-      changeSelectedTimeRange('to', { hours, minutes })
+      changeSelectedTimeRange('to', { hour, minute })
     } else if (timeFor === 'single') {
-      changeSelectedTime({ hours, minutes })
+      changeSelectedTime({ hour, minute })
     }
   }
-  const changeHours = (newHours: number) => {
-    if (newHours > 23) newHours = 0
-    if (newHours < 0) newHours = 23
-    setHours(newHours)
+  const changeHour = (newHour: number) => {
+    if (newHour > 23) newHour = 0
+    if (newHour < 0) newHour = 23
+    setHour(newHour)
   }
-  const changeMinutes = (newMinutes: number) => {
-    if (newMinutes > 59) newMinutes = 0
-    if (newMinutes < 0) newMinutes = 59
-    setMinutes(newMinutes)
+  const changeMinute = (newMinute: number) => {
+    if (newMinute > 59) newMinute = 0
+    if (newMinute < 0) newMinute = 59
+    setMinute(newMinute)
   }
   useDidMountEffect(() => {
-    handelChangeHours()
-  }, [hours, minutes])
-  const scrollEvent = (e: any) => {
-    console.log(e)
-  }
+    handelChangeHour()
+  }, [hour, minute])
+
   return (
     <div dir='ltr' className={`time ${timeClass}`}>
       <span className='time--title'>{timeLabel}</span>
@@ -75,24 +75,23 @@ const TimeView: FC<ITimeViewProps> = ({
           <button
             type='button'
             className='time-fieldset--dec'
-            onClick={() => changeHours(hours - 1)}
+            onClick={() => changeHour(hour - 1)}
           >
             <ChevronDown />
           </button>
           <input
-            onScroll={(e) => scrollEvent(e)}
             className='time--input'
-            value={addZero(hours).toString().slice(-2)}
+            value={addZero(hour).toString().slice(-2)}
             type='number'
             max='23'
             min='0'
-            onChange={(e) => changeHours(Number(e.target.value))}
+            onChange={(e) => changeHour(Number(e.target.value))}
             disabled={checkIsDisabled()}
           />
           <button
             type='button'
             className='time-fieldset--inc'
-            onClick={() => changeHours(hours + 1)}
+            onClick={() => changeHour(hour + 1)}
           >
             <ChevronUp />
           </button>
@@ -105,24 +104,24 @@ const TimeView: FC<ITimeViewProps> = ({
             type='button'
             title='Down'
             className='time-fieldset--dec'
-            onClick={() => changeMinutes(minutes - 1)}
+            onClick={() => changeMinute(minute - 1)}
           >
             <ChevronDown />
           </button>
           <input
             className='time--input'
-            value={addZero(minutes).toString().slice(-2)}
+            value={addZero(minute).toString().slice(-2)}
             type='number'
             max='59'
             min='0'
-            onChange={(e) => changeMinutes(Number(e.target.value))}
+            onChange={(e) => changeMinute(Number(e.target.value))}
             disabled={checkIsDisabled()}
           />
           <button
             type='button'
             title='Up'
             className='time-fieldset--inc'
-            onClick={() => changeMinutes(minutes + 1)}
+            onClick={() => changeMinute(minute + 1)}
           >
             <ChevronUp />
           </button>

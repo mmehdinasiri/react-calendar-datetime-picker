@@ -176,8 +176,8 @@ const Wrapper: FC<IWrapper> = ({
       {withTime && type === 'single' && useViewState() === DAYS_VIEW && (
         <TimeView
           timeFor='single'
-          initHour={(selectedTime as IDay)?.hours}
-          initMinutes={(selectedTime as IDay)?.minutes}
+          initHour={(selectedTime as IDay)?.hour}
+          initMinute={(selectedTime as IDay)?.minute}
           timeLabel={clockLabel || clockLB}
           timeClass={timeClass}
         />
@@ -186,15 +186,15 @@ const Wrapper: FC<IWrapper> = ({
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <TimeView
             timeFor='from'
-            initHour={(selectedTime as IRange).from?.hours}
-            initMinutes={(selectedTime as IRange).from?.minutes}
+            initHour={(selectedTime as IRange).from?.hour}
+            initMinute={(selectedTime as IRange).from?.minute}
             timeLabel={clockFromLabel || clockFromLB}
             timeClass={timeClass}
           />
           <TimeView
             timeFor='to'
-            initHour={(selectedTime as IRange).to?.hours}
-            initMinutes={(selectedTime as IRange).to?.minutes}
+            initHour={(selectedTime as IRange).to?.hour}
+            initMinute={(selectedTime as IRange).to?.minute}
             timeLabel={clockToLabel || clockToLB}
             timeClass={timeClass}
           />

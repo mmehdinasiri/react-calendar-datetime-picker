@@ -33,7 +33,7 @@ const Header: FC<IHeaderProps> = ({
   const viewState = useViewState()
   const { changeCalender } = useCalenderActions()
   const { changeView } = useViewActions()
-  const { year, month, hours, minutes } = dayState
+  const { year, month, hour, minute } = dayState
 
   const handelNextMonth = (action: string) => {
     const toSum = action === 'inc' ? 1 : -1
@@ -52,8 +52,8 @@ const Header: FC<IHeaderProps> = ({
       year: newYear,
       month: newMonthIndex,
       day: 1,
-      hour: hours,
-      minutes: minutes
+      hour: hour,
+      minutes: minute
     }
   }
   const handelNextMonthState = (action: string) => {
