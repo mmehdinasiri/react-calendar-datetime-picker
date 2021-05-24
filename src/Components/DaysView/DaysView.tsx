@@ -95,9 +95,10 @@ const DaysView: FC<IDaysProps> = ({
     }
 
     const firstDayOfTheMonthWeekday = getWeekday(getDay(firsDayOfMonth), local)
-    const visibleNumberOfDaysFromPreviousMonth = firstDayOfTheMonthWeekday.weekDayIndex
-      ? firstDayOfTheMonthWeekday.weekDayIndex
-      : 7
+    const visibleNumberOfDaysFromPreviousMonth =
+      firstDayOfTheMonthWeekday.weekDayIndex
+        ? firstDayOfTheMonthWeekday.weekDayIndex
+        : 7
     const previousMonth = new Date(year, month - 1)
     var previousMonthLastSundayDayOfMonth = getPreviousSundayDay(
       firsDayOfMonth,
@@ -132,9 +133,10 @@ const DaysView: FC<IDaysProps> = ({
       local
     )
     const nextMonth = new Date(year, month + 1)
-    const visibleNumberOfDaysFromNextMonth = lastDayOfTheMonthWeekday.weekDayIndex
-      ? 6 - lastDayOfTheMonthWeekday.weekDayIndex
-      : 6
+    const visibleNumberOfDaysFromNextMonth =
+      lastDayOfTheMonthWeekday.weekDayIndex
+        ? 6 - lastDayOfTheMonthWeekday.weekDayIndex
+        : 6
 
     return Array(visibleNumberOfDaysFromNextMonth)
       .fill(undefined)
@@ -338,4 +340,5 @@ const DaysView: FC<IDaysProps> = ({
   )
 }
 
-export default DaysView
+export default React.memo(DaysView)
+// export default DaysView

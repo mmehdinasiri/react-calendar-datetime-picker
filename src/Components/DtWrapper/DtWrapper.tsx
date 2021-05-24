@@ -1,19 +1,18 @@
 import React, { FC, useEffect } from 'react'
-import { useViewActions, useViewState } from '../../store/ViewProvider'
+import { useViewState } from '../../store/ViewProvider'
 import useDidMountEffect from '../../hooks/useDidMountEffect'
 import {
   Header,
   YearsView,
   MonthsView,
   DaysView,
-  TimeView,
-  TodayBtn
+  TodayBtn,
+  TimeDeterminer
 } from '../'
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
 import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { mergeProviders } from '../../helpers'
-import { useLangOption } from '../../hooks/useLangOption'
 import { useCalenderActions } from '../../store/CalenderProvider'
 
 type local = 'fa' | 'en'
@@ -57,10 +56,10 @@ const Wrapper: FC<IWrapper> = ({
   clockFromLabel,
   clockToLabel,
   clockLabel,
+  timeClass,
   nextMonthBtnTitle,
   previousMonthBtnTitle,
   headerClass,
-  timeClass,
   daysClass,
   monthsClass,
   yearsClass,
@@ -72,8 +71,6 @@ const Wrapper: FC<IWrapper> = ({
   const selectedDayState = useSelectedDayState()
   const { changeCalender } = useCalenderActions()
   const selectedTime = useSelectedTimeState()
-  const { clockFromLB, clockToLB, clockLB } = useLangOption(local)
-  const { changeView } = useViewActions()
   useDidMountEffect(() => {
     mergeProviders(
       onChange,
@@ -85,11 +82,6 @@ const Wrapper: FC<IWrapper> = ({
     )
   }, [selectedDayState, selectedTime])
 
-  useEffect(() => {
-    return () => {
-      changeView(DAYS_VIEW)
-    }
-  }, [])
   useEffect(() => {
     if (
       isComponentVisible &&
@@ -134,32 +126,16 @@ const Wrapper: FC<IWrapper> = ({
       {useViewState() === DAYS_VIEW && (
         <TodayBtn local={local} todayBtn={todayBtn} />
       )}
-      {withTime && type === 'single' && useViewState() === DAYS_VIEW && (
-        <TimeView
-          timeFor='single'
-          initHour={(selectedTime as IDay)?.hour}
-          initMinute={(selectedTime as IDay)?.minute}
-          timeLabel={clockLabel || clockLB}
+      {withTime && (
+        <TimeDeterminer
+          clockFromLabel={clockFromLabel}
+          clockToLabel={clockToLabel}
+          clockLabel={clockLabel}
           timeClass={timeClass}
+          type={type}
+          local={local}
+          currentView={currentView}
         />
-      )}
-      {withTime && type === 'range' && useViewState() === DAYS_VIEW && (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <TimeView
-            timeFor='from'
-            initHour={(selectedTime as IRange).from?.hour}
-            initMinute={(selectedTime as IRange).from?.minute}
-            timeLabel={clockFromLabel || clockFromLB}
-            timeClass={timeClass}
-          />
-          <TimeView
-            timeFor='to'
-            initHour={(selectedTime as IRange).to?.hour}
-            initMinute={(selectedTime as IRange).to?.minute}
-            timeLabel={clockToLabel || clockToLB}
-            timeClass={timeClass}
-          />
-        </div>
       )}
     </div>
   )
