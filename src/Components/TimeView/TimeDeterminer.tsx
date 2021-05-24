@@ -22,6 +22,7 @@ const TimeDeterminer: FC<ITimDeterminerProps> = ({
   local,
   currentView
 }) => {
+  console.log('--time-determine--')
   const selectedTime = useSelectedTimeState()
   const { clockFromLB, clockToLB, clockLB } = useLangOption(local)
   return (

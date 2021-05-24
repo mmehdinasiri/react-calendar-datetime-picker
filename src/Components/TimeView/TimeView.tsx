@@ -21,6 +21,7 @@ const TimeView: FC<ITimeViewProps> = ({
   timeLabel,
   timeClass
 }) => {
+  console.log('--time--')
   const today = new Date()
   const selectedDate = useSelectedDayState()
   const { changeSelectedTime, changeSelectedTimeRange } =

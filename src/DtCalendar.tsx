@@ -40,7 +40,6 @@ const DtCalendar: FC<IDtPickerProps> = ({
   yearsClass,
   disabledDates
 }) => {
-  const [prevInitDate, setPrevInitDate] = useState<any>(null)
   const [isUpdate, setIsUpdate] = useState<number>(0)
   const minMaxState = {
     minDate: fixedMonth(minDate),
@@ -63,22 +62,16 @@ const DtCalendar: FC<IDtPickerProps> = ({
     correctedLocal,
     fixedMonth(maxDate)
   )
+  checkInputValues(
+    initValue,
+    correctedLocal,
+    correctedType,
+    maxDate,
+    minDate,
+    disabledDates
+  )
   useEffect(() => {
-    checkInputValues(
-      initValue,
-      correctedLocal,
-      correctedType,
-      maxDate,
-      minDate,
-      disabledDates
-    )
-  }, [])
-  useEffect(() => {
-    if (
-      isUpdate === 0 ||
-      (initValue && JSON.stringify(prevInitDate) !== JSON.stringify(initValue))
-    ) {
-      setPrevInitDate(initValue)
+    if (isUpdate === 0 || initValue) {
       setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
       setIsUpdate(isUpdate + 1)
       if (isUpdate === 0) {

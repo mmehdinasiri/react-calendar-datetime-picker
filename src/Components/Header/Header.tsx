@@ -27,6 +27,7 @@ const Header: FC<IHeaderProps> = ({
   previousMonthBtnTitle,
   headerClass
 }) => {
+  console.log('--header--')
   const { minDate, maxDate } = useMinMaxState()
   const { MONTHS } = useLangOption(local)
   const dayState = useCalenderState()

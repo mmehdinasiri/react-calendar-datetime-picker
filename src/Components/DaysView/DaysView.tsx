@@ -35,6 +35,7 @@ const DaysView: FC<IDaysProps> = ({
   daysClass,
   disabledDates
 }) => {
+  console.log('--days--')
   const { minDate, maxDate } = useMinMaxState()
   const { todayObject, getDay, WEEK_DAYS } = useLangOption(local)
   const todayFullDay = `${todayObject().year}${addZero(

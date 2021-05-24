@@ -8,7 +8,15 @@ import 'react-calendar-datetime-picker/dist/index.css'
 
 export default function App() {
   const [ex1, setEx1] = useState(null)
-  const [ex1init] = useState<Range>({
+  const [ex1init, setEx1init] = useState({
+    year: 2009,
+    month: 1,
+    day: 22,
+    hour: 0,
+    minute: 22
+  })
+  const [ex2, setEx2] = useState(null)
+  const [ex2init, setEx2init] = useState<Range>({
     from: {
       year: 1399,
       month: 1,
@@ -24,18 +32,19 @@ export default function App() {
       minute: 2
     }
   })
-  const [ex2, setEx2] = useState(null)
+  // const [ex2, setEx2] = useState(null)
 
-  const [ex3, setEx3] = useState(null)
-  const [ex4, setEx4] = useState(null)
+  // const [ex3, setEx3] = useState(null)
+  // const [ex4, setEx4] = useState(null)
 
-  const [ex5, setEx5] = useState(null)
-  const [ex6, setEx6] = useState(null)
+  // const [ex5, setEx5] = useState(null)
+  // const [ex6, setEx6] = useState(null)
   return (
     <CenterLayout>
       <div className='flex justify-between my-10'>
         <div className='flex  my-10'>
           <DtCalendar
+            initValue={ex1init}
             onChange={setEx1}
             local='en'
             withTime
@@ -44,19 +53,48 @@ export default function App() {
           />
           <pre className='mt-4'>{JSON.stringify(ex1, null, 2)}</pre>
         </div>
+        <button
+          onClick={() =>
+            setEx1init({ year: 2029, month: 1, day: 22, hour: 0, minute: 22 })
+          }
+        >
+          update1
+        </button>
         <div className='flex my-10'>
           <pre className='mt-4'>{JSON.stringify(ex2, null, 2)}</pre>
-          <DtCalendar
-            initValue={ex1init}
+          <DtPicker
+            initValue={ex2init}
             onChange={setEx2}
             local='fa'
             withTime
             calenderModalClass='mx-2'
             type='range'
           />
+          <button
+            onClick={() =>
+              setEx2init({
+                from: {
+                  year: 1400,
+                  month: 1,
+                  day: 22,
+                  hour: 0,
+                  minute: 22
+                },
+                to: {
+                  year: 1400,
+                  month: 2,
+                  day: 22,
+                  hour: 11,
+                  minute: 2
+                }
+              })
+            }
+          >
+            update2
+          </button>
         </div>
       </div>
-      <div className='flex justify-between my-4'>
+      {/* <div className='flex justify-between my-4'>
         <div className='flex my-10'>
           <DtPicker
             onChange={setEx3}
@@ -97,7 +135,7 @@ export default function App() {
             inputClass='mx-2'
           />
         </div>
-      </div>
+      </div> */}
     </CenterLayout>
   )
 }

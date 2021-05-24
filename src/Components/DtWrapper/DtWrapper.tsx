@@ -67,6 +67,7 @@ const Wrapper: FC<IWrapper> = ({
   initCalender,
   isComponentVisible
 }) => {
+  console.log('===wrapper===')
   const currentView = useViewState()
   const selectedDayState = useSelectedDayState()
   const { changeCalender } = useCalenderActions()
