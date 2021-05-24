@@ -216,4 +216,4 @@ const DtPicker: FC<IDtPickerProps> = ({
   )
 }
 
-export default DtPicker
+export default React.memo(DtPicker)

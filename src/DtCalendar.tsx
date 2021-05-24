@@ -146,4 +146,4 @@ const DtCalendar: FC<IDtPickerProps> = ({
   )
 }
 
-export default DtCalendar
+export default React.memo(DtCalendar)
