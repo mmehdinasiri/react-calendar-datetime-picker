@@ -40,4 +40,4 @@ const TodayBtn: FC<ITodayBtn> = ({ local, todayBtn }) => {
   )
 }
 
-export default TodayBtn
+export default React.memo(TodayBtn)
