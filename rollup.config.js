@@ -9,6 +9,7 @@ import { uglify } from 'rollup-plugin-uglify'
 import filesize from 'rollup-plugin-filesize'
 import visualizer from 'rollup-plugin-visualizer'
 import { terser } from 'rollup-plugin-terser'
+import strip from '@rollup/plugin-strip'
 
 export default {
   input: './src/index.tsx',
@@ -32,6 +33,11 @@ export default {
     commonjs({
       sourceMap: false
     }),
+    strip({
+      include: '**/*.(ts|tsx|js|ts)',
+      debugger: false,
+      functions: ['console.log']
+    }),
     typescript({
       tsconfig: './tsconfig.json',
       declaration: true,
@@ -40,6 +46,7 @@ export default {
     babel({
       exclude: 'node_modules/**'
     }),
+
     // gzipPlugin(),
     filesize(),
     terser(),
