@@ -46,6 +46,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "@types/jalaali-js": "^1.1.0",
     "@types/jest": "^25.1.4",
     "@types/node": "^12.12.38",
     "@types/react": "^16.9.27",
@@ -94,6 +95,7 @@
     "dist"
   ],
   "dependencies": {
+    "jalaali-js": "^1.1.5",
     "persian-date": "^1.1.0"
   }
 }

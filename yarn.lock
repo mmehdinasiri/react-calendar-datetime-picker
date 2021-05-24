@@ -1935,6 +1935,11 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
+"@types/jalaali-js@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@types/jalaali-js/-/jalaali-js-1.1.0.tgz#ef3b111bcf202d134fd9e2fd18103f7dbe22af2e"
+  integrity sha1-7zsRG88gLRNP2eL9GBA/fb4iry4=
+
 "@types/jest@^25.1.4":
   version "25.2.3"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-25.2.3.tgz#33d27e4c4716caae4eced355097a47ad363fdcaf"
@@ -7012,6 +7017,11 @@ istanbul-reports@^2.2.6:
   integrity sha512-uu1F/L1o5Y6LzPVSVZXNOoD/KXpJue9aeLRd0sM9uMXfZvzomB0WxVamWb5ue8kA2vVWEmW7EG+A5n3f1kqHKg==
   dependencies:
     html-escaper "^2.0.0"
+
+jalaali-js@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/jalaali-js/-/jalaali-js-1.1.5.tgz#a2cd4627c3c61588a81877df1d3098869213e985"
+  integrity sha512-eS+zDRtz2JcGnVPWeng53rzlKU8tX2RWbJ1cqu1+eZHPEh1QL5ydB+pXD4RCf/zE3eKDN2bLQEjY0u/WIewMVQ==
 
 jest-changed-files@^24.9.0:
   version "24.9.0"

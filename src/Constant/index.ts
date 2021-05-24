@@ -1,8 +1,10 @@
 import PersianDate from 'persian-date'
+import jalaali from 'jalaali-js'
 export const LOCAL_CONSTANT = {
   fa: {
     NUMBERS: ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],
-    WEEK_DAY_SHORT: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
+    // WEEK_DAY_SHORT: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
+    WEEK_DAY_SHORT: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'],
     MONTHS: [
       'فرودین',
       'اردیبهشت',
@@ -51,7 +53,16 @@ export const LOCAL_CONSTANT = {
     YEARS_RANGE_START: 1302,
     YEARS_RANGE_END: 1450,
     getDay: (date: IDay) => {
-      return new PersianDate([date.year, date.month + 1, date.day]).day() - 1
+      const convertToGregorian = jalaali.toGregorian(
+        date.year,
+        date.month + 1,
+        date.day
+      )
+      return new Date(
+        convertToGregorian.gy,
+        convertToGregorian.gm - 1,
+        convertToGregorian.gd
+      ).getDay()
     },
     today: () => {
       const pDate = new PersianDate()

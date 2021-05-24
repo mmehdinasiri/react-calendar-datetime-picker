@@ -23,7 +23,6 @@ interface IWrapper {
   type: type
   withTime?: boolean
   local: local
-  hasDefaultVal: boolean
   showWeekend: boolean
   todayBtn: boolean
   NextBtnIcon?: any
@@ -48,7 +47,6 @@ const Wrapper: FC<IWrapper> = ({
   type,
   withTime,
   local,
-  hasDefaultVal,
   showWeekend,
   todayBtn,
   NextBtnIcon,
@@ -118,7 +116,6 @@ const Wrapper: FC<IWrapper> = ({
         <DaysView
           type={type}
           local={local}
-          hasDefaultVal={hasDefaultVal}
           showWeekend={showWeekend}
           daysClass={daysClass}
           disabledDates={disabledDates}

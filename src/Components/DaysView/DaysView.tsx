@@ -1,12 +1,9 @@
 import React, { FC, useMemo } from 'react'
-import PersianDate from 'persian-date'
-
 import {
   addZero,
   genDayObject,
   getDateTimeStamp,
   getNumberOfDaysInMonth,
-  getPreviousSundayDay,
   getWeekday,
   genFullDay,
   toPersianNumber
@@ -20,7 +17,6 @@ import {
 import { useMinMaxState } from '../../store/MinMaxProvider'
 
 interface IDaysProps {
-  hasDefaultVal: boolean
   local: string
   type?: string
   showWeekend: boolean
@@ -30,7 +26,6 @@ interface IDaysProps {
 const DaysView: FC<IDaysProps> = ({
   type,
   local,
-  hasDefaultVal,
   showWeekend,
   daysClass,
   disabledDates
@@ -44,7 +39,6 @@ const DaysView: FC<IDaysProps> = ({
   const calenderState = useCalenderState()
   const year = calenderState.year
   const month = calenderState.month
-  const day = calenderState.day
   const selectedDayState = useSelectedDayState()
   const {
     changeSelectedDay,
@@ -64,17 +58,7 @@ const DaysView: FC<IDaysProps> = ({
     toTimeStamp = getDateTimeStamp((selectedDayState as IRange).to, local)
   }
 
-  const createDaysForCurrentMonth = (
-    year: number,
-    month: number,
-    day: number
-  ) => {
-    if (local === 'fa' && !hasDefaultVal) {
-      const dayP = new PersianDate([year, month + 1, day]).State.persianAstro
-      year = dayP.year
-      month = dayP.month
-      day = dayP.day
-    }
+  const createDaysForCurrentMonth = (year: number, month: number) => {
     return Array(getNumberOfDaysInMonth(year, month, local))
       .fill(undefined)
       .map((_, index) => {
@@ -101,10 +85,9 @@ const DaysView: FC<IDaysProps> = ({
         ? firstDayOfTheMonthWeekday.weekDayIndex
         : 7
     const previousMonth = new Date(year, month - 1)
-    var previousMonthLastSundayDayOfMonth = getPreviousSundayDay(
-      firsDayOfMonth,
-      local
-    )
+    var previousMonthLastSundayDayOfMonth =
+      getNumberOfDaysInMonth(year, month - 1, local) -
+      visibleNumberOfDaysFromPreviousMonth
 
     return Array(visibleNumberOfDaysFromPreviousMonth)
       .fill(undefined)
@@ -119,7 +102,7 @@ const DaysView: FC<IDaysProps> = ({
         }
         return {
           date,
-          dayOfMonth: previousMonthLastSundayDayOfMonth + index,
+          dayOfMonth: previousMonthLastSundayDayOfMonth + index + 1,
           isCurrentMonth: false
         }
       })
@@ -135,11 +118,11 @@ const DaysView: FC<IDaysProps> = ({
     )
     const nextMonth = new Date(year, month + 1)
     const visibleNumberOfDaysFromNextMonth =
-      lastDayOfTheMonthWeekday.weekDayIndex
-        ? 6 - lastDayOfTheMonthWeekday.weekDayIndex
-        : 6
+      lastDayOfTheMonthWeekday.weekDayIndex === 7
+        ? 6
+        : 7 - lastDayOfTheMonthWeekday.weekDayIndex - 1
 
-    return Array(visibleNumberOfDaysFromNextMonth)
+    const x = Array(visibleNumberOfDaysFromNextMonth)
       .fill(undefined)
       .map((_, index) => {
         const date = {
@@ -156,6 +139,7 @@ const DaysView: FC<IDaysProps> = ({
           isCurrentMonth: false
         }
       })
+    return x
   }
   const handelChangeDay = (date: any) => {
     const newDate = { ...date }
@@ -286,7 +270,7 @@ const DaysView: FC<IDaysProps> = ({
   }
 
   const daysForCurrentMonth = useMemo(() => {
-    return createDaysForCurrentMonth(year, month, day)
+    return createDaysForCurrentMonth(year, month)
   }, [year, month])
   const daysForPreviousMonth = useMemo(() => {
     return createDaysForPreviousMonth(year, month)

@@ -1,5 +1,5 @@
 import PersianDate from 'persian-date'
-// import PersianDate from 'persian-date'
+import jalaali from 'jalaali-js'
 import { useLangOption } from '../hooks/useLangOption'
 
 export const getNumberOfDaysInMonth = (
@@ -8,7 +8,7 @@ export const getNumberOfDaysInMonth = (
   local?: string
 ): number => {
   if (local === 'fa') {
-    return new PersianDate([year, month + 1]).daysInMonth()
+    return jalaali.jalaaliMonthLength(year, month + 1)
   } else {
     return new Date(year, month + 1, 0).getDate()
   }
@@ -47,11 +47,12 @@ export const genDayObject = (year: number, month: number, day: number) => {
 }
 
 export const getWeekday = (number: number, local: string) => {
+  const weekStartIndex = local === 'fa' ? 1 : 0
   const { WEEK_DAY_SHORT } = useLangOption(local)
   const weekDay = WEEK_DAY_SHORT[number]
   return {
     weekDay,
-    weekDayIndex: WEEK_DAY_SHORT.indexOf(weekDay)
+    weekDayIndex: WEEK_DAY_SHORT.indexOf(weekDay) + weekStartIndex
   }
 }
 
@@ -86,6 +87,7 @@ export const getPreviousSundayDay = (date: IDay, local: string) => {
     month: previousSundayDay.getMonth(),
     day: previousSundayDay.getDate()
   }
+  console.log('getDayOfMonth', getDayOfMonth)
   return getDayOfMonth(temp)
 }
 

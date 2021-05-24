@@ -74,19 +74,21 @@ const DtCalendar: FC<IDtPickerProps> = ({
     if (isUpdate === 0 || initValue) {
       setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
       setIsUpdate(isUpdate + 1)
-      if (isUpdate === 0) {
-        mergeProviders(onChange, correctedType, initValue, initTime)
-      } else {
-        mergeProviders(
-          onChange,
-          correctedType,
-          initValue,
-          initTime,
-          onCalenderChange
-        )
-      }
     }
   }, [initValue])
+  useEffect(() => {
+    if (isUpdate === 0) {
+      mergeProviders(onChange, correctedType, fixedInitValue, initTime)
+    } else {
+      mergeProviders(
+        onChange,
+        correctedType,
+        fixedInitValue,
+        initTime,
+        onCalenderChange
+      )
+    }
+  }, [fixedInitValue])
 
   return (
     <div
@@ -112,7 +114,6 @@ const DtCalendar: FC<IDtPickerProps> = ({
                     type={correctedType}
                     withTime={withTime}
                     local={correctedLocal}
-                    hasDefaultVal={!!initValue}
                     showWeekend={!!showWeekend}
                     todayBtn={!!todayBtn}
                     NextBtnIcon={NextBtnIcon}
