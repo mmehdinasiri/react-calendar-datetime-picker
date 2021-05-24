@@ -1,4 +1,3 @@
-import PersianDate from 'persian-date'
 import jalaali from 'jalaali-js'
 import { useLangOption } from '../hooks/useLangOption'
 
@@ -56,45 +55,11 @@ export const getWeekday = (number: number, local: string) => {
   }
 }
 
-// export const todayObject = () => {
-//   const todayDate = new Date()
-//   const today = {
-//     year: todayDate.getFullYear(),
-//     month: todayDate.getMonth(),
-//     day: todayDate.getDate(),
-//     hour: todayDate.getHours(),
-//     minute: todayDate.getMinutes()
-//   }
-//   return today
-// }
-
-export const getPreviousSundayDay = (date: IDay, local: string) => {
-  const { getDay, getDayOfMonth, today, setDayOfMonth } = useLangOption(local)
-  const day = getDay(date)
-  const dayOfMonth = getDayOfMonth(date)
-  const prevSunday = today()
-  let previousSundayDay
-  if (day === 0) {
-    previousSundayDay = setDayOfMonth(prevSunday, dayOfMonth - 7)
-  } else {
-    previousSundayDay = setDayOfMonth(prevSunday, dayOfMonth - day)
-  }
-  if (local === 'fa') {
-    return getDayOfMonth(previousSundayDay.State.persianAstro)
-  }
-  const temp = {
-    year: previousSundayDay.getFullYear(),
-    month: previousSundayDay.getMonth(),
-    day: previousSundayDay.getDate()
-  }
-  console.log('getDayOfMonth', getDayOfMonth)
-  return getDayOfMonth(temp)
-}
-
 export const getDateTimeStamp = (date: IDay, local?: string) => {
   if (local === 'fa') {
-    return new PersianDate([date.year, date.month + 1, date.day])
+    return jalaali.j2d(date.year, date.month + 1, date.day)
   }
+
   return new Date(date.year, date.month, date.day).setHours(0, 0, 0, 0)
 }
 export const compareDateEN = (date1: IDay, date2: IDay) => {
@@ -108,11 +73,11 @@ export const compareDateEN = (date1: IDay, date2: IDay) => {
   return 0
 }
 export const compareDateFA = (date1: IDay, date2: IDay) => {
-  const fixDate1 = new PersianDate([date1.year, date1.month + 1, date1.day])
-  const fixDate2 = new PersianDate([date2.year, date2.month + 1, date2.day])
-  if (fixDate1.diff(fixDate2) > 0) {
+  const fixDate1 = jalaali.j2d(date1.year, date1.month + 1, date1.day)
+  const fixDate2 = jalaali.j2d(date2.year, date2.month + 1, date2.day)
+  if (fixDate1 > fixDate2) {
     return 1
-  } else if (fixDate1.diff(fixDate2) < 0) {
+  } else if (fixDate1 < fixDate2) {
     return 2
   }
   return 0
@@ -127,12 +92,11 @@ export const handelInitialValues = (
   let initTime
   let initCalender
   let today = new Date()
-  let todayP = new PersianDate(today).State.persianAstro
+  let todayP = jalaali.toJalaali(today)
 
   if (maxDate) {
     today = new Date(maxDate.year, maxDate.month, maxDate.day)
-    todayP = new PersianDate([maxDate.year, maxDate.month, maxDate.day]).State
-      .persianAstro
+    todayP = jalaali.toJalaali(today)
   }
 
   if (correctedType === 'single') {
@@ -180,9 +144,9 @@ export const handelInitialValues = (
   if (!initCalender) {
     if (local === 'fa') {
       initCalender = {
-        year: todayP.year,
-        month: todayP.month,
-        day: todayP.day
+        year: todayP.jy,
+        month: todayP.jm - 1,
+        day: todayP.jd
       }
     } else {
       initCalender = {

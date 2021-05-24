@@ -8,13 +8,13 @@ import 'react-calendar-datetime-picker/dist/index.css'
 
 export default function App() {
   const [ex1, setEx1] = useState(null)
-  const [ex1init, setEx1init] = useState({
-    year: 1399,
-    month: 1,
-    day: 22,
-    hour: 0,
-    minute: 22
-  })
+  // const [ex1init, setEx1init] = useState({
+  //   year: 1399,
+  //   month: 1,
+  //   day: 22,
+  //   hour: 0,
+  //   minute: 22
+  // })
   // const [ex2, setEx2] = useState(null)
   // const [ex2init, setEx2init] = useState<Range>({
   //   from: {
@@ -44,22 +44,31 @@ export default function App() {
       <div className='flex justify-between my-10'>
         <div className='flex  my-10'>
           <DtCalendar
-            initValue={ex1init}
+            // initValue={ex1init}
             onChange={setEx1}
             local='fa'
             withTime
             calenderModalClass='mx-2'
             type='single'
+            // todayBtn
+            // maxDate={{
+            //   year: 1480,
+            //   month: 1,
+            //   day: 22,
+            //   hour: 0,
+            //   minute: 22
+            // }}
           />
           <pre className='mt-4'>{JSON.stringify(ex1, null, 2)}</pre>
+          {/* <pre className='mt-4'>{convertToFa(ex1)}</pre> */}
         </div>
-        <button
+        {/* <button
           onClick={() =>
             setEx1init({ year: 1390, month: 1, day: 22, hour: 0, minute: 22 })
           }
         >
           update1
-        </button>
+        </button> */}
         <div className='flex my-10'>
           {/* <pre className='mt-4'>{JSON.stringify(ex2, null, 2)}</pre> */}
           {/* <DtPicker

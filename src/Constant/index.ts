@@ -1,4 +1,3 @@
-import PersianDate from 'persian-date'
 import jalaali from 'jalaali-js'
 export const LOCAL_CONSTANT = {
   fa: {
@@ -64,23 +63,23 @@ export const LOCAL_CONSTANT = {
         convertToGregorian.gd
       ).getDay()
     },
-    today: () => {
-      const pDate = new PersianDate()
-      return pDate.State.persianAstro
-    },
+    // today: () => {
+    //   console.log(jalaali.toJalaali(new Date()))
+    //   const pDate = new PersianDate()
+    //   console.log(pDate)
+    //   return pDate.State.persianAstro
+    // },
     todayObject: () => {
-      const pDate = new PersianDate().State.persianAstro
+      const pDate = jalaali.toJalaali(new Date())
+
       return {
-        year: pDate.year,
-        month: pDate.month,
-        day: pDate.day
+        year: pDate.jy,
+        month: pDate.jm - 1,
+        day: pDate.jd
       }
     },
     getDayOfMonth: (date: IDay) => {
-      return new PersianDate([date.year, date.month + 1, date.day]).date()
-    },
-    setDayOfMonth: (date: IDay, day: number) => {
-      return new PersianDate([date.year, date.month + 1, date.day]).date(day)
+      return jalaali.jalaaliMonthLength(date.year, date.month + 1)
     },
     inputPlaceholder: 'انتخاب کنید',
     clockFromLB: 'از ساعت',
@@ -169,9 +168,9 @@ export const LOCAL_CONSTANT = {
     getDay: (date: IDay) => {
       return new Date(date.year, date.month, date.day).getDay()
     },
-    today: () => {
-      return new Date()
-    },
+    // today: () => {
+    //   return new Date()
+    // },
     todayObject: () => {
       const date = new Date()
       return {
@@ -183,9 +182,7 @@ export const LOCAL_CONSTANT = {
     getDayOfMonth: (date: IDay) => {
       return new Date(date.year, date.month, date.day).getDate()
     },
-    setDayOfMonth: (date: Date, day: number) => {
-      return new Date(new Date(date).setDate(day))
-    },
+
     inputPlaceholder: 'select',
     clockFromLB: 'from',
     clockToLB: 'to',
