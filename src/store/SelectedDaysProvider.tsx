@@ -5,58 +5,38 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
-import { addZero } from '../helpers'
+import { genFullDay } from 'src/helpers'
 
 const SelectedDaysContext = createContext(
   {} as IDay | IRange | IDay[] | null | undefined
 )
 const SelectedDaysContextSetState = createContext(
-  (Function as unknown) as Dispatch<
+  Function as unknown as Dispatch<
     SetStateAction<IDay | IDay[] | null | undefined>
   >
 )
 interface ISelectedDayProvider {
-  type?: string
+  type: string
   initState?: IDay | IRange | IDay[] | null | undefined
   children: React.ReactElement | React.ReactElement[]
 }
 function SelectedDaysProvider({
+  type,
   children,
-  initState,
-  type
+  initState
 }: ISelectedDayProvider) {
   let initDay
   if (type === 'single') {
     initDay = initState as IDay | null
-    if (initDay?.year) {
-      initDay.fullDay = `${initDay.year}${addZero(initDay.month)}${addZero(
-        initDay.day
-      )}`
-    }
   }
   if (type === 'range') {
     initDay = (initState as IRange) || { from: null, to: null }
-    if (initDay.from?.year && initDay.to?.year) {
-      initDay.from.fullDay = `${initDay.from.year}${addZero(
-        initDay.from.month
-      )}${addZero(initDay.from.day)}`
-      initDay.to.fullDay = `${initDay.to.year}${addZero(
-        initDay.to.month
-      )}${addZero(initDay.to.day)}`
-    }
   }
   if (type === 'multi') {
-    initDay = ((initState as unknown) as IDay[]) || []
-    if (initState && ((initState as unknown) as IDay[]).length) {
-      ;((initState as unknown) as IDay[]).map(
-        (day: IDay) =>
-          (day.fullDay = `${day.year}${addZero(day.month)}${addZero(day.day)}`)
-      )
-    }
+    initDay = (initState as unknown as IDay[]) || []
   }
-  const [selectedDays, setSelectedDays] = useState<
-    IDay | IRange | IDay[] | null | undefined
-  >(initDay)
+  const [selectedDays, setSelectedDays] =
+    useState<IDay | IRange | IDay[] | null | undefined>(initDay)
   return (
     <SelectedDaysContext.Provider value={selectedDays}>
       <SelectedDaysContextSetState.Provider value={setSelectedDays}>
@@ -96,7 +76,9 @@ function useSelectedDayActions() {
   const changeSelectedDayMulti = (newValue: IDay | null | undefined) => {
     if (
       !(selectedDayState as IDay[]).find(
-        (day) => day.fullDay === newValue?.fullDay
+        (day) =>
+          genFullDay(day.year, day.month, day.day) ===
+          genFullDay(newValue!.year, newValue!.month, newValue!.day)
       )
     ) {
       // @ts-ignore: Unreachable code error
@@ -107,7 +89,9 @@ function useSelectedDayActions() {
     // @ts-ignore: Unreachable code error
     setSelectedDayAction((prevState) => [
       ...(selectedDayState as IDay[]).filter(
-        (day) => day.fullDay !== newValue?.fullDay
+        (day) =>
+          genFullDay(day.year, day.month, day.day) !==
+          genFullDay(newValue!.year, newValue!.month, newValue!.day)
       )
     ])
   }

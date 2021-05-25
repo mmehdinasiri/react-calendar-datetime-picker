@@ -40,8 +40,7 @@ export const genDayObject = (year: number, month: number, day: number) => {
   return {
     year: year,
     month: month,
-    day: day,
-    fullDay: genFullDay(year, month, day)
+    day: day
   }
 }
 

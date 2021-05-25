@@ -1,6 +1,5 @@
 import React, { FC, useMemo } from 'react'
 import {
-  addZero,
   genDayObject,
   getDateTimeStamp,
   getNumberOfDaysInMonth,
@@ -33,9 +32,7 @@ const DaysView: FC<IDaysProps> = ({
   console.log('--days--')
   const { minDate, maxDate } = useMinMaxState()
   const { todayObject, getDay, WEEK_DAYS } = useLangOption(local)
-  const todayFullDay = `${todayObject().year}${addZero(
-    todayObject().month
-  )}${addZero(todayObject().day)}`
+  const todayTimeStamp = getDateTimeStamp({ ...todayObject() }, local)
   const calenderState = useCalenderState()
   const year = calenderState.year
   const month = calenderState.month
@@ -63,7 +60,6 @@ const DaysView: FC<IDaysProps> = ({
       .fill(undefined)
       .map((_, index) => {
         const date = genDayObject(year, month, index + 1)
-        date.fullDay = `${date.year}${addZero(date.month)}${addZero(index + 1)}`
         return {
           date,
           timeStamp: getDateTimeStamp(date, local),
@@ -84,7 +80,6 @@ const DaysView: FC<IDaysProps> = ({
       firstDayOfTheMonthWeekday.weekDayIndex
         ? firstDayOfTheMonthWeekday.weekDayIndex
         : 7
-    const previousMonth = new Date(year, month - 1)
     var previousMonthLastSundayDayOfMonth =
       getNumberOfDaysInMonth(year, month - 1, local) -
       visibleNumberOfDaysFromPreviousMonth
@@ -95,13 +90,11 @@ const DaysView: FC<IDaysProps> = ({
         const date = {
           year: year,
           month: month,
-          day: index,
-          fullDay: `${previousMonth.getFullYear()}${addZero(
-            previousMonth.getMonth()
-          )}${addZero(index)}`
+          day: index
         }
         return {
           date,
+          timeStamp: getDateTimeStamp(date, local),
           dayOfMonth: previousMonthLastSundayDayOfMonth + index + 1,
           isCurrentMonth: false
         }
@@ -116,7 +109,6 @@ const DaysView: FC<IDaysProps> = ({
       }),
       local
     )
-    const nextMonth = new Date(year, month + 1)
     const visibleNumberOfDaysFromNextMonth =
       lastDayOfTheMonthWeekday.weekDayIndex === 7
         ? 6
@@ -128,13 +120,11 @@ const DaysView: FC<IDaysProps> = ({
         const date = {
           year: year,
           month: month,
-          day: index,
-          fullDay: `${nextMonth.getFullYear()}${addZero(
-            nextMonth.getMonth()
-          )}${addZero(index + 1)}`
+          day: index
         }
         return {
           date,
+          timeStamp: getDateTimeStamp(date, local),
           dayOfMonth: index + 1,
           isCurrentMonth: false
         }
@@ -147,7 +137,12 @@ const DaysView: FC<IDaysProps> = ({
     if (type === 'single') {
       if (
         selectedDayState &&
-        newDate.fullDay === (selectedDayState as IDay).fullDay
+        genFullDay(newDate.year, newDate.month, newDate.day) ===
+          genFullDay(
+            (selectedDayState as IDay)!.year,
+            (selectedDayState as IDay)!.month,
+            (selectedDayState as IDay)!.day
+          )
       ) {
         removeSelectedDay()
       } else {
@@ -180,7 +175,9 @@ const DaysView: FC<IDaysProps> = ({
     if (type === 'multi') {
       if (
         (selectedDayState as IDay[]).find(
-          (day) => day.fullDay === newDate?.fullDay
+          (day) =>
+            genFullDay(day.year, day.month, day.day) ===
+            genFullDay(newDate!.year, newDate!.month, newDate!.day)
         )
       ) {
         removeSelectedDayMulti(newDate)
@@ -191,12 +188,13 @@ const DaysView: FC<IDaysProps> = ({
   }
   const checkClass = (day: any, index: number) => {
     let classes = ''
-    if (day.date.fullDay === todayFullDay) {
+    if (day.timeStamp === todayTimeStamp) {
       classes += ' is-today'
     }
     if (
       type === 'single' &&
-      day.date.fullDay === (selectedDayState as IDay)?.fullDay
+      day.timeStamp ===
+        getDateTimeStamp({ ...(selectedDayState as IDay) }, local)
     ) {
       classes += ' is-selected-day'
     }
@@ -204,14 +202,16 @@ const DaysView: FC<IDaysProps> = ({
     if (
       type === 'range' &&
       (selectedDayState as IRange).from &&
-      day.date.fullDay === (selectedDayState as IRange).from?.fullDay
+      day.timeStamp ===
+        getDateTimeStamp({ ...(selectedDayState as IRange).from! }, local)
     ) {
       classes += ' is-selected-day-from'
     }
     if (
       type === 'range' &&
       (selectedDayState as IRange)?.to &&
-      day.date.fullDay === (selectedDayState as IRange).to?.fullDay
+      day.timeStamp ===
+        getDateTimeStamp({ ...(selectedDayState as IRange).to! }, local)
     ) {
       classes += ' is-selected-day-to'
     }
@@ -227,7 +227,7 @@ const DaysView: FC<IDaysProps> = ({
     if (
       type === 'multi' &&
       (selectedDayState as IDay[]).find(
-        (item) => item.fullDay === day.date.fullDay
+        (item) => getDateTimeStamp(item, local) === day.timeStamp
       )
     ) {
       classes += ' is-selected-day'
@@ -261,7 +261,10 @@ const DaysView: FC<IDaysProps> = ({
     if (
       disabledDates?.find(
         (date) =>
-          genFullDay(date.year, date.month, date.day) === day.date.fullDay
+          getDateTimeStamp(
+            { year: date.year, month: date.month, day: date.day },
+            local
+          ) === day.timeStamp
       )
     ) {
       classes += ' is-disabled-by-user'
