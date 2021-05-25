@@ -72,7 +72,8 @@ const DtPicker: FC<IDtPickerProps> = ({
     fixedMonthInitValue(initValue, correctedType),
     correctedType,
     correctedLocal,
-    fixedMonth(maxDate)
+    fixedMonth(maxDate),
+    fixedMonth(minDate)
   )
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false, onCalenderHide, inputRef)

@@ -60,7 +60,8 @@ const DtCalendar: FC<IDtPickerProps> = ({
     fixedMonthInitValue(initValue, correctedType),
     correctedType,
     correctedLocal,
-    fixedMonth(maxDate)
+    fixedMonth(maxDate),
+    fixedMonth(minDate)
   )
   checkInputValues(
     initValue,

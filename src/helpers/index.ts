@@ -86,16 +86,62 @@ export const handelInitialValues = (
   initValue: any,
   correctedType: string,
   local: string,
-  maxDate?: IDay
+  maxDate?: IDay,
+  minDate?: IDay
 ) => {
   let initTime
   let initCalender
   let today = new Date()
   let todayP = jalaali.toJalaali(today)
+  const selectCompar = {
+    en: compareDateEN,
+    fa: compareDateFA
+  }
 
   if (maxDate) {
-    today = new Date(maxDate.year, maxDate.month, maxDate.day)
-    todayP = jalaali.toJalaali(today)
+    if (
+      local === 'fa' &&
+      maxDate &&
+      selectCompar[local](maxDate, {
+        year: todayP.jy,
+        month: todayP.jm,
+        day: todayP.jd
+      }) === 2
+    ) {
+      todayP = { jy: maxDate.year, jm: maxDate.month + 1, jd: maxDate.day }
+    } else if (
+      local === 'en' &&
+      selectCompar[local](maxDate, {
+        year: today.getFullYear(),
+        month: today.getMonth(),
+        day: today.getDate()
+      }) === 2
+    ) {
+      today = new Date(maxDate.year, maxDate.month, maxDate.day)
+    }
+  }
+  if (minDate) {
+    console.log('min date')
+    if (
+      local === 'fa' &&
+      maxDate &&
+      selectCompar[local](minDate, {
+        year: todayP.jy,
+        month: todayP.jm,
+        day: todayP.jd
+      }) === 1
+    ) {
+      todayP = { jy: minDate.year, jm: minDate.month + 1, jd: minDate.day }
+    } else if (
+      local === 'en' &&
+      selectCompar[local](minDate, {
+        year: today.getFullYear(),
+        month: today.getMonth(),
+        day: today.getDate()
+      }) === 1
+    ) {
+      today = new Date(minDate.year, minDate.month, minDate.day)
+    }
   }
 
   if (correctedType === 'single') {

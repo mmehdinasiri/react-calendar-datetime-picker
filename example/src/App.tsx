@@ -77,14 +77,14 @@ export default function App() {
             type='range'
             todayBtn
             maxDate={{
-              year: 1401,
-              month: 10,
+              year: 1402,
+              month: 1,
               day: 22,
               hour: 0,
               minute: 22
             }}
             minDate={{
-              year: 1394,
+              year: 1395,
               month: 10,
               day: 12,
               hour: 0,

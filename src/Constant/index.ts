@@ -1,8 +1,9 @@
 import jalaali from 'jalaali-js'
+const today = new Date()
+const jalaaliToday = jalaali.toJalaali(today)
 export const LOCAL_CONSTANT = {
   fa: {
     NUMBERS: ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],
-    // WEEK_DAY_SHORT: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
     WEEK_DAY_SHORT: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'],
     MONTHS: [
       'فرودین',
@@ -19,10 +20,6 @@ export const LOCAL_CONSTANT = {
       'اسفند'
     ],
     WEEK_DAYS: [
-      {
-        name: 'شنبه',
-        short: 'ش'
-      },
       {
         name: 'یکشنبه',
         short: 'ی'
@@ -47,10 +44,14 @@ export const LOCAL_CONSTANT = {
         name: 'جمعه',
         short: 'ج',
         isWeekend: true
+      },
+      {
+        name: 'شنبه',
+        short: 'ش'
       }
     ],
-    YEARS_RANGE_START: 1302,
-    YEARS_RANGE_END: 1450,
+    YEARS_RANGE_START: jalaaliToday.jy - 100,
+    YEARS_RANGE_END: jalaaliToday.jy + 100,
     getDay: (date: IDay) => {
       const convertToGregorian = jalaali.toGregorian(
         date.year,
@@ -163,8 +164,8 @@ export const LOCAL_CONSTANT = {
         isWeekend: true
       }
     ],
-    YEARS_RANGE_START: 1900,
-    YEARS_RANGE_END: 2100,
+    YEARS_RANGE_START: today.getFullYear() - 100,
+    YEARS_RANGE_END: today.getFullYear() + 100,
     getDay: (date: IDay) => {
       return new Date(date.year, date.month, date.day).getDay()
     },
