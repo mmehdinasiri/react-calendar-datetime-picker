@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 import { useViewState } from '../../store/ViewProvider'
 import useDidMountEffect from '../../hooks/useDidMountEffect'
 import {
@@ -68,6 +68,7 @@ const Wrapper: FC<IWrapper> = ({
   console.log('===wrapper===')
   const currentView = useViewState()
   const selectedDayState = useSelectedDayState()
+  const lastSelectedDate = useRef(selectedDayState)
   const { changeCalender } = useCalenderActions()
   const selectedTime = useSelectedTimeState()
   useDidMountEffect(() => {
@@ -91,6 +92,35 @@ const Wrapper: FC<IWrapper> = ({
       changeCalender({ ...initCalender })
     }
   }, [isComponentVisible])
+  useEffect(() => {
+    lastSelectedDate.current = selectedDayState
+  }, [selectedDayState])
+  useEffect(() => {
+    //reset calendar view to selected view after closing modal
+    return () => {
+      if (type === 'single' && lastSelectedDate.current) {
+        changeCalender({
+          year: (lastSelectedDate.current as IDay).year,
+          month: (lastSelectedDate.current as IDay).month,
+          day: (lastSelectedDate.current as IDay).day
+        })
+      }
+      if (type === 'range' && (lastSelectedDate.current as IRange).from) {
+        changeCalender({
+          year: (lastSelectedDate.current as IRange).from!.year,
+          month: (lastSelectedDate.current as IRange).from!.month,
+          day: (lastSelectedDate.current as IRange).from!.day
+        })
+      }
+      if (type === 'multi' && (lastSelectedDate.current as Multi)?.length) {
+        changeCalender({
+          year: (lastSelectedDate.current as Multi)![0].year,
+          month: (lastSelectedDate.current as Multi)![0].month,
+          day: (lastSelectedDate.current as Multi)![0].day
+        })
+      }
+    }
+  }, [])
   return (
     <div
       className={`dtWrapper ${local === 'fa' ? 'is-rtl' : 'is-ltr'} ${
