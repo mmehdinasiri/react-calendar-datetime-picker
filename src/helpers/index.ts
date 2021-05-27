@@ -121,7 +121,6 @@ export const handelInitialValues = (
     }
   }
   if (minDate) {
-    console.log('min date')
     if (
       local === 'fa' &&
       maxDate &&
@@ -153,9 +152,10 @@ export const handelInitialValues = (
       }
     }
     initTime = {
-      hour: initValue?.hour,
-      minute: initValue?.minute
+      hour: isNotUndefined(initValue?.hour, today.getHours()),
+      minute: isNotUndefined(initValue?.minute, today.getMinutes())
     }
+    console.log(initTime)
   }
   if (correctedType === 'range') {
     if (initValue?.from) {
@@ -168,12 +168,12 @@ export const handelInitialValues = (
 
     initTime = {
       from: {
-        hour: initValue?.from?.hour,
-        minute: initValue?.from?.minute
+        hour: isNotUndefined(initValue?.from?.hour, today.getHours()),
+        minute: isNotUndefined(initValue?.from?.minute, today.getMinutes())
       },
       to: {
-        hour: initValue?.to?.hour,
-        minute: initValue?.to?.minute
+        hour: isNotUndefined(initValue?.to?.hour, today.getHours()),
+        minute: isNotUndefined(initValue?.to?.minute, today.getMinutes())
       }
     }
   }

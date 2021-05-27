@@ -61,7 +61,7 @@ export default function App() {
         </div>
         <button
           onClick={() =>
-            setEx1init({ year: 1398, month: 11, day: 22, hour: 0, minute: 22 })
+            setEx1init({ year: 1398, month: 11, day: 22, hour: 22, minute: 10 })
           }
         >
           update1
