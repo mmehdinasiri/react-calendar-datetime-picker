@@ -70,21 +70,21 @@ const QuickStart = () => {
 				<p className='text-lg mb-1'>
 					Moreover, the only dependency used in this package is{' '}
 					<a
-						href='https://github.com/babakhani/PersianDate'
+						href='https://github.com/jalaali/jalaali-js'
 						className='underline'
 						target='_blank'
 						rel='noopener noreferrer'
 					>
-						Persian-date
+						jalaali-js
 					</a>{' '}
 					and it is just{' '}
 					<a
-						href='https://bundlephobia.com/result?p=persian-date@1.1.0'
+						href='https://bundlephobia.com/result?p=jalaali-js@1.1.5'
 						className='underline'
 						target='_blank'
 						rel='noopener noreferrer'
 					>
-						10kb (MINIFIED + GZIPPED)
+						1.1kb (MINIFIED + GZIPPED)
 					</a>
 				</p>
 			</section>

@@ -4,6 +4,7 @@
 <img src="./website/public/image/react-datetime-picker.png?raw=true" width="200" height="auto" >
 <img src="./website/public/image/react-datetime-picker-jalali.png?raw=true" width="200" height="auto" >
 </p>
+
 ### The Simple and fast English and Persian calender for React
 
 version: "1.4.2"
@@ -57,9 +58,13 @@ const App = () => {
 - Function called for change, open and close events
 - Supports Typescript
 
+## ✔️ bundle size
+
+You can check out this package bundle size in this [link](https://bundlephobia.com/result?p=react-calendar-datetime-picke)
+
 ## 🙇 Special Thanks
 
-Thanks to [PersianDate](https://github.com/babakhani/PersianDate), the only dependency of this date picker.
+Thanks to [jalaali-js](https://github.com/jalaali/jalaali-js), the only dependency of this date picker.
 
 ## 👨🏽‍💻 Team
 
