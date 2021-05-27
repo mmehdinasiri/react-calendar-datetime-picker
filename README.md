@@ -60,7 +60,7 @@ const App = () => {
 
 ## ✔️ bundle size
 
-You can check out this package bundle size in this [link](https://bundlephobia.com/result?p=react-calendar-datetime-picke)
+You can check out this package bundle size in this [link](https://bundlephobia.com/result?p=react-calendar-datetime-picker)
 
 ## 🙇 Special Thanks
 
