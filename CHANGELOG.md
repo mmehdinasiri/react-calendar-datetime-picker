@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 5/27/2021|
+
+- replace Persian date with Jalaali-js
+- fix time init value
+- fix min date as initial Value
+- move view to selected date after closing calendar modal
+- change year view style
+- increase range of year
+- remove fullDay from result object
+- add config to remove consoles
+- refactor time component
+- wrap some component with memo
+
 ## [1.4.2] - 5/21/2021|
 
 - fix time input direction and icon style
