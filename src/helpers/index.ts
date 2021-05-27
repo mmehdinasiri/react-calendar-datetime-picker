@@ -155,7 +155,6 @@ export const handelInitialValues = (
       hour: isNotUndefined(initValue?.hour, today.getHours()),
       minute: isNotUndefined(initValue?.minute, today.getMinutes())
     }
-    console.log(initTime)
   }
   if (correctedType === 'range') {
     if (initValue?.from) {
