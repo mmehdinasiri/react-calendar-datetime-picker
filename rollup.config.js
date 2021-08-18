@@ -10,6 +10,7 @@ import filesize from 'rollup-plugin-filesize'
 import visualizer from 'rollup-plugin-visualizer'
 import { terser } from 'rollup-plugin-terser'
 import strip from '@rollup/plugin-strip'
+import copy from 'rollup-plugin-copy'
 
 export default {
   input: './src/index.tsx',
@@ -23,6 +24,9 @@ export default {
 
   external: ['react', 'react-dom'],
   plugins: [
+    copy({
+      targets: [{ src: 'src/type.d.ts', dest: 'dist' }]
+    }),
     svg(),
     svgr(),
     scss({
@@ -41,7 +45,7 @@ export default {
     typescript({
       tsconfig: './tsconfig.json',
       declaration: true,
-      declarationDir: 'dist'
+      declarationDir: './dist'
     }),
     babel({
       exclude: 'node_modules/**'

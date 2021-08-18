@@ -53,7 +53,7 @@ const DtPicker: FC<IDtPickerProps> = ({
 }) => {
   const [prevInitDate, setPrevInitDate] = useState<any>(null)
   const [isUpdate, setIsUpdate] = useState<number>(0)
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const minMaxState = {
     minDate: fixedMonth(minDate),
     maxDate: fixedMonth(maxDate)
@@ -89,7 +89,7 @@ const DtPicker: FC<IDtPickerProps> = ({
   useLayoutEffect(() => {
     if (!isComponentVisible) return
     const currentCalender: HTMLElement | null = ref.current
-    const currentInput: HTMLElement | null = inputRef.current
+    const currentInput: HTMLInputElement | null = inputRef.current
     if (currentCalender) {
       const { clientWidth, clientHeight } = document.documentElement
       const { left, width, height, top } =
