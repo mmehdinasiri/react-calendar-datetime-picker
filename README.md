@@ -7,7 +7,7 @@
 
 ### The Simple and fast English and Persian calender for React
 
-version: "1.5.2"
+version: "1.5.3"
 
 [![NPM](https://img.shields.io/npm/v/react-calendar-datetime-picker.svg)](https://www.npmjs.com/package/react-calendar-datetime-picker) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
