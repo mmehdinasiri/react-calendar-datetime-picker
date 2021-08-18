@@ -2,15 +2,16 @@ import React, { FC } from 'react'
 import { DAYS_VIEW } from 'src/Constant'
 import { useLangOption } from 'src/hooks/useLangOption'
 import { useSelectedTimeState } from 'src/store/SelectedTimeProvider'
+import { calendarLocal, calendarType, IDay, IRange } from 'src/type'
 import { TimeView } from '..'
 
 interface ITimDeterminerProps {
   clockFromLabel?: string
   clockToLabel?: string
   clockLabel?: string
-  type: type
+  type: calendarType
   timeClass?: string
-  local: local
+  local: calendarLocal
   currentView: string
 }
 const TimeDeterminer: FC<ITimDeterminerProps> = ({

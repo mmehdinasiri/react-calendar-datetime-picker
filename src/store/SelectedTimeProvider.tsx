@@ -5,6 +5,7 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
+import { ITime, ITimeRange } from 'src/type'
 interface ISelectedTimeProvider {
   type?: string
   initState?: ITime | ITimeRange | null

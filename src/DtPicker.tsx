@@ -14,6 +14,7 @@ import {
   mergeProviders
 } from './helpers'
 import useComponentVisible from './hooks/useComponentVisible'
+import { IDtPickerProps, calendarLocal, calendarType } from './type'
 
 const DtPicker: FC<IDtPickerProps> = ({
   initValue,
@@ -64,8 +65,12 @@ const DtPicker: FC<IDtPickerProps> = ({
       return fixedMonth(date)
     })
   }
-  const correctedType = (type ? type.toLocaleLowerCase() : 'single') as type
-  const correctedLocal = (local ? local.toLocaleLowerCase() : 'en') as local
+  const correctedType = (
+    type ? type.toLocaleLowerCase() : 'single'
+  ) as calendarType
+  const correctedLocal = (
+    local ? local.toLocaleLowerCase() : 'en'
+  ) as calendarLocal
   const [fixedInitValue, setFixedInitValue] = useState(
     fixedMonthInitValue(initValue, correctedType)
   )

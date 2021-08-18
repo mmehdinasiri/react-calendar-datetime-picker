@@ -1,5 +1,6 @@
 import jalaali from 'jalaali-js'
 import { addZero } from 'src/helpers'
+import { IDay } from 'src/type'
 
 export const convertToEn = (date: IDay | null, divider: string = '/') => {
   if (date) {

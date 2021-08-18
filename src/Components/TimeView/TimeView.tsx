@@ -6,6 +6,7 @@ import { addZero, isNotUndefined } from '../../helpers'
 
 import { ReactComponent as ChevronUp } from '../../Icons/chevron-up.svg'
 import { ReactComponent as ChevronDown } from '../../Icons/chevron-down.svg'
+import { IRange } from 'src/type'
 // import useDidMountEffect from '../../hooks/useDidMountEffect'
 interface ITimeViewProps {
   initHour: number | undefined

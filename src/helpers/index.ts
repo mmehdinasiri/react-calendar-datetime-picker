@@ -1,4 +1,5 @@
 import jalaali from 'jalaali-js'
+import { IDay, IRange, ITime, ITimeRange } from 'src/type'
 import { useLangOption } from '../hooks/useLangOption'
 
 export const getNumberOfDaysInMonth = (

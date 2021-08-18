@@ -13,6 +13,7 @@ import {
   handelInitialValues,
   mergeProviders
 } from './helpers'
+import { IDtPickerProps, calendarLocal, calendarType } from './type'
 
 const DtCalendar: FC<IDtPickerProps> = ({
   initValue,
@@ -52,8 +53,12 @@ const DtCalendar: FC<IDtPickerProps> = ({
       return fixedMonth(date)
     })
   }
-  const correctedType = (type ? type.toLocaleLowerCase() : 'single') as type
-  const correctedLocal = (local ? local.toLocaleLowerCase() : 'en') as local
+  const correctedType = (
+    type ? type.toLocaleLowerCase() : 'single'
+  ) as calendarType
+  const correctedLocal = (
+    local ? local.toLocaleLowerCase() : 'en'
+  ) as calendarLocal
   const [fixedInitValue, setFixedInitValue] = useState(
     fixedMonthInitValue(initValue, correctedType)
   )

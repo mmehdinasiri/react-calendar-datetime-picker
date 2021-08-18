@@ -1,13 +1,13 @@
-interface ITime {
+export interface ITime {
   hour: number
   minute: number
 }
-interface ITimeRange {
+export interface ITimeRange {
   from: ITime
   to: ITime
 }
 
-interface IDay {
+export interface IDay {
   year: number
   month: number
   day: number
@@ -16,25 +16,25 @@ interface IDay {
   minute?: number
 }
 
-interface IRange {
+export interface IRange {
   from: Day
   to: Day
 }
 
-type Day = IDay | null
-type Multi = IDay[] | null
-type local = 'fa' | 'en'
-type type = 'single' | 'range' | 'multi'
+export type Day = IDay | null
+export type Multi = IDay[] | null
+export type calendarLocal = 'fa' | 'en'
+export type calendarType = 'single' | 'range' | 'multi'
 
-interface IDtPickerProps {
+export interface IDtPickerProps {
   initValue?: IDay | Multi | IRange | null | undefined
   onChange: (date: any) => void
   onCalenderChange?: any
   onCalenderHide?: any
   onCalenderShow?: any
-  type?: type
+  type?: calendarType
   withTime?: boolean
-  local?: local
+  local?: calendarLocal
   showWeekend?: boolean
   clearBtn?: boolean
   isRequired?: boolean

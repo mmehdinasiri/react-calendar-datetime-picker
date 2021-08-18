@@ -1,4 +1,5 @@
 import jalaali from 'jalaali-js'
+import { IDay } from 'src/type'
 const today = new Date()
 const jalaaliToday = jalaali.toJalaali(today)
 export const LOCAL_CONSTANT = {

@@ -6,6 +6,7 @@ import React, {
   SetStateAction
 } from 'react'
 import { genFullDay } from 'src/helpers'
+import { IDay, IRange } from 'src/type'
 
 const SelectedDaysContext = createContext(
   {} as IDay | IRange | IDay[] | null | undefined

@@ -5,6 +5,7 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
+import { IDay } from 'src/type'
 interface ICalenderProvider {
   type?: string
   initCalender: IDay
@@ -12,7 +13,7 @@ interface ICalenderProvider {
 }
 const CalenderContext = createContext({} as IDay)
 const CalenderContextSetState = createContext(
-  (Function as unknown) as Dispatch<SetStateAction<IDay>>
+  Function as unknown as Dispatch<SetStateAction<IDay>>
 )
 
 function CalenderProvider({ children, initCalender }: ICalenderProvider) {

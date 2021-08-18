@@ -14,6 +14,7 @@ import {
   useSelectedDayState
 } from '../../store/SelectedDaysProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
+import { IDay, IRange } from 'src/type'
 
 interface IDaysProps {
   local: string

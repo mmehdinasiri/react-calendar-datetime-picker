@@ -8,6 +8,7 @@ import { ReactComponent as Close } from '../../Icons/close.svg'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { useLangOption } from '../../hooks/useLangOption'
 import { useCalenderActions } from '../../store/CalenderProvider'
+import { IDay, IRange } from 'src/type'
 interface IInputPicker {
   placeholder?: string
   type: string
