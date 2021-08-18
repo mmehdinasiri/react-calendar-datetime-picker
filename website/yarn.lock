@@ -2109,6 +2109,11 @@ isobject@^2.0.0:
   dependencies:
     isarray "1.0.0"
 
+jalaali-js@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/jalaali-js/-/jalaali-js-1.1.5.tgz#a2cd4627c3c61588a81877df1d3098869213e985"
+  integrity sha512-eS+zDRtz2JcGnVPWeng53rzlKU8tX2RWbJ1cqu1+eZHPEh1QL5ydB+pXD4RCf/zE3eKDN2bLQEjY0u/WIewMVQ==
+
 jest-worker@24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-24.9.0.tgz#5dbfdb5b2d322e98567898238a9697bcce67b3e5"
@@ -2817,11 +2822,6 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-persian-date@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/persian-date/-/persian-date-1.1.0.tgz#a06155797bca20217fa8302101ea5efd041a3221"
-  integrity sha512-YwV3703jLTTJFFQfP3RvMfvKZc5Z1yE++Deywox+hkVLuVN81VsTaZFma9k5P9SgfSUvXjiylbQVuf4YYLGOow==
-
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.3.tgz#465547f359ccc206d3c48e46a1bcb89bf7ee619d"
@@ -3512,12 +3512,12 @@ raw-body@2.4.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-calendar-datetime-picker@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/react-calendar-datetime-picker/-/react-calendar-datetime-picker-1.4.1.tgz#7b5d08fb0bcc1bde28e828361560c3bd56c5a20c"
-  integrity sha512-/vaT4WVgH7oLR+P4w6p31LKQRt3EbXE5nhAP6EeATcpJvFbxceKdfjysA2Ra/ZfFgt0r3irw+ocdGmTv5okGEQ==
+react-calendar-datetime-picker@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/react-calendar-datetime-picker/-/react-calendar-datetime-picker-1.5.1.tgz#dcd64f7ecc686e454ee0016672f9edd6da661b18"
+  integrity sha512-E1bYR77Rtn3FPth8bnslT1nM28PZ0pFch7Wx1ryzwaRCH0yAAo+rAbH1w+C/WlGItc+uBGg7usnxiJj8P7cwIw==
   dependencies:
-    persian-date "^1.1.0"
+    jalaali-js "^1.1.5"
 
 react-dom@^17.0.1:
   version "17.0.2"
