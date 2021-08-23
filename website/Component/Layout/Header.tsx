@@ -15,7 +15,7 @@ const Header = () => {
 						<Link href='/'>
 							<a className='cursor-pointer'>
 								React calendar date-time picker{' '}
-								<span className='text-xs ml-1'>v1.5.4</span>
+								<span className='text-xs ml-1'>v1.5.5</span>
 							</a>
 						</Link>
 					</span>
