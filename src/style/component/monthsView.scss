@@ -8,7 +8,7 @@
   // transform: translateY(-100%);
 }
 .monthList_month {
-  width: rem(calc(#{$modal-width} / 3));
+  width: rem(calc(100% / 3));
   height: rem(72px);
   line-height: rem(72px);
   float: left;
