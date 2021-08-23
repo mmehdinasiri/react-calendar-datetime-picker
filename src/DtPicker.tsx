@@ -161,56 +161,54 @@ const DtPicker: FC<IDtPickerProps> = ({
               type={correctedType}
             >
               <SelectedTimeProvider initState={initTime} type={correctedType}>
-                <div style={{ position: 'relative', display: 'inline-block' }}>
-                  <InputPicker
-                    ref={inputRef}
-                    placeholder={placeholder}
-                    clearBtn={clearBtn}
-                    type={correctedType}
-                    local={correctedLocal}
-                    handelComponentVisible={handelComponentVisible}
-                    onChange={onChange}
-                    withTime={withTime}
-                    isDisabled={isDisabled}
-                    isRequired={!!isRequired}
-                    fromLabel={fromLabel}
-                    toLabel={toLabel}
-                    inputClass={inputClass}
-                    clearBtnClass={clearBtnClass}
-                    maxDate={maxDate}
-                  />
-                  {isComponentVisible && (
-                    <div
-                      ref={ref}
-                      className={`calender-modal ${calenderModalClass}`}
-                    >
-                      <DtWrapper
-                        onCalenderChange={onCalenderChange}
-                        onChange={onChange}
-                        type={correctedType}
-                        withTime={withTime}
-                        local={correctedLocal}
-                        showWeekend={!!showWeekend}
-                        todayBtn={!!todayBtn}
-                        NextBtnIcon={NextBtnIcon}
-                        PreviousBtnIcon={PreviousBtnIcon}
-                        clockFromLabel={clockFromLabel}
-                        clockToLabel={clockToLabel}
-                        clockLabel={clockLabel}
-                        nextMonthBtnTitle={nextMonthBtnTitle}
-                        previousMonthBtnTitle={previousMonthBtnTitle}
-                        headerClass={headerClass}
-                        daysClass={daysClass}
-                        timeClass={timeClass}
-                        monthsClass={monthsClass}
-                        yearsClass={yearsClass}
-                        disabledDates={fixedDisabledDates}
-                        initCalender={initCalender}
-                        isComponentVisible={isComponentVisible}
-                      />
-                    </div>
-                  )}
-                </div>
+                <InputPicker
+                  ref={inputRef}
+                  placeholder={placeholder}
+                  clearBtn={clearBtn}
+                  type={correctedType}
+                  local={correctedLocal}
+                  handelComponentVisible={handelComponentVisible}
+                  onChange={onChange}
+                  withTime={withTime}
+                  isDisabled={isDisabled}
+                  isRequired={!!isRequired}
+                  fromLabel={fromLabel}
+                  toLabel={toLabel}
+                  inputClass={inputClass}
+                  clearBtnClass={clearBtnClass}
+                  maxDate={maxDate}
+                />
+                {isComponentVisible && (
+                  <div
+                    ref={ref}
+                    className={`calender-modal ${calenderModalClass}`}
+                  >
+                    <DtWrapper
+                      onCalenderChange={onCalenderChange}
+                      onChange={onChange}
+                      type={correctedType}
+                      withTime={withTime}
+                      local={correctedLocal}
+                      showWeekend={!!showWeekend}
+                      todayBtn={!!todayBtn}
+                      NextBtnIcon={NextBtnIcon}
+                      PreviousBtnIcon={PreviousBtnIcon}
+                      clockFromLabel={clockFromLabel}
+                      clockToLabel={clockToLabel}
+                      clockLabel={clockLabel}
+                      nextMonthBtnTitle={nextMonthBtnTitle}
+                      previousMonthBtnTitle={previousMonthBtnTitle}
+                      headerClass={headerClass}
+                      daysClass={daysClass}
+                      timeClass={timeClass}
+                      monthsClass={monthsClass}
+                      yearsClass={yearsClass}
+                      disabledDates={fixedDisabledDates}
+                      initCalender={initCalender}
+                      isComponentVisible={isComponentVisible}
+                    />
+                  </div>
+                )}
               </SelectedTimeProvider>
             </SelectedDaysProvider>
           </MinMaxProvider>

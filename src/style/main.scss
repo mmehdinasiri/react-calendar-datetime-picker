@@ -2,6 +2,8 @@
 @import './rem';
 
 .react-calendar-datetime-picker {
+  position: relative;
+  width: 100%;
   @import './component/dtWrapper.scss';
   @import './component/header.scss';
   @import './component/yearsView.scss';

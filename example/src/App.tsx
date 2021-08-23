@@ -52,7 +52,6 @@ export default function App() {
             onChange={setEx1}
             local='en'
             withTime
-            calenderModalClass='mx-2'
             type='single'
           />
 
@@ -73,7 +72,6 @@ export default function App() {
             onChange={setEx2}
             local='fa'
             withTime
-            calenderModalClass='mx-2'
             type='range'
             todayBtn
             maxDate={{
@@ -117,45 +115,23 @@ export default function App() {
       </div>
       <div className='flex justify-between my-4'>
         <div className='flex my-10'>
-          <DtPicker
-            onChange={setEx3}
-            local='en'
-            type='single'
-            inputClass='mx-2'
-            withTime
-          />
+          <DtPicker onChange={setEx3} local='en' type='single' withTime />
           <pre className='mt-4'>{convertToFa(ex3)}</pre>
           <pre className='mt-4'>{JSON.stringify(ex3, null, 2)}</pre>
         </div>
         <div className='flex my-10'>
           <pre className='mt-4'>{JSON.stringify(ex4, null, 2)}</pre>
-          <DtPicker
-            onChange={setEx4}
-            local='fa'
-            type='range'
-            inputClass='mx-2'
-            withTime
-          />
+          <DtPicker onChange={setEx4} local='fa' type='range' withTime />
         </div>
       </div>
       <div className='flex justify-between my-4'>
         <div className='flex my-10'>
-          <DtPicker
-            onChange={setEx5}
-            local='en'
-            type='multi'
-            inputClass='mx-2'
-          />
+          <DtPicker onChange={setEx5} local='en' type='multi' />
           <pre className='mt-4'>{JSON.stringify(ex5, null, 2)}</pre>
         </div>
         <div className='flex my-10'>
           <pre className='mt-4'>{JSON.stringify(ex6, null, 2)}</pre>
-          <DtPicker
-            onChange={setEx6}
-            local='fa'
-            type='multi'
-            inputClass='mx-2'
-          />
+          <DtPicker onChange={setEx6} local='fa' type='multi' />
         </div>
       </div>
     </CenterLayout>

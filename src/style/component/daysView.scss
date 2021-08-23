@@ -5,7 +5,7 @@
   margin: 0;
   text-align: center;
   .daysList-day {
-    width: rem(calc(#{$modal-width} / 7));
+    width: rem(calc(100% / 7));
     height: rem(calc(#{$modal-width} / 7));
     line-height: rem(calc(#{$modal-width} / 7));
     float: left;

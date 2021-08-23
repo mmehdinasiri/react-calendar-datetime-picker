@@ -1,7 +1,10 @@
 .input-picker {
   position: relative;
-  display: inline-block;
+  width: 100%;
+
   .input-picker--input {
+    cursor: pointer;
+    width: 100%;
     text-align: center;
     line-height: rem(26px);
     height: rem(26px);
