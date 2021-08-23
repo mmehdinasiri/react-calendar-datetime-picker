@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.5.3] - 8/27/2021|
+## [1.5.4] - 8/24/2021|
+
+- fix width issue and change some style
+
+## [1.5.3] - 8/19/2021|
 
 - change typing structure
 
-## [1.5.2] - 8/27/2021|
+## [1.5.2] - 8/19/2021|
 
 - fix exporting types
 

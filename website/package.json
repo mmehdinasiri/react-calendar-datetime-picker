@@ -12,7 +12,7 @@
 	"dependencies": {
 		"next": "10.0.9",
 		"react": "^17.0.1",
-		"react-calendar-datetime-picker": "^1.5.3",
+		"react-calendar-datetime-picker": "^1.5.4",
 		"react-dom": "^17.0.1",
 		"sass": "^1.32.6"
 	},
