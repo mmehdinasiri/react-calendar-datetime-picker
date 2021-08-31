@@ -74,4 +74,4 @@ Thanks to [jalaali-js](https://github.com/jalaali/jalaali-js), the only dependen
 
 ## 📋 License
 
-MIT © [mehdinasiri](https://github.com/mehdinasiri)
+MIT © [mehdinasiri](https://github.com/mmehdinasiri)
