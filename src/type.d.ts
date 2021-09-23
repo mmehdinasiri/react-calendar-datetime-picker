@@ -25,6 +25,7 @@ export type Day = IDay | null
 export type Multi = IDay[] | null
 export type calendarLocal = 'fa' | 'en'
 export type calendarType = 'single' | 'range' | 'multi'
+export type calendarListStyle = 'grid' | 'list'
 
 export interface IDtPickerProps {
   initValue?: IDay | Multi | IRange | null | undefined
@@ -62,5 +63,6 @@ export interface IDtPickerProps {
   monthsClass?: string
   yearsClass?: string
   disabledDates?: IDay[]
+  yearListStyle?: calendarListStyle
 }
 // export { Day, IRange }

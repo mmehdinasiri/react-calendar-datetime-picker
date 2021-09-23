@@ -32,7 +32,7 @@
   top: -0.1em;
 }
 
-.yearList {
+.yearGrid {
   list-style: none;
   overflow: hidden;
   padding: 0;
@@ -43,12 +43,15 @@
   overflow-y: scroll;
   padding: rem(30px) 0;
   margin: rem(8px) 0;
+  .is-year-list {
+    display: block;
+  }
 }
 
-.yearList::-webkit-scrollbar {
+.yearGrid::-webkit-scrollbar {
   display: none;
 }
-.yearList_year {
+.yearGrid_year {
   width: 20%;
   height: rem(55px);
   line-height: rem(55px);
@@ -62,6 +65,11 @@
   font-size: rem(22px);
 }
 
-.yearList_year:nth-child(5n + 1) {
+.yearGrid_year:nth-child(5n + 1) {
   clear: left;
+}
+.is-year-list {
+  .yearGrid_year {
+    width: 100%;
+  }
 }

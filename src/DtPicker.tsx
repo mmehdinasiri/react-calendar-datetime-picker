@@ -51,7 +51,8 @@ const DtPicker: FC<IDtPickerProps> = ({
   timeClass,
   monthsClass,
   yearsClass,
-  disabledDates
+  disabledDates,
+  yearListStyle
 }) => {
   const [prevInitDate, setPrevInitDate] = useState<any>(null)
   const [isUpdate, setIsUpdate] = useState<number>(0)
@@ -208,6 +209,7 @@ const DtPicker: FC<IDtPickerProps> = ({
                       disabledDates={fixedDisabledDates}
                       initCalender={initCalender}
                       isComponentVisible={isComponentVisible}
+                      yearListStyle={yearListStyle}
                     />
                   </div>
                 )}

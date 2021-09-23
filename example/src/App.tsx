@@ -55,6 +55,7 @@ export default function App() {
             type='single'
             withTime
             showTimeInput
+            yearListStyle='list'
           />
         </div>
       </div>

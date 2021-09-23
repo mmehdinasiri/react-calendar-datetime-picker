@@ -14,7 +14,7 @@ import { useSelectedDayState } from '../../store/SelectedDaysProvider'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { mergeProviders } from '../../helpers'
 import { useCalenderActions } from '../../store/CalenderProvider'
-import { IDay, IRange, Multi } from 'src/type'
+import { calendarListStyle, IDay, IRange, Multi } from 'src/type'
 
 type local = 'fa' | 'en'
 type type = 'single' | 'range' | 'multi'
@@ -41,6 +41,7 @@ interface IWrapper {
   disabledDates?: IDay[]
   initCalender?: IDay
   isComponentVisible?: boolean
+  yearListStyle?: calendarListStyle
 }
 const Wrapper: FC<IWrapper> = ({
   onCalenderChange,
@@ -64,7 +65,8 @@ const Wrapper: FC<IWrapper> = ({
   yearsClass,
   disabledDates,
   initCalender,
-  isComponentVisible
+  isComponentVisible,
+  yearListStyle
 }) => {
   console.log('===wrapper===')
   const currentView = useViewState()
@@ -97,7 +99,7 @@ const Wrapper: FC<IWrapper> = ({
     lastSelectedDate.current = selectedDayState
   }, [selectedDayState])
   useEffect(() => {
-    //reset calendar view to selected view after closing modal
+    // reset calendar view to selected view after closing modal
     return () => {
       if (type === 'single' && lastSelectedDate.current) {
         changeCalender({
@@ -138,7 +140,11 @@ const Wrapper: FC<IWrapper> = ({
         headerClass={headerClass}
       />
       {YEARS_VIEW === currentView && (
-        <YearsView local={local} yearsClass={yearsClass} />
+        <YearsView
+          local={local}
+          yearsClass={yearsClass}
+          yearListStyle={yearListStyle}
+        />
       )}
       {MONTHS_VIEW === currentView && (
         <MonthsView local={local} monthsClass={monthsClass} />

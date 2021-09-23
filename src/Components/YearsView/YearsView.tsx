@@ -8,12 +8,14 @@ import {
 } from '../../store/CalenderProvider'
 import { useMinMaxState } from '../../store/MinMaxProvider'
 import { toPersianNumber } from '../../helpers/index'
+import { calendarListStyle } from 'src/type'
 
 interface IYearsProps {
   local: string
   yearsClass?: string
+  yearListStyle?: calendarListStyle
 }
-const years: FC<IYearsProps> = ({ local, yearsClass }) => {
+const years: FC<IYearsProps> = ({ local, yearsClass, yearListStyle }) => {
   const { minDate, maxDate } = useMinMaxState()
   const { YEARS_RANGE_START, YEARS_RANGE_END } = useLangOption(local)
   const { changeView } = useViewActions()
@@ -63,7 +65,7 @@ const years: FC<IYearsProps> = ({ local, yearsClass }) => {
       yearsList.push(
         <li
           key={i}
-          className={`yearList_year ${
+          className={`yearGrid_year ${
             i === calenderState.year ? 'is-selectedYearRef' : ''
           }`}
           onClick={() => changeYear(i)}
@@ -86,8 +88,12 @@ const years: FC<IYearsProps> = ({ local, yearsClass }) => {
     }
   }, [])
   return (
-    <div className={`yearWrapper ${yearsClass}`}>
-      <ul className={`yearList ${local === 'fa' ? 'is-rtl' : ''}`}>
+    <div className={`yearWrapper ${yearsClass} `}>
+      <ul
+        className={`yearGrid ${local === 'fa' ? 'is-rtl' : ''} ${
+          yearListStyle === 'list' ? 'is-year-list' : ''
+        }`}
+      >
         {yearsRange()}
       </ul>
     </div>
