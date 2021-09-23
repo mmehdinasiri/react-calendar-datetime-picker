@@ -27,10 +27,8 @@ import {
 const App = () => {
 	const [singleExample, setSingleExample] = useState(null)
 	const [singleInitValueExample, setSingleInitValueExample] = useState(null)
-	const [
-		singleInitValueExampleAsync,
-		setSingleInitValueExampleAsync
-	] = useState(null)
+	const [singleInitValueExampleAsync, setSingleInitValueExampleAsync] =
+		useState(null)
 	const [
 		singleInitValueExampleAsyncInitValue,
 		setSingleInitValueExampleAsyncInitValue
@@ -354,7 +352,7 @@ const App = () => {
 						</SyntaxHighlighter>
 					</div>
 					<div className='w-2/2 lg:w-1/4 xl:w-1/2'>
-						<DtPicker onChange={setSingleTimeExample} withTime />
+						<DtPicker onChange={setSingleTimeExample} withTime showTimeInput />
 						<pre>{JSON.stringify(singleTimeExample, null, 2)}</pre>
 					</div>
 				</div>
@@ -364,7 +362,7 @@ const App = () => {
 					id='showWeekendClearBtnAndTodayBtnOptions'
 					className='text-2xl font-bold mb-4 scroll-offset'
 				>
-					ShowWeekend, clearBtn and todayBtn options
+					ShowWeekend,year list style, clearBtn and todayBtn options
 				</h3>
 				<div className='block xl:flex '>
 					<div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
@@ -382,6 +380,7 @@ const App = () => {
 							showWeekend
 							clearBtn
 							todayBtn
+							yearListStyle='list'
 						/>
 						<pre>{JSON.stringify(displayingOption, null, 2)}</pre>
 					</div>
@@ -501,7 +500,7 @@ const App = () => {
 					id='CustomCalender'
 					className='text-2xl font-bold mb-4 scroll-offset'
 				>
-					Custom calender: icons - input placeholder - styles
+					Custom calendar: icons - input placeholder - styles
 				</h3>
 				<div className='block xl:flex '>
 					<div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>

@@ -13,7 +13,7 @@ const Home = () => {
 					React Calendar Date-Time Picker
 				</h1>
 				<h2 className='text-lg text-primary font-medium '>
-					The simple and fast Gregorian and Jalali calender for react
+					The simple and fast Gregorian and Jalali calendar for react
 				</h2>
 				<div className='md:flex justify-center	'>
 					<div className='mx-auto md:mx-4 my-4 my-6'>
@@ -45,11 +45,11 @@ const Home = () => {
 					<h3 className='text-3xl text-primary font-bold  mb-4'>Features</h3>
 					<ul className='mx-auto table list-disc text-text'>
 						<li className='text-left'>
-							Supports Gregorian and Jalali calender
+							Supports Gregorian and Jalali calendar
 						</li>
 						<li className='text-left'>Uses context api to share data</li>
 						<li className='text-left'>
-							Supports three types of calender: single day - date range -
+							Supports three types of calendar: single day - date range -
 							multiple dates
 						</li>
 						<li className='text-left'>Fully customizable</li>

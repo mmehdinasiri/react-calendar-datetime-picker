@@ -8,7 +8,7 @@ const Customization = () => {
 			<p className='text-lg mb-3'>
 				React-Calendar-DateTime-Picker is very customizable; one can change any
 				label or style that they need. Here is a list of props that can be used
-				to customize the calender:
+				to customize the calendar:
 			</p>
 			<div className='overflow-x-auto'>
 				<table className='border border-primary rounded  w-full'>

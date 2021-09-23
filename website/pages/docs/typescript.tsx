@@ -43,7 +43,6 @@ const Typescript: FC = () => {
 									inputClass='mb-2'
 								/>
 								value: <pre>{JSON.stringify(date, null, 2)}</pre>
-								<br />
 								<DtPicker
 									onChange={setDateRange}
 									type='range'

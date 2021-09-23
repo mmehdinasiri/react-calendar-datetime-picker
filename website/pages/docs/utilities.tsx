@@ -20,7 +20,7 @@ const Utilities = () => {
 					to Jalali date and vice versa.
 					<br />
 					These functions accept date object as the first argument and divider
-					sign as the second argument('/' is the default value).
+					sign as the second argument ('/' is the default value).
 				</p>
 				<div className='mt-10'>
 					<div className='mb-10 pb-4 border-b border-primary border-opacity-50 '>

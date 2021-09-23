@@ -9,49 +9,49 @@ export const CUSTOMIZATION_APIS = [
 		property: 'inputClass',
 		type: 'string',
 		default: '',
-		description: "To change calender's input style"
+		description: "To change calendar's input style"
 	},
 	{
 		property: 'clearBtnClass',
 		type: 'string',
 		default: '',
-		description: "To change calender's clear button style"
+		description: "To change calendar's clear button style"
 	},
 	{
 		property: 'calenderModalClass',
 		type: 'string',
 		default: '',
-		description: "To change calender's main modal style"
+		description: "To change calendar's main modal style"
 	},
 	{
 		property: 'headerClass',
 		type: 'string',
 		default: '',
-		description: "To change calender's green header style"
+		description: "To change calendar's green header style"
 	},
 	{
 		property: 'timeClass',
 		type: 'string',
 		default: '',
-		description: "To change calender's time view style"
+		description: "To change calendar's time view style"
 	},
 	{
 		property: 'daysClass',
 		type: 'string',
 		default: '',
-		description: "To change calender's days view style"
+		description: "To change calendar's days view style"
 	},
 	{
 		property: 'monthsClass',
 		type: 'string',
 		default: '',
-		description: "To change calender's months view style"
+		description: "To change calendar's months view style"
 	},
 	{
 		property: 'yearsClass',
 		type: 'string',
 		default: '',
-		description: "To change calender's years view style"
+		description: "To change calendar's years view style"
 	},
 
 	{

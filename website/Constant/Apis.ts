@@ -25,7 +25,7 @@ export const APIS = [
 		type: 'string',
 		default: 'en',
 		description:
-			'This date picker supports both Gregorian and Jalali calenders.To select Gregorian calender you have to set "local" to "en" and to "fa" for Persian.'
+			'This date picker supports both Gregorian and Jalali calenders.To select Gregorian calendar you have to set "local" to "en" and to "fa" for Jalali.'
 	},
 	{
 		property: 'withTime',
@@ -33,6 +33,12 @@ export const APIS = [
 		default: 'false',
 		description:
 			'Should you need to use time in your date picker you can set this prop to true.This prop works only in single and range types.'
+	},
+	{
+		property: 'showTimeInput',
+		type: 'boolean',
+		default: 'false',
+		description: 'Helps you to show time in input date picker'
 	},
 	{
 		property: 'showWeekend',
@@ -45,7 +51,7 @@ export const APIS = [
 		type: 'boolean',
 		default: 'false',
 		description:
-			'Add a button to your input to clear you calender initial date/dates.'
+			'Add a button to your input to clear you calendar initial date/dates.'
 	},
 	{
 		property: 'isRequired',
@@ -58,19 +64,25 @@ export const APIS = [
 		property: 'todayBtn',
 		type: 'boolean',
 		default: 'false',
-		description: 'A button to move fast to the date of today in the calender.'
+		description: 'A button to move fast to the date of today in the calendar.'
+	},
+	{
+		property: 'onCalenderChange',
+		type: 'func',
+		default: '',
+		description: 'A callback that runs when the calendar value is changed'
 	},
 	{
 		property: 'onCalenderShow',
 		type: 'func',
 		default: '',
-		description: 'A callback that runs when the calender opens'
+		description: 'A callback that runs when the calendar opens'
 	},
 	{
 		property: 'onCalenderHide',
 		type: 'func',
 		default: '',
-		description: 'A callback that runs when the calender closes'
+		description: 'A callback that runs when the calendar closes'
 	},
 	{
 		property: 'maxDate',
@@ -97,5 +109,12 @@ export const APIS = [
 		type: 'boolean',
 		default: 'false',
 		description: 'Use to disable the calendar input'
+	},
+	{
+		property: 'yearListStyle',
+		type: 'string',
+		default: 'grid',
+		description:
+			'Use to change year item list style(accepted value: grid, list)'
 	}
 ]

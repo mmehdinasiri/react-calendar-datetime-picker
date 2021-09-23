@@ -200,7 +200,7 @@ const DocLayout = ({ children }: IDocLayout) => {
 												router.asPath.includes('#CustomCalender') && 'is-active'
 											}`}
 										>
-											Custom calender
+											Custom calendar
 										</a>
 									</Link>
 								</div>
