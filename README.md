@@ -7,7 +7,7 @@
 
 ### The Simple and fast English and Persian calender for React
 
-version: "1.5.5"
+version: "1.5.6"
 
 [![NPM](https://img.shields.io/npm/v/react-calendar-datetime-picker.svg)](https://www.npmjs.com/package/react-calendar-datetime-picker) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -60,7 +60,7 @@ const App = () => {
 
 ## ✔️ bundle size
 
-You can check out this package bundle size in this [Link](https://bundlephobia.com/result?p=react-calendar-datetime-picker@1.5.1)
+You can check out this package bundle size in this [Link](https://bundlephobia.com/result?p=react-calendar-datetime-picker@1.5.6)
 
 ## 🙇 Special Thanks
 
