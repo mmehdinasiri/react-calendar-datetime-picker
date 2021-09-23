@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 import { DAYS_VIEW } from '../../Constant'
 import { useViewActions } from '../../store/ViewProvider'
 import { useLangOption } from '../../hooks/useLangOption'
@@ -17,6 +17,7 @@ interface IYearsProps {
 }
 const years: FC<IYearsProps> = ({ local, yearsClass, yearListStyle }) => {
   const { minDate, maxDate } = useMinMaxState()
+  const ref = useRef<HTMLLIElement>(null)
   const { YEARS_RANGE_START, YEARS_RANGE_END } = useLangOption(local)
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
@@ -65,6 +66,7 @@ const years: FC<IYearsProps> = ({ local, yearsClass, yearListStyle }) => {
       yearsList.push(
         <li
           key={i}
+          ref={i === calenderState.year ? ref : null}
           className={`yearGrid_year ${
             i === calenderState.year ? 'is-selectedYearRef' : ''
           }`}
@@ -76,11 +78,8 @@ const years: FC<IYearsProps> = ({ local, yearsClass, yearListStyle }) => {
     return yearsList
   }
   useEffect(() => {
-    const node: HTMLElement | null = document.querySelector(
-      '.is-selectedYearRef'
-    )
-    if (node) {
-      node.scrollIntoView({
+    if (ref.current) {
+      ref.current.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
         inline: 'center'
