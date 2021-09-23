@@ -8,7 +8,7 @@ import { ReactComponent as Close } from '../../Icons/close.svg'
 import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { useLangOption } from '../../hooks/useLangOption'
 import { useCalenderActions } from '../../store/CalenderProvider'
-import { IDay, IRange } from 'src/type'
+import { IDay, IRange, ITime, ITimeRange } from 'src/type'
 interface IInputPicker {
   placeholder?: string
   type: string
@@ -24,6 +24,7 @@ interface IInputPicker {
   inputClass?: string
   clearBtnClass?: string
   maxDate: IDay | null | undefined
+  showTimeInput?: boolean
 }
 const InputPicker = forwardRef(
   (
@@ -41,7 +42,8 @@ const InputPicker = forwardRef(
       toLabel,
       inputClass,
       clearBtnClass,
-      maxDate
+      maxDate,
+      showTimeInput
     }: IInputPicker,
     ref: RefObject<HTMLInputElement>
   ) => {
@@ -56,7 +58,13 @@ const InputPicker = forwardRef(
     } = useSelectedDayActions()
     const correctValue = () => {
       if (type === 'single') {
-        return genFullIDay(selectedDayState as IDay, true)
+        return genFullIDay(
+          selectedDayState as IDay,
+          true,
+          withTime,
+          showTimeInput,
+          selectedTime as ITime
+        )
       }
       if (
         type === 'range' &&
@@ -65,10 +73,16 @@ const InputPicker = forwardRef(
       ) {
         return `${fromLabel || fromLB} : ${genFullIDay(
           (selectedDayState as IRange).from,
-          true
+          true,
+          withTime,
+          showTimeInput,
+          (selectedTime as ITimeRange).from
         )}    ${toLabel || toLB} : ${genFullIDay(
           (selectedDayState as IRange).to,
-          true
+          true,
+          withTime,
+          showTimeInput,
+          (selectedTime as ITimeRange).to
         )}`
       } else if (type === 'multi') {
         const listDate = (selectedDayState as IDay[]).map((day) => {

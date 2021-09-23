@@ -21,6 +21,7 @@ const DtPicker: FC<IDtPickerProps> = ({
   onChange,
   type,
   withTime,
+  showTimeInput,
   local,
   showWeekend,
   clearBtn,
@@ -177,6 +178,7 @@ const DtPicker: FC<IDtPickerProps> = ({
                   inputClass={inputClass}
                   clearBtnClass={clearBtnClass}
                   maxDate={maxDate}
+                  showTimeInput={showTimeInput}
                 />
                 {isComponentVisible && (
                   <div

@@ -21,13 +21,15 @@ export const genFullDay = (year: number, month: number, day: number) => {
 export const genFullIDay = (
   date: IDay | null | undefined,
   isCorrectMonth: boolean = false,
-  withTime?: boolean
+  withTime?: boolean,
+  showTimeInput?: boolean,
+  time?: ITime | null | undefined
 ) => {
   if (date) {
-    if (withTime && date.hour && date.minute) {
+    if (showTimeInput && withTime && time) {
       return `${date.year}/${addZero(
         date.month + (isCorrectMonth ? +1 : 0)
-      )}/${addZero(date.day)} ${addZero(date.hour)}:${addZero(date.minute)}`
+      )}/${addZero(date.day)} ${addZero(time.hour)}:${addZero(time.minute)}`
     } else {
       return `${date.year}/${addZero(
         date.month + (isCorrectMonth ? +1 : 0)

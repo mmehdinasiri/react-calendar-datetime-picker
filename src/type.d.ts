@@ -34,6 +34,7 @@ export interface IDtPickerProps {
   onCalenderShow?: any
   type?: calendarType
   withTime?: boolean
+  showTimeInput?: boolean
   local?: calendarLocal
   showWeekend?: boolean
   clearBtn?: boolean
