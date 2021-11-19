@@ -1710,6 +1710,15 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
+"@types/react@^16":
+  version "16.14.21"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.14.21.tgz#35199b21a278355ec7a3c40003bd6a334bd4ae4a"
+  integrity sha512-rY4DzPKK/4aohyWiDRHS2fotN5rhBSK6/rz1X37KzNna9HJyqtaGAbq9fVttrEPWF5ywpfIP1ITL8Xi2QZn6Eg==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
 "@types/react@link:../node_modules/@types/react":
   version "0.0.0"
   uid ""
@@ -6327,6 +6336,11 @@ istanbul-reports@^2.2.6:
   dependencies:
     html-escaper "^2.0.0"
 
+jalaali-js@^1.1.5:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/jalaali-js/-/jalaali-js-1.2.3.tgz#365775826d2eece5e6552b96aff384c8773bb406"
+  integrity sha512-irl0pXL59Xl0Oz6jyOiJed/NxrVeS6fSx6a8atQOH/LsPWPZwBCxwe5XVEIqjnwt69FRxvnCCwQn5dTMxwbazQ==
+
 jest-changed-files@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-24.9.0.tgz#08d8c15eb79a7fa3fc98269bc14b451ee82f8039"
@@ -8334,11 +8348,6 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
-
-persian-date@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/persian-date/-/persian-date-1.1.0.tgz#a06155797bca20217fa8302101ea5efd041a3221"
-  integrity sha512-YwV3703jLTTJFFQfP3RvMfvKZc5Z1yE++Deywox+hkVLuVN81VsTaZFma9k5P9SgfSUvXjiylbQVuf4YYLGOow==
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
   version "2.2.3"
