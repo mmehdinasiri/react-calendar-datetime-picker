@@ -1,3 +1,5 @@
+import { IInputPicker } from './Components/InputPicker/InputPicker'
+
 export interface ITime {
   hour: number
   minute: number
@@ -28,6 +30,7 @@ export type calendarType = 'single' | 'range' | 'multi'
 export type calendarListStyle = 'grid' | 'list'
 
 export interface IDtPickerProps {
+  formatValue?: IInputPicker['formatValue']
   initValue?: IDay | Multi | IRange | null | undefined
   onChange: (date: any) => void
   onCalenderChange?: any

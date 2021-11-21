@@ -9,7 +9,12 @@ import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
 import { useLangOption } from '../../hooks/useLangOption'
 import { useCalenderActions } from '../../store/CalenderProvider'
 import { IDay, IRange, ITime, ITimeRange } from 'src/type'
-interface IInputPicker {
+export interface IInputPicker {
+  formatValue?: (dateTimeParam: {
+    date: IDay | IRange | IDay[] | null | undefined,
+    time: ITime | ITimeRange | null | undefined,
+    type: string
+  }) => string
   placeholder?: string
   type: string
   local: string
@@ -29,6 +34,7 @@ interface IInputPicker {
 const InputPicker = forwardRef(
   (
     {
+      formatValue,
       placeholder,
       type,
       local,
@@ -57,6 +63,9 @@ const InputPicker = forwardRef(
       removeAllSelectedDayMulti
     } = useSelectedDayActions()
     const correctValue = () => {
+      if(formatValue){
+        return formatValue({date: selectedDayState, time: selectedTime, type})
+      }
       if (type === 'single') {
         return genFullIDay(
           selectedDayState as IDay,
