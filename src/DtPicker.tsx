@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-return */
 import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import './style/main.scss'
 import { DtWrapper, InputPicker } from './Components'
@@ -14,7 +16,7 @@ import {
   mergeProviders
 } from './helpers'
 import useComponentVisible from './hooks/useComponentVisible'
-import { IDtPickerProps, calendarLocal, calendarType } from './type'
+import { IDtPickerProps, calendarLocal, calendarType, IRange } from './type'
 
 const DtPicker: FC<IDtPickerProps> = ({
   initValue,
@@ -132,13 +134,29 @@ const DtPicker: FC<IDtPickerProps> = ({
     disabledDates
   )
   useEffect(() => {
-    if (
-      isUpdate === 0 ||
-      (initValue && JSON.stringify(prevInitDate) !== JSON.stringify(initValue))
-    ) {
-      setPrevInitDate(initValue)
-      setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
-      setIsUpdate(isUpdate + 1)
+    if (correctedType === 'single' || correctedType === 'multi') {
+      if (
+        (initValue &&
+          JSON.stringify(prevInitDate) !== JSON.stringify(initValue)) ||
+        !initValue
+      ) {
+        setPrevInitDate(initValue)
+        setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
+        setIsUpdate(isUpdate + 1)
+      }
+    }
+    if (correctedType === 'range') {
+      if (
+        (initValue &&
+          (initValue as IRange).from &&
+          (initValue as IRange).to &&
+          JSON.stringify(prevInitDate) !== JSON.stringify(initValue)) ||
+        !initValue
+      ) {
+        setPrevInitDate(initValue)
+        setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
+        setIsUpdate(isUpdate + 1)
+      }
     }
   }, [initValue])
   useEffect(() => {

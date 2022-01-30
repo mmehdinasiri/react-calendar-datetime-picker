@@ -9,7 +9,7 @@ import CenterLayout from './Component/Layout/CenterLayout'
 //   Range,
 //   convertToEn
 // } from 'react-calendar-datetime-picker'
-import DtPicker, { Range } from 'react-calendar-datetime-picker'
+import DtPicker, { Day, Range, Multi } from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/index.css'
 
 export default function App() {
@@ -44,44 +44,88 @@ export default function App() {
 
   // const [ex5, setEx5] = useState(null)
   // const [ex6, setEx6] = useState(null)
-  // const [main, setMain] = useState<Day>({
-  //   year: 2010,
-  //   month: 2,
-  //   day: 22,
-  //   hour: 11,
-  //   minute: 2
-  // })
-  const [range, setRange] = useState<Range>(null)
-  // const [range, setRange] = useState<Range>({
-  //   from: {
-  //     year: 2010,
-  //     month: 2,
-  //     day: 22,
-  //     hour: 11,
-  //     minute: 2
-  //   },
-  //   to: {
-  //     year: 2010,
-  //     month: 5,
-  //     day: 22,
-  //     hour: 11,
-  //     minute: 2
-  //   }
-  // })
+  const maxDate = {
+    year: 2012,
+    month: 6,
+    day: 23
+  }
+  const minDate = {
+    year: 2010,
+    month: 2,
+    day: 10
+  }
+  const [main, setMain] = useState<Day>({
+    year: 2010,
+    month: 2,
+    day: 22,
+    hour: 11,
+    minute: 2
+  })
+  // const [range, setRange] = useState<Range>(null)
+  const [range, setRange] = useState<Range>({
+    from: {
+      year: 2010,
+      month: 2,
+      day: 22,
+      hour: 11,
+      minute: 2
+    },
+    to: {
+      year: 2010,
+      month: 5,
+      day: 22,
+      hour: 11,
+      minute: 2
+    }
+  })
+
+  const [multi, setMulti] = useState<Multi>([
+    {
+      year: 2010,
+      month: 2,
+      day: 22,
+      hour: 11,
+      minute: 2
+    },
+    {
+      year: 2010,
+      month: 2,
+      day: 25,
+      hour: 11,
+      minute: 2
+    },
+    {
+      year: 2010,
+      month: 2,
+      day: 1,
+      hour: 11,
+      minute: 2
+    },
+    {
+      year: 2010,
+      month: 3,
+      day: 25,
+      hour: 11,
+      minute: 2
+    }
+  ])
+
   // console.log(main)
   return (
     <CenterLayout>
-      {/* <div className='my-20 mx-auto'>
+      <div className='my-20 mx-auto'>
         <div className=' w-56'>
           <DtPicker
             onChange={setMain}
             local='en'
-            date={main}
+            initValue={main}
             type='single'
             withTime
             showTimeInput
             yearListStyle='list'
             autoClose={false}
+            minDate={minDate}
+            maxDate={maxDate}
           />
         </div>
       </div>
@@ -102,7 +146,7 @@ export default function App() {
         }
       >
         click
-      </button> */}
+      </button>
       <div>
         -------------------------------------------------------------------------------------
       </div>
@@ -144,6 +188,65 @@ export default function App() {
               minute: 2
             }
           })
+        }
+      >
+        click
+      </button>
+      <div>
+        -------------------------------------------------------------------------------------
+      </div>
+      <div className='my-20 mx-auto'>
+        <div className=' w-56'>
+          <DtPicker
+            onChange={setMulti}
+            local='en'
+            initValue={multi}
+            type='multi'
+            withTime
+            showTimeInput
+            yearListStyle='list'
+            autoClose={false}
+          />
+        </div>
+      </div>
+      <pre>{JSON.stringify(multi, null, 4)}</pre>
+      <button type='button' onClick={() => setMulti(null)}>
+        click
+      </button>
+      <hr />
+      <button
+        type='button'
+        onClick={() =>
+          setMulti([
+            {
+              year: 2019,
+              month: 2,
+              day: 22,
+              hour: 11,
+              minute: 2
+            },
+            {
+              year: 2019,
+              month: 2,
+              day: 25,
+              hour: 11,
+              minute: 2
+            },
+            {
+              year: 2019,
+              month: 2,
+              day: 1,
+              hour: 11,
+              minute: 2
+            },
+            {
+              year: 2019,
+              month: 3,
+              day: 25,
+              hour: 11,
+              minute: 2
+            }
+          ])
         }
       >
         click

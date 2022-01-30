@@ -13,7 +13,7 @@ import {
   handelInitialValues,
   mergeProviders
 } from './helpers'
-import { IDtPickerProps, calendarLocal, calendarType } from './type'
+import { IDtPickerProps, calendarLocal, calendarType, IRange } from './type'
 
 const DtCalendar: FC<IDtPickerProps> = ({
   initValue,
@@ -79,13 +79,29 @@ const DtCalendar: FC<IDtPickerProps> = ({
     disabledDates
   )
   useEffect(() => {
-    if (
-      isUpdate === 0 ||
-      (initValue && JSON.stringify(prevInitDate) !== JSON.stringify(initValue))
-    ) {
-      setPrevInitDate(initValue)
-      setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
-      setIsUpdate(isUpdate + 1)
+    if (correctedType === 'single' || correctedType === 'multi') {
+      if (
+        (initValue &&
+          JSON.stringify(prevInitDate) !== JSON.stringify(initValue)) ||
+        !initValue
+      ) {
+        setPrevInitDate(initValue)
+        setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
+        setIsUpdate(isUpdate + 1)
+      }
+    }
+    if (correctedType === 'range') {
+      if (
+        (initValue &&
+          (initValue as IRange).from &&
+          (initValue as IRange).to &&
+          JSON.stringify(prevInitDate) !== JSON.stringify(initValue)) ||
+        !initValue
+      ) {
+        setPrevInitDate(initValue)
+        setFixedInitValue(fixedMonthInitValue(initValue, correctedType))
+        setIsUpdate(isUpdate + 1)
+      }
     }
   }, [initValue])
   useEffect(() => {
