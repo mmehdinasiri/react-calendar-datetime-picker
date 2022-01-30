@@ -180,11 +180,15 @@ export const handelInitialValues = (
     }
   }
   if (correctedType === 'multi') {
-    if (initValue && initValue.length && initValue[0]?.year) {
+    if (
+      initValue &&
+      initValue.length &&
+      initValue[initValue.length - 1]?.year
+    ) {
       initCalender = {
-        year: initValue[0].year,
-        month: initValue[0].month,
-        day: initValue[0].day
+        year: initValue[initValue.length - 1].year,
+        month: initValue[initValue.length - 1].month,
+        day: initValue[initValue.length - 1].day
       }
     }
   }

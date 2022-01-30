@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useMemo, useState } from 'react'
 import './style/main.scss'
 import { DtWrapper } from './Components'
 import CalenderProvider from './store/CalenderProvider'
@@ -63,12 +63,16 @@ const DtCalendar: FC<IDtPickerProps> = ({
   const [fixedInitValue, setFixedInitValue] = useState(
     fixedMonthInitValue(initValue, correctedType)
   )
-  const { initCalender, initTime } = handelInitialValues(
-    fixedMonthInitValue(initValue, correctedType),
-    correctedType,
-    correctedLocal,
-    fixedMonth(maxDate),
-    fixedMonth(minDate)
+  const { initCalender, initTime } = useMemo(
+    () =>
+      handelInitialValues(
+        fixedMonthInitValue(initValue, correctedType),
+        correctedType,
+        correctedLocal,
+        fixedMonth(maxDate),
+        fixedMonth(minDate)
+      ),
+    [initValue, maxDate, minDate]
   )
   checkInputValues(
     initValue,

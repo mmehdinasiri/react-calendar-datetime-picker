@@ -1,6 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-useless-return */
-import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, {
+  FC,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
 import './style/main.scss'
 import { DtWrapper, InputPicker } from './Components'
 import CalenderProvider from './store/CalenderProvider'
@@ -79,12 +86,16 @@ const DtPicker: FC<IDtPickerProps> = ({
   const [fixedInitValue, setFixedInitValue] = useState(
     fixedMonthInitValue(initValue, correctedType)
   )
-  const { initCalender, initTime } = handelInitialValues(
-    fixedMonthInitValue(initValue, correctedType),
-    correctedType,
-    correctedLocal,
-    fixedMonth(maxDate),
-    fixedMonth(minDate)
+  const { initCalender, initTime } = useMemo(
+    () =>
+      handelInitialValues(
+        fixedMonthInitValue(initValue, correctedType),
+        correctedType,
+        correctedLocal,
+        fixedMonth(maxDate),
+        fixedMonth(minDate)
+      ),
+    [initValue, maxDate, minDate]
   )
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false, onCalenderHide, inputRef)
