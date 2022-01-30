@@ -20,7 +20,7 @@ interface IHeaderProps {
   previousMonthBtnTitle?: string
   headerClass?: string
   autoClose?: boolean
-  handelComponentVisible: (foreClose?: boolean) => void
+  handelComponentVisible?: (foreClose?: boolean) => void
 }
 const Header: FC<IHeaderProps> = ({
   local,
@@ -128,7 +128,7 @@ const Header: FC<IHeaderProps> = ({
       >
         {NextBtnIcon ? <NextBtnIcon /> : <Next />}
       </a>
-      {!autoClose && (
+      {!autoClose && handelComponentVisible && (
         <a
           className='header--clearBtn'
           onClick={() => handelComponentVisible(true)}

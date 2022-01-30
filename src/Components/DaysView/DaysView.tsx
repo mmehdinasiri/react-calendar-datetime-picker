@@ -22,7 +22,7 @@ interface IDaysProps {
   showWeekend: boolean
   daysClass?: string
   disabledDates?: IDay[]
-  handelComponentVisible: (foreClose?: boolean) => void
+  handelComponentVisible?: (foreClose?: boolean) => void
 }
 const DaysView: FC<IDaysProps> = ({
   type,
@@ -150,7 +150,7 @@ const DaysView: FC<IDaysProps> = ({
         removeSelectedDay()
       } else {
         changeSelectedDay(newDate)
-        handelComponentVisible()
+        if (handelComponentVisible) handelComponentVisible()
       }
     }
     if (type === 'range' && selectedDayState) {
@@ -161,7 +161,7 @@ const DaysView: FC<IDaysProps> = ({
         fromTimeStamp <= newDateTimeStamp
       ) {
         changeSelectedDayRange('to', newDate)
-        handelComponentVisible()
+        if (handelComponentVisible) handelComponentVisible()
       } else if (
         !(selectedDayState as IRange).to?.year &&
         fromTimeStamp > newDateTimeStamp
@@ -169,7 +169,7 @@ const DaysView: FC<IDaysProps> = ({
         const newTo = (selectedDayState as IRange).from
         changeSelectedDayRange('from', newDate)
         changeSelectedDayRange('to', newTo)
-        handelComponentVisible()
+        if (handelComponentVisible) handelComponentVisible()
       } else if (
         (selectedDayState as IRange).from &&
         (selectedDayState as IRange).to

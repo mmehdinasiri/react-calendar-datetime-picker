@@ -363,6 +363,8 @@ export const checkInputValues = (
   if (
     correctedType === 'range' &&
     initValue &&
+    initValue.from &&
+    initValue.to &&
     selectCompar[correctedLocal](initValue.to, initValue.from) === 2
   ) {
     throw Error('Default "To" date must be grater than default "from" date.')

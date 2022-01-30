@@ -42,8 +42,8 @@ interface IWrapper {
   initCalender?: IDay
   isComponentVisible?: boolean
   yearListStyle?: calendarListStyle
-  handelComponentVisible: (foreClose?: boolean) => void
-  autoClose: boolean
+  handelComponentVisible?: (foreClose?: boolean) => void
+  autoClose?: boolean
 }
 const Wrapper: FC<IWrapper> = ({
   onCalenderChange,

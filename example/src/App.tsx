@@ -9,7 +9,7 @@ import CenterLayout from './Component/Layout/CenterLayout'
 //   Range,
 //   convertToEn
 // } from 'react-calendar-datetime-picker'
-import DtPicker from 'react-calendar-datetime-picker'
+import DtPicker, { Range } from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/index.css'
 
 export default function App() {
@@ -44,15 +44,39 @@ export default function App() {
 
   // const [ex5, setEx5] = useState(null)
   // const [ex6, setEx6] = useState(null)
-  const [main, setMain] = useState(null)
-  console.log(main)
+  // const [main, setMain] = useState<Day>({
+  //   year: 2010,
+  //   month: 2,
+  //   day: 22,
+  //   hour: 11,
+  //   minute: 2
+  // })
+  const [range, setRange] = useState<Range>(null)
+  // const [range, setRange] = useState<Range>({
+  //   from: {
+  //     year: 2010,
+  //     month: 2,
+  //     day: 22,
+  //     hour: 11,
+  //     minute: 2
+  //   },
+  //   to: {
+  //     year: 2010,
+  //     month: 5,
+  //     day: 22,
+  //     hour: 11,
+  //     minute: 2
+  //   }
+  // })
+  // console.log(main)
   return (
     <CenterLayout>
-      <div className='my-20 mx-auto'>
+      {/* <div className='my-20 mx-auto'>
         <div className=' w-56'>
           <DtPicker
             onChange={setMain}
             local='en'
+            date={main}
             type='single'
             withTime
             showTimeInput
@@ -61,6 +85,69 @@ export default function App() {
           />
         </div>
       </div>
+      <button type='button' onClick={() => setMain(null)}>
+        click
+      </button>
+      <hr />
+      <button
+        type='button'
+        onClick={() =>
+          setMain({
+            year: 2020,
+            month: 2,
+            day: 22,
+            hour: 11,
+            minute: 2
+          })
+        }
+      >
+        click
+      </button> */}
+      <div>
+        -------------------------------------------------------------------------------------
+      </div>
+      <div className='my-20 mx-auto'>
+        <div className=' w-56'>
+          <DtPicker
+            onChange={setRange}
+            local='en'
+            initValue={range}
+            type='range'
+            withTime
+            showTimeInput
+            yearListStyle='list'
+            autoClose={false}
+          />
+        </div>
+      </div>
+      <pre>{JSON.stringify(range, null, 4)}</pre>
+      <button type='button' onClick={() => setRange(null)}>
+        click
+      </button>
+      <hr />
+      <button
+        type='button'
+        onClick={() =>
+          setRange({
+            from: {
+              year: 2020,
+              month: 2,
+              day: 22,
+              hour: 11,
+              minute: 2
+            },
+            to: {
+              year: 2020,
+              month: 5,
+              day: 22,
+              hour: 11,
+              minute: 2
+            }
+          })
+        }
+      >
+        click
+      </button>
       {/* <div className='flex justify-between my-10'>
         <div className='flex  my-10'>
           <DtCalendar
