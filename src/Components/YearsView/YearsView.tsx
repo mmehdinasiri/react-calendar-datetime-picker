@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef } from 'react'
-import { DAYS_VIEW } from '../../Constant'
+import { MONTHS_VIEW } from '../../Constant'
 import { useViewActions } from '../../store/ViewProvider'
 import { useLangOption } from '../../hooks/useLangOption'
 import {
@@ -44,7 +44,7 @@ const years: FC<IYearsProps> = ({ local, yearsClass, yearListStyle }) => {
       minutes: minute
     }
     changeCalender({ ...newDate })
-    changeView(DAYS_VIEW)
+    changeView(MONTHS_VIEW)
   }
   const fixedMinStartYear = () => {
     let startYear = YEARS_RANGE_START
