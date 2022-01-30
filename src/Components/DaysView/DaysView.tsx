@@ -22,15 +22,17 @@ interface IDaysProps {
   showWeekend: boolean
   daysClass?: string
   disabledDates?: IDay[]
+  handelComponentVisible: () => void
 }
 const DaysView: FC<IDaysProps> = ({
   type,
   local,
   showWeekend,
   daysClass,
-  disabledDates
+  disabledDates,
+  handelComponentVisible
 }) => {
-  console.log('--days--')
+  console.log('--days--2')
   const { minDate, maxDate } = useMinMaxState()
   const { todayObject, getDay, WEEK_DAYS } = useLangOption(local)
   const todayTimeStamp = getDateTimeStamp({ ...todayObject() }, local)
@@ -148,6 +150,7 @@ const DaysView: FC<IDaysProps> = ({
         removeSelectedDay()
       } else {
         changeSelectedDay(newDate)
+        handelComponentVisible()
       }
     }
     if (type === 'range' && selectedDayState) {
@@ -158,6 +161,7 @@ const DaysView: FC<IDaysProps> = ({
         fromTimeStamp <= newDateTimeStamp
       ) {
         changeSelectedDayRange('to', newDate)
+        handelComponentVisible()
       } else if (
         !(selectedDayState as IRange).to?.year &&
         fromTimeStamp > newDateTimeStamp
@@ -165,6 +169,7 @@ const DaysView: FC<IDaysProps> = ({
         const newTo = (selectedDayState as IRange).from
         changeSelectedDayRange('from', newDate)
         changeSelectedDayRange('to', newTo)
+        handelComponentVisible()
       } else if (
         (selectedDayState as IRange).from &&
         (selectedDayState as IRange).to

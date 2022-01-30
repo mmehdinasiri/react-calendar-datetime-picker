@@ -3,12 +3,13 @@ import './style/tailwindPurge.scss'
 import './style/main.scss'
 import CenterLayout from './Component/Layout/CenterLayout'
 
-import DtPicker, {
-  DtCalendar,
-  convertToFa,
-  Range,
-  convertToEn
-} from 'react-calendar-datetime-picker'
+// import DtPicker, {
+//   DtCalendar,
+//   convertToFa,
+//   Range,
+//   convertToEn
+// } from 'react-calendar-datetime-picker'
+import DtPicker from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/index.css'
 
 export default function App() {
@@ -52,10 +53,11 @@ export default function App() {
           <DtPicker
             onChange={setMain}
             local='en'
-            type='single'
+            type='range'
             withTime
             showTimeInput
             yearListStyle='list'
+            autoClose={false}
           />
         </div>
       </div>

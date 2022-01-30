@@ -25,11 +25,13 @@
     "react": "link:../node_modules/react",
     "react-calendar-datetime-picker": "link:..",
     "react-dom": "link:../node_modules/react-dom",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "link:../node_modules/react-scripts",
     "typescript": "link:../node_modules/typescript"
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
+    "@types/react-router-dom": "^5.3.3",
     "autoprefixer": "^10.1.0",
     "postcss": "^8.2.2",
     "postcss-cli": "^8.3.1",

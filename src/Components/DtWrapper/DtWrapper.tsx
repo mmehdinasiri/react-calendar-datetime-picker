@@ -42,6 +42,7 @@ interface IWrapper {
   initCalender?: IDay
   isComponentVisible?: boolean
   yearListStyle?: calendarListStyle
+  handelComponentVisible: () => void
 }
 const Wrapper: FC<IWrapper> = ({
   onCalenderChange,
@@ -66,7 +67,8 @@ const Wrapper: FC<IWrapper> = ({
   disabledDates,
   initCalender,
   isComponentVisible,
-  yearListStyle
+  yearListStyle,
+  handelComponentVisible
 }) => {
   console.log('===wrapper===')
   const currentView = useViewState()
@@ -156,6 +158,7 @@ const Wrapper: FC<IWrapper> = ({
           showWeekend={showWeekend}
           daysClass={daysClass}
           disabledDates={disabledDates}
+          handelComponentVisible={handelComponentVisible}
         />
       )}
       {useViewState() === DAYS_VIEW && (

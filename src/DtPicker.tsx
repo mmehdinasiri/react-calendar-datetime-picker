@@ -52,7 +52,8 @@ const DtPicker: FC<IDtPickerProps> = ({
   monthsClass,
   yearsClass,
   disabledDates,
-  yearListStyle
+  yearListStyle,
+  autoClose = true
 }) => {
   const [prevInitDate, setPrevInitDate] = useState<any>(null)
   const [isUpdate, setIsUpdate] = useState<number>(0)
@@ -87,11 +88,13 @@ const DtPicker: FC<IDtPickerProps> = ({
     useComponentVisible(false, onCalenderHide, inputRef)
 
   const handelComponentVisible = () => {
-    if (isComponentVisible) return
+    if (!autoClose && isComponentVisible) return
     if (!isComponentVisible && onCalenderShow) {
       onCalenderShow()
     }
-    setIsComponentVisible(!isComponentVisible)
+    setTimeout(() => {
+      setIsComponentVisible(!isComponentVisible)
+    }, 300)
   }
   useLayoutEffect(() => {
     if (!isComponentVisible) return
@@ -210,6 +213,7 @@ const DtPicker: FC<IDtPickerProps> = ({
                       initCalender={initCalender}
                       isComponentVisible={isComponentVisible}
                       yearListStyle={yearListStyle}
+                      handelComponentVisible={handelComponentVisible}
                     />
                   </div>
                 )}
