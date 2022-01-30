@@ -22,7 +22,7 @@ interface IDaysProps {
   showWeekend: boolean
   daysClass?: string
   disabledDates?: IDay[]
-  handelComponentVisible: () => void
+  handelComponentVisible: (foreClose?: boolean) => void
 }
 const DaysView: FC<IDaysProps> = ({
   type,

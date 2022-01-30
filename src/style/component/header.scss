@@ -37,6 +37,16 @@
       pointer-events: none;
     }
   }
+  .header--clearBtn {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    color: white;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    opacity: 0.8;
+  }
 }
 .is-rtl {
   .header {

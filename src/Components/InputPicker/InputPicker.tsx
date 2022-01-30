@@ -13,7 +13,7 @@ interface IInputPicker {
   placeholder?: string
   type: string
   local: string
-  handelComponentVisible: () => void
+  handelComponentVisible: (foreClose?: boolean) => void
   onChange: (date: any) => void
   clearBtn?: boolean
   withTime?: boolean
@@ -133,7 +133,7 @@ const InputPicker = forwardRef(
           readOnly
           placeholder={placeholder || inputPlaceholder}
           value={correctValue()}
-          onClick={() => handelComponentVisible()}
+          onClick={() => handelComponentVisible(true)}
           disabled={isDisabled}
           required={isRequired}
         />

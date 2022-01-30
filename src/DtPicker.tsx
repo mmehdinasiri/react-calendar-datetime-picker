@@ -87,10 +87,14 @@ const DtPicker: FC<IDtPickerProps> = ({
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false, onCalenderHide, inputRef)
 
-  const handelComponentVisible = () => {
-    if (!autoClose && isComponentVisible) return
+  const handelComponentVisible = (forceClose?: boolean) => {
+    if (!forceClose && !autoClose && isComponentVisible) return
     if (!isComponentVisible && onCalenderShow) {
       onCalenderShow()
+    }
+    if (forceClose) {
+      setIsComponentVisible(!isComponentVisible)
+      return
     }
     setTimeout(() => {
       setIsComponentVisible(!isComponentVisible)
@@ -214,6 +218,7 @@ const DtPicker: FC<IDtPickerProps> = ({
                       isComponentVisible={isComponentVisible}
                       yearListStyle={yearListStyle}
                       handelComponentVisible={handelComponentVisible}
+                      autoClose={autoClose}
                     />
                   </div>
                 )}

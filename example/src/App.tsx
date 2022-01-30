@@ -53,7 +53,7 @@ export default function App() {
           <DtPicker
             onChange={setMain}
             local='en'
-            type='range'
+            type='single'
             withTime
             showTimeInput
             yearListStyle='list'

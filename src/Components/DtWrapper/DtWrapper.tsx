@@ -42,7 +42,8 @@ interface IWrapper {
   initCalender?: IDay
   isComponentVisible?: boolean
   yearListStyle?: calendarListStyle
-  handelComponentVisible: () => void
+  handelComponentVisible: (foreClose?: boolean) => void
+  autoClose: boolean
 }
 const Wrapper: FC<IWrapper> = ({
   onCalenderChange,
@@ -68,7 +69,8 @@ const Wrapper: FC<IWrapper> = ({
   initCalender,
   isComponentVisible,
   yearListStyle,
-  handelComponentVisible
+  handelComponentVisible,
+  autoClose
 }) => {
   console.log('===wrapper===')
   const currentView = useViewState()
@@ -140,6 +142,8 @@ const Wrapper: FC<IWrapper> = ({
         nextMonthBtnTitle={nextMonthBtnTitle}
         previousMonthBtnTitle={previousMonthBtnTitle}
         headerClass={headerClass}
+        handelComponentVisible={handelComponentVisible}
+        autoClose={autoClose}
       />
       {YEARS_VIEW === currentView && (
         <YearsView

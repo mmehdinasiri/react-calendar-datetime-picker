@@ -1,8 +1,9 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 import {
   useCalenderActions,
   useCalenderState
 } from '../../store/CalenderProvider'
+import { ReactComponent as Close } from '../../Icons/close.svg'
 import { useMinMaxState } from '../../store/MinMaxProvider'
 import { useViewState, useViewActions } from '../../store/ViewProvider'
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
@@ -18,6 +19,8 @@ interface IHeaderProps {
   nextMonthBtnTitle?: string
   previousMonthBtnTitle?: string
   headerClass?: string
+  autoClose?: boolean
+  handelComponentVisible: (foreClose?: boolean) => void
 }
 const Header: FC<IHeaderProps> = ({
   local,
@@ -25,7 +28,9 @@ const Header: FC<IHeaderProps> = ({
   PreviousBtnIcon,
   nextMonthBtnTitle,
   previousMonthBtnTitle,
-  headerClass
+  headerClass,
+  autoClose,
+  handelComponentVisible
 }) => {
   console.log('--header--')
   const { minDate, maxDate } = useMinMaxState()
@@ -93,7 +98,6 @@ const Header: FC<IHeaderProps> = ({
     }
     return true
   }
-  useEffect(() => {})
   return (
     <div className={`header ${headerClass}`}>
       <a
@@ -124,6 +128,14 @@ const Header: FC<IHeaderProps> = ({
       >
         {NextBtnIcon ? <NextBtnIcon /> : <Next />}
       </a>
+      {!autoClose && (
+        <a
+          className='header--clearBtn'
+          onClick={() => handelComponentVisible(true)}
+        >
+          <Close />
+        </a>
+      )}
     </div>
   )
 }
