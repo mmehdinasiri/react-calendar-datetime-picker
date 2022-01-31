@@ -28,6 +28,13 @@ export const APIS = [
 			'This date picker supports both Gregorian and Jalali calenders.To select Gregorian calendar you have to set "local" to "en" and to "fa" for Jalali.'
 	},
 	{
+		property: 'autoClose',
+		type: 'boolean',
+		default: 'true',
+		description:
+			'Calendar modal close automatically, by set autoClose to false you can keep calender modal open even after selecting date(auto closing just works on single and range type)'
+	},
+	{
 		property: 'withTime',
 		type: 'boolean',
 		default: 'false',

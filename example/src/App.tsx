@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './style/tailwindPurge.scss'
 import './style/main.scss'
 import CenterLayout from './Component/Layout/CenterLayout'
@@ -109,7 +109,18 @@ export default function App() {
       minute: 2
     }
   ])
-
+  useEffect(() => {
+    setTimeout(() => {
+      console.log('run')
+      setMain({
+        year: 2014,
+        month: 3,
+        day: 22,
+        hour: 11,
+        minute: 2
+      })
+    }, 2000)
+  }, [])
   // console.log(main)
   return (
     <CenterLayout>
@@ -124,8 +135,8 @@ export default function App() {
             showTimeInput
             yearListStyle='list'
             autoClose={false}
-            minDate={minDate}
-            maxDate={maxDate}
+            // minDate={minDate}
+            // maxDate={maxDate}
           />
         </div>
       </div>

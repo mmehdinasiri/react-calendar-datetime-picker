@@ -11,12 +11,11 @@ export default DatePicker
 `
 export const singleInitValueExampleStr = `
 const DatePicker = () => {
-  const defaultValue = { year: 2019, month: 3, day: 20 }
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState({ year: 2019, month: 3, day: 20 })
   return (
     <DtPicker
       onChange={setDate}
-      initValue={defaultValue}
+      initValue={date}
     />
   )
 }
@@ -24,10 +23,9 @@ export default DatePicker
 `
 export const singleUpdateInitValueExampleStr = `
 const DatePicker = () => {
-  const [initValue,setInitValue] = useState({ year: 2010, month: 3, day: 22 })
   const [date, setDate] = useState(null)
   const updateInitValue = () => {
-    setInitValue({
+    setDate({
       year: 2020,
       month: 12,
       day: 25
@@ -39,7 +37,7 @@ const DatePicker = () => {
     </button>
     <DtPicker
       onChange={setDate}
-      initValue={initValue}
+      initValue={date}
     />
   )
 }

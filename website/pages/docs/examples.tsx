@@ -26,13 +26,14 @@ import {
 
 const App = () => {
 	const [singleExample, setSingleExample] = useState(null)
-	const [singleInitValueExample, setSingleInitValueExample] = useState(null)
+	const [singleInitValueExample, setSingleInitValueExample] = useState({
+		year: 2019,
+		month: 3,
+		day: 20
+	})
 	const [singleInitValueExampleAsync, setSingleInitValueExampleAsync] =
-		useState(null)
-	const [
-		singleInitValueExampleAsyncInitValue,
-		setSingleInitValueExampleAsyncInitValue
-	] = useState({ year: 2010, month: 3, day: 22 })
+		useState({ year: 2010, month: 3, day: 22 })
+
 	const [singlePersianExample, setSinglePersianExample] = useState(null)
 	const [rangeExample, setRangeExample] = useState(null)
 	const [rangeInitValueExample, setRangeInitValueExample] = useState(null)
@@ -91,8 +92,8 @@ const App = () => {
 	const [withoutInput, setWithoutInput] = useState(null)
 	const [customIcons, setCustomIcons] = useState(null)
 	const updateInitValue = () => {
-		setSingleInitValueExampleAsyncInitValue({
-			year: 2020,
+		setSingleInitValueExampleAsync({
+			year: 2021,
 			month: 12,
 			day: 25
 		})
@@ -142,11 +143,7 @@ const App = () => {
 					</div>
 					<div className='w-2/2 lg:w-1/4 xl:w-1/2'>
 						<DtPicker
-							initValue={{
-								year: 2019,
-								month: 3,
-								day: 20
-							}}
+							initValue={singleInitValueExample}
 							onChange={setSingleInitValueExample}
 						/>
 						<pre>{JSON.stringify(singleInitValueExample, null, 2)}</pre>
@@ -175,7 +172,7 @@ const App = () => {
 							Update init value
 						</button>
 						<DtPicker
-							initValue={singleInitValueExampleAsyncInitValue}
+							initValue={singleInitValueExampleAsync}
 							onChange={setSingleInitValueExampleAsync}
 						/>
 						<pre>{JSON.stringify(singleInitValueExampleAsync, null, 2)}</pre>
