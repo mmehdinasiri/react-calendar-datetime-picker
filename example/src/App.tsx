@@ -9,12 +9,7 @@ import CenterLayout from './Component/Layout/CenterLayout'
 //   Range,
 //   convertToEn
 // } from 'react-calendar-datetime-picker'
-import DtPicker, {
-  DtCalendar,
-  Day,
-  Range,
-  Multi
-} from 'react-calendar-datetime-picker'
+import DtPicker, { Day, Range, Multi } from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/index.css'
 
 export default function App() {
@@ -116,10 +111,7 @@ export default function App() {
     <CenterLayout>
       <div className='my-20 mx-auto'>
         <div className=' w-56'>
-          <span className='block'>open: {open}</span>
-          <span className='block'>change: {change}</span>
-          <span className='block'>close: {close}</span>
-          <DtCalendar
+          <DtPicker
             onChange={setMain}
             local='en'
             initValue={main}
@@ -127,11 +119,11 @@ export default function App() {
             withTime
             showTimeInput
             yearListStyle='list'
-            autoClose={false}
-            onCalenderChange={handleCalendarChange}
-            onCalenderShow={handleCalendarOpen}
-            onCalenderHide={handleCalendarClose}
-            minDate={minDate}
+            // autoClose={false}
+            // onCalenderChange={handleCalendarChange}
+            // onCalenderShow={handleCalendarOpen}
+            // onCalenderHide={handleCalendarClose}
+            // minDate={minDate}
             // maxDate={maxDate}
           />
         </div>
@@ -159,6 +151,9 @@ export default function App() {
       </div>
       <div className='my-20 mx-auto'>
         <div className=' w-56'>
+          <span className='block'>open: {open}</span>
+          <span className='block'>change: {change}</span>
+          <span className='block'>close: {close}</span>
           <DtPicker
             onChange={setRange}
             local='en'
@@ -168,9 +163,9 @@ export default function App() {
             showTimeInput
             yearListStyle='list'
             autoClose={false}
-            // onCalenderChange={handleCalendarChange}
-            // onCalenderShow={handleCalendarOpen}
-            // onCalenderHide={handleCalendarClose}
+            onCalenderChange={handleCalendarChange}
+            onCalenderShow={handleCalendarOpen}
+            onCalenderHide={handleCalendarClose}
           />
         </div>
       </div>

@@ -105,6 +105,9 @@ const DtPicker: FC<IDtPickerProps> = ({
     if (!isComponentVisible && onCalenderShow) {
       onCalenderShow()
     }
+    if (isComponentVisible && onCalenderHide) {
+      onCalenderHide()
+    }
     if (forceClose) {
       setIsComponentVisible(!isComponentVisible)
       return
