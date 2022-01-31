@@ -185,6 +185,15 @@ const DocLayout = ({ children }: IDocLayout) => {
 											Set a list of disabled dates
 										</a>
 									</Link>
+									<Link href='#AutoClose'>
+										<a
+											className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
+												router.asPath.includes('#AutoClose') && 'is-active'
+											}`}
+										>
+											AutoClose
+										</a>
+									</Link>
 									<Link href='#WithoutInput'>
 										<a
 											className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${

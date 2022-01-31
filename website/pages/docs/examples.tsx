@@ -21,7 +21,8 @@ import {
 	customCalender,
 	customCalenderStyle,
 	withoutInputStr,
-	singleUpdateInitValueExampleStr
+	singleUpdateInitValueExampleStr,
+	autoCloseStr
 } from '../../Constant/sampleString'
 
 const App = () => {
@@ -90,6 +91,7 @@ const App = () => {
 		}
 	]
 	const [withoutInput, setWithoutInput] = useState(null)
+	const [autoCloseFalse, setAutoCloseFalse] = useState(null)
 	const [customIcons, setCustomIcons] = useState(null)
 	const updateInitValue = () => {
 		setSingleInitValueExampleAsync({
@@ -471,6 +473,30 @@ const App = () => {
 				</div>
 			</div>
 			<div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
+				<h3 id='AutoClose' className='text-2xl font-bold mb-4 scroll-offset'>
+					AutoClose : false
+				</h3>
+				<div className='block xl:flex '>
+					<div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
+						<SyntaxHighlighter
+							className='rounded'
+							style={tomorrowNightEighties}
+							language='javascript'
+						>
+							{autoCloseStr}
+						</SyntaxHighlighter>
+					</div>
+					<div className='w-2/2 xl:w-1/2'>
+						<div className='mt-4'>
+							<DtPicker onChange={setAutoCloseFalse} autoClose={false} />
+						</div>
+						<pre className='mt-4'>
+							{JSON.stringify(autoCloseFalse, null, 2)}
+						</pre>
+					</div>
+				</div>
+			</div>
+			<div className='my-10 pb-4 border-b border-primary border-opacity-50 '>
 				<h3 id='WithoutInput' className='text-2xl font-bold mb-4 scroll-offset'>
 					Without input
 				</h3>
@@ -492,6 +518,7 @@ const App = () => {
 					</div>
 				</div>
 			</div>
+
 			<div className='my-10 pb-4'>
 				<h3
 					id='CustomCalender'

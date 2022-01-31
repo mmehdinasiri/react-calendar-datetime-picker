@@ -239,6 +239,19 @@ const DatePicker = () => {
 }
 export default DatePicker
 `
+export const autoCloseStr = `
+import DtPicker from 'react-calendar-datetime-picker'
+const DatePicker = () => {
+  const [date, setDate] = useState(null)
+  return (
+    <DtPicker
+      onChange={setDate}
+      autoClose={false}
+    />
+  )
+}
+export default DatePicker
+`
 export const withoutInputStr = `
 import  { DtCalendar } from 'react-calendar-datetime-picker'
 const DatePicker = () => {

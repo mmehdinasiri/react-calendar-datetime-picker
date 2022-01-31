@@ -58,24 +58,10 @@ const App = () => {
 - Function called for change, open and close events
 - Supports Typescript
 
-## ✔️ bundle size
 
-You can check out this package bundle size in this [Link](https://bundlephobia.com/result?p=react-calendar-datetime-picker@1.5.7)
-
-## 🙇 Special Thanks
-
-Thanks to [jalaali-js](https://github.com/jalaali/jalaali-js), the only dependency of this date picker.
-
-## 👨🏽‍💻 Team
-
-| [![Mehdi Nasiri](https://avatars.githubusercontent.com/u/24561712?v=3&s=144)](https://github.com/mmehdinasiri) | [![Omid Rafiee](https://avatars.githubusercontent.com/u/25098596?v=3&s=144)](https://github.com/OmidRafiee) | [![Esmaeil jafari](https://avatars.githubusercontent.com/u/40715465?v=3&s=144)](https://github.com/pokerface71) |
-| -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| [Mehdi Nasiri ](https://github.com/iharsh234)                                                                  | [Omid Rafiee](https://github.com/OmidRafiee)                                                                | [Esmaeil jafari](https://github.com/pokerface71)                                                                |
-
-## 📋 License
-
-MIT © [mehdinasiri](https://github.com/mmehdinasiri)
-
+<br>
+<br>
+<br>
 ## 🔧 Props
 
 |Property|Type|Required|Default|Description|
@@ -122,3 +108,26 @@ MIT © [mehdinasiri](https://github.com/mmehdinasiri)
 |clockFromLabel|string|"from"|Title for starting time in the time component(works only in range type).|
 |clockToLabel|string|"to"|Title for ending time in the time component(works only in range type).|
 |clockLabel|string|"clock"|Label for time in the time component(works in single and range type).|
+
+<br>
+<br>
+<br>
+
+## ✔️ bundle size
+
+You can check out this package bundle size in this [Link](https://bundlephobia.com/result?p=react-calendar-datetime-picker@1.5.7)
+
+## 🙇 Special Thanks
+
+Thanks to [jalaali-js](https://github.com/jalaali/jalaali-js), the only dependency of this date picker.
+
+## 👨🏽‍💻 Team
+
+| [![Mehdi Nasiri](https://avatars.githubusercontent.com/u/24561712?v=3&s=144)](https://github.com/mmehdinasiri) | [![Omid Rafiee](https://avatars.githubusercontent.com/u/25098596?v=3&s=144)](https://github.com/OmidRafiee) | [![Esmaeil jafari](https://avatars.githubusercontent.com/u/40715465?v=3&s=144)](https://github.com/pokerface71) |
+| -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| [Mehdi Nasiri ](https://github.com/iharsh234)                                                                  | [Omid Rafiee](https://github.com/OmidRafiee)                                                                | [Esmaeil jafari](https://github.com/pokerface71)                                                                |
+
+## 📋 License
+
+MIT © [mehdinasiri](https://github.com/mmehdinasiri)
+
