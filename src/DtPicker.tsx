@@ -223,7 +223,6 @@ const DtPicker: FC<IDtPickerProps> = ({
                     className={`calender-modal ${calenderModalClass}`}
                   >
                     <DtWrapper
-                      onCalenderChange={onCalenderChange}
                       onChange={onChange}
                       type={correctedType}
                       withTime={withTime}

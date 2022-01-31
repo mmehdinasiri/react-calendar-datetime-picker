@@ -141,7 +141,6 @@ const DtCalendar: FC<IDtPickerProps> = ({
                   className={`calender-modal  is-calender ${calenderModalClass}`}
                 >
                   <DtWrapper
-                    onCalenderChange={onCalenderChange}
                     onChange={onChange}
                     type={correctedType}
                     withTime={withTime}

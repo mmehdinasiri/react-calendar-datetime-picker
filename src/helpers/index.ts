@@ -278,8 +278,14 @@ export const mergeProviders = (
   onChange(updatedValue || selectedDate)
   if (onCalenderChange) {
     if (type === 'range') {
-      if ((selectedDate as IRange).from && (selectedDate as IRange).to) {
+      if (
+        selectedDate &&
+        (selectedDate as IRange).from &&
+        (selectedDate as IRange).to
+      ) {
         onCalenderChange(updatedValue)
+      } else {
+        onCalenderChange(null)
       }
     } else {
       onCalenderChange(updatedValue)

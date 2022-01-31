@@ -19,7 +19,6 @@ import { calendarListStyle, IDay, IRange, Multi } from 'src/type'
 type local = 'fa' | 'en'
 type type = 'single' | 'range' | 'multi'
 interface IWrapper {
-  onCalenderChange?: any
   onChange: (date: any) => void
   type: type
   withTime?: boolean
@@ -46,7 +45,6 @@ interface IWrapper {
   autoClose?: boolean
 }
 const Wrapper: FC<IWrapper> = ({
-  onCalenderChange,
   onChange,
   type,
   withTime,
@@ -84,7 +82,7 @@ const Wrapper: FC<IWrapper> = ({
       type,
       selectedDayState,
       selectedTime,
-      onCalenderChange,
+      null,
       withTime
     )
   }, [selectedDayState, selectedTime])
