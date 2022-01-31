@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 1/31/2022|
+
+- fix init value issue (there is no need extra state to handle init or update value from outside of calendar)
+- add autoClose by true default to close modal after selecting date
+- add closing icon if autoClose is false
+- fix onchange twice running
+- fix onCalenderHide running by close icon
 ## [1.5.7] - 11/19/2021|
 
 - fix persian month title
