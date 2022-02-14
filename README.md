@@ -7,7 +7,6 @@
 
 ### The Simple and fast English and Persian calender for React
 
-version: "1.6.0"
 
 [![NPM](https://img.shields.io/npm/v/react-calendar-datetime-picker.svg)](https://www.npmjs.com/package/react-calendar-datetime-picker) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -61,7 +60,7 @@ const App = () => {
 
 <br>
 <br>
-<br>
+
 ## 🔧 Props
 
 |Property|Type|Required|Default|Description|
@@ -115,17 +114,11 @@ const App = () => {
 
 ## ✔️ bundle size
 
-You can check out this package bundle size in this [Link](https://bundlephobia.com/result?p=react-calendar-datetime-picker@1.6.0)
+You can check out this package bundle size in this [Link](https://bundlephobia.com/result?p=react-calendar-datetime-picker@1.6.1)
 
 ## 🙇 Special Thanks
 
 Thanks to [jalaali-js](https://github.com/jalaali/jalaali-js), the only dependency of this date picker.
-
-## 👨🏽‍💻 Team
-
-| [![Mehdi Nasiri](https://avatars.githubusercontent.com/u/24561712?v=3&s=144)](https://github.com/mmehdinasiri) | [![Omid Rafiee](https://avatars.githubusercontent.com/u/25098596?v=3&s=144)](https://github.com/OmidRafiee) | [![Esmaeil jafari](https://avatars.githubusercontent.com/u/40715465?v=3&s=144)](https://github.com/pokerface71) |
-| -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| [Mehdi Nasiri ](https://github.com/iharsh234)                                                                  | [Omid Rafiee](https://github.com/OmidRafiee)                                                                | [Esmaeil jafari](https://github.com/pokerface71)                                                                |
 
 ## 📋 License
 
