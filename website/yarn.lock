@@ -3512,10 +3512,10 @@ raw-body@2.4.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-calendar-datetime-picker@^1.5.3:
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/react-calendar-datetime-picker/-/react-calendar-datetime-picker-1.5.3.tgz#b8d8e565910421bdcd2d8238634d6b28aaae10e0"
-  integrity sha512-qTFYAeYGaGvRikkifJ5ipJ7IIUM1wHndRdRt0dW4q3zKXHl5vxkIw903fJwrA+Fop7rvTNGwMDZmLnhwCR9d2g==
+react-calendar-datetime-picker@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-calendar-datetime-picker/-/react-calendar-datetime-picker-1.6.0.tgz#4864cb51e826e43e2193355bf61c0a9eb378fa52"
+  integrity sha512-tNtrwhABdcoLtOQAWWqKIR7bw0UirhYGw8/JXndUpt07107gWuDFIoP760C1tc/7s4EQOt595SIoL14c8rNTlg==
   dependencies:
     jalaali-js "^1.1.5"
 
