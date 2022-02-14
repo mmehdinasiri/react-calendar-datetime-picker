@@ -176,6 +176,7 @@ const DatePicker = () => {
   }
   return (
     <DtPicker
+      initValue={date}
       onChange={setDate}
       onCalenderChange={handleCalendarChange}
       onCalenderShow={handleCalendarOpen}

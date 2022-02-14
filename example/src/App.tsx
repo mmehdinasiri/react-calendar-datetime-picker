@@ -63,7 +63,7 @@ export default function App() {
       minute: 2
     }
   })
-
+  const [range1, setRange1] = useState<Range>(null)
   const [multi, setMulti] = useState<Multi>([
     {
       year: 2010,
@@ -113,12 +113,13 @@ export default function App() {
         <div className=' w-56'>
           <DtPicker
             onChange={setMain}
-            local='en'
-            initValue={main}
+            local='fa'
+            initValue={null}
             type='single'
             withTime
             showTimeInput
             yearListStyle='list'
+            weekend
             // autoClose={false}
             // onCalenderChange={handleCalendarChange}
             // onCalenderShow={handleCalendarOpen}
@@ -158,6 +159,19 @@ export default function App() {
             onChange={setRange}
             local='en'
             initValue={range}
+            type='range'
+            withTime
+            showTimeInput
+            yearListStyle='list'
+            autoClose={false}
+            onCalenderChange={handleCalendarChange}
+            onCalenderShow={handleCalendarOpen}
+            onCalenderHide={handleCalendarClose}
+          />
+          <DtPicker
+            onChange={setRange1}
+            local='en'
+            initValue={range1}
             type='range'
             withTime
             showTimeInput

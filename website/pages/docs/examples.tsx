@@ -390,7 +390,12 @@ const App = () => {
 					id='openCloseAndChangeCallbackApi'
 					className='text-2xl font-bold mb-4 scroll-offset'
 				>
-					Open, close and change callback api
+					Open, close and change callback api{' '}
+					<span className='text-sm font-normal'>
+						(<span className='font-bold text-red-400'>Note:</span> to use
+						onCalenderChange you should pass initValue or you can use useEffect
+						to watch your date changing)
+					</span>
 				</h3>
 				<div className='block xl:flex '>
 					<div className='w-2/2 xl:w-1/2 pr-10 mb-4 xl:mb-0'>
@@ -408,6 +413,7 @@ const App = () => {
 						<span className='block'>close: {close}</span>
 						<DtPicker
 							type='single'
+							initValue={callBackApi}
 							onChange={setCallBackApi}
 							onCalenderChange={handleCalendarChange}
 							onCalenderShow={handleCalendarOpen}

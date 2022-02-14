@@ -77,7 +77,8 @@ export const APIS = [
 		property: 'onCalenderChange',
 		type: 'func',
 		default: '',
-		description: 'A callback that runs when the calendar value is changed'
+		description:
+			'A callback that runs when the calendar value is changed, to use this feature you should pass initValue '
 	},
 	{
 		property: 'onCalenderShow',

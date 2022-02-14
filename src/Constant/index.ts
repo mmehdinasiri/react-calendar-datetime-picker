@@ -22,6 +22,10 @@ export const LOCAL_CONSTANT = {
     ],
     WEEK_DAYS: [
       {
+        name: 'شنبه',
+        short: 'ش'
+      },
+      {
         name: 'یکشنبه',
         short: 'ی'
       },
@@ -45,10 +49,6 @@ export const LOCAL_CONSTANT = {
         name: 'جمعه',
         short: 'ج',
         isWeekend: true
-      },
-      {
-        name: 'شنبه',
-        short: 'ش'
       }
     ],
     YEARS_RANGE_START: jalaaliToday.jy - 100,
