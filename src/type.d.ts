@@ -65,5 +65,6 @@ export interface IDtPickerProps {
   disabledDates?: IDay[]
   yearListStyle?: calendarListStyle
   autoClose?: boolean
+  inputId?: string
 }
 // export { Day, IRange }
