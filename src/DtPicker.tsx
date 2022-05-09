@@ -62,7 +62,8 @@ const DtPicker: FC<IDtPickerProps> = ({
   yearsClass,
   disabledDates,
   yearListStyle,
-  autoClose = true
+  autoClose = true,
+  inputId
 }) => {
   const [prevInitDate, setPrevInitDate] = useState<any>(null)
   const [isUpdate, setIsUpdate] = useState<number>(0)
@@ -206,6 +207,7 @@ const DtPicker: FC<IDtPickerProps> = ({
                   ref={inputRef}
                   placeholder={placeholder}
                   clearBtn={clearBtn}
+                  inputId={inputId}
                   type={correctedType}
                   local={correctedLocal}
                   handelComponentVisible={handelComponentVisible}
