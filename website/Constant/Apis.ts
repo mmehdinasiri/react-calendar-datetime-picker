@@ -119,6 +119,12 @@ export const APIS = [
 		description: 'Use to disable the calendar input'
 	},
 	{
+		property: 'inputId',
+		type: 'string',
+		default: '',
+		description: 'Assign an id to calendar input'
+	},
+	{
 		property: 'yearListStyle',
 		type: 'string',
 		default: 'grid',
