@@ -25,6 +25,7 @@ interface IInputPicker {
   clearBtnClass?: string
   maxDate: IDay | null | undefined
   showTimeInput?: boolean
+  inputId?: string
 }
 const InputPicker = forwardRef(
   (
@@ -39,6 +40,7 @@ const InputPicker = forwardRef(
       isDisabled,
       isRequired,
       fromLabel,
+      inputId,
       toLabel,
       inputClass,
       clearBtnClass,
@@ -136,6 +138,7 @@ const InputPicker = forwardRef(
           onClick={() => handelComponentVisible(true)}
           disabled={isDisabled}
           required={isRequired}
+          id={inputId}
         />
         {clearBtn && (
           <a
