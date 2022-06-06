@@ -135,7 +135,7 @@ const InputPicker = forwardRef(
           readOnly
           placeholder={placeholder || inputPlaceholder}
           value={correctValue()}
-          onClick={() => handelComponentVisible(true)}
+          onFocus={() => handelComponentVisible(true)}
           disabled={isDisabled}
           required={isRequired}
           id={inputId}
