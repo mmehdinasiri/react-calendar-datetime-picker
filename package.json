@@ -31,8 +31,7 @@
     "test:build": "run-s build",
     "test:lint": "eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
-    "test:watch": "react-scripts test --env=jsdom",
-    "deploy:website": "cd ./website && rimraf out && yarn build && yarn export && touch out/.nojekyll && npm run copy && gh-pages -d out -t true"
+    "test:watch": "react-scripts test --env=jsdom"
   },
   "peerDependencies": {
     "react": ">= 16.8"
