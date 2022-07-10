@@ -5,13 +5,13 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
-import { DAYS_VIEW } from '../Constant'
+import { DAYS_VIEW } from '@/config/constants'
 interface IViewProvider {
   children: React.ReactElement | React.ReactElement[]
 }
 const ViewContext = createContext({} as string)
 const ViewContextSetState = createContext(
-  (Function as unknown) as Dispatch<SetStateAction<string>>
+  Function as unknown as Dispatch<SetStateAction<string>>
 )
 
 function ViewProvider({ children }: IViewProvider) {

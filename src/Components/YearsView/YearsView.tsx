@@ -1,21 +1,22 @@
-import React, { FC, useEffect, useRef } from 'react'
-import { MONTHS_VIEW } from '../../Constant'
-import { useViewActions } from '../../store/ViewProvider'
-import { useLangOption } from '../../hooks/useLangOption'
-import {
-  useCalenderActions,
-  useCalenderState
-} from '../../store/CalenderProvider'
-import { useMinMaxState } from '../../store/MinMaxProvider'
-import { toPersianNumber } from '../../helpers/index'
-import { calendarListStyle } from 'src/type'
+import { FC, useEffect, useRef } from 'react'
+import { useViewActions } from '@/store/ViewProvider'
+import { useCalenderActions, useCalenderState } from '@/store/CalenderProvider'
+import { useMinMaxState } from '@/store/MinMaxProvider'
+import { useLangOption } from '@/utils/hooks'
+import { toPersianNumber } from '@/utils/helpers'
+import { MONTHS_VIEW } from '@/config/constants'
+import { calendarListStyle } from '@/types/type'
 
 interface IYearsProps {
   local: string
   yearsClass?: string
   yearListStyle?: calendarListStyle
 }
-const years: FC<IYearsProps> = ({ local, yearsClass, yearListStyle }) => {
+export const Years: FC<IYearsProps> = ({
+  local,
+  yearsClass,
+  yearListStyle
+}) => {
   const { minDate, maxDate } = useMinMaxState()
   const ref = useRef<HTMLLIElement>(null)
   const { YEARS_RANGE_START, YEARS_RANGE_END } = useLangOption(local)
@@ -98,5 +99,3 @@ const years: FC<IYearsProps> = ({ local, yearsClass, yearListStyle }) => {
     </div>
   )
 }
-
-export default years

@@ -1,34 +1,40 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "extends": [
-    "standard",
-    "standard-react",
-    "plugin:prettier/recommended",
-    "prettier/standard",
-    "prettier/react",
-    "plugin:@typescript-eslint/eslint-recommended"
-  ],
+  "extends": ["airbnb-typescript", "airbnb/hooks"],
+  "plugins": ["react", "@typescript-eslint"],
   "env": {
-    "node": true
+    "browser": true,
+    "es6": true,
+    "jest": true
   },
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "ecmaFeatures": {
-      "legacyDecorators": true,
-      "jsx": true
-    }
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
   },
-  "settings": {
-    "react": {
-      "version": "16"
-    }
-  },
+
   "rules": {
-    "space-before-function-paren": 0,
-    "react/prop-types": 0,
-    "react/jsx-handler-names": 0,
-    "react/jsx-fragments": 0,
-    "react/no-unused-prop-types": 0,
-    "import/export": 0
-  }
+    "linebreak-style": "off"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.tsx", "**/*.ts"],
+      "extends": ["plugin:@typescript-eslint/recommended"],
+
+      "parserOptions": {
+        "ecmaFeatures": {
+          "jsx": true
+        },
+        "ecmaVersion": 2022,
+        "sourceType": "module",
+        "project": "./tsconfig.json"
+      },
+      "rules": {
+        "comma-dangle": "off",
+        "@typescript-eslint/comma-dangle": "off",
+        "semi": "off",
+        "@typescript-eslint/semi": "off",
+        "import/no-extraneous-dependencies": "off",
+        "import/extensions": "off"
+      }
+    }
+  ]
 }

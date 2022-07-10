@@ -1,6 +1,5 @@
-import React, { FC, useEffect, useRef } from 'react'
-import { useViewState } from '../../store/ViewProvider'
-import useDidMountEffect from '../../hooks/useDidMountEffect'
+import { FC, useEffect, useRef } from 'react'
+import { useViewState } from '@/store/ViewProvider'
 import {
   Header,
   YearsView,
@@ -8,13 +7,14 @@ import {
   DaysView,
   TodayBtn,
   TimeDeterminer
-} from '../'
-import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '../../Constant'
-import { useSelectedDayState } from '../../store/SelectedDaysProvider'
-import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
-import { mergeProviders } from '../../helpers'
-import { useCalenderActions } from '../../store/CalenderProvider'
-import { calendarListStyle, IDay, IRange, Multi } from 'src/type'
+} from '@/components'
+import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '@/config/constants'
+import { useSelectedDayState } from '@/store/SelectedDaysProvider'
+import { useSelectedTimeState } from '@/store/SelectedTimeProvider'
+import { useCalenderActions } from '@/store/CalenderProvider'
+import { mergeProviders } from '@/utils/helpers'
+import { useDidMountEffect } from '@/utils/hooks'
+import { calendarListStyle, IDay, IRange, Multi } from '@/types/type'
 
 type local = 'fa' | 'en'
 type type = 'single' | 'range' | 'multi'
@@ -44,7 +44,7 @@ interface IWrapper {
   handelComponentVisible?: (foreClose?: boolean) => void
   autoClose?: boolean
 }
-const Wrapper: FC<IWrapper> = ({
+export const Wrapper: FC<IWrapper> = ({
   onChange,
   type,
   withTime,
@@ -180,5 +180,3 @@ const Wrapper: FC<IWrapper> = ({
     </div>
   )
 }
-
-export default Wrapper

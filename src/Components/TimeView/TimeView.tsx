@@ -1,13 +1,12 @@
-import React, { FC, useState } from 'react'
-import useDidMountEffect from '../../hooks/useDidMountEffect'
-import { useSelectedTimeActions } from '../../store/SelectedTimeProvider'
-import { useSelectedDayState } from '../../store/SelectedDaysProvider'
-import { addZero, isNotUndefined } from '../../helpers'
+import { FC, useState } from 'react'
+import { useSelectedTimeActions } from '@/store/SelectedTimeProvider'
+import { useSelectedDayState } from '@/store/SelectedDaysProvider'
+import { addZero, isNotUndefined } from '@/utils/helpers'
+import { useDidMountEffect } from '@/utils/hooks'
+import { ReactComponent as ChevronUp } from '@/assets/icons/chevron-up.svg'
+import { ReactComponent as ChevronDown } from '@/assets/icons/chevron-down.svg'
+import { IRange } from '@/types/type'
 
-import { ReactComponent as ChevronUp } from '../../Icons/chevron-up.svg'
-import { ReactComponent as ChevronDown } from '../../Icons/chevron-down.svg'
-import { IRange } from 'src/type'
-// import useDidMountEffect from '../../hooks/useDidMountEffect'
 interface ITimeViewProps {
   initHour: number | undefined
   initMinute: number | undefined
@@ -15,7 +14,7 @@ interface ITimeViewProps {
   timeLabel?: string
   timeClass?: string
 }
-const TimeView: FC<ITimeViewProps> = ({
+export const TimeView: FC<ITimeViewProps> = ({
   timeFor,
   initHour,
   initMinute,
@@ -132,5 +131,3 @@ const TimeView: FC<ITimeViewProps> = ({
     </div>
   )
 }
-
-export default TimeView

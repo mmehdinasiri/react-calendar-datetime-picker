@@ -5,7 +5,7 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
-import { ITime, ITimeRange } from 'src/type'
+import { ITime, ITimeRange } from '@/types/type'
 interface ISelectedTimeProvider {
   type?: string
   initState?: ITime | ITimeRange | null
@@ -19,8 +19,9 @@ const SelectedTimeContextSetState = createContext(
 )
 
 function SelectedTimeProvider({ children, initState }: ISelectedTimeProvider) {
-  const [selectedDays, setSelectedDays] =
-    useState<ITime | ITimeRange | null | undefined>(initState)
+  const [selectedDays, setSelectedDays] = useState<
+    ITime | ITimeRange | null | undefined
+  >(initState)
   return (
     <SelectedTimeContext.Provider value={selectedDays}>
       <SelectedTimeContextSetState.Provider value={setSelectedDays}>

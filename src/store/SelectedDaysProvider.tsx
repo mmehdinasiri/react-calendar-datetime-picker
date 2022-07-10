@@ -5,8 +5,8 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
-import { genFullDay } from 'src/helpers'
-import { IDay, IRange } from 'src/type'
+import { genFullDay } from '@/utils/helpers'
+import { IDay, IRange } from '@/types/type'
 
 const SelectedDaysContext = createContext(
   {} as IDay | IRange | IDay[] | null | undefined
@@ -36,8 +36,9 @@ function SelectedDaysProvider({
   if (type === 'multi') {
     initDay = (initState as unknown as IDay[]) || []
   }
-  const [selectedDays, setSelectedDays] =
-    useState<IDay | IRange | IDay[] | null | undefined>(initDay)
+  const [selectedDays, setSelectedDays] = useState<
+    IDay | IRange | IDay[] | null | undefined
+  >(initDay)
   return (
     <SelectedDaysContext.Provider value={selectedDays}>
       <SelectedDaysContextSetState.Provider value={setSelectedDays}>
