@@ -15,7 +15,9 @@ const SelectedTimeContext = createContext(
   {} as ITime | ITimeRange | null | undefined
 )
 const SelectedTimeContextSetState = createContext(
-  Function as unknown as Dispatch<SetStateAction<ITime>>
+  Function as unknown as Dispatch<
+    SetStateAction<ITime | ITimeRange | null | undefined>
+  >
 )
 
 function SelectedTimeProvider({ children, initState }: ISelectedTimeProvider) {
@@ -49,7 +51,7 @@ function useSelectedTimeActions() {
     field: string,
     newValue: ITime | null | undefined
   ) => {
-    setSelectedTimeAction((oldState) => ({
+    setSelectedTimeAction((oldState: any) => ({
       ...oldState,
       [field]: newValue
     }))

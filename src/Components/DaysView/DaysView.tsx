@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC, useMemo } from 'react'
 import {
   useSelectedDayActions,
@@ -52,11 +53,9 @@ export const DaysView: FC<IDaysProps> = React.memo(
 
     let fromTimeStamp: number, toTimeStamp: number
     if (type === 'range' && (selectedDayState as IRange).from) {
-      // @ts-ignore: Unreachable code error
       fromTimeStamp = getDateTimeStamp((selectedDayState as IRange).from, local)
     }
     if (type === 'range' && (selectedDayState as IRange).to) {
-      // @ts-ignore: Unreachable code error
       toTimeStamp = getDateTimeStamp((selectedDayState as IRange).to, local)
     }
 

@@ -23,6 +23,7 @@ export const Years: FC<IYearsProps> = ({
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
   const calenderState = useCalenderState()
+  // eslint-disable-next-line prefer-const
   let { month, day, hour, minute } = calenderState
   const changeYear = (newYear: number) => {
     // correct month after we changing year if we have min or date

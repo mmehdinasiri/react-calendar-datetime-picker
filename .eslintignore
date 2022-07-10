@@ -8,3 +8,4 @@ node_modules/
 *.map
 *.config.js
 .eslintrc
+vite.config.ts

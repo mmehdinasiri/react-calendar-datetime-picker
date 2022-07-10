@@ -46,7 +46,7 @@ export const MonthsView: FC<IMonthsProps> = ({ local, monthsClass }) => {
       <ul
         className={`monthList ${local === 'fa' ? 'is-rtl' : ''} ${monthsClass}`}
       >
-        {MONTHS.map((month: string, index: number) => (
+        {MONTHS.map((monthTitle: string, index: number) => (
           <div
             key={index}
             className={`monthList_month ${
@@ -55,7 +55,7 @@ export const MonthsView: FC<IMonthsProps> = ({ local, monthsClass }) => {
             ${index === preSelectedMonth ? 'is-selected-month' : ''}`}
             onClick={() => changeMonth(index)}
           >
-            {month}
+            {monthTitle}
           </div>
         ))}
       </ul>

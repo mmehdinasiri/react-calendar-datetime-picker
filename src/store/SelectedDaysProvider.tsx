@@ -13,7 +13,7 @@ const SelectedDaysContext = createContext(
 )
 const SelectedDaysContextSetState = createContext(
   Function as unknown as Dispatch<
-    SetStateAction<IDay | IDay[] | null | undefined>
+    SetStateAction<IDay | IRange | IDay[] | null | undefined>
   >
 )
 interface ISelectedDayProvider {
@@ -70,7 +70,7 @@ function useSelectedDayActions() {
     field: string,
     newValue: IDay | null | undefined
   ) => {
-    setSelectedDayAction((prevState: IDay) => ({
+    setSelectedDayAction((prevState: any) => ({
       ...prevState,
       [field]: newValue
     }))
@@ -83,12 +83,10 @@ function useSelectedDayActions() {
           genFullDay(newValue!.year, newValue!.month, newValue!.day)
       )
     ) {
-      // @ts-ignore: Unreachable code error
-      setSelectedDayAction((prevState) => [...prevState, newValue])
+      setSelectedDayAction((prevState: any) => [...prevState, newValue])
     }
   }
   const removeSelectedDayMulti = (newValue: IDay | null | undefined) => {
-    // @ts-ignore: Unreachable code error
     setSelectedDayAction((prevState) => [
       ...(selectedDayState as IDay[]).filter(
         (day) =>

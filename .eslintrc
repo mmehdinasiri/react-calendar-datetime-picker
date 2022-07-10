@@ -28,12 +28,16 @@
         "project": "./tsconfig.json"
       },
       "rules": {
+        "indent": "off",
+        "@typescript-eslint/indent": "off",
+        "react-hooks/exhaustive-deps": "off",
         "comma-dangle": "off",
         "@typescript-eslint/comma-dangle": "off",
         "semi": "off",
         "@typescript-eslint/semi": "off",
         "import/no-extraneous-dependencies": "off",
-        "import/extensions": "off"
+        "import/extensions": "off",
+        "@typescript-eslint/no-shadow": "off"
       }
     }
   ]

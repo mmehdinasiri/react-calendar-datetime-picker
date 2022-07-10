@@ -35,12 +35,12 @@ export const mergeProviders = (
         updatedValue = {
           from: {
             ...(selectedDate as IRange).from,
-            month: (selectedDate as IRange).from?.month! + 1,
+            month: ((selectedDate as IRange).from?.month as number) + 1,
             ...(selectedTime as ITimeRange).from
           },
           to: {
             ...(selectedDate as IRange).to,
-            month: (selectedDate as IRange).to?.month! + 1,
+            month: ((selectedDate as IRange).to?.month as number) + 1,
             ...(selectedTime as ITimeRange).to
           }
         }
@@ -48,11 +48,11 @@ export const mergeProviders = (
         updatedValue = {
           from: {
             ...(selectedDate as IRange).from,
-            month: (selectedDate as IRange).from?.month! + 1
+            month: ((selectedDate as IRange).from?.month as number) + 1
           },
           to: {
             ...(selectedDate as IRange).to,
-            month: (selectedDate as IRange).to?.month! + 1
+            month: ((selectedDate as IRange).to?.month as number) + 1
           }
         }
       }

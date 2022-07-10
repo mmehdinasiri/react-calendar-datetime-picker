@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { FC, useEffect, useRef } from 'react'
 import { useViewState } from '@/store/ViewProvider'
 import {

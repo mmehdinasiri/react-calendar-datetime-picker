@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import jalaali from 'jalaali-js'
 import { useLangOption } from '@/utils/hooks'
 
