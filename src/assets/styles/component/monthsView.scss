@@ -5,7 +5,7 @@
   text-align: center;
   will-change: transform;
   transition: 800ms;
-  // transform: translateY(-100%);
+  /*/ transform: translateY(-100%);/*/
 }
 .monthList_month {
   width: rem(calc(100% / 3));
@@ -26,7 +26,7 @@
   }
   &.is-selected-month {
     color: $is-selected-day;
-    font-weight: bold;
+    font-weight: 700;
   }
 }
 

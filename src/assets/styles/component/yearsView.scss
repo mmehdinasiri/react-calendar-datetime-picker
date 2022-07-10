@@ -35,7 +35,6 @@
 .yearGrid {
   list-style: none;
   overflow: hidden;
-  padding: 0;
   text-align: center;
   display: flex;
   flex-wrap: wrap;
@@ -61,7 +60,7 @@
 }
 .is-selectedYearRef {
   color: $is-selected-day;
-  font-weight: bold;
+  font-weight: 700;
   font-size: rem(22px);
 }
 

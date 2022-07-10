@@ -1,5 +1,6 @@
 build/
 dist/
+example/
 .next/
 node_modules/
 .snapshots/
