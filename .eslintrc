@@ -37,7 +37,10 @@
         "@typescript-eslint/semi": "off",
         "import/no-extraneous-dependencies": "off",
         "import/extensions": "off",
-        "@typescript-eslint/no-shadow": "off"
+        "@typescript-eslint/no-shadow": "off",
+        // TODO: remove this rule
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off"
       }
     }
   ]

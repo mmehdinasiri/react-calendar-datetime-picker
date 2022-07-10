@@ -87,7 +87,7 @@ function useSelectedDayActions() {
     }
   }
   const removeSelectedDayMulti = (newValue: IDay | null | undefined) => {
-    setSelectedDayAction((prevState) => [
+    setSelectedDayAction(() => [
       ...(selectedDayState as IDay[]).filter(
         (day) =>
           genFullDay(day.year, day.month, day.day) !==
