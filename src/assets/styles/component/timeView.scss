@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: rem(0 8px 8px);
+  margin: 0 8px 8px;
   .field-wrapper {
     display: flex;
     align-items: center;
@@ -20,8 +20,8 @@
     }
     .time-fieldset--dec,
     .time-fieldset--inc {
-      width: rem(16px);
-      height: rem(16px);
+      width: 16px;
+      height: 16px;
       padding: 0;
       margin: auto;
       border: 0;
@@ -40,21 +40,21 @@
     }
   }
   .time--title {
-    margin-right: rem(8px);
+    margin-right: 8px;
     color: $text-color-lighter;
-    min-width: rem(32px);
+    min-width: 32px;
     text-align: center;
   }
   .time--input {
-    margin: 0 rem(4px);
+    margin: 0 4px;
     text-align: center;
-    width: rem(20px);
-    /*/ height: rem(20px);
-     line-height: rem(20px);/*/
+    width: 20px;
+    /*/ height: 20px);
+     line-height: 20px);/*/
     appearance: textfield;
     border: 0;
     color: $text-color-light;
-    font-size: rem(14px);
+    font-size: 14px;
     &:focus {
       outline: none;
     }
@@ -69,7 +69,7 @@
     direction: rtl;
   }
   .time--title {
-    margin-left: rem(8px);
+    margin-left: 8px;
   }
 }
 .is-ltr {
@@ -77,6 +77,6 @@
     direction: ltr;
   }
   .time--title {
-    margin-right: rem(8px);
+    margin-right: 8px;
   }
 }

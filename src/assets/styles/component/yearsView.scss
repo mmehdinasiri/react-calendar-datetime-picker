@@ -6,7 +6,7 @@
   content: '';
   display: block;
   width: 100%;
-  height: rem(30px);
+  height: 30px;
   position: absolute;
   left: 0;
   transition: 0.4s;
@@ -38,10 +38,10 @@
   text-align: center;
   display: flex;
   flex-wrap: wrap;
-  height: rem(291px);
+  height: 291px;
   overflow-y: scroll;
-  padding: rem(30px) 0;
-  margin: rem(8px) 0;
+  padding: 30px 0;
+  margin: 8px 0;
   .is-year-list {
     display: block;
   }
@@ -52,8 +52,8 @@
 }
 .yearGrid_year {
   width: 20%;
-  height: rem(55px);
-  line-height: rem(55px);
+  height: 55px;
+  line-height: 55px;
   text-align: center;
   box-sizing: border-box;
   cursor: pointer;
@@ -61,7 +61,7 @@
 .is-selectedYearRef {
   color: $is-selected-day;
   font-weight: 700;
-  font-size: rem(22px);
+  font-size: 22px;
 }
 
 .yearGrid_year:nth-child(5n + 1) {

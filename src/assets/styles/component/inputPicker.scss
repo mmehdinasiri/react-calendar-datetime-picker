@@ -6,22 +6,22 @@
     cursor: pointer;
     width: 100%;
     text-align: center;
-    line-height: rem(26px);
-    height: rem(26px);
+    line-height: 26px;
+    height: 26px;
     padding: 0 8px;
-    border-radius: rem($global-radius-small);
-    border-width: rem(1px);
+    border-radius: $global-radius-small;
+    border-width: 1px;
     &:focus {
       outline: none;
     }
   }
   .input-picker--clearBtn {
     display: block;
-    width: rem(20px);
-    height: rem(20px);
+    width: 20px;
+    height: 20px;
     position: absolute;
     top: 50%;
-    right: rem(5px);
+    right: 5px;
     transform: translateY(-50%);
     cursor: pointer;
     color: $iconColor;

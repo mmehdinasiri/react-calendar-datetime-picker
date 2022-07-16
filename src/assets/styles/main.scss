@@ -1,5 +1,16 @@
-// global styles go here
-
-@import './normalize.scss'; // or @import './reset.scss'; (choose one based on your needs)
+// @import url('./variables.scss');
 @import './variables.scss';
-@import './override/toast.scss';
+
+.react-calendar-datetime-picker {
+  position: relative;
+  width: 100%;
+  @import './component/dtWrapper.scss';
+  @import './component/header.scss';
+  @import './component/yearsView.scss';
+  @import './component/monthsView.scss';
+  @import './component/daysView.scss';
+  @import './component/calenderModal.scss';
+  @import './component/inputPicker.scss';
+  @import './component/todayBtn.scss';
+  @import './component/timeView.scss';
+}

@@ -1,4 +1,4 @@
-import { forwardRef, RefObject } from 'react'
+import { forwardRef } from 'react'
 import { genFullIDay, mergeProviders } from '@/utils/helpers'
 import {
   useSelectedDayActions,
@@ -28,7 +28,7 @@ interface IInputPicker {
   showTimeInput?: boolean
   inputId?: string
 }
-export const InputPicker = forwardRef(
+export const InputPicker = forwardRef<HTMLInputElement, IInputPicker>(
   (
     {
       placeholder,
@@ -47,8 +47,8 @@ export const InputPicker = forwardRef(
       clearBtnClass,
       maxDate,
       showTimeInput
-    }: IInputPicker,
-    ref: RefObject<HTMLInputElement>
+    },
+    ref
   ) => {
     const { inputPlaceholder, fromLB, toLB, todayObject } = useLangOption(local)
     const { changeCalender } = useCalenderActions()

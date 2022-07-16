@@ -8,9 +8,9 @@
   /*/ transform: translateY(-100%);/*/
 }
 .monthList_month {
-  width: rem(calc(100% / 3));
-  height: rem(72px);
-  line-height: rem(72px);
+  width: calc(100% / 3);
+  height: 72px;
+  line-height: 72px;
   float: left;
   text-align: center;
   box-sizing: border-box;

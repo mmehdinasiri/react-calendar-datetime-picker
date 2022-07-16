@@ -53,10 +53,13 @@ export const DaysView: FC<IDaysProps> = React.memo(
 
     let fromTimeStamp: number, toTimeStamp: number
     if (type === 'range' && (selectedDayState as IRange).from) {
-      fromTimeStamp = getDateTimeStamp((selectedDayState as IRange).from, local)
+      fromTimeStamp = getDateTimeStamp(
+        (selectedDayState as IRange).from!,
+        local
+      )
     }
     if (type === 'range' && (selectedDayState as IRange).to) {
-      toTimeStamp = getDateTimeStamp((selectedDayState as IRange).to, local)
+      toTimeStamp = getDateTimeStamp((selectedDayState as IRange).to!, local)
     }
 
     const createDaysForCurrentMonth = (year: number, month: number) => {

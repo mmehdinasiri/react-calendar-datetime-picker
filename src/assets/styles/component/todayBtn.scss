@@ -3,13 +3,13 @@
   text-align: center;
   margin: auto;
   border-radius: $global-radius-large;
-  border: rem(1px) solid $primary-color;
-  width: rem(80px);
-  padding: rem(4px 0);
+  border: 1px solid $primary-color;
+  width: 80px;
+  padding: 4px 0;
   transition: color 200ms ease-in-out, background-color 200ms ease-in-out;
-  font-size: rem(14px);
+  font-size: 14px;
   font-weight: 400;
-  margin-bottom: rem(4px);
+  margin-bottom: 4px;
   cursor: pointer;
   /*/ &:hover {
   //   background-color: $primary-color;
