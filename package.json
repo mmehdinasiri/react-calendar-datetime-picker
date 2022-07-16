@@ -7,7 +7,7 @@
   "repository": "https://github.com/mmehdinasiri/react-calendar-datetime-picker",
   "homepage": "https://mmehdinasiri.github.io/react-calendar-datetime-picker/",
   "main": "dist/index.js",
-  "module": "dist/index.modern.js",
+  "module": "dist/index.js",
   "source": "src/index.tsx",
   "keywords": [
     "persian date picker",
@@ -16,16 +16,14 @@
     "calendar date picker",
     "persian date time picker"
   ],
-  "engines": {
-    "node": ">=12"
-  },
   "scripts": {
     "init:husky": "npx husky-init && husky install && husky set .husky/pre-commit 'npm run typecheck'",
-    "dev:example": "cd ./example && npm run start",
-    "dev": "concurrently --kill-others \"npm run start\" \"npm run dev:example\" ",
+    "dev:example": "cd ./vite && npm run dev",
+    "dev": "concurrently --kill-others \"npm run build:watch\" \"npm run dev:example\" ",
     "delete-dist": "rimraf ./dist",
     "delete-cjs-file": "rimraf ./dist/index.js",
     "start": "vite",
+    "build:watch": "tsc && vite build --watch",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "preview:latest": "npm run build && npm run preview",
@@ -55,9 +53,6 @@
     "react": ">= 16.8",
     "react-dom": ">= 16.8"
   },
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "jalaali-js": "^1.1.5"
   },

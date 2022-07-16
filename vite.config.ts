@@ -1,6 +1,5 @@
 import path from 'path'
 import { defineConfig } from 'vite'
-
 import dts from 'vite-plugin-dts'
 import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
@@ -17,7 +16,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'react-calendar-datetime-picker',
-      formats: ['cjs'],
+      formats: ['es'],
       fileName: (format) => `index.js`
     },
     rollupOptions: {

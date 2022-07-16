@@ -71,7 +71,7 @@ export const Wrapper: FC<IWrapper> = ({
   handelComponentVisible,
   autoClose
 }) => {
-  console.log('===wrapper===')
+  console.log('===>wrapper<===')
   const currentView = useViewState()
   const selectedDayState = useSelectedDayState()
   const lastSelectedDate = useRef(selectedDayState)
