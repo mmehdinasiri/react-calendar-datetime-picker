@@ -6,9 +6,19 @@
   "license": "MIT",
   "repository": "https://github.com/mmehdinasiri/react-calendar-datetime-picker",
   "homepage": "https://mmehdinasiri.github.io/react-calendar-datetime-picker/",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "source": "src/index.tsx",
+  "main": "./dist/index.es.js",
+  "module": "./dist/index.es.js",
+  "source": "./src/index.tsx",
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.es.js"
+    },
+    "./dist/style.css": {
+      "import": "./dist/style.css",
+      "require": "./dist/style.css"
+    }
+  },
   "keywords": [
     "persian date picker",
     "date picker",
@@ -18,8 +28,8 @@
   ],
   "scripts": {
     "init:husky": "npx husky-init && husky install && husky set .husky/pre-commit 'npm run typecheck'",
-    "dev:example": "cd ./vite && npm run dev",
-    "dev": "concurrently --kill-others \"npm run build:watch\" \"npm run dev:example\" ",
+    "dev:sample": "cd ./sample && npm run dev",
+    "dev": "concurrently --kill-others \"npm run build:watch\" \"npm run dev:sample\" ",
     "delete-dist": "rimraf ./dist",
     "delete-cjs-file": "rimraf ./dist/index.js",
     "start": "vite",

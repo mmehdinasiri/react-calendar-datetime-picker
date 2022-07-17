@@ -6,7 +6,6 @@ import svgr from 'vite-plugin-svgr'
 // import removeConsole from 'vite-plugin-remove-console'
 import { terser } from 'rollup-plugin-terser'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
     alias: {
@@ -18,8 +17,8 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'react-calendar-datetime-picker',
-      formats: ['es'],
-      fileName: (format) => `index.js`
+      formats: ['es', 'cjs'],
+      fileName: (format) => `index.${format}.js`
     },
     rollupOptions: {
       plugins: [
