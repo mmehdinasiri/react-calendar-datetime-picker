@@ -4,9 +4,10 @@ import { useViewActions } from '@/store/ViewProvider'
 import { useCalenderActions, useCalenderState } from '@/store/CalenderProvider'
 import { DAYS_VIEW } from '@/config/constants'
 import { useLangOption } from '@/utils/hooks/useLangOption'
+import { calendarLocal } from '@/types/type'
 
 interface IMonthsProps {
-  local: string
+  local: calendarLocal
   monthsClass?: string
 }
 export const MonthsView: FC<IMonthsProps> = ({ local, monthsClass }) => {

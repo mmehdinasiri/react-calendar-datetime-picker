@@ -5,10 +5,10 @@ import { useMinMaxState } from '@/store/MinMaxProvider'
 import { useLangOption } from '@/utils/hooks'
 import { toPersianNumber } from '@/utils/helpers'
 import { MONTHS_VIEW } from '@/config/constants'
-import { calendarListStyle } from '@/types/type'
+import { calendarListStyle, calendarLocal } from '@/types/type'
 
 interface IYearsProps {
-  local: string
+  local: calendarLocal
   yearsClass?: string
   yearListStyle?: calendarListStyle
 }

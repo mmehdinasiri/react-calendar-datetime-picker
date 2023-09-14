@@ -8,9 +8,10 @@ import { toPersianNumber } from '@/utils/helpers'
 import { ReactComponent as Next } from '@/assets/icons/next.svg'
 import { ReactComponent as Back } from '@/assets/icons/back.svg'
 import { ReactComponent as Close } from '@/assets/icons/close.svg'
+import { calendarLocal } from '@/types/type'
 
 interface IHeaderProps {
-  local: string
+  local: calendarLocal
   NextBtnIcon?: any
   PreviousBtnIcon?: any
   nextMonthBtnTitle?: string

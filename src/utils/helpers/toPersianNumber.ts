@@ -3,7 +3,7 @@ export const toPersianNumber = (englishNumber: number | string): string => {
 
   const persianNumber = String(englishNumber).replace(
     /\d/g,
-    (d) => '۰۱۲۳۴۵۶۷۸۹'[d]
+    (d:any) => '۰۱۲۳۴۵۶۷۸۹'[d]
   )
   return persianNumber
 }

@@ -1,5 +1,5 @@
 import jalaali from 'jalaali-js'
-import { IDay } from '@/types/type'
+import { IDay, calendarLocal } from '@/types/type'
 
 export const compareDateEN = (date1: IDay, date2: IDay) => {
   const fixDate1 = new Date(date1.year, date1.month, date1.day)
@@ -25,7 +25,7 @@ export const isDayBetween = (
   min: IDay,
   day: IDay,
   max: IDay,
-  local: string
+  local: calendarLocal
 ) => {
   const selectCompar = {
     en: compareDateEN,

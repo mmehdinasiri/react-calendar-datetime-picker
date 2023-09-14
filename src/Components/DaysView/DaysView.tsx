@@ -16,10 +16,10 @@ import {
 import { useLangOption } from '@/utils/hooks'
 import { useCalenderState } from '@/store/CalenderProvider'
 
-import { IDay, IRange } from '@/types/type'
+import { IDay, IRange, calendarLocal } from '@/types/type'
 
 interface IDaysProps {
-  local: string
+  local: calendarLocal
   type?: string
   showWeekend: boolean
   daysClass?: string

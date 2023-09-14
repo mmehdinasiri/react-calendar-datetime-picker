@@ -8,12 +8,12 @@ import { useCalenderActions } from '@/store/CalenderProvider'
 import { useSelectedTimeState } from '@/store/SelectedTimeProvider'
 import { useLangOption } from '@/utils/hooks/useLangOption'
 import { ReactComponent as Close } from '@/assets/icons/close.svg'
-import { IDay, IRange, ITime, ITimeRange } from '@/types/type'
+import { IDay, IRange, ITime, ITimeRange, calendarLocal } from '@/types/type'
 
 interface IInputPicker {
   placeholder?: string
   type: string
-  local: string
+  local: calendarLocal
   handelComponentVisible: (foreClose?: boolean) => void
   onChange: (date: any) => void
   clearBtn?: boolean
@@ -128,6 +128,14 @@ export const InputPicker = forwardRef<HTMLInputElement, IInputPicker>(
         })
       }
     }
+    // const onKeyPress = (e: KeyboardEvent<HTMLInputElement>)=>{
+    //   e.preventDefault()
+    //   console.log(e.code)
+    //   if (e.code === '13' || e.code === '32') {
+    //     handelComponentVisible(true)
+    //   }
+    // }
+    console.log('===================')
     return (
       <div className='input-picker'>
         <input
@@ -137,6 +145,8 @@ export const InputPicker = forwardRef<HTMLInputElement, IInputPicker>(
           placeholder={placeholder || inputPlaceholder}
           value={correctValue()}
           onClick={() => handelComponentVisible(true)}
+          // onKeyDown={(e)=>onKeyPress(e)}
+          onKeyDown={(e) =>{console.log(e)}}
           disabled={isDisabled}
           required={isRequired}
           id={inputId}

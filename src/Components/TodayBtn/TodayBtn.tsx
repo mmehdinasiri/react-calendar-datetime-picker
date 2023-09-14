@@ -3,8 +3,9 @@ import { useCalenderActions } from '@/store/CalenderProvider'
 import { useMinMaxState } from '@/store/MinMaxProvider'
 import { useLangOption } from '@/utils/hooks'
 import { compareDateEN, compareDateFA } from '@/utils/helpers'
+import { calendarLocal } from '@/types/type'
 interface ITodayBtn {
-  local: string
+  local: calendarLocal
   todayBtn: boolean
 }
 export const TodayBtn: FC<ITodayBtn> = React.memo(({ local, todayBtn }) => {
