@@ -34,7 +34,6 @@
     "delete-cjs-file": "rimraf ./dist/index.js",
     "start": "vite",
     "vite:dev": "tsc && vite build --watch --minify false --emptyOutDir false --config vite.config.development.ts",
-
     "build": "tsc && vite build",
     "preview": "vite preview",
     "preview:latest": "npm run build && npm run preview",
@@ -81,7 +80,6 @@
     "@types/node": "^20.6.0",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
-    "@types/testing-library__jest-dom": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
     "@vitejs/plugin-react": "^4.0.4",
