@@ -29,11 +29,12 @@
   "scripts": {
     "init:husky": "npx husky-init && husky install && husky set .husky/pre-commit 'npm run typecheck'",
     "dev:sample": "cd ./sample && npm run dev",
-    "dev": "concurrently --kill-others \"npm run build:watch\" \"npm run dev:sample\" ",
+    "dev": "concurrently --kill-others \"npm run vite:dev\" \"npm run dev:sample\" ",
     "delete-dist": "rimraf ./dist",
     "delete-cjs-file": "rimraf ./dist/index.js",
     "start": "vite",
-    "build:watch": "tsc && vite build --watch",
+    "vite:dev": "tsc && vite build --watch --minify false --emptyOutDir false --config vite.config.development.ts",
+
     "build": "tsc && vite build",
     "preview": "vite preview",
     "preview:latest": "npm run build && npm run preview",
