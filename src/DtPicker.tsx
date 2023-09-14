@@ -190,7 +190,6 @@ const DtPicker: FC<IDtPickerProps> = ({
       )
     }
   }, [fixedInitValue])
-
   return (
     <div
       className={`react-calendar-datetime-picker ${

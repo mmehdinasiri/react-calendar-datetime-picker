@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, KeyboardEvent } from 'react'
 import { genFullIDay, mergeProviders } from '@/utils/helpers'
 import {
   useSelectedDayActions,
@@ -128,14 +128,11 @@ export const InputPicker = forwardRef<HTMLInputElement, IInputPicker>(
         })
       }
     }
-    // const onKeyPress = (e: KeyboardEvent<HTMLInputElement>)=>{
-    //   e.preventDefault()
-    //   console.log(e.code)
-    //   if (e.code === '13' || e.code === '32') {
-    //     handelComponentVisible(true)
-    //   }
-    // }
-    console.log('===================')
+    const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.code === 'Space' || e.code === 'Enter') {
+        handelComponentVisible(true)
+      }
+    }
     return (
       <div className='input-picker'>
         <input
@@ -145,8 +142,7 @@ export const InputPicker = forwardRef<HTMLInputElement, IInputPicker>(
           placeholder={placeholder || inputPlaceholder}
           value={correctValue()}
           onClick={() => handelComponentVisible(true)}
-          // onKeyDown={(e)=>onKeyPress(e)}
-          onKeyDown={(e) =>{console.log(e)}}
+          onKeyDown={onKeyPress}
           disabled={isDisabled}
           required={isRequired}
           id={inputId}

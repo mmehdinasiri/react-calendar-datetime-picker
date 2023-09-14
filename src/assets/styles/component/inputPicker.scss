@@ -11,8 +11,10 @@
     padding: 0 8px;
     border-radius: $global-radius-small;
     border-width: 1px;
+    border-color:  $text-color-lighter;
     &:focus {
       outline: none;
+      border-color:  $text-color;
     }
   }
   .input-picker--clearBtn {
