@@ -2,8 +2,8 @@ import path from 'path'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import react from '@vitejs/plugin-react'
+import visualizer from 'rollup-plugin-visualizer'
 import svgr from 'vite-plugin-svgr'
-// import removeConsole from 'vite-plugin-remove-console'
 import { terser } from 'rollup-plugin-terser'
 
 export default defineConfig({
@@ -18,7 +18,13 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'react-calendar-datetime-picker',
       formats: ['es', 'cjs'],
-      fileName: (format) => `index.${format}.js`
+      fileName: (format) => {
+        if (format === 'es') {
+          return `index.js`
+        } else {
+          return `cjs/index.js`
+        }
+      }
     },
     rollupOptions: {
       plugins: [
@@ -42,9 +48,14 @@ export default defineConfig({
     }
   },
   plugins: [
-    react(),
+    react({
+      jsxRuntime: 'classic'
+    }),
     svgr(),
-    // removeConsole(),
+    visualizer({
+      filename: 'bundle-analysis.html',
+      open: false
+    }),
     dts({
       insertTypesEntry: true
     })
