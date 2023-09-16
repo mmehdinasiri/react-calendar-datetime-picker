@@ -1,5 +1,5 @@
 import path from 'path'
-import copy from 'rollup-plugin-copy'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import react from '@vitejs/plugin-react'
@@ -30,10 +30,6 @@ export default defineConfig({
     },
     rollupOptions: {
       plugins: [
-        copy({
-          targets: [{ src: 'src/type.d.ts', dest: 'dist' }]
-        }),
-
         terser({
           compress: {
             defaults: true,
@@ -48,22 +44,25 @@ export default defineConfig({
           open: false
         })
       ],
-      external: ['react', 'react-dom']
-      // output: {
-      //   globals: {
-      //     react: 'React',
-      //     'react-dom': 'ReactDOM'
-      //   }
-      // }
+      external: ['react', 'react-dom'],
+      output: {
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          'jsx-runtime': 'jsxRuntime'
+        }
+      }
     }
   },
   plugins: [
     react({
-      jsxRuntime: 'classic'
+      // jsxRuntime: 'classic'
     }),
+
     svgr(),
     dts({
-      insertTypesEntry: true
+      insertTypesEntry: true,
+      copyDtsFiles: true
     })
   ]
 })
