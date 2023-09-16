@@ -1,8 +1,10 @@
 import path from 'path'
+import copy from 'rollup-plugin-copy'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import react from '@vitejs/plugin-react'
-import visualizer from 'rollup-plugin-visualizer'
+import { visualizer } from 'rollup-plugin-visualizer'
+
 import svgr from 'vite-plugin-svgr'
 import { terser } from 'rollup-plugin-terser'
 
@@ -20,14 +22,18 @@ export default defineConfig({
       formats: ['es', 'cjs'],
       fileName: (format) => {
         if (format === 'es') {
-          return `index.js`
+          return `index.mjs`
         } else {
-          return `cjs/index.js`
+          return `index.cjs`
         }
       }
     },
     rollupOptions: {
       plugins: [
+        copy({
+          targets: [{ src: 'src/type.d.ts', dest: 'dist' }]
+        }),
+
         terser({
           compress: {
             defaults: true,
@@ -36,15 +42,19 @@ export default defineConfig({
             directives: true,
             drop_debugger: true
           }
+        }),
+        visualizer({
+          filename: 'bundle-analysis.html',
+          open: false
         })
       ],
-      external: ['react', 'react-dom'],
-      output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM'
-        }
-      }
+      external: ['react', 'react-dom']
+      // output: {
+      //   globals: {
+      //     react: 'React',
+      //     'react-dom': 'ReactDOM'
+      //   }
+      // }
     }
   },
   plugins: [
@@ -52,10 +62,6 @@ export default defineConfig({
       jsxRuntime: 'classic'
     }),
     svgr(),
-    visualizer({
-      filename: 'bundle-analysis.html',
-      open: false
-    }),
     dts({
       insertTypesEntry: true
     })

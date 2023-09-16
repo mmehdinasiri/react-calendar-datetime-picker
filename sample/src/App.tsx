@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import './app.css'
-
-import DtPicker from 'react-calendar-datetime-picker'
+import { DtPicker } from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/style.css'
 function App() {
   const [main, setMain] = useState(0)
@@ -24,4 +23,3 @@ function App() {
 }
 
 export default App
-

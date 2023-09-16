@@ -7,6 +7,5 @@ type Day = IDay | null
 type Range = IRange | null
 type Multi = IDay[] | null
 
-export { DtCalendar, convertToEn, convertToFa }
+export { DtPicker, DtCalendar, convertToEn, convertToFa }
 export type { Day, Range, Multi }
-export default DtPicker
