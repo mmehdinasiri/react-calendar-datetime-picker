@@ -1,27 +1,29 @@
-import React, { FC, useEffect, useRef } from 'react'
-import { MONTHS_VIEW } from '../../Constant'
-import { useViewActions } from '../../store/ViewProvider'
-import { useLangOption } from '../../hooks/useLangOption'
-import {
-  useCalenderActions,
-  useCalenderState
-} from '../../store/CalenderProvider'
-import { useMinMaxState } from '../../store/MinMaxProvider'
-import { toPersianNumber } from '../../helpers/index'
-import { calendarListStyle } from 'src/type'
+import { FC, useEffect, useRef } from 'react'
+import { useViewActions } from '@/store/ViewProvider'
+import { useCalenderActions, useCalenderState } from '@/store/CalenderProvider'
+import { useMinMaxState } from '@/store/MinMaxProvider'
+import { useLangOption } from '@/utils/hooks'
+import { toPersianNumber } from '@/utils/helpers'
+import { MONTHS_VIEW } from '@/config/constants'
+import { calendarListStyle, calendarLocal } from '@/types/type'
 
 interface IYearsProps {
-  local: string
+  local: calendarLocal
   yearsClass?: string
   yearListStyle?: calendarListStyle
 }
-const years: FC<IYearsProps> = ({ local, yearsClass, yearListStyle }) => {
+export const Years: FC<IYearsProps> = ({
+  local,
+  yearsClass,
+  yearListStyle
+}) => {
   const { minDate, maxDate } = useMinMaxState()
   const ref = useRef<HTMLLIElement>(null)
   const { YEARS_RANGE_START, YEARS_RANGE_END } = useLangOption(local)
   const { changeView } = useViewActions()
   const { changeCalender } = useCalenderActions()
   const calenderState = useCalenderState()
+  // eslint-disable-next-line prefer-const
   let { month, day, hour, minute } = calenderState
   const changeYear = (newYear: number) => {
     // correct month after we changing year if we have min or date
@@ -98,5 +100,3 @@ const years: FC<IYearsProps> = ({ local, yearsClass, yearListStyle }) => {
     </div>
   )
 }
-
-export default years

@@ -1,13 +1,14 @@
 import React, { FC, Fragment } from 'react'
-import { useCalenderActions } from '../../store/CalenderProvider'
-import { useLangOption } from '../../hooks/useLangOption'
-import { useMinMaxState } from '../../store/MinMaxProvider'
-import { compareDateEN, compareDateFA } from '../../helpers'
+import { useCalenderActions } from '@/store/CalenderProvider'
+import { useMinMaxState } from '@/store/MinMaxProvider'
+import { useLangOption } from '@/utils/hooks'
+import { compareDateEN, compareDateFA } from '@/utils/helpers'
+import { calendarLocal } from '@/types/type'
 interface ITodayBtn {
-  local: string
+  local: calendarLocal
   todayBtn: boolean
 }
-const TodayBtn: FC<ITodayBtn> = ({ local, todayBtn }) => {
+export const TodayBtn: FC<ITodayBtn> = React.memo(({ local, todayBtn }) => {
   const { todayObject, todayBtnTL } = useLangOption(local)
   const { changeCalender } = useCalenderActions()
   const { minDate, maxDate } = useMinMaxState()
@@ -38,6 +39,4 @@ const TodayBtn: FC<ITodayBtn> = ({ local, todayBtn }) => {
       )}
     </Fragment>
   )
-}
-
-export default React.memo(TodayBtn)
+})

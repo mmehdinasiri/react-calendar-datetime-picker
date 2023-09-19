@@ -1,0 +1,31 @@
+.input-picker {
+  position: relative;
+  width: 100%;
+
+  .input-picker--input {
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    line-height: 26px;
+    height: 26px;
+    padding: 0 8px;
+    border-radius: $global-radius-small;
+    border-width: 1px;
+    border-color:  $text-color-lighter;
+    &:focus {
+      outline: none;
+      border-color:  $text-color;
+    }
+  }
+  .input-picker--clearBtn {
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: $iconColor;
+  }
+}

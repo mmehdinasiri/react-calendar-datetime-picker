@@ -1,5 +1,12 @@
 build/
 dist/
+example/
+.next/
 node_modules/
 .snapshots/
 *.min.js
+*.d.ts
+*.map
+*.config.js
+.eslintrc
+vite.config.ts

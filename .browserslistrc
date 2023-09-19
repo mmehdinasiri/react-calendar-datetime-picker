@@ -1,0 +1,17 @@
+[development]
+last 1 version
+Firefox ESR
+not dead
+
+[production]
+> 1%
+ie 10
+Firefox ESR
+not dead
+
+[modern]
+last 1 chrome version
+last 1 firefox version
+
+[ssr]
+node 14

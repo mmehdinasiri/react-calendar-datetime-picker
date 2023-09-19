@@ -5,15 +5,15 @@ import React, {
   Dispatch,
   SetStateAction
 } from 'react'
-import { genFullDay } from 'src/helpers'
-import { IDay, IRange } from 'src/type'
+import { genFullDay } from '@/utils/helpers'
+import { IDay, IRange } from '@/types/type'
 
 const SelectedDaysContext = createContext(
   {} as IDay | IRange | IDay[] | null | undefined
 )
 const SelectedDaysContextSetState = createContext(
   Function as unknown as Dispatch<
-    SetStateAction<IDay | IDay[] | null | undefined>
+    SetStateAction<IDay | IRange | IDay[] | null | undefined>
   >
 )
 interface ISelectedDayProvider {
@@ -36,8 +36,9 @@ function SelectedDaysProvider({
   if (type === 'multi') {
     initDay = (initState as unknown as IDay[]) || []
   }
-  const [selectedDays, setSelectedDays] =
-    useState<IDay | IRange | IDay[] | null | undefined>(initDay)
+  const [selectedDays, setSelectedDays] = useState<
+    IDay | IRange | IDay[] | null | undefined
+  >(initDay)
   return (
     <SelectedDaysContext.Provider value={selectedDays}>
       <SelectedDaysContextSetState.Provider value={setSelectedDays}>
@@ -69,7 +70,7 @@ function useSelectedDayActions() {
     field: string,
     newValue: IDay | null | undefined
   ) => {
-    setSelectedDayAction((prevState: IDay) => ({
+    setSelectedDayAction((prevState: any) => ({
       ...prevState,
       [field]: newValue
     }))
@@ -82,13 +83,11 @@ function useSelectedDayActions() {
           genFullDay(newValue!.year, newValue!.month, newValue!.day)
       )
     ) {
-      // @ts-ignore: Unreachable code error
-      setSelectedDayAction((prevState) => [...prevState, newValue])
+      setSelectedDayAction((prevState: any) => [...prevState, newValue])
     }
   }
   const removeSelectedDayMulti = (newValue: IDay | null | undefined) => {
-    // @ts-ignore: Unreachable code error
-    setSelectedDayAction((prevState) => [
+    setSelectedDayAction(() => [
       ...(selectedDayState as IDay[]).filter(
         (day) =>
           genFullDay(day.year, day.month, day.day) !==

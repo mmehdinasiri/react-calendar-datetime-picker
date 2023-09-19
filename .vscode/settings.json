@@ -1,0 +1,19 @@
+{
+  "scss.validate": false,
+  "editor.formatOnSave": true,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    ".env": "*.env, .env.*, .envrc, env.d.ts",
+    ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
+    "Dockerfile": ".dockerignore, docker-compose.*, docker-compose.dev.yml, docker-compose.prod.yml",
+    "package.json": "*.env, .babelrc*, .env.*, .browserslist*, .commitlint*, .eslint*, .firebase*, .lighthouserc.*, .lintstagedrc*, .markdownlint*, .npm*, .nvmrc, .pm2*, .pnpm*, .prettier*, .releaserc*, .sentry*, .styleci*, .stylelint*, .travis*, .versionrc*, .vscode*, azure-pipelines*, commitlint*, lighthouserc.*, lint-staged*, netlify*, nodemon*, nx.*, package-lock.json, pm2.*, pnpm*, prettier*, stylelint*, vercel*, yarn*",
+    "README.md": "authors, backers.md, changelog*, CHANGELOG*, citation*, code_of_conduct.md, codeowners, contributing.md, contributors, copying, credits, governance.md, history.md, license*, maintainers, readme*, security.md, sponsors.md",
+    "vite.config.*": "tsconfig.*, .lighthouserc.*, babel.config.*, cypress.json, jest.config.*, .editorconfig, jsconfig.*, karma*, playwright.config.*, postcss.config.*, tailwind.config.*, tsdoc.*, unocss.config.*, apollo.config.*, ava.config.*, cypress.json, firebase.json, grunt*, gulp*, jest.config.*, jsconfig.*, playwright.config.*, rollup.config.*, vitest.config.*, webpack.config.*",
+    ".d.ts": "typings.d.ts, env.d.ts, vite-env.d.ts, globals.d.ts, modules.d.ts"
+  },
+  "cSpell.words": ["jalaali"]
+}

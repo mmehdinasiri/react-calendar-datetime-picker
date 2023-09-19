@@ -1,18 +1,19 @@
-import React, { forwardRef, RefObject } from 'react'
-import { genFullIDay, mergeProviders } from '../../helpers'
+import { forwardRef, KeyboardEvent } from 'react'
+import { genFullIDay, mergeProviders } from '@/utils/helpers'
 import {
   useSelectedDayActions,
   useSelectedDayState
-} from '../../store/SelectedDaysProvider'
-import { ReactComponent as Close } from '../../Icons/close.svg'
-import { useSelectedTimeState } from '../../store/SelectedTimeProvider'
-import { useLangOption } from '../../hooks/useLangOption'
-import { useCalenderActions } from '../../store/CalenderProvider'
-import { IDay, IRange, ITime, ITimeRange } from 'src/type'
+} from '@/store/SelectedDaysProvider'
+import { useCalenderActions } from '@/store/CalenderProvider'
+import { useSelectedTimeState } from '@/store/SelectedTimeProvider'
+import { useLangOption } from '@/utils/hooks/useLangOption'
+import { ReactComponent as Close } from '@/assets/icons/close.svg'
+import { IDay, IRange, ITime, ITimeRange, calendarLocal } from '@/types/type'
+
 interface IInputPicker {
   placeholder?: string
   type: string
-  local: string
+  local: calendarLocal
   handelComponentVisible: (foreClose?: boolean) => void
   onChange: (date: any) => void
   clearBtn?: boolean
@@ -27,7 +28,7 @@ interface IInputPicker {
   showTimeInput?: boolean
   inputId?: string
 }
-const InputPicker = forwardRef(
+export const InputPicker = forwardRef<HTMLInputElement, IInputPicker>(
   (
     {
       placeholder,
@@ -46,8 +47,8 @@ const InputPicker = forwardRef(
       clearBtnClass,
       maxDate,
       showTimeInput
-    }: IInputPicker,
-    ref: RefObject<HTMLInputElement>
+    },
+    ref
   ) => {
     const { inputPlaceholder, fromLB, toLB, todayObject } = useLangOption(local)
     const { changeCalender } = useCalenderActions()
@@ -127,6 +128,11 @@ const InputPicker = forwardRef(
         })
       }
     }
+    const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.code === 'Space' || e.code === 'Enter') {
+        handelComponentVisible(true)
+      }
+    }
     return (
       <div className='input-picker'>
         <input
@@ -136,6 +142,7 @@ const InputPicker = forwardRef(
           placeholder={placeholder || inputPlaceholder}
           value={correctValue()}
           onClick={() => handelComponentVisible(true)}
+          onKeyDown={onKeyPress}
           disabled={isDisabled}
           required={isRequired}
           id={inputId}
@@ -152,4 +159,3 @@ const InputPicker = forwardRef(
     )
   }
 )
-export default InputPicker

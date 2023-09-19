@@ -1,17 +1,16 @@
-import React, { FC } from 'react'
-import { DAYS_VIEW } from '../../Constant'
-import { useViewActions } from '../../store/ViewProvider'
-import { useLangOption } from '../../hooks/useLangOption'
-import {
-  useCalenderActions,
-  useCalenderState
-} from '../../store/CalenderProvider'
-import { useMinMaxState } from '../../store/MinMaxProvider'
+import { FC } from 'react'
+import { useMinMaxState } from '@/store/MinMaxProvider'
+import { useViewActions } from '@/store/ViewProvider'
+import { useCalenderActions, useCalenderState } from '@/store/CalenderProvider'
+import { DAYS_VIEW } from '@/config/constants'
+import { useLangOption } from '@/utils/hooks/useLangOption'
+import { calendarLocal } from '@/types/type'
+
 interface IMonthsProps {
-  local: string
+  local: calendarLocal
   monthsClass?: string
 }
-const MonthsView: FC<IMonthsProps> = ({ local, monthsClass }) => {
+export const MonthsView: FC<IMonthsProps> = ({ local, monthsClass }) => {
   const { minDate, maxDate } = useMinMaxState()
   const { MONTHS } = useLangOption(local)
   const { changeView } = useViewActions()
@@ -48,7 +47,7 @@ const MonthsView: FC<IMonthsProps> = ({ local, monthsClass }) => {
       <ul
         className={`monthList ${local === 'fa' ? 'is-rtl' : ''} ${monthsClass}`}
       >
-        {MONTHS.map((month: string, index: number) => (
+        {MONTHS.map((monthTitle: string, index: number) => (
           <div
             key={index}
             className={`monthList_month ${
@@ -57,12 +56,10 @@ const MonthsView: FC<IMonthsProps> = ({ local, monthsClass }) => {
             ${index === preSelectedMonth ? 'is-selected-month' : ''}`}
             onClick={() => changeMonth(index)}
           >
-            {month}
+            {monthTitle}
           </div>
         ))}
       </ul>
     </div>
   )
 }
-
-export default MonthsView

@@ -1,19 +1,24 @@
 import React, { FC, useEffect, useMemo, useState } from 'react'
-import './style/main.scss'
-import { DtWrapper } from './Components'
-import CalenderProvider from './store/CalenderProvider'
-import ViewProvider from './store/ViewProvider'
-import SelectedDaysProvider from './store/SelectedDaysProvider'
-import SelectedTimeProvider from './store/SelectedTimeProvider'
-import MinMaxProvider from './store/MinMaxProvider'
+import '@/assets/styles/main.scss'
+import CalenderProvider from '@/store/CalenderProvider'
+import ViewProvider from '@/store/ViewProvider'
+import SelectedDaysProvider from '@/store/SelectedDaysProvider'
+import SelectedTimeProvider from '@/store/SelectedTimeProvider'
+import MinMaxProvider from '@/store/MinMaxProvider'
 import {
   checkInputValues,
   fixedMonth,
   fixedMonthInitValue,
   handelInitialValues,
   mergeProviders
-} from './helpers'
-import { IDtPickerProps, calendarLocal, calendarType, IRange } from './type'
+} from '@/utils/helpers'
+import {
+  IDtPickerProps,
+  calendarLocal,
+  calendarType,
+  IRange
+} from '@/types/type'
+import { DtWrapper } from './Components'
 
 const DtCalendar: FC<IDtPickerProps> = ({
   initValue,
