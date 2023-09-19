@@ -48,17 +48,13 @@ export default defineConfig({
       output: {
         globals: {
           react: 'React',
-          'react-dom': 'ReactDOM',
-          'jsx-runtime': 'jsxRuntime'
+          'react-dom': 'ReactDOM'
         }
       }
     }
   },
   plugins: [
-    react({
-      // jsxRuntime: 'classic'
-    }),
-
+    react(),
     svgr(),
     dts({
       insertTypesEntry: true,
