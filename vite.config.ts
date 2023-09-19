@@ -1,5 +1,4 @@
 import path from 'path'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import react from '@vitejs/plugin-react'

@@ -7,7 +7,9 @@
   "repository": "https://github.com/mmehdinasiri/react-calendar-datetime-picker",
   "homepage": "https://mmehdinasiri.github.io/react-calendar-datetime-picker/",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
@@ -19,7 +21,6 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "source": "./src/index.tsx",
-  "types": "./dist/index.d.ts",
   "files": [
     "dist/"
   ],
@@ -126,4 +127,3 @@
     "vitest": "^0.34.4"
   }
 }
-
