@@ -129,7 +129,7 @@ export const InputPicker = forwardRef<HTMLInputElement, IInputPicker>(
       }
     }
     const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-      if (e.code === 'Space' || e.code === 'Enter') {
+      if (e.code === 'Space') {
         handelComponentVisible(true)
       }
     }

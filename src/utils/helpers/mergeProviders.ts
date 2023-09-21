@@ -65,7 +65,7 @@ export const mergeProviders = (
       }
     })
   }
-  onChange(updatedValue || selectedDate)
+  if (onChange) onChange(updatedValue || selectedDate)
   if (onCalenderChange) {
     if (type === 'range') {
       if (
