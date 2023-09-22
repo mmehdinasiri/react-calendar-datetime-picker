@@ -1,8 +1,8 @@
-# <img src="./website/public/favicon/android-chrome-96x96.png?raw=true" width="26" height="auto" > react-calendar-datetime-picker
+# <img src="./src/assets/images/android-chrome-96x96.png?raw=true" width="26" height="auto" > react-calendar-datetime-picker
 
 <p align="center">
-<img src="./website/public/image/react-datetime-picker.png?raw=true" width="200" height="auto" >
-<img src="./website/public/image/react-datetime-picker-jalali.png?raw=true" width="200" height="auto" >
+<img src="./src/assets/images/react-datetime-picker.png?raw=true" width="200" height="auto" >
+<img src="./src/assets/images/react-datetime-picker-jalali.png?raw=true" width="200" height="auto" >
 </p>
 
 ### The Simple and fast English and Persian calender for React
