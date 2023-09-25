@@ -22,10 +22,8 @@ yarn add react-calendar-datetime-picker
 ## ⚡️ Usage
 
 ```tsx
-import React from 'react'
-
-import DtPicker from 'react-calendar-datetime-picker'
-import 'react-calendar-datetime-picker/dist/index.css'
+import { DtPicker } from 'react-calendar-datetime-picker'
+import 'react-calendar-datetime-picker/dist/style.css'
 
 const App = () => {
   const [date, setDate] = useState(null)
