@@ -16,7 +16,13 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'react-calendar-datetime-picker',
       formats: ['es', 'cjs'],
-      fileName: (format) => `index.${format}.js`
+      fileName: (format) => {
+        if (format === 'es') {
+          return `index.mjs`
+        } else {
+          return `index.cjs`
+        }
+      }
     },
     rollupOptions: {
       external: ['react', 'react-dom'],
@@ -32,7 +38,8 @@ export default defineConfig({
     react(),
     svgr(),
     dts({
-      insertTypesEntry: true
+      insertTypesEntry: true,
+      copyDtsFiles: true
     })
   ]
 })

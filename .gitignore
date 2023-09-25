@@ -39,3 +39,6 @@ pnpm-lock.yaml
 # coverage files
 coverage
 react-calendar-datetime-picker-*
+
+# html files
+bundle-analysis.html

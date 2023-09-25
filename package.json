@@ -19,7 +19,7 @@
     }
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.cjs",
   "source": "./src/index.tsx",
   "files": [
     "dist/"
