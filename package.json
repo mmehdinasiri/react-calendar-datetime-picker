@@ -69,7 +69,7 @@
     "react-dom": ">= 16.8"
   },
   "dependencies": {
-    "jalaali-js": "^1.1.5"
+    "jalaali-js": "^1.2.7"
   },
   "devDependencies": {
     "@babel/core": "^7.22.17",
