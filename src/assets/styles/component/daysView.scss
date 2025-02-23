@@ -1,3 +1,4 @@
+@use '../variables.scss';
 .daysList {
   list-style: none;
   overflow: hidden;
@@ -6,19 +7,19 @@
   text-align: center;
   .daysList-day {
     width: calc(100% / 7);
-    height: calc(#{$modal-width} / 7);
-    line-height: calc(#{$modal-width} / 7);
+    height: calc(#{variables.$modal-width} / 7);
+    line-height: calc(#{variables.$modal-width} / 7);
     float: left;
     text-align: center;
     box-sizing: border-box;
     cursor: pointer;
     border-radius: 50%;
-    color: $text-color-light;
+    color: variables.$text-color-light;
     font-size: 14px;
     margin: 1px 0;
   }
   .is-week-days {
-    color: $text-color-lighter;
+    color: variables.$text-color-lighter;
     font-size: 14px;
     font-weight: 500;
     height: 34px;
@@ -45,12 +46,12 @@
   }
   .is-today {
     /*/ border: 2px solid ;/*/
-    box-shadow: inset 0 0 0 2px $is-today;
+    box-shadow: inset 0 0 0 2px variables.$is-today;
   }
   .is-disabled {
     pointer-events: none;
-    background-color: $disable-color;
-    color: $disable-text;
+    background-color: variables.$disable-color;
+    color: variables.$disable-text;
   }
   .is-disabled-by-user {
     pointer-events: none;
@@ -66,18 +67,18 @@
   }
 
   .is-selected-day {
-    background-color: $is-selected-day;
+    background-color: variables.$is-selected-day;
     color: white;
   }
   .is-selected-day-from {
-    background-color: $is-selected-day;
+    background-color: variables.$is-selected-day;
     border-radius: 0;
     border-top-left-radius: 50%;
     border-bottom-left-radius: 50%;
     color: white;
   }
   .is-selected-day-to {
-    background-color: $is-selected-day;
+    background-color: variables.$is-selected-day;
     border-radius: 0;
     border-top-right-radius: 50%;
     border-bottom-right-radius: 50%;
@@ -88,15 +89,15 @@
   }
 
   .is-selected-day-range {
-    color: $is-selected-day-range-color;
+    color: variables.$is-selected-day-range-color;
     border-radius: 0;
-    background-color: $is-selected-day-range;
+    background-color: variables.$is-selected-day-range;
   }
   .is-pointer {
     cursor: pointer;
   }
   .is_weekends {
-    color: $is-weekends !important;
+    color: variables.$is-weekends !important;
   }
 }
 .is-rtl.daysList {

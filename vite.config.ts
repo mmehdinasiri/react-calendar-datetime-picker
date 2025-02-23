@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 import svgr from 'vite-plugin-svgr'
-import { terser } from 'rollup-plugin-terser'
+import terser from '@rollup/plugin-terser'
 
 export default defineConfig({
   resolve: {
@@ -43,12 +43,14 @@ export default defineConfig({
           open: false
         })
       ],
-      external: ['react', 'react-dom'],
+      external: ['react', 'react-dom', 'react/jsx-runtime'],
       output: {
         globals: {
           react: 'React',
-          'react-dom': 'ReactDOM'
-        }
+          'react-dom': 'ReactDOM',
+          'react/jsx-runtime': 'ReactJsxRuntime'
+        },
+        assetFileNames: 'style.[ext]'
       }
     }
   },

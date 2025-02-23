@@ -1,3 +1,4 @@
+@use '../variables.scss';
 .input-picker {
   position: relative;
   width: 100%;
@@ -9,12 +10,12 @@
     line-height: 26px;
     height: 26px;
     padding: 0 8px;
-    border-radius: $global-radius-small;
+    border-radius: variables.$global-radius-small;
     border-width: 1px;
-    border-color:  $text-color-lighter;
+    border-color:  variables.$text-color-lighter;
     &:focus {
       outline: none;
-      border-color:  $text-color;
+      border-color:  variables.$text-color;
     }
   }
   .input-picker--clearBtn {
@@ -26,6 +27,6 @@
     right: 5px;
     transform: translateY(-50%);
     cursor: pointer;
-    color: $iconColor;
+    color: variables.$iconColor;
   }
 }

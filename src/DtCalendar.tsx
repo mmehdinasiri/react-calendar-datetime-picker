@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import '@/assets/styles/main.scss'
 import CalenderProvider from '@/store/CalenderProvider'
 import ViewProvider from '@/store/ViewProvider'
@@ -19,8 +19,9 @@ import {
   IRange
 } from '@/types/type'
 import { DtWrapper } from './Components'
+import React from 'react'
 
-const DtCalendar: FC<IDtPickerProps> = ({
+const OriginalDtCalendar = ({
   initValue,
   onCalenderChange,
   onChange,
@@ -46,7 +47,7 @@ const DtCalendar: FC<IDtPickerProps> = ({
   yearsClass,
   disabledDates,
   yearListStyle
-}) => {
+}: IDtPickerProps) => {
   const [prevInitDate, setPrevInitDate] = useState<any>(null)
   const [isUpdate, setIsUpdate] = useState<number>(0)
   const minMaxState = {
@@ -177,4 +178,5 @@ const DtCalendar: FC<IDtPickerProps> = ({
   )
 }
 
-export default React.memo(DtCalendar)
+const DtCalendar = React.memo(OriginalDtCalendar) as typeof OriginalDtCalendar
+export default DtCalendar

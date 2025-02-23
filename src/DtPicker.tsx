@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import '@/assets/styles/main.scss'
 import { DtWrapper, InputPicker } from '@/Components'
 import CalenderProvider from '@/store/CalenderProvider'
@@ -27,8 +20,9 @@ import {
   calendarType,
   IRange
 } from '@/types/type'
+import React from 'react'
 
-const DtPicker: FC<IDtPickerProps> = ({
+const OriginalDtPicker = ({
   initValue,
   onChange,
   type,
@@ -67,7 +61,7 @@ const DtPicker: FC<IDtPickerProps> = ({
   yearListStyle,
   autoClose = true,
   inputId
-}) => {
+}: IDtPickerProps) => {
   const [prevInitDate, setPrevInitDate] = useState<any>(null)
   const [isUpdate, setIsUpdate] = useState<number>(0)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -266,4 +260,5 @@ const DtPicker: FC<IDtPickerProps> = ({
   )
 }
 
-export default React.memo(DtPicker)
+const DtPicker = React.memo(OriginalDtPicker) as typeof OriginalDtPicker
+export default DtPicker

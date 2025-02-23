@@ -5,9 +5,7 @@ import { useViewState, useViewActions } from '@/store/ViewProvider'
 import { DAYS_VIEW, MONTHS_VIEW, YEARS_VIEW } from '@/config/constants'
 import { useLangOption } from '@/utils/hooks/useLangOption'
 import { toPersianNumber } from '@/utils/helpers'
-import { ReactComponent as Next } from '@/assets/icons/next.svg'
-import { ReactComponent as Back } from '@/assets/icons/back.svg'
-import { ReactComponent as Close } from '@/assets/icons/close.svg'
+import { Next, Back, Close } from '@/assets/icons'
 import { calendarLocal } from '@/types/type'
 
 interface IHeaderProps {

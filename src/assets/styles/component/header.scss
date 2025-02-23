@@ -1,11 +1,13 @@
+@use '../variables.scss';
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: $primary-color;
+  background-color: variables.$primary-color;
   padding: 24px 16px;
-  border-top-left-radius: $global-radius-small;
-  border-top-right-radius: $global-radius-small;
+  border-top-left-radius: variables.$global-radius-small;
+  border-top-right-radius: variables.$global-radius-small;
   .header-date {
     display: flex;
     color: white;

@@ -1,3 +1,6 @@
+
+@use '../variables.scss';
+
 .monthList {
   list-style: none;
   overflow: hidden;
@@ -15,17 +18,17 @@
   text-align: center;
   box-sizing: border-box;
   cursor: pointer;
-  color: $text-color-light;
+  color: variables.$text-color-light;
   transition: color 200ms ease-in-out;
   &:hover {
-    color: $text-color;
+    color: variables.$text-color;
   }
   &.is-disabled {
     opacity: 0.2;
     pointer-events: none;
   }
   &.is-selected-month {
-    color: $is-selected-day;
+    color: variables.$is-selected-day;
     font-weight: 700;
   }
 }

@@ -1,9 +1,10 @@
+@use '../variables.scss';
 .todayBtn {
   display: block;
   text-align: center;
   margin: auto;
-  border-radius: $global-radius-large;
-  border: 1px solid $primary-color;
+  border-radius: variables.$global-radius-large;
+  border: 1px solid variables.$primary-color;
   width: 80px;
   padding: 4px 0;
   transition: color 200ms ease-in-out, background-color 200ms ease-in-out;

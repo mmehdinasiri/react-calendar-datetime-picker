@@ -1,9 +1,12 @@
-// @import url('./variables.scss');
-@import './variables.scss';
+
+@use './variables.scss';
+
 
 .react-calendar-datetime-picker {
+  
   position: relative;
   width: 100%;
+  background-color: variables.$light-gray;
   @import './component/dtWrapper.scss';
   @import './component/header.scss';
   @import './component/yearsView.scss';

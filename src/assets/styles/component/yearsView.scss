@@ -1,3 +1,6 @@
+
+@use '../variables.scss';
+
 .yearWrapper {
   position: relative;
 }
@@ -59,7 +62,7 @@
   cursor: pointer;
 }
 .is-selectedYearRef {
-  color: $is-selected-day;
+  color: variables.$is-selected-day;
   font-weight: 700;
   font-size: 22px;
 }

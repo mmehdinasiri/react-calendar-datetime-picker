@@ -3,8 +3,7 @@ import { useSelectedTimeActions } from '@/store/SelectedTimeProvider'
 import { useSelectedDayState } from '@/store/SelectedDaysProvider'
 import { addZero, isNotUndefined } from '@/utils/helpers'
 import { useDidMountEffect } from '@/utils/hooks'
-import { ReactComponent as ChevronUp } from '@/assets/icons/chevron-up.svg'
-import { ReactComponent as ChevronDown } from '@/assets/icons/chevron-down.svg'
+import { ChevronDown, ChevronUp } from '@/assets/icons'
 import { IRange } from '@/types/type'
 
 interface ITimeViewProps {

@@ -7,7 +7,7 @@ import {
 import { useCalenderActions } from '@/store/CalenderProvider'
 import { useSelectedTimeState } from '@/store/SelectedTimeProvider'
 import { useLangOption } from '@/utils/hooks/useLangOption'
-import { ReactComponent as Close } from '@/assets/icons/close.svg'
+import { Close } from '@/assets/icons'
 import { IDay, IRange, ITime, ITimeRange, calendarLocal } from '@/types/type'
 
 interface IInputPicker {

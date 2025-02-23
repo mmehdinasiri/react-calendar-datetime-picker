@@ -1,3 +1,4 @@
+@use '../variables.scss';
 .time {
   display: flex;
   align-items: center;
@@ -41,7 +42,7 @@
   }
   .time--title {
     margin-right: 8px;
-    color: $text-color-lighter;
+    color: variables.$text-color-lighter;
     min-width: 32px;
     text-align: center;
   }
@@ -53,7 +54,7 @@
      line-height: 20px);/*/
     appearance: textfield;
     border: 0;
-    color: $text-color-light;
+    color: variables.$text-color-light;
     font-size: 14px;
     &:focus {
       outline: none;

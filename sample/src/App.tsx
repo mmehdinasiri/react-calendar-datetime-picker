@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import './app.css'
 import { DtPicker } from 'react-calendar-datetime-picker'
-import 'react-calendar-datetime-picker/dist/style.css'
+import '../../dist/style.css'
+// import 'react-calendar-datetime-picker/dist/styles.css'
 function App() {
   const [main, setMain] = useState(0)
 
