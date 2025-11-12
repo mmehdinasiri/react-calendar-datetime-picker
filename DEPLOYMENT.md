@@ -19,8 +19,18 @@ react-calendar-datetime-picker/
 ### Automatic Deployment
 
 The library is automatically published to npm when:
-- A new GitHub Release is created
-- Or manually triggered via GitHub Actions
+- **A new GitHub Release is created** (recommended)
+  - Go to: https://github.com/mmehdinasiri/react-calendar-datetime-picker/releases/new
+  - Create a new release with a tag (e.g., `v2.0.0`)
+  - The workflow runs automatically
+- **Manual trigger via GitHub Actions UI** (`workflow_dispatch`)
+  - Go to: Actions tab → "Publish to NPM" → "Run workflow"
+  - Useful for testing or manual publishes
+
+### Workflow Steps
+1. Runs tests
+2. Builds the library
+3. Publishes to npm
 
 ### Manual Deployment
 
@@ -44,8 +54,17 @@ The library is automatically published to npm when:
 ### Automatic Deployment
 
 The website is automatically deployed when:
-- Changes are pushed to `main` or `modern-rewrite` branch
-- Changes are made to `docs/` directory
+- **Push to `main` or `modern-rewrite` branches** AND changes are in:
+  - `docs/**` (any file in docs directory)
+  - `package.json` (dependency changes)
+  - `.github/workflows/deploy-docs.yml` (workflow changes)
+- **Manual trigger via GitHub Actions UI** (`workflow_dispatch`)
+  - Go to: Actions tab → "Deploy Documentation" → "Run workflow"
+
+### Workflow Steps
+1. Builds the library (for docs to use)
+2. Builds the documentation website
+3. Deploys to GitHub Pages
 
 ### Manual Deployment
 
@@ -69,15 +88,70 @@ The website will be available at:
 ## Workflows
 
 ### `.github/workflows/npm-publish.yml`
-- Triggers on GitHub Release creation
-- Runs tests
-- Builds library
-- Publishes to npm
+
+**Trigger Conditions:**
+- `release` event with type `created` (when GitHub Release is created)
+- `workflow_dispatch` (manual trigger from Actions UI)
+
+**What it does:**
+1. Checks out code
+2. Sets up pnpm and Node.js
+3. Installs dependencies
+4. Runs tests
+5. Builds library
+6. Publishes to npm
+
+**Example:**
+```bash
+# 1. Update version in package.json
+# 2. Commit and push
+git add package.json
+git commit -m "chore: bump version to 2.0.0"
+git push
+
+# 3. Create a GitHub Release
+# Go to: https://github.com/mmehdinasiri/react-calendar-datetime-picker/releases/new
+# Tag: v2.0.0
+# Title: Version 2.0.0
+# Click "Publish release"
+# → Workflow automatically runs and publishes to npm
+```
 
 ### `.github/workflows/deploy-docs.yml`
-- Triggers on push to main/modern-rewrite
-- Builds documentation website
-- Deploys to GitHub Pages
+
+**Trigger Conditions:**
+- `push` to branches: `main` or `modern-rewrite`
+- AND changes in paths:
+  - `docs/**`
+  - `package.json`
+  - `.github/workflows/deploy-docs.yml`
+- `workflow_dispatch` (manual trigger from Actions UI)
+
+**What it does:**
+1. Checks out code
+2. Sets up pnpm and Node.js
+3. Installs dependencies
+4. Builds library (for docs to use)
+5. Builds documentation website
+6. Deploys to GitHub Pages
+
+**Example:**
+```bash
+# Any push to main/modern-rewrite that changes docs/
+git add docs/
+git commit -m "docs: update documentation"
+git push origin main
+# → Workflow automatically runs and deploys to GitHub Pages
+```
+
+## Workflow Trigger Summary
+
+| Workflow | Trigger | Frequency |
+|----------|---------|-----------|
+| **NPM Publish** | GitHub Release created | When you publish a new version |
+| **Deploy Docs** | Push to main/modern-rewrite (docs changes) | Every time you update docs |
+
+Both workflows can also be manually triggered from the Actions tab if needed.
 
 ## Local Development
 
