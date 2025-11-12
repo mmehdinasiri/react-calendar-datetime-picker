@@ -9,21 +9,14 @@ export {
   convertToLocale,
   getToday,
   dateToDay,
-  dayToDate,
+  dayToDate
 } from './date-conversion'
 
 // Normalization
-export {
-  normalizeInitValue,
-  extractMonthFromValue,
-} from './normalize'
+export { normalizeInitValue, extractMonthFromValue } from './normalize'
 
 // Formatting
-export {
-  formatDateForInput,
-  dayToString,
-  parseDateString,
-} from './formatting'
+export { formatDateForInput, dayToString, parseDateString } from './formatting'
 
 // Validation
 export {
@@ -32,7 +25,26 @@ export {
   isDateDisabled,
   isDateSelectable,
   compareDays,
+  getDaysInMonth
 } from './validation'
+
+// Calendar grid
+export {
+  generateCalendarGrid,
+  getDayNames,
+  getMonthNames,
+  getYearRange,
+  getMonths
+} from './calendar-grid'
+export type { CalendarDay } from './calendar-grid'
+
+// Calendar selection
+export {
+  isDaySelected,
+  isDayInRange,
+  isRangeStart,
+  isRangeEnd
+} from './calendar-selection'
 
 // Utility functions for backward compatibility (convertToFa, convertToEn)
 import { gregorianToJalali, jalaliToGregorian } from './date-conversion'
@@ -60,4 +72,3 @@ export function convertToEn(date: Day, divider = '/'): string {
   const gregorianDate = jalaliToGregorian(date)
   return dayToString(gregorianDate, divider)
 }
-

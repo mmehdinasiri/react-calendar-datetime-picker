@@ -24,7 +24,7 @@ function isJalaliLeapYear(year: number): boolean {
 /**
  * Get the number of days in a month
  */
-function getDaysInMonth(
+export function getDaysInMonth(
   year: number,
   month: number,
   locale: CalendarLocale

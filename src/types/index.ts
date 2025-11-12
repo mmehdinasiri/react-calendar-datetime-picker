@@ -76,3 +76,12 @@ export type CalendarType = 'single' | 'range' | 'multi'
  * - 'list': Display as list
  */
 export type CalendarListStyle = 'grid' | 'list'
+
+// Re-export calendar types
+export type {
+  CalendarValidation,
+  CalendarClasses,
+  CalendarIcons,
+  CalendarLabels,
+  CalendarCustomization
+} from './calendar'
