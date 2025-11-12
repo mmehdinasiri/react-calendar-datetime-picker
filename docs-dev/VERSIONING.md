@@ -108,9 +108,9 @@ The workflow ensures:
 cat package.json | grep version
 
 # Check npm published version
-npm view react-calendar-datetime-picker version
+pnpm view react-calendar-datetime-picker version
 
 # Check all npm versions
-npm view react-calendar-datetime-picker versions
+pnpm view react-calendar-datetime-picker versions
 ```
 

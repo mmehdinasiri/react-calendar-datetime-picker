@@ -9,10 +9,19 @@ react-calendar-datetime-picker/
 ├── src/                    # Library source code
 ├── dist/                   # Built library (published to npm)
 ├── docs/                   # Documentation website (Next.js)
+├── docs-dev/               # Developer documentation
+│   ├── ARCHITECTURE.md     # Project architecture
+│   ├── DEVELOPMENT.md      # Development guide
+│   ├── DEPLOYMENT.md       # Deployment guide
+│   ├── MONOREPO.md         # This file
+│   ├── SETUP_COMPLETE.md   # Setup guide
+│   └── VERSIONING.md       # Version management
 ├── examples/               # Example/playground app
 ├── .github/workflows/      # CI/CD workflows
 │   ├── npm-publish.yml     # NPM publishing workflow
 │   └── deploy-docs.yml     # GitHub Pages deployment
+├── README.md               # Main user-facing README
+├── CHANGELOG.md            # Version history
 └── pnpm-workspace.yaml     # pnpm workspace configuration
 ```
 

@@ -4,32 +4,32 @@
 
 ### Install Dependencies
 ```bash
-npm install
+pnpm install
 ```
 
 ### Development Commands
 
 ```bash
 # Build library in watch mode
-npm run build:watch
+pnpm run build:watch
 
 # Run examples/playground (in another terminal)
-npm run dev:examples
+pnpm run dev:examples
 
 # Type checking
-npm run typecheck
+pnpm run typecheck
 
 # Linting
-npm run lint
-npm run lint:fix
+pnpm run lint
+pnpm run lint:fix
 
 # Formatting
-npm run format
+pnpm run format
 
 # Testing
-npm test
-npm run test:watch
-npm run test:coverage
+pnpm test
+pnpm run test:watch
+pnpm run test:coverage
 ```
 
 ## 📦 Build System
@@ -82,7 +82,7 @@ export type { Day, Range, Multi, CalendarLocale, CalendarType }
 
 ### Type Checking
 ```bash
-npm run typecheck  # Check types without emitting
+pnpm run typecheck  # Check types without emitting
 ```
 
 ## 🧪 Testing
@@ -145,7 +145,7 @@ The `examples/` directory contains a playground app:
 - Perfect for testing components
 
 ```bash
-npm run dev:examples  # Start playground
+pnpm run dev:examples  # Start playground
 ```
 
 ## 🔧 Configuration Files
@@ -160,18 +160,20 @@ npm run dev:examples  # Start playground
 ## 📦 Publishing
 
 ### Pre-publish Checklist
-1. ✅ Run `npm run typecheck`
-2. ✅ Run `npm run lint`
-3. ✅ Run `npm test`
-4. ✅ Run `npm run build`
+1. ✅ Run `pnpm run typecheck`
+2. ✅ Run `pnpm run lint`
+3. ✅ Run `pnpm test`
+4. ✅ Run `pnpm run build`
 5. ✅ Check `dist/` output
 6. ✅ Update version in `package.json`
 7. ✅ Update `CHANGELOG.md`
 
 ### Publish Command
 ```bash
-npm publish
+pnpm publish --access public
 ```
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) and [VERSIONING.md](./VERSIONING.md) for detailed publishing guide.
 
 The `prepublishOnly` script automatically:
 - Cleans `dist/`

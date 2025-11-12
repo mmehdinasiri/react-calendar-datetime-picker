@@ -15,11 +15,15 @@
 - Both workflows are ready to use
 
 ### ✅ Documentation
-- Created comprehensive guides:
-  - `MONOREPO.md` - Monorepo overview
-  - `DEPLOYMENT.md` - Deployment instructions
-- `../docs/MIGRATION.md` - Migration guide
-- `../docs/FIXES.md` - Known issues and fixes
+- Created comprehensive guides in `docs-dev/`:
+  - [ARCHITECTURE.md](./ARCHITECTURE.md) - Project architecture
+  - [DEVELOPMENT.md](./DEVELOPMENT.md) - Development guide
+  - [DEPLOYMENT.md](./DEPLOYMENT.md) - Deployment instructions
+  - [MONOREPO.md](./MONOREPO.md) - Monorepo overview
+  - [VERSIONING.md](./VERSIONING.md) - Version management
+- Website docs in `docs/`:
+  - `../docs/MIGRATION.md` - Migration guide
+  - `../docs/FIXES.md` - Known issues and fixes
 
 ## 🚀 Next Steps
 

@@ -9,7 +9,10 @@ react-calendar-datetime-picker/
 ├── src/              # Library source code
 ├── dist/             # Built library (published to npm)
 ├── docs/             # Documentation website (deployed to GitHub Pages)
+├── docs-dev/         # Developer documentation
 ├── examples/         # Example/playground app
+├── README.md         # Main user-facing README
+├── CHANGELOG.md      # Version history
 └── .github/
     └── workflows/    # CI/CD workflows
 ```

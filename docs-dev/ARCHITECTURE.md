@@ -16,9 +16,13 @@ react-calendar-datetime-picker/
 │   │   ├── variables.scss # CSS variables/theming
 │   │   └── index.scss     # Main styles entry
 │   └── index.ts           # Main library entry point
-├── examples/              # Example/playground app
-├── tests/                 # Test files
-├── dist/                  # Build output (generated)
+├── docs/                   # Documentation website (Next.js)
+├── docs-dev/               # Developer documentation
+├── examples/               # Example/playground app
+├── tests/                  # Test files
+├── dist/                   # Build output (generated)
+├── README.md               # Main user-facing README
+├── CHANGELOG.md            # Version history
 └── package.json
 ```
 
@@ -76,9 +80,9 @@ import type { Day, Range, Multi, CalendarLocale } from 'react-calendar-datetime-
 
 ### Running Tests
 ```bash
-npm test              # Run once
-npm run test:watch    # Watch mode
-npm run test:coverage # With coverage
+pnpm test              # Run once
+pnpm run test:watch    # Watch mode
+pnpm run test:coverage # With coverage
 ```
 
 ## 🚀 Development
@@ -86,10 +90,10 @@ npm run test:coverage # With coverage
 ### Local Development
 ```bash
 # Build library in watch mode
-npm run build:watch
+pnpm run build:watch
 
 # Run examples/playground
-npm run dev:examples
+pnpm run dev:examples
 ```
 
 ### Examples/Playground
@@ -107,7 +111,7 @@ Located in `examples/` directory:
 
 ### Type Checking
 ```bash
-npm run typecheck  # TypeScript type checking
+pnpm run typecheck  # TypeScript type checking
 ```
 
 ## 🎯 Best Practices
