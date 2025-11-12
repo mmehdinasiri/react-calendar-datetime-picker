@@ -4,14 +4,8 @@
  */
 
 import { useReducer, useEffect, useRef } from 'react'
-import type {
-  Day,
-  Range,
-  Multi,
-  CalendarLocale,
-  CalendarType
-} from '../types'
-import { normalizeInitValue, extractMonthFromValue } from '../utils/normalize'
+import type { Day, Range, Multi, CalendarLocale, CalendarType } from '../types'
+import { extractMonthFromValue } from '../utils/normalize'
 import { getToday } from '../utils/date-conversion'
 
 /**
@@ -277,8 +271,8 @@ function calendarReducer(
  * Hook options
  */
 export interface UseCalendarStateOptions {
-  /** Initial value */
-  initValue?: unknown
+  /** Initial value - should be normalized (Day | Range | Multi | null) */
+  initValue?: Day | Range | Multi | null
   /** Calendar locale */
   locale: CalendarLocale
   /** Calendar selection type */
@@ -295,10 +289,13 @@ export interface UseCalendarStateOptions {
 export function useCalendarState(options: UseCalendarStateOptions) {
   const { initValue, locale, type, onChange, onCalenderChange } = options
 
-  // Initial state
+  // Extract month from normalized initValue for initial display month
+  const monthFromInitValue = extractMonthFromValue(initValue || null)
+
+  // Initial state - use normalized initValue if provided
   const initialState: CalendarState = {
-    selectedValue: null,
-    displayMonth: getToday(locale),
+    selectedValue: initValue || null,
+    displayMonth: monthFromInitValue || getToday(locale),
     currentView: 'calendar'
   }
 
@@ -314,11 +311,10 @@ export function useCalendarState(options: UseCalendarStateOptions) {
   // Sync initValue when it changes externally
   useEffect(() => {
     if (initValue !== prevInitValueRef.current) {
-      const normalized = normalizeInitValue(initValue, locale, type)
-      dispatch({ type: 'SYNC_INIT_VALUE', payload: normalized })
+      dispatch({ type: 'SYNC_INIT_VALUE', payload: initValue || null })
       prevInitValueRef.current = initValue
     }
-  }, [initValue, locale, type])
+  }, [initValue])
 
   // Handle date selection
   const handleDateSelect = (day: Day) => {
@@ -361,4 +357,3 @@ export function useCalendarState(options: UseCalendarStateOptions) {
     actions
   }
 }
-

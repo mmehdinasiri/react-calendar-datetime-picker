@@ -1,11 +1,17 @@
 import React from 'react'
-import type { CalendarLocale, CalendarType } from '../types'
+import type { CalendarLocale, CalendarType, InitValueInput } from '../types'
+import type { CalendarValidationInput } from '../types/calendar'
 
 export interface DtPickerProps {
   /**
    * Initial value for the date picker
+   * Accepts Day objects, Date objects, date strings, timestamps, or range/multi formats
+   * Examples:
+   * - Single: { year: 2024, month: 12, day: 25 } | new Date() | "2024-12-25" | 1735084800000
+   * - Range: { from: DateInput, to: DateInput }
+   * - Multi: DateInput[]
    */
-  initValue?: unknown
+  initValue?: InitValueInput
   /**
    * Callback function called when date changes
    */
@@ -56,17 +62,10 @@ export interface DtPickerProps {
    */
   isDisabled?: boolean
   /**
-   * Maximum selectable date
+   * Date validation options (maxDate, minDate, disabledDates)
+   * Accepts Day objects, Date objects, date strings, or timestamps
    */
-  maxDate?: unknown
-  /**
-   * Minimum selectable date
-   */
-  minDate?: unknown
-  /**
-   * List of disabled dates
-   */
-  disabledDates?: unknown[]
+  validation?: CalendarValidationInput
   /**
    * Placeholder text
    * @default 'Select date'

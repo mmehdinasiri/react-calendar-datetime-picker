@@ -79,7 +79,10 @@ export type CalendarListStyle = 'grid' | 'list'
 
 // Re-export calendar types
 export type {
+  DateInput,
+  InitValueInput,
   CalendarValidation,
+  CalendarValidationInput,
   CalendarClasses,
   CalendarIcons,
   CalendarLabels,

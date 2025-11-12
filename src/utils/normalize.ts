@@ -5,6 +5,7 @@
 
 import type { Day, Range, Multi, CalendarLocale, CalendarType } from '../types'
 import { dateToDay } from './date-conversion'
+import { parseDateString } from './formatting'
 
 /**
  * Type guards
@@ -44,10 +45,12 @@ function isMultiArray(value: unknown): value is Multi {
 /**
  * Normalize a single day object
  * Ensures all required fields are present and valid
+ * Supports: Day objects, Date objects, date strings, and timestamps (numbers)
  */
 function normalizeDay(day: unknown, locale: CalendarLocale): Day | null {
   if (!day) return null
 
+  // Handle Day objects (already in the correct format)
   if (isDayObject(day)) {
     // Validate day object
     if (
@@ -62,14 +65,40 @@ function normalizeDay(day: unknown, locale: CalendarLocale): Day | null {
         month: day.month,
         day: day.day,
         hour: day.hour,
-        minute: day.minute,
+        minute: day.minute
       }
     }
   }
 
-  // Try to convert from Date object
+  // Handle Date objects
   if (day instanceof Date) {
     return dateToDay(day, locale)
+  }
+
+  // Handle numbers (timestamps)
+  if (typeof day === 'number') {
+    const date = new Date(day)
+    if (!isNaN(date.getTime())) {
+      return dateToDay(date, locale)
+    }
+    return null
+  }
+
+  // Handle strings (date strings like "2024/12/25", "2024-12-25", ISO strings, etc.)
+  if (typeof day === 'string') {
+    // First try to parse as Date (handles ISO strings like "2024-12-25T00:00:00Z")
+    const dateFromString = new Date(day)
+    if (!isNaN(dateFromString.getTime())) {
+      return dateToDay(dateFromString, locale)
+    }
+
+    // Fall back to simple date string parsing (handles "2024/12/25", "2024-12-25", etc.)
+    const parsed = parseDateString(day, locale)
+    if (parsed) {
+      return parsed
+    }
+
+    return null
   }
 
   return null
@@ -139,4 +168,3 @@ export function extractMonthFromValue(
 
   return null
 }
-

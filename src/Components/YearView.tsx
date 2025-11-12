@@ -41,7 +41,7 @@ export const YearView: React.FC<YearViewProps> = (props) => {
   const isGrid = yearListStyle === 'grid'
   const monthNames = getMonthNames(locale)
   const currentMonthName = monthNames[displayMonth.month - 1]
-  
+
   const yearsContainerRef = useRef<HTMLDivElement>(null)
   const currentYearIndex = years.findIndex((year) => year === displayMonth.year)
 
@@ -52,14 +52,14 @@ export const YearView: React.FC<YearViewProps> = (props) => {
       const yearItemHeight = 55 // Height of each year item
       const containerHeight = 291 // Height of the scrollable container
       const columnsPerRow = 5 // Grid has 5 columns
-      
+
       // Calculate which row the current year is in
       const rowIndex = Math.floor(currentYearIndex / columnsPerRow)
-      
+
       // Calculate scroll position to center the row containing the current year
       const scrollPosition =
         rowIndex * yearItemHeight - containerHeight / 2 + yearItemHeight / 2
-      
+
       // Scroll to the calculated position
       container.scrollTo({
         top: Math.max(0, scrollPosition),
@@ -70,10 +70,12 @@ export const YearView: React.FC<YearViewProps> = (props) => {
       const container = yearsContainerRef.current
       const yearItemHeight = 55
       const containerHeight = 291
-      
+
       const scrollPosition =
-        currentYearIndex * yearItemHeight - containerHeight / 2 + yearItemHeight / 2
-      
+        currentYearIndex * yearItemHeight -
+        containerHeight / 2 +
+        yearItemHeight / 2
+
       container.scrollTo({
         top: Math.max(0, scrollPosition),
         behavior: 'smooth'
@@ -108,7 +110,10 @@ export const YearView: React.FC<YearViewProps> = (props) => {
             {displayMonth.year}
           </button>
         </div>
-        <div className='calendar-nav-btn calendar-nav-next' style={{ visibility: 'hidden' }}>
+        <div
+          className='calendar-nav-btn calendar-nav-next'
+          style={{ visibility: 'hidden' }}
+        >
           {isRTL ? '<' : '>'}
         </div>
       </div>

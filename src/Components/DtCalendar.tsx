@@ -1,7 +1,13 @@
 import React from 'react'
-import type { CalendarLocale, CalendarType, Day } from '../types'
+import type {
+  CalendarLocale,
+  CalendarType,
+  Day,
+  InitValueInput
+} from '../types'
 import type {
   CalendarValidation,
+  CalendarValidationInput,
   CalendarCustomization
 } from '../types/calendar'
 import { CalendarCore } from './CalendarCore'
@@ -11,8 +17,13 @@ import { normalizeInitValue } from '../utils/normalize'
 export interface DtCalendarProps {
   /**
    * Initial value for the calendar
+   * Accepts Day objects, Date objects, date strings, timestamps, or range/multi formats
+   * Examples:
+   * - Single: { year: 2024, month: 12, day: 25 } | new Date() | "2024-12-25" | 1735084800000
+   * - Range: { from: DateInput, to: DateInput }
+   * - Multi: DateInput[]
    */
-  initValue?: unknown
+  initValue?: InitValueInput
   /**
    * Callback function called when date changes
    */
@@ -48,17 +59,10 @@ export interface DtCalendarProps {
    */
   todayBtn?: boolean
   /**
-   * Maximum selectable date
+   * Date validation options (maxDate, minDate, disabledDates)
+   * Accepts Day objects, Date objects, date strings, or timestamps
    */
-  maxDate?: unknown
-  /**
-   * Minimum selectable date
-   */
-  minDate?: unknown
-  /**
-   * List of disabled dates
-   */
-  disabledDates?: unknown[]
+  validation?: CalendarValidationInput
   /**
    * Custom CSS class for calendar modal
    */
@@ -70,33 +74,46 @@ export interface DtCalendarProps {
 }
 
 /**
- * Normalize validation props from unknown to Day/Day[]
+ * Normalize validation props from DateInput to Day/Day[]
  */
 function normalizeValidationProps(
-  maxDate: unknown,
-  minDate: unknown,
-  disabledDates: unknown[] | undefined,
+  validationInput: CalendarValidationInput | undefined,
   locale: CalendarLocale,
   _type: CalendarType
 ): CalendarValidation {
   const validation: CalendarValidation = {}
 
-  if (maxDate) {
-    const normalized = normalizeInitValue(maxDate, locale, 'single')
+  if (!validationInput) {
+    return validation
+  }
+
+  if (validationInput.maxDate) {
+    const normalized = normalizeInitValue(
+      validationInput.maxDate,
+      locale,
+      'single'
+    )
     if (normalized && 'year' in normalized) {
       validation.maxDate = normalized as Day
     }
   }
 
-  if (minDate) {
-    const normalized = normalizeInitValue(minDate, locale, 'single')
+  if (validationInput.minDate) {
+    const normalized = normalizeInitValue(
+      validationInput.minDate,
+      locale,
+      'single'
+    )
     if (normalized && 'year' in normalized) {
       validation.minDate = normalized as Day
     }
   }
 
-  if (disabledDates && disabledDates.length > 0) {
-    validation.disabledDates = disabledDates
+  if (
+    validationInput.disabledDates &&
+    validationInput.disabledDates.length > 0
+  ) {
+    validation.disabledDates = validationInput.disabledDates
       .map((date) => normalizeInitValue(date, locale, 'single'))
       .filter((date): date is Day => date !== null && 'year' in date)
   }
@@ -129,25 +146,20 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     local = 'en',
     showWeekend = false,
     todayBtn = false,
-    maxDate,
-    minDate,
-    disabledDates,
+    validation: validationInput,
     calenderModalClass,
     customization
   } = props
 
   // Normalize validation props
-  const validation = normalizeValidationProps(
-    maxDate,
-    minDate,
-    disabledDates,
-    local,
-    type
-  )
+  const validation = normalizeValidationProps(validationInput, local, type)
+
+  // Normalize initValue upfront for proper initial state
+  const normalizedInitValue = normalizeInitValue(initValue, local, type)
 
   // Use calendar state hook
   const { state, actions } = useCalendarState({
-    initValue,
+    initValue: normalizedInitValue,
     locale: local,
     type,
     onChange,
