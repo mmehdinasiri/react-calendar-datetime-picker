@@ -6,7 +6,7 @@
 import React from 'react'
 import type { Day, CalendarLocale, CalendarListStyle } from '../types'
 import type { CalendarCustomization } from '../types/calendar'
-import { getYearRange } from '../utils/calendar-grid'
+import { getYearRange, getMonthNames } from '../utils/calendar-grid'
 
 export interface YearViewProps {
   /** Currently displayed month */
@@ -39,6 +39,8 @@ export const YearView: React.FC<YearViewProps> = (props) => {
   const isRTL = locale === 'fa'
   const years = getYearRange(displayMonth.year, 12)
   const isGrid = yearListStyle === 'grid'
+  const monthNames = getMonthNames(locale)
+  const currentMonthName = monthNames[displayMonth.month - 1]
 
   return (
     <div className='calendar-core' dir={isRTL ? 'rtl' : 'ltr'}>
@@ -46,12 +48,15 @@ export const YearView: React.FC<YearViewProps> = (props) => {
         <button
           type='button'
           onClick={() => onViewChange('months')}
-          className='calendar-back-btn'
+          className='calendar-nav-btn calendar-nav-prev'
         >
-          ←
+          {isRTL ? '>' : '<'}
         </button>
-        <div className='calendar-year-range-title'>
-          {years[0]} - {years[years.length - 1]}
+        <div className='calendar-month-year-title'>
+          {displayMonth.year} {currentMonthName}
+        </div>
+        <div className='calendar-nav-btn calendar-nav-next' style={{ visibility: 'hidden' }}>
+          {isRTL ? '<' : '>'}
         </div>
       </div>
 
@@ -63,6 +68,13 @@ export const YearView: React.FC<YearViewProps> = (props) => {
         {years.map((year) => {
           const isCurrentYear = year === displayMonth.year
 
+          const classNames = [
+            'calendar-year-item',
+            isCurrentYear && 'calendar-year-current'
+          ]
+            .filter(Boolean)
+            .join(' ')
+
           return (
             <button
               key={year}
@@ -71,9 +83,7 @@ export const YearView: React.FC<YearViewProps> = (props) => {
                 onYearSelect(year)
                 onViewChange('months')
               }}
-              className={`calendar-year-item ${
-                isCurrentYear ? 'calendar-year-current' : ''
-              }`}
+              className={classNames}
             >
               {year}
             </button>

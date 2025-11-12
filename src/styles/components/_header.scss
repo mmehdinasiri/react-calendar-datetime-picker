@@ -1,0 +1,128 @@
+// Calendar Header Styles
+@use '../variables' as *;
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--calendar-primary);
+  color: var(--calendar-text-header);
+  padding: 24px 16px;
+  min-height: 48px;
+  position: relative;
+  border-top-left-radius: var(--calendar-radius-sm);
+  border-top-right-radius: var(--calendar-radius-sm);
+}
+
+.calendar-nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--calendar-text-header);
+  cursor: pointer;
+  padding: var(--calendar-spacing-xs) var(--calendar-spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: var(--calendar-transition);
+  border-radius: var(--calendar-radius-sm);
+  min-width: 32px;
+  min-height: 32px;
+  width: 20px;
+  height: 20px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &.is-disabled {
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  span {
+    display: block;
+  }
+}
+
+.calendar-nav-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.calendar-month-year-btn,
+.calendar-month-year-title,
+.calendar-year-range-title {
+  display: flex;
+  color: var(--calendar-text-header);
+  font-weight: 500;
+  font-size: 18px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: var(--calendar-spacing-xs) var(--calendar-spacing-sm);
+  transition: var(--calendar-transition);
+  border-radius: var(--calendar-radius-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.calendar-back-btn,
+.calendar-year-btn {
+  background: transparent;
+  border: none;
+  color: var(--calendar-text-header);
+  cursor: pointer;
+  padding: var(--calendar-spacing-xs) var(--calendar-spacing-sm);
+  font-size: 14px;
+  transition: var(--calendar-transition);
+  border-radius: var(--calendar-radius-sm);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.calendar-today-btn {
+  position: absolute;
+  bottom: var(--calendar-spacing-sm);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: var(--calendar-text-header);
+  cursor: pointer;
+  padding: var(--calendar-spacing-xs) var(--calendar-spacing-sm);
+  font-size: 12px;
+  border-radius: var(--calendar-radius-sm);
+  transition: var(--calendar-transition);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+// RTL support
+[dir='rtl'] {
+  .calendar-header {
+    .calendar-month-year-btn,
+    .calendar-month-year-title,
+    .calendar-year-range-title {
+      direction: ltr;
+    }
+
+    .calendar-nav-btn {
+      transform: scale(-1);
+    }
+  }
+}
+

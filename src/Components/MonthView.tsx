@@ -35,6 +35,7 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
 
   const isRTL = locale === 'fa'
   const monthNames = getMonthNames(locale)
+  const currentMonthName = monthNames[displayMonth.month - 1]
 
   return (
     <div className='calendar-core' dir={isRTL ? 'rtl' : 'ltr'}>
@@ -42,17 +43,19 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
         <button
           type='button'
           onClick={() => onViewChange('calendar')}
-          className='calendar-back-btn'
+          className='calendar-nav-btn calendar-nav-prev'
         >
-          ←
+          {isRTL ? '>' : '<'}
         </button>
-        <div className='calendar-month-year-title'>{displayMonth.year}</div>
+        <div className='calendar-month-year-title'>
+          {displayMonth.year} {currentMonthName}
+        </div>
         <button
           type='button'
           onClick={() => onViewChange('years')}
-          className='calendar-year-btn'
+          className='calendar-nav-btn calendar-nav-next'
         >
-          Select Year
+          {isRTL ? '<' : '>'}
         </button>
       </div>
 
@@ -60,6 +63,13 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
         {monthNames.map((monthName, index) => {
           const month = index + 1
           const isCurrentMonth = month === displayMonth.month
+
+          const classNames = [
+            'calendar-month-item',
+            isCurrentMonth && 'calendar-month-current'
+          ]
+            .filter(Boolean)
+            .join(' ')
 
           return (
             <button
@@ -69,9 +79,7 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
                 onMonthSelect(month)
                 onViewChange('calendar')
               }}
-              className={`calendar-month-item ${
-                isCurrentMonth ? 'calendar-month-current' : ''
-              }`}
+              className={classNames}
             >
               {monthName}
             </button>

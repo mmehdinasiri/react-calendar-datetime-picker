@@ -125,28 +125,48 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
 
       {/* Day names */}
       <div className='calendar-day-names'>
-        {dayNames.map((name, index) => (
-          <div
-            key={index}
-            className={`calendar-day-name ${
-              showWeekend &&
-              (locale === 'fa'
-                ? index === 6 || index === 5
-                : index === 0 || index === 6)
-                ? 'calendar-weekend'
-                : ''
-            }`}
-          >
-            {name}
-          </div>
-        ))}
+        {dayNames.map((name, index) => {
+          const isWeekendDay =
+            showWeekend &&
+            (locale === 'fa'
+              ? index === 6 || index === 5
+              : index === 0 || index === 6)
+          
+          const dayNameClassNames = [
+            'calendar-day-name',
+            isWeekendDay && 'calendar-weekend'
+          ]
+            .filter(Boolean)
+            .join(' ')
+
+          return (
+            <div
+              key={`day-name-${index}-${name}`}
+              className={dayNameClassNames}
+            >
+              {name}
+            </div>
+          )
+        })}
       </div>
 
       {/* Calendar grid */}
       <div className={`calendar-grid ${daysClass || ''}`}>
-        {calendarGrid.map((week, weekIndex) => (
-          <div key={weekIndex} className='calendar-week'>
-            {week.map((calendarDay, dayIndex) => {
+        {calendarGrid.map((week, weekIndex) => {
+          const hasOtherMonth = week.some((day) => !day.isCurrentMonth)
+          const weekClassNames = [
+            'calendar-week',
+            hasOtherMonth && 'calendar-week-other-month'
+          ]
+            .filter(Boolean)
+            .join(' ')
+          
+          return (
+            <div
+              key={weekIndex}
+              className={weekClassNames}
+            >
+              {week.map((calendarDay, dayIndex) => {
               const day: Day = calendarDay.dayObject
               const isSelected = isDaySelected(day, selectedValue, type)
               const isInRange = isDayInRange(day, selectedValue, type)
@@ -162,28 +182,39 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                   ? dayIndex === 6 || dayIndex === 5
                   : dayIndex === 0 || dayIndex === 6)
 
+              const classNames = [
+                'calendar-day',
+                !calendarDay.isCurrentMonth && 'calendar-day-other-month',
+                calendarDay.isToday && 'calendar-day-today',
+                isSelected && 'calendar-day-selected',
+                isInRange && 'calendar-day-in-range',
+                !isSelectable && 'calendar-day-disabled',
+                isWeekend && 'calendar-day-weekend'
+              ]
+                .filter(Boolean)
+                .join(' ')
+
+              const handleClick = () => {
+                if (isSelectable) {
+                  onDateSelect(day)
+                }
+              }
+
               return (
                 <button
-                  key={dayIndex}
+                  key={`${weekIndex}-${dayIndex}-${day.year}-${day.month}-${day.day}`}
                   type='button'
-                  onClick={() => isSelectable && onDateSelect(day)}
+                  onClick={handleClick}
                   disabled={!isSelectable}
-                  className={`calendar-day ${
-                    !calendarDay.isCurrentMonth
-                      ? 'calendar-day-other-month'
-                      : ''
-                  } ${calendarDay.isToday ? 'calendar-day-today' : ''} ${
-                    isSelected ? 'calendar-day-selected' : ''
-                  } ${isInRange ? 'calendar-day-in-range' : ''} ${
-                    !isSelectable ? 'calendar-day-disabled' : ''
-                  } ${isWeekend ? 'calendar-day-weekend' : ''}`}
+                  className={classNames}
                 >
                   {calendarDay.day}
                 </button>
               )
             })}
-          </div>
-        ))}
+            </div>
+          )
+        })}
       </div>
     </div>
   )

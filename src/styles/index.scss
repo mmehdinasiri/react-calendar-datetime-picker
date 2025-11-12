@@ -1,5 +1,10 @@
-// Import variables first
+// All @use statements must come before any other rules
 @use './variables';
+@use './components/calendar-core';
+@use './components/header';
+@use './components/calendar-grid';
+@use './components/month-view';
+@use './components/year-view';
 
 // Base styles
 * {
@@ -26,8 +31,3 @@
   font-family: 'Vazir', 'Tahoma', 'Arial', 'Segoe UI', -apple-system,
     BlinkMacSystemFont, sans-serif;
 }
-
-// Component styles will be imported here
-// @import './components/calendar';
-// @import './components/picker';
-// @import './components/input';

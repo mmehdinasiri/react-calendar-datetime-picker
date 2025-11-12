@@ -1,0 +1,155 @@
+// Calendar Grid View Styles (Days List)
+@use '../variables' as *;
+
+// Day Names Row
+.calendar-day-names {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--calendar-bg);
+  padding: 8px 0;
+  margin: 0;
+  text-align: center;
+  border-bottom: 1px solid var(--calendar-border);
+}
+
+.calendar-day-name {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--calendar-text-day-names);
+  padding: var(--calendar-spacing-xs);
+  height: 34px;
+  line-height: 34px;
+  border-radius: 0;
+
+  &.calendar-weekend {
+    color: var(--calendar-weekends);
+  }
+}
+
+// Calendar Grid
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  background: var(--calendar-bg);
+  list-style: none;
+  overflow: hidden;
+  padding: 8px 0;
+  margin: 0;
+  text-align: center;
+}
+
+.calendar-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  // Note: Other month rows don't have distinct background per image
+}
+
+.calendar-day {
+  background: transparent;
+  border: none;
+  color: var(--calendar-text-light);
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  transition: var(--calendar-transition);
+  position: relative;
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 50%;
+  margin: 1px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(var(--calendar-modal-width) / 7);
+  min-width: 0; // Allow grid to control width
+
+  &:hover:not(.calendar-day-disabled):not(.calendar-day-selected) {
+    background: var(--calendar-bg-hover);
+  }
+
+  &.calendar-day-other-month {
+    color: var(--calendar-text-other-month);
+    border-radius: 0;
+  }
+
+  &.calendar-day-selected {
+    background-color: var(--calendar-selected-day);
+    color: white;
+    font-weight: 600;
+    border-radius: 50%;
+
+    &.calendar-day-other-month {
+      background-color: var(--calendar-selected-range);
+      color: var(--calendar-selected-range-color);
+    }
+  }
+
+  &.calendar-day-today {
+    font-weight: 600;
+    box-shadow: inset 0 0 0 2px var(--calendar-today);
+    
+    &.calendar-day-selected {
+      // When today is also selected, show selected background with today border
+      box-shadow: inset 0 0 0 2px var(--calendar-today);
+    }
+  }
+
+  &.calendar-day-disabled {
+    pointer-events: none;
+    background-color: var(--calendar-bg-disabled);
+    color: var(--calendar-text-disabled);
+    opacity: 1;
+  }
+
+  &.calendar-day-in-range {
+    color: var(--calendar-selected-range-color);
+    border-radius: 0;
+    background-color: var(--calendar-selected-range);
+  }
+
+  &.calendar-day-weekend {
+    color: var(--calendar-weekends);
+  }
+
+  // Range selection styles
+  &.calendar-day-range-start {
+    background-color: var(--calendar-selected-day);
+    border-radius: 0;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    color: white;
+  }
+
+  &.calendar-day-range-end {
+    background-color: var(--calendar-selected-day);
+    border-radius: 0;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    color: white;
+  }
+
+  &.calendar-day-range-start.calendar-day-range-end {
+    border-radius: 50% !important;
+  }
+}
+
+// RTL support
+[dir='rtl'] {
+  .calendar-day {
+    &.calendar-day-range-start {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-top-right-radius: 50%;
+      border-bottom-right-radius: 50%;
+    }
+
+    &.calendar-day-range-end {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top-left-radius: 50%;
+      border-bottom-left-radius: 50%;
+    }
+  }
+}
+
