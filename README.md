@@ -31,23 +31,29 @@ pnpm add react-calendar-datetime-picker
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Run development server
-npm run dev
+pnpm run dev:examples
 
 # Build library
-npm run build
+pnpm run build
 
 # Run tests
-npm test
+pnpm test
 
 # Type checking
-npm run typecheck
+pnpm run typecheck
 
 # Linting
-npm run lint
+pnpm run lint
 ```
+
+## Documentation
+
+- **[Developer Documentation](./docs-dev/)** - Architecture, development, deployment guides
+- **[Changelog](./CHANGELOG.md)** - Version history and changes
+- **[Website](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)** - Full documentation website
 
 ## License
 

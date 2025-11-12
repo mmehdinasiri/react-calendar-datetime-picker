@@ -18,8 +18,8 @@
 - Created comprehensive guides:
   - `MONOREPO.md` - Monorepo overview
   - `DEPLOYMENT.md` - Deployment instructions
-  - `docs/MIGRATION.md` - Migration guide
-  - `docs/FIXES.md` - Known issues and fixes
+- `../docs/MIGRATION.md` - Migration guide
+- `../docs/FIXES.md` - Known issues and fixes
 
 ## 🚀 Next Steps
 
@@ -37,7 +37,7 @@
 5. Click **"Add secret"**
 
 ### 3. Fix Remaining TypeScript Issues
-Some `onChange` handlers need to be wrapped. See `docs/FIXES.md` for details.
+Some `onChange` handlers need to be wrapped. See `../docs/FIXES.md` for details.
 
 **Quick fix pattern:**
 ```typescript

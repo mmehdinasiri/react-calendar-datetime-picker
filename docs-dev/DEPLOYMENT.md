@@ -48,6 +48,21 @@ The library is automatically published to npm when:
 
 - NPM_TOKEN secret must be set in GitHub repository settings
 - You must be logged in to npm CLI
+- **Version in package.json must match the GitHub Release tag** (e.g., if release tag is `v2.0.0`, package.json should have `"version": "2.0.0"`)
+
+### Version Management
+
+The workflow automatically:
+1. Extracts version from GitHub Release tag (e.g., `v2.0.0` → `2.0.0`)
+2. Updates `package.json` to match the release tag version
+3. Publishes to npm with that version
+
+**Important**: Before creating a GitHub Release:
+- Update version in `package.json` to match your intended release version
+- Commit and push the changes
+- Create GitHub Release with matching tag (e.g., `v2.0.0`)
+
+See [VERSIONING.md](./VERSIONING.md) for detailed version management guide.
 
 ## Documentation Website Deployment (GitHub Pages)
 

@@ -40,7 +40,7 @@ react-calendar-datetime-picker/
 ## Next Steps
 
 1. **Migrate Website Content**:
-   - Follow instructions in `docs/MIGRATION.md`
+   - Follow instructions in `../docs/MIGRATION.md`
    - Copy files from the separate website repository
    - Update Next.js config for GitHub Pages
 

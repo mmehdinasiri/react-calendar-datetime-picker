@@ -35,6 +35,29 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Get version from release tag
+        id: get_version
+        if: github.event_name == 'release'
+        run: |
+          # Extract version from release tag (remove 'v' prefix if present)
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          VERSION=${TAG_NAME#v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Release tag: $TAG_NAME"
+          echo "Extracted version: $VERSION"
+
+      - name: Update package.json version
+        if: github.event_name == 'release'
+        run: |
+          VERSION="${{ steps.get_version.outputs.version }}"
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if [ "$CURRENT_VERSION" != "$VERSION" ]; then
+            echo "Updating package.json version from $CURRENT_VERSION to $VERSION"
+            pnpm version $VERSION --no-git-tag-version --no-commit-hooks
+          else
+            echo "package.json version ($CURRENT_VERSION) already matches release tag"
+          fi
+
       - name: Run tests
         run: pnpm test
 
