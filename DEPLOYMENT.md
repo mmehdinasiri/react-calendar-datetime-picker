@@ -54,7 +54,7 @@ The library is automatically published to npm when:
 ### Automatic Deployment
 
 The website is automatically deployed when:
-- **Push to `main` or `modern-rewrite` branches** AND changes are in:
+- **Push to `main` branch** AND changes are in:
   - `docs/**` (any file in docs directory)
   - `package.json` (dependency changes)
   - `.github/workflows/deploy-docs.yml` (workflow changes)
@@ -120,7 +120,7 @@ git push
 ### `.github/workflows/deploy-docs.yml`
 
 **Trigger Conditions:**
-- `push` to branches: `main` or `modern-rewrite`
+- `push` to branch: `main` only
 - AND changes in paths:
   - `docs/**`
   - `package.json`
@@ -137,7 +137,7 @@ git push
 
 **Example:**
 ```bash
-# Any push to main/modern-rewrite that changes docs/
+# Any push to main branch that changes docs/
 git add docs/
 git commit -m "docs: update documentation"
 git push origin main
@@ -149,7 +149,7 @@ git push origin main
 | Workflow | Trigger | Frequency |
 |----------|---------|-----------|
 | **NPM Publish** | GitHub Release created | When you publish a new version |
-| **Deploy Docs** | Push to main/modern-rewrite (docs changes) | Every time you update docs |
+| **Deploy Docs** | Push to main branch (docs changes) | Every time you update docs |
 
 Both workflows can also be manually triggered from the Actions tab if needed.
 

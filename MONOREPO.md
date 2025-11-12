@@ -32,7 +32,7 @@ react-calendar-datetime-picker/
 - **Output**: Published to npm registry
 
 ### Documentation (GitHub Pages)
-- **Trigger**: Push to main branch (when docs/ changes)
+- **Trigger**: Push to `main` branch only (when docs/ changes)
 - **Workflow**: `.github/workflows/deploy-docs.yml`
 - **Output**: Deployed to GitHub Pages
 - **URL**: https://mmehdinasiri.github.io/react-calendar-datetime-picker/
@@ -80,7 +80,7 @@ pnpm publish
 - Tests → Builds → Publishes to npm
 
 ### Docs Deployment Workflow
-- Runs on push to main/modern-rewrite
+- Runs on push to `main` branch only
 - Builds library → Builds docs → Deploys to GitHub Pages
 
 ## Configuration Files
