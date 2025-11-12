@@ -86,7 +86,6 @@ function calculateNewValue(
 
   if (type === 'multi') {
     const currentMulti = (currentValue as Multi) || []
-    const dayKey = `${selectedDay.year}-${selectedDay.month}-${selectedDay.day}`
 
     // Check if day is already selected
     const isSelected = currentMulti.some(
@@ -121,7 +120,7 @@ function calculateNewValue(
 function navigateMonth(
   currentMonth: Day,
   direction: 'prev' | 'next',
-  locale: CalendarLocale
+  _locale: CalendarLocale
 ): Day {
   let newMonth = currentMonth.month + (direction === 'next' ? 1 : -1)
   let newYear = currentMonth.year

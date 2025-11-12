@@ -77,7 +77,7 @@ function normalizeValidationProps(
   minDate: unknown,
   disabledDates: unknown[] | undefined,
   locale: CalendarLocale,
-  type: CalendarType
+  _type: CalendarType
 ): CalendarValidation {
   const validation: CalendarValidation = {}
 
@@ -125,7 +125,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     onChange,
     onCalenderChange,
     type = 'single',
-    withTime = false,
+    withTime: _withTime = false,
     local = 'en',
     showWeekend = false,
     todayBtn = false,
