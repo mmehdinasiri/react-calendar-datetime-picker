@@ -13,9 +13,10 @@
     "jsx": "react-jsx",
     "strict": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "types": ["vite/client"]
   },
   "include": ["src"],
-  "references": [{ "path": "../tsconfig.json" }]
+  "exclude": ["node_modules", "dist"]
 }
 

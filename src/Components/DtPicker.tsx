@@ -109,7 +109,7 @@ export interface DtPickerProps {
 export const DtPicker: React.FC<DtPickerProps> = (_props) => {
   // TODO: Implement component
   return (
-    <div className="react-calendar-datetime-picker">
+    <div className='react-calendar-datetime-picker'>
       <div>DtPicker - Coming soon</div>
     </div>
   )
