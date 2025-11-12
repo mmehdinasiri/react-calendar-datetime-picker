@@ -51,9 +51,20 @@ pnpm run lint
 
 ## Documentation
 
-- **[Developer Documentation](./docs-dev/)** - Architecture, development, deployment guides
+### User Documentation
+- **[Website](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)** - Full documentation website with examples
 - **[Changelog](./CHANGELOG.md)** - Version history and changes
-- **[Website](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)** - Full documentation website
+
+### Developer Documentation
+
+- **[Architecture](./docs-dev/ARCHITECTURE.md)** - Project architecture and structure
+- **[Development Guide](./docs-dev/DEVELOPMENT.md)** - Development workflow and guidelines
+- **[Deployment Guide](./docs-dev/DEPLOYMENT.md)** - Deployment guide for npm and GitHub Pages
+- **[Monorepo Setup](./docs-dev/MONOREPO.md)** - Monorepo structure and configuration
+- **[Version Management](./docs-dev/VERSIONING.md)** - Version management and publishing
+- **[Setup Guide](./docs-dev/SETUP_COMPLETE.md)** - Initial setup completion guide
+
+See [docs-dev/README.md](./docs-dev/README.md) for complete documentation index.
 
 ## License
 
