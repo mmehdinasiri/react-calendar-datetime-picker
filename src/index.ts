@@ -25,5 +25,17 @@ export type {
   CalendarListStyle,
 } from './types'
 
-// Export utilities (if any)
-// export { convertToEn, convertToFa } from './utils'
+// Export utilities
+export {
+  convertToEn,
+  convertToFa,
+  gregorianToJalali,
+  jalaliToGregorian,
+  getToday,
+  formatDateForInput,
+  dayToString,
+  normalizeInitValue,
+  isValidDay,
+  isDateInRange,
+  isDateSelectable,
+} from './utils'

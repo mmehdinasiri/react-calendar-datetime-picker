@@ -1,0 +1,63 @@
+/**
+ * Utility functions export
+ */
+
+// Date conversion
+export {
+  gregorianToJalali,
+  jalaliToGregorian,
+  convertToLocale,
+  getToday,
+  dateToDay,
+  dayToDate,
+} from './date-conversion'
+
+// Normalization
+export {
+  normalizeInitValue,
+  extractMonthFromValue,
+} from './normalize'
+
+// Formatting
+export {
+  formatDateForInput,
+  dayToString,
+  parseDateString,
+} from './formatting'
+
+// Validation
+export {
+  isValidDay,
+  isDateInRange,
+  isDateDisabled,
+  isDateSelectable,
+  compareDays,
+} from './validation'
+
+// Utility functions for backward compatibility (convertToFa, convertToEn)
+import { gregorianToJalali, jalaliToGregorian } from './date-conversion'
+import { dayToString } from './formatting'
+import type { Day } from '../types'
+
+/**
+ * Convert Gregorian date to Jalali date string
+ * @param date - Day object in Gregorian calendar
+ * @param divider - String divider (default: '/')
+ * @returns Formatted Jalali date string
+ */
+export function convertToFa(date: Day, divider = '/'): string {
+  const jalaliDate = gregorianToJalali(date)
+  return dayToString(jalaliDate, divider)
+}
+
+/**
+ * Convert Jalali date to Gregorian date string
+ * @param date - Day object in Jalali calendar
+ * @param divider - String divider (default: '/')
+ * @returns Formatted Gregorian date string
+ */
+export function convertToEn(date: Day, divider = '/'): string {
+  const gregorianDate = jalaliToGregorian(date)
+  return dayToString(gregorianDate, divider)
+}
+
