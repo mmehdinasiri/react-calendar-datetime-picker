@@ -113,36 +113,38 @@ export const YearView: React.FC<YearViewProps> = (props) => {
         </div>
       </div>
 
-      <div
-        ref={yearsContainerRef}
-        className={`calendar-years ${yearsClass || ''} ${
-          isGrid ? 'calendar-years-grid' : 'calendar-years-list'
-        }`}
-      >
-        {years.map((year) => {
-          const isCurrentYear = year === displayMonth.year
+      <div className='year-wrapper'>
+        <div
+          ref={yearsContainerRef}
+          className={`calendar-years ${yearsClass || ''} ${
+            isGrid ? 'calendar-years-grid' : 'calendar-years-list'
+          }`}
+        >
+          {years.map((year) => {
+            const isCurrentYear = year === displayMonth.year
 
-          const classNames = [
-            'calendar-year-item',
-            isCurrentYear && 'calendar-year-current'
-          ]
-            .filter(Boolean)
-            .join(' ')
+            const classNames = [
+              'calendar-year-item',
+              isCurrentYear && 'calendar-year-current'
+            ]
+              .filter(Boolean)
+              .join(' ')
 
-          return (
-            <button
-              key={year}
-              type='button'
-              onClick={() => {
-                onYearSelect(year)
-                onViewChange('months')
-              }}
-              className={classNames}
-            >
-              {year}
-            </button>
-          )
-        })}
+            return (
+              <button
+                key={year}
+                type='button'
+                onClick={() => {
+                  onYearSelect(year)
+                  onViewChange('months')
+                }}
+                className={classNames}
+              >
+                {year}
+              </button>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

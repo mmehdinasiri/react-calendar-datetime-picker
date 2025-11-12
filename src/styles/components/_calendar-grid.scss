@@ -76,7 +76,8 @@
   &.calendar-day-selected {
     background-color: var(--calendar-selected-day);
     color: white;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 22px;
     border-radius: 50%;
 
     &.calendar-day-other-month {

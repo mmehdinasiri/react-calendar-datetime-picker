@@ -10,7 +10,7 @@
   height: 291px;
   overflow-y: scroll;
   padding: 30px 0;
-  margin: 8px 0;
+  margin: 0;
   background: var(--calendar-bg);
   position: relative;
 
@@ -31,42 +31,47 @@
   }
 }
 
-// Year wrapper with gradient fade effect (for use with wrapper div)
+// Year wrapper with gradient fade effect at top and bottom
 .year-wrapper {
   position: relative;
+  margin: 8px 0;
+  overflow: hidden;
 
   &::after,
   &::before {
     content: '';
     display: block;
     width: 100%;
-    height: 30px;
+    height: 80px;
     position: absolute;
     left: 0;
-    transition: 0.4s;
-    transition-delay: 0.2s;
+    transition: opacity 0.4s ease;
     pointer-events: none;
-    z-index: 1;
+    z-index: 2;
   }
 
   &::before {
+    // Bottom fade - fades from background to transparent (going up)
     background-image: linear-gradient(
       0deg,
-      #fff,
-      #fff 10%,
-      hsla(0, 0%, 96.1%, 0)
+      rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0.4) 30%,
+      rgba(255, 255, 255, 0.1) 60%,
+      transparent 100%
     );
     bottom: 0;
   }
 
   &::after {
+    // Top fade - fades from background to transparent (going down)
     background-image: linear-gradient(
       180deg,
-      #fff,
-      #fff 10%,
-      hsla(0, 0%, 96.1%, 0)
+      rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0.4) 30%,
+      rgba(255, 255, 255, 0.1) 60%,
+      transparent 100%
     );
-    top: -0.1em;
+    top: 0;
   }
 }
 

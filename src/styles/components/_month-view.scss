@@ -39,6 +39,7 @@
   &.calendar-month-current {
     color: var(--calendar-selected-day);
     font-weight: 700;
+    font-size: 22px;
   }
 
   &.is-disabled {
