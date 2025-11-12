@@ -42,3 +42,10 @@ react-calendar-datetime-picker-*
 
 # html files
 bundle-analysis.html
+
+# Documentation website
+docs/.next
+docs/out
+docs/.vercel
+docs/node_modules
+docs/.env*.local
