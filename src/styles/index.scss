@@ -1,5 +1,5 @@
 // Import variables first
-@import './variables';
+@use './variables';
 
 // Base styles
 * {
@@ -16,6 +16,15 @@
   color: var(--calendar-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+// RTL/Persian font support
+.react-calendar-datetime-picker[dir='rtl'],
+.react-calendar-datetime-picker[dir='rtl'] * {
+  // Use system fonts that support Persian/Farsi
+  // Fallback to common Persian fonts if available
+  font-family: 'Vazir', 'Tahoma', 'Arial', 'Segoe UI', -apple-system,
+    BlinkMacSystemFont, sans-serif;
 }
 
 // Component styles will be imported here
