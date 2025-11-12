@@ -47,8 +47,21 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
         >
           {isRTL ? '>' : '<'}
         </button>
-        <div className='calendar-month-year-title'>
-          {displayMonth.year} {currentMonthName}
+        <div className='calendar-month-year-btn'>
+          <button
+            type='button'
+            onClick={() => onViewChange('calendar')}
+            className='calendar-month-btn'
+          >
+            {currentMonthName}
+          </button>
+          <button
+            type='button'
+            onClick={() => onViewChange('years')}
+            className='calendar-year-btn'
+          >
+            {displayMonth.year}
+          </button>
         </div>
         <button
           type='button'

@@ -239,13 +239,18 @@ export function generateCalendarGrid(
 
 /**
  * Get a list of years for year selection view
+ * Returns years from 1900 to current year + 30
  */
 export function getYearRange(centerYear: number, range = 12): number[] {
-  const startYear = centerYear - Math.floor(range / 2)
+  const currentYear = new Date().getFullYear()
+  const startYear = 1900
+  const endYear = currentYear + 30
   const years: number[] = []
-  for (let i = 0; i < range; i++) {
-    years.push(startYear + i)
+  
+  for (let year = startYear; year <= endYear; year++) {
+    years.push(year)
   }
+  
   return years
 }
 

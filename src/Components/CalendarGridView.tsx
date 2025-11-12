@@ -91,13 +91,22 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
           )}
         </button>
 
-        <button
-          type='button'
-          onClick={() => onViewChange('months')}
-          className='calendar-month-year-btn'
-        >
-          {monthNames[displayMonth.month - 1]} {displayMonth.year}
-        </button>
+        <div className='calendar-month-year-btn'>
+          <button
+            type='button'
+            onClick={() => onViewChange('months')}
+            className='calendar-month-btn'
+          >
+            {monthNames[displayMonth.month - 1]}
+          </button>
+          <button
+            type='button'
+            onClick={() => onViewChange('years')}
+            className='calendar-year-btn'
+          >
+            {displayMonth.year}
+          </button>
+        </div>
 
         <button
           type='button'
