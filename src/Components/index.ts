@@ -1,9 +1,8 @@
-export * from './DtWrapper'
-export * from './Header'
-export * from './YearsView'
-export * from './MonthsView'
-export * from './DaysView'
-export * from './TimeView'
-export * from './YearsView'
-export * from './InputPicker'
-export * from './TodayBtn'
+/**
+ * Component exports
+ */
+export { DtPicker } from './DtPicker'
+export type { DtPickerProps } from './DtPicker'
+
+export { DtCalendar } from './DtCalendar'
+export type { DtCalendarProps } from './DtCalendar'

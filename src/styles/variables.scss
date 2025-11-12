@@ -1,0 +1,52 @@
+// CSS Variables for theming
+:root {
+  // Colors
+  --calendar-primary: #007bff;
+  --calendar-primary-hover: #0056b3;
+  --calendar-secondary: #6c757d;
+  --calendar-success: #28a745;
+  --calendar-danger: #dc3545;
+  --calendar-warning: #ffc107;
+  --calendar-info: #17a2b8;
+
+  // Background colors
+  --calendar-bg: #ffffff;
+  --calendar-bg-hover: #f8f9fa;
+  --calendar-bg-selected: #e7f3ff;
+  --calendar-bg-disabled: #e9ecef;
+
+  // Text colors
+  --calendar-text: #212529;
+  --calendar-text-muted: #6c757d;
+  --calendar-text-disabled: #adb5bd;
+
+  // Border colors
+  --calendar-border: #dee2e6;
+  --calendar-border-focus: #007bff;
+
+  // Spacing
+  --calendar-spacing-xs: 0.25rem;
+  --calendar-spacing-sm: 0.5rem;
+  --calendar-spacing-md: 1rem;
+  --calendar-spacing-lg: 1.5rem;
+  --calendar-spacing-xl: 2rem;
+
+  // Border radius
+  --calendar-radius-sm: 0.25rem;
+  --calendar-radius-md: 0.5rem;
+  --calendar-radius-lg: 0.75rem;
+
+  // Shadows
+  --calendar-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --calendar-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --calendar-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  // Transitions
+  --calendar-transition: all 0.2s ease-in-out;
+}
+
+// RTL support
+[dir='rtl'] {
+  // RTL-specific overrides can go here
+}
+

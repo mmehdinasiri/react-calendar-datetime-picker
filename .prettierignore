@@ -1,1 +1,7 @@
-*.md
+node_modules
+dist
+coverage
+*.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

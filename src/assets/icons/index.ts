@@ -1,5 +1,0 @@
-export * from './Next'
-export * from './Back'
-export * from './Close'
-export * from './ChevronUp'
-export * from './ChevronDown'

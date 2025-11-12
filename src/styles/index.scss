@@ -1,0 +1,24 @@
+// Import variables first
+@import './variables';
+
+// Base styles
+* {
+  box-sizing: border-box;
+}
+
+// Library root class
+.react-calendar-datetime-picker {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--calendar-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Component styles will be imported here
+// @import './components/calendar';
+// @import './components/picker';
+// @import './components/input';
