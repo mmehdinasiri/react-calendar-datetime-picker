@@ -7,6 +7,7 @@ import React from 'react'
 import type { Day, CalendarLocale } from '../types'
 import type { CalendarCustomization } from '../types/calendar'
 import { getMonthNames } from '../utils/calendar-grid'
+import { toPersianNumeral } from '../utils/formatting'
 
 export interface MonthViewProps {
   /** Currently displayed month */
@@ -60,7 +61,7 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
             onClick={() => onViewChange('years')}
             className='calendar-year-btn'
           >
-            {displayMonth.year}
+            {locale === 'fa' ? toPersianNumeral(displayMonth.year) : displayMonth.year}
           </button>
         </div>
         <button

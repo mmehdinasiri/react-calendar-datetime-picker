@@ -3,7 +3,7 @@
  * Helper functions for determining selection state
  */
 
-import type { Day, Range, Multi, CalendarType } from '../types'
+import type { Day, Range, Multi, CalendarType, CalendarLocale } from '../types'
 import { compareDays } from './validation'
 
 /**
@@ -12,7 +12,8 @@ import { compareDays } from './validation'
 export function isDaySelected(
   day: Day,
   selectedValue: Day | Range | Multi | null,
-  type: CalendarType
+  type: CalendarType,
+  locale: CalendarLocale = 'en'
 ): boolean {
   if (!selectedValue) return false
 
@@ -28,8 +29,8 @@ export function isDaySelected(
   if (type === 'range') {
     const range = selectedValue as Range
     if (!range.from || !range.to) return false
-    const dayCompare = compareDays(day, range.from, 'en')
-    const toCompare = compareDays(day, range.to, 'en')
+    const dayCompare = compareDays(day, range.from, locale)
+    const toCompare = compareDays(day, range.to, locale)
     return dayCompare >= 0 && toCompare <= 0
   }
 
@@ -53,14 +54,15 @@ export function isDaySelected(
 export function isDayInRange(
   day: Day,
   selectedValue: Day | Range | Multi | null,
-  type: CalendarType
+  type: CalendarType,
+  locale: CalendarLocale = 'en'
 ): boolean {
   if (type !== 'range' || !selectedValue) return false
   const range = selectedValue as Range
   if (!range.from || !range.to) return false
 
-  const dayCompare = compareDays(day, range.from, 'en')
-  const toCompare = compareDays(day, range.to, 'en')
+  const dayCompare = compareDays(day, range.from, locale)
+  const toCompare = compareDays(day, range.to, locale)
 
   // Day is between from and to (exclusive of boundaries for styling)
   return dayCompare > 0 && toCompare < 0

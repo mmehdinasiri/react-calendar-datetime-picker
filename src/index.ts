@@ -41,6 +41,7 @@ export {
   getToday,
   formatDateForInput,
   dayToString,
+  toPersianNumeral,
   normalizeInitValue,
   isValidDay,
   isDateInRange,

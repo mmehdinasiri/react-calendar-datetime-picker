@@ -65,6 +65,21 @@ export function formatDateForInput(
 }
 
 /**
+ * Convert a number to Persian numerals
+ */
+export function toPersianNumeral(num: number | string): string {
+  const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹']
+  return num
+    .toString()
+    .split('')
+    .map((digit) => {
+      const digitNum = parseInt(digit, 10)
+      return isNaN(digitNum) ? digit : persianDigits[digitNum]
+    })
+    .join('')
+}
+
+/**
  * Convert Day to string format (for utility functions like convertToFa/convertToEn)
  */
 export function dayToString(day: Day, divider = '/'): string {
@@ -77,13 +92,34 @@ export function dayToString(day: Day, divider = '/'): string {
 /**
  * Parse a date string to Day object
  * Supports formats: YYYY/MM/DD, YYYY-MM-DD, etc.
+ * For Jalali locale, also supports Persian numerals
  */
 export function parseDateString(
   dateString: string,
-  _locale: CalendarLocale
+  locale: CalendarLocale
 ): Day | null {
   // Remove whitespace
-  const cleaned = dateString.trim()
+  let cleaned = dateString.trim()
+
+  // Convert Persian numerals to English numerals for Jalali locale
+  if (locale === 'fa') {
+    const persianToEnglish: { [key: string]: string } = {
+      '۰': '0',
+      '۱': '1',
+      '۲': '2',
+      '۳': '3',
+      '۴': '4',
+      '۵': '5',
+      '۶': '6',
+      '۷': '7',
+      '۸': '8',
+      '۹': '9'
+    }
+    cleaned = cleaned.replace(
+      /[۰-۹]/g,
+      (char) => persianToEnglish[char] || char
+    )
+  }
 
   // Try different separators
   const separators = ['/', '-', '.']

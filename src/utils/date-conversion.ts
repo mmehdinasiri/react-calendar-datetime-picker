@@ -35,19 +35,30 @@ export function jalaliToGregorian(day: Day): Day {
 
 /**
  * Convert a Day object to the target locale
- * If the day is already in the target locale, returns it as-is
- * Otherwise converts it
+ * Assumes the source day is in the opposite locale (Gregorian <-> Jalali)
+ * @param day - Day object in source locale
+ * @param targetLocale - Target locale ('en' for Gregorian, 'fa' for Jalali)
+ * @param sourceLocale - Source locale (optional, defaults to opposite of targetLocale)
  */
-export function convertToLocale(day: Day, targetLocale: CalendarLocale): Day {
-  // We need to know the source locale to convert properly
-  // For now, we'll assume we're converting from Gregorian to Jalali or vice versa
-  // This will be refined when we have better context about the source locale
+export function convertToLocale(
+  day: Day,
+  targetLocale: CalendarLocale,
+  sourceLocale?: CalendarLocale
+): Day {
+  // If source locale is not provided, assume it's the opposite of target
+  const actualSourceLocale = sourceLocale || (targetLocale === 'fa' ? 'en' : 'fa')
   
+  // If already in target locale, return as-is
+  if (actualSourceLocale === targetLocale) {
+    return day
+  }
+  
+  // Convert between calendars
   if (targetLocale === 'fa') {
-    // Convert to Jalali
+    // Convert from Gregorian to Jalali
     return gregorianToJalali(day)
   } else {
-    // Convert to Gregorian
+    // Convert from Jalali to Gregorian
     return jalaliToGregorian(day)
   }
 }
@@ -91,12 +102,11 @@ export function dateToDay(date: Date, locale: CalendarLocale): Day {
 
 /**
  * Convert a Day object to a JavaScript Date object
- * Assumes the Day is in Gregorian calendar
+ * Converts Jalali dates to Gregorian before creating Date object
  */
-export function dayToDate(day: Day): Date {
+export function dayToDate(day: Day, locale: CalendarLocale = 'en'): Date {
   // If day is in Jalali, convert to Gregorian first
-  // For now, we'll assume it's Gregorian - this will be refined
-  const gregorianDay = day // TODO: Add locale detection
+  const gregorianDay = locale === 'fa' ? jalaliToGregorian(day) : day
   
   return new Date(
     gregorianDay.year,

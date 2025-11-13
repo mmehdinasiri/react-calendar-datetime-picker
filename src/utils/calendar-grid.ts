@@ -27,10 +27,11 @@ export interface CalendarDay {
 
 /**
  * Get the first day of the week for a given locale
- * Gregorian: Sunday (0), Jalali: Saturday (6)
+ * Gregorian: Sunday (0), Jalali: Saturday (0)
+ * Note: Both use 0 as the first day, but the day names arrays are different
  */
 function getFirstDayOfWeek(locale: CalendarLocale): number {
-  return locale === 'fa' ? 6 : 0 // Saturday for Jalali, Sunday for Gregorian
+  return 0 // Both calendars start at index 0, but with different day names
 }
 
 /**
@@ -104,7 +105,16 @@ function getDayOfWeek(
     )
     // Jalali calendar starts on Saturday, so we adjust
     const gregorianDayOfWeek = date.getDay() // 0 = Sunday, 6 = Saturday
-    // Convert: Saturday (6) -> 0, Sunday (0) -> 1, ..., Friday (5) -> 6
+    // Convert Gregorian day of week to Jalali day of week
+    // Jalali week: Saturday=0, Sunday=1, Monday=2, Tuesday=3, Wednesday=4, Thursday=5, Friday=6
+    // Gregorian week: Sunday=0, Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5, Saturday=6
+    // Mapping: Saturday (6) -> 0, Sunday (0) -> 1, Monday (1) -> 2, etc.
+    // The correct formula: (gregorianDayOfWeek + 1) % 7
+    // But if there's an off-by-one error showing Friday instead of Thursday,
+    // we might need to check if the issue is elsewhere. Let's verify the formula is correct.
+    // Actually, the formula (d+1)%7 should work: Thursday (4) -> (4+1)%7 = 5 (Thursday) ✓
+    // If it's showing as Friday (6), maybe we need: (d+2)%7? But that would be wrong.
+    // Let me use the mathematically correct formula: (gregorianDayOfWeek + 1) % 7
     return (gregorianDayOfWeek + 1) % 7
   } else {
     // Gregorian: use JavaScript Date directly
@@ -239,19 +249,41 @@ export function generateCalendarGrid(
 
 /**
  * Get a list of years for year selection view
- * Returns years from 1900 to current year + 30
+ * Returns appropriate years based on locale
+ * Gregorian: 1900 to current year + 30
+ * Jalali: 1300 to current Jalali year + 30
  */
-export function getYearRange(_centerYear: number, _range = 12): number[] {
-  const currentYear = new Date().getFullYear()
-  const startYear = 1900
-  const endYear = currentYear + 30
-  const years: number[] = []
-  
-  for (let year = startYear; year <= endYear; year++) {
-    years.push(year)
+export function getYearRange(
+  centerYear: number,
+  _range = 12,
+  locale: CalendarLocale = 'en'
+): number[] {
+  if (locale === 'fa') {
+    // Jalali calendar: typically years 1300-1450 (roughly 1921-2071 Gregorian)
+    const today = getToday(locale)
+    const currentYear = today.year
+    const startYear = 1300
+    const endYear = currentYear + 30
+    const years: number[] = []
+    
+    for (let year = startYear; year <= endYear; year++) {
+      years.push(year)
+    }
+    
+    return years
+  } else {
+    // Gregorian calendar: 1900 to current year + 30
+    const currentYear = new Date().getFullYear()
+    const startYear = 1900
+    const endYear = currentYear + 30
+    const years: number[] = []
+    
+    for (let year = startYear; year <= endYear; year++) {
+      years.push(year)
+    }
+    
+    return years
   }
-  
-  return years
 }
 
 /**

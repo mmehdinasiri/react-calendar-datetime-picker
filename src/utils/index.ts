@@ -16,7 +16,7 @@ export {
 export { normalizeInitValue, extractMonthFromValue } from './normalize'
 
 // Formatting
-export { formatDateForInput, dayToString, parseDateString } from './formatting'
+export { formatDateForInput, dayToString, parseDateString, toPersianNumeral } from './formatting'
 
 // Validation
 export {

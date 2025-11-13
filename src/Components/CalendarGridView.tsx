@@ -17,6 +17,7 @@ import {
 import { isDateSelectable } from '../utils/validation'
 import { isDaySelected, isDayInRange } from '../utils/calendar-selection'
 import { getToday } from '../utils/date-conversion'
+import { toPersianNumeral } from '../utils/formatting'
 
 export interface CalendarGridViewProps {
   /** Currently selected value */
@@ -104,7 +105,9 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
             onClick={() => onViewChange('years')}
             className='calendar-year-btn'
           >
-            {displayMonth.year}
+            {locale === 'fa'
+              ? toPersianNumeral(displayMonth.year)
+              : displayMonth.year}
           </button>
         </div>
 
@@ -127,7 +130,7 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
             onClick={() => onDateSelect(today)}
             className='calendar-today-btn'
           >
-            Today
+            {locale === 'fa' ? 'امروز' : 'Today'}
           </button>
         )}
       </div>
@@ -140,7 +143,7 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
             (locale === 'fa'
               ? index === 6 || index === 5
               : index === 0 || index === 6)
-          
+
           const dayNameClassNames = [
             'calendar-day-name',
             isWeekendDay && 'calendar-weekend'
@@ -168,93 +171,106 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
             return hasCurrentMonthDay
           })
           .map((week, weekIndex) => {
-          const hasOtherMonth = week.some((day) => !day.isCurrentMonth)
-          const weekClassNames = [
-            'calendar-week',
-            hasOtherMonth && 'calendar-week-other-month'
-          ]
-            .filter(Boolean)
-            .join(' ')
-          
-          return (
-            <div
-              key={weekIndex}
-              className={weekClassNames}
-            >
-              {week.map((calendarDay, dayIndex) => {
-              const day: Day = calendarDay.dayObject
-              const isSelected = isDaySelected(day, selectedValue, type)
-              const isInRange = isDayInRange(day, selectedValue, type)
-              const isSelectable = isDateSelectable(day, {
-                minDate,
-                maxDate,
-                disabledDates,
-                locale
-              })
-              const isWeekend =
-                showWeekend &&
-                (locale === 'fa'
-                  ? dayIndex === 6 || dayIndex === 5
-                  : dayIndex === 0 || dayIndex === 6)
+            const hasOtherMonth = week.some((day) => !day.isCurrentMonth)
+            const weekClassNames = [
+              'calendar-week',
+              hasOtherMonth && 'calendar-week-other-month'
+            ]
+              .filter(Boolean)
+              .join(' ')
 
-              // Identify first day of next month and last day of previous month
-              const isOtherMonth = !calendarDay.isCurrentMonth
-              
-              // Determine if this is from previous month or next month
-              const isPrevMonth = isOtherMonth && (
-                calendarDay.year < displayMonth.year ||
-                (calendarDay.year === displayMonth.year && calendarDay.month < displayMonth.month)
-              )
-              const isNextMonth = isOtherMonth && (
-                calendarDay.year > displayMonth.year ||
-                (calendarDay.year === displayMonth.year && calendarDay.month > displayMonth.month)
-              )
-              
-              // Last day of previous month: previous month day where next day is current month
-              const isLastDayOfPrevMonth =
-                isPrevMonth &&
-                (dayIndex < 6 && week[dayIndex + 1].isCurrentMonth)
-              
-              // First day of next month: next month day where previous day is current month
-              const isFirstDayOfNextMonth =
-                isNextMonth &&
-                (dayIndex > 0 && week[dayIndex - 1].isCurrentMonth)
+            return (
+              <div key={weekIndex} className={weekClassNames}>
+                {week.map((calendarDay, dayIndex) => {
+                  const day: Day = calendarDay.dayObject
+                  const isSelected = isDaySelected(
+                    day,
+                    selectedValue,
+                    type,
+                    locale
+                  )
+                  const isInRange = isDayInRange(
+                    day,
+                    selectedValue,
+                    type,
+                    locale
+                  )
+                  const isSelectable = isDateSelectable(day, {
+                    minDate,
+                    maxDate,
+                    disabledDates,
+                    locale
+                  })
+                  const isWeekend =
+                    showWeekend &&
+                    (locale === 'fa'
+                      ? dayIndex === 6 || dayIndex === 5
+                      : dayIndex === 0 || dayIndex === 6)
 
-              const classNames = [
-                'calendar-day',
-                isOtherMonth && 'calendar-day-other-month',
-                isFirstDayOfNextMonth && 'calendar-day-other-month-first',
-                isLastDayOfPrevMonth && 'calendar-day-other-month-last',
-                calendarDay.isToday && 'calendar-day-today',
-                isSelected && 'calendar-day-selected',
-                isInRange && 'calendar-day-in-range',
-                !isSelectable && 'calendar-day-disabled',
-                isWeekend && 'calendar-day-weekend'
-              ]
-                .filter(Boolean)
-                .join(' ')
+                  // Identify first day of next month and last day of previous month
+                  const isOtherMonth = !calendarDay.isCurrentMonth
 
-              const handleClick = () => {
-                if (isSelectable) {
-                  onDateSelect(day)
-                }
-              }
+                  // Determine if this is from previous month or next month
+                  const isPrevMonth =
+                    isOtherMonth &&
+                    (calendarDay.year < displayMonth.year ||
+                      (calendarDay.year === displayMonth.year &&
+                        calendarDay.month < displayMonth.month))
+                  const isNextMonth =
+                    isOtherMonth &&
+                    (calendarDay.year > displayMonth.year ||
+                      (calendarDay.year === displayMonth.year &&
+                        calendarDay.month > displayMonth.month))
 
-              return (
-                <button
-                  key={`${weekIndex}-${dayIndex}-${day.year}-${day.month}-${day.day}`}
-                  type='button'
-                  onClick={handleClick}
-                  disabled={!isSelectable}
-                  className={classNames}
-                >
-                  {calendarDay.day}
-                </button>
-              )
-            })}
-            </div>
-          )
-        })}
+                  // Last day of previous month: previous month day where next day is current month
+                  const isLastDayOfPrevMonth =
+                    isPrevMonth &&
+                    dayIndex < 6 &&
+                    week[dayIndex + 1].isCurrentMonth
+
+                  // First day of next month: next month day where previous day is current month
+                  const isFirstDayOfNextMonth =
+                    isNextMonth &&
+                    dayIndex > 0 &&
+                    week[dayIndex - 1].isCurrentMonth
+
+                  const classNames = [
+                    'calendar-day',
+                    isOtherMonth && 'calendar-day-other-month',
+                    isFirstDayOfNextMonth && 'calendar-day-other-month-first',
+                    isLastDayOfPrevMonth && 'calendar-day-other-month-last',
+                    calendarDay.isToday && 'calendar-day-today',
+                    isSelected && 'calendar-day-selected',
+                    isInRange && 'calendar-day-in-range',
+                    !isSelectable && 'calendar-day-disabled',
+                    isWeekend && 'calendar-day-weekend'
+                  ]
+                    .filter(Boolean)
+                    .join(' ')
+
+                  const handleClick = () => {
+                    if (isSelectable) {
+                      onDateSelect(day)
+                    }
+                  }
+
+                  return (
+                    <button
+                      key={`${weekIndex}-${dayIndex}-${day.year}-${day.month}-${day.day}`}
+                      type='button'
+                      onClick={handleClick}
+                      disabled={!isSelectable}
+                      className={classNames}
+                    >
+                      {locale === 'fa'
+                        ? toPersianNumeral(calendarDay.day)
+                        : calendarDay.day}
+                    </button>
+                  )
+                })}
+              </div>
+            )
+          })}
       </div>
     </div>
   )

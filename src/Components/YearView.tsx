@@ -7,6 +7,7 @@ import React, { useRef, useEffect } from 'react'
 import type { Day, CalendarLocale, CalendarListStyle } from '../types'
 import type { CalendarCustomization } from '../types/calendar'
 import { getYearRange, getMonthNames } from '../utils/calendar-grid'
+import { toPersianNumeral } from '../utils/formatting'
 
 export interface YearViewProps {
   /** Currently displayed month */
@@ -37,7 +38,7 @@ export const YearView: React.FC<YearViewProps> = (props) => {
   const { header: headerClass, years: yearsClass } = classes
 
   const isRTL = locale === 'fa'
-  const years = getYearRange(displayMonth.year, 12)
+  const years = getYearRange(displayMonth.year, 12, locale)
   const isGrid = yearListStyle === 'grid'
   const monthNames = getMonthNames(locale)
   const currentMonthName = monthNames[displayMonth.month - 1]
@@ -107,7 +108,9 @@ export const YearView: React.FC<YearViewProps> = (props) => {
             disabled
             style={{ cursor: 'default' }}
           >
-            {displayMonth.year}
+            {locale === 'fa'
+              ? toPersianNumeral(displayMonth.year)
+              : displayMonth.year}
           </button>
         </div>
         <div
@@ -145,7 +148,7 @@ export const YearView: React.FC<YearViewProps> = (props) => {
                 }}
                 className={classNames}
               >
-                {year}
+                {locale === 'fa' ? toPersianNumeral(year) : year}
               </button>
             )
           })}

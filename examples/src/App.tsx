@@ -44,6 +44,38 @@ function App() {
           />
         </section>
 
+        <section className='example-section'>
+          <h2>Persian (Jalali) Calendar</h2>
+          <p className='description'>
+            Calendar with Persian locale (fa) - displays Jalali calendar with
+            Persian month names and RTL layout
+          </p>
+          <div className='calendar-container'>
+            <DtCalendar
+              onChange={(date: unknown) => console.log('Persian date:', date)}
+              local='fa'
+              showWeekend={true}
+              todayBtn={true}
+            />
+          </div>
+        </section>
+
+        <section className='example-section'>
+          <h2>Persian Date Picker</h2>
+          <p className='description'>
+            Date picker with Persian locale - input field with Jalali calendar
+          </p>
+          <div className='picker-container'>
+            <DtPicker
+              onChange={(date: unknown) => console.log('Persian picker date:', date)}
+              local='fa'
+              placeholder='تاریخ را انتخاب کنید'
+              showWeekend={true}
+              todayBtn={true}
+            />
+          </div>
+        </section>
+
         {/* Error Handling Examples */}
         <section className='example-section'>
           <h2>Error Handling Examples</h2>
