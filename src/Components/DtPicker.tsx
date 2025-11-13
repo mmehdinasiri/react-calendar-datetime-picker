@@ -1,6 +1,6 @@
 import React from 'react'
 import type { CalendarLocale, CalendarType, InitValueInput } from '../types'
-import type { CalendarValidationInput } from '../types/calendar'
+import type { CalendarConstraintsInput } from '../types/calendar'
 
 export interface DtPickerProps {
   /**
@@ -62,10 +62,10 @@ export interface DtPickerProps {
    */
   isDisabled?: boolean
   /**
-   * Date validation options (maxDate, minDate, disabledDates)
+   * Date constraints (maxDate, minDate, disabledDates)
    * Accepts Day objects, Date objects, date strings, or timestamps
    */
-  validation?: CalendarValidationInput
+  constraints?: CalendarConstraintsInput
   /**
    * Placeholder text
    * @default 'Select date'

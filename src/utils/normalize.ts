@@ -4,8 +4,31 @@
  */
 
 import type { Day, Range, Multi, CalendarLocale, CalendarType } from '../types'
+import type { CalendarError } from '../types/calendar'
 import { dateToDay } from './date-conversion'
 import { parseDateString } from './formatting'
+
+/**
+ * Check if we're in development mode
+ * Uses a simple check that works in both browser and Node environments
+ */
+const isDevelopment = (() => {
+  try {
+    // Check for common development indicators
+    if (typeof window !== 'undefined') {
+      // Browser environment - check for dev tools or localhost
+      return (
+        window.location?.hostname === 'localhost' ||
+        window.location?.hostname === '127.0.0.1' ||
+        (window as any).__DEV__ === true
+      )
+    }
+    // Node environment - assume development unless explicitly set to production
+    return true // Default to showing warnings in Node (can be overridden)
+  } catch {
+    return false // If we can't determine, don't show warnings
+  }
+})()
 
 /**
  * Type guards
@@ -46,9 +69,16 @@ function isMultiArray(value: unknown): value is Multi {
  * Normalize a single day object
  * Ensures all required fields are present and valid
  * Supports: Day objects, Date objects, date strings, and timestamps (numbers)
+ * Returns result with value and errors
  */
-function normalizeDay(day: unknown, locale: CalendarLocale): Day | null {
-  if (!day) return null
+function normalizeDayWithErrors(
+  day: unknown,
+  locale: CalendarLocale,
+  fieldName: string = 'date'
+): { value: Day | null; error: CalendarError | null } {
+  if (!day) {
+    return { value: null, error: null }
+  }
 
   // Handle Day objects (already in the correct format)
   if (isDayObject(day)) {
@@ -61,27 +91,62 @@ function normalizeDay(day: unknown, locale: CalendarLocale): Day | null {
       day.day <= 31
     ) {
       return {
-        year: day.year,
-        month: day.month,
-        day: day.day,
-        hour: day.hour,
-        minute: day.minute
+        value: {
+          year: day.year,
+          month: day.month,
+          day: day.day,
+          hour: day.hour,
+          minute: day.minute
+        },
+        error: null
       }
+    } else {
+      const error: CalendarError = {
+        type: 'normalization',
+        field: fieldName,
+        value: day,
+        message: `Invalid day object: month must be 1-12, day must be 1-31, year must be > 0`
+      }
+      if (isDevelopment) {
+        console.warn(`[react-calendar-datetime-picker] ${error.message}`, day)
+      }
+      return { value: null, error }
     }
   }
 
   // Handle Date objects
   if (day instanceof Date) {
-    return dateToDay(day, locale)
+    if (isNaN(day.getTime())) {
+      const error: CalendarError = {
+        type: 'normalization',
+        field: fieldName,
+        value: day,
+        message: `Invalid Date object: date is invalid`
+      }
+      if (isDevelopment) {
+        console.warn(`[react-calendar-datetime-picker] ${error.message}`, day)
+      }
+      return { value: null, error }
+    }
+    return { value: dateToDay(day, locale), error: null }
   }
 
   // Handle numbers (timestamps)
   if (typeof day === 'number') {
     const date = new Date(day)
-    if (!isNaN(date.getTime())) {
-      return dateToDay(date, locale)
+    if (isNaN(date.getTime())) {
+      const error: CalendarError = {
+        type: 'normalization',
+        field: fieldName,
+        value: day,
+        message: `Invalid timestamp: ${day} cannot be converted to a valid date`
+      }
+      if (isDevelopment) {
+        console.warn(`[react-calendar-datetime-picker] ${error.message}`)
+      }
+      return { value: null, error }
     }
-    return null
+    return { value: dateToDay(date, locale), error: null }
   }
 
   // Handle strings (date strings like "2024/12/25", "2024-12-25", ISO strings, etc.)
@@ -89,60 +154,143 @@ function normalizeDay(day: unknown, locale: CalendarLocale): Day | null {
     // First try to parse as Date (handles ISO strings like "2024-12-25T00:00:00Z")
     const dateFromString = new Date(day)
     if (!isNaN(dateFromString.getTime())) {
-      return dateToDay(dateFromString, locale)
+      return { value: dateToDay(dateFromString, locale), error: null }
     }
 
     // Fall back to simple date string parsing (handles "2024/12/25", "2024-12-25", etc.)
     const parsed = parseDateString(day, locale)
     if (parsed) {
-      return parsed
+      return { value: parsed, error: null }
     }
 
-    return null
+    const error: CalendarError = {
+      type: 'normalization',
+      field: fieldName,
+      value: day,
+      message: `Invalid date string: "${day}" cannot be parsed as a date`
+    }
+    if (isDevelopment) {
+      console.warn(`[react-calendar-datetime-picker] ${error.message}`)
+    }
+    return { value: null, error }
   }
 
-  return null
+  const error: CalendarError = {
+    type: 'normalization',
+    field: fieldName,
+    value: day,
+    message: `Unsupported date format: expected Day object, Date, string, or number, got ${typeof day}`
+  }
+  if (isDevelopment) {
+    console.warn(`[react-calendar-datetime-picker] ${error.message}`, day)
+  }
+  return { value: null, error }
 }
 
 /**
- * Normalize initial value based on calendar type
+ * Normalize initial value based on calendar type with error information
+ */
+export function normalizeInitValueWithErrors(
+  value: unknown,
+  locale: CalendarLocale,
+  type: CalendarType,
+  fieldName: string = 'initValue'
+): { value: Day | Range | Multi | null; errors: CalendarError[] } {
+  const errors: CalendarError[] = []
+
+  if (!value) {
+    return { value: null, errors }
+  }
+
+  // Handle single date
+  if (type === 'single') {
+    const result = normalizeDayWithErrors(value, locale, fieldName)
+    if (result.error) {
+      errors.push(result.error)
+    }
+    return { value: result.value, errors }
+  }
+
+  // Handle range
+  if (type === 'range') {
+    if (isRangeObject(value)) {
+      const fromResult = normalizeDayWithErrors(
+        value.from,
+        locale,
+        `${fieldName}.from`
+      )
+      const toResult = normalizeDayWithErrors(
+        value.to,
+        locale,
+        `${fieldName}.to`
+      )
+
+      if (fromResult.error) errors.push(fromResult.error)
+      if (toResult.error) errors.push(toResult.error)
+
+      if (fromResult.value && toResult.value) {
+        return { value: { from: fromResult.value, to: toResult.value }, errors }
+      }
+    } else {
+      const error: CalendarError = {
+        type: 'normalization',
+        field: fieldName,
+        value,
+        message: `Invalid range format: expected object with 'from' and 'to' properties`
+      }
+      if (isDevelopment) {
+        console.warn(`[react-calendar-datetime-picker] ${error.message}`, value)
+      }
+      errors.push(error)
+    }
+    return { value: null, errors }
+  }
+
+  // Handle multi
+  if (type === 'multi') {
+    if (isMultiArray(value)) {
+      const normalized: Day[] = []
+      value.forEach((day, index) => {
+        const result = normalizeDayWithErrors(
+          day,
+          locale,
+          `${fieldName}[${index}]`
+        )
+        if (result.error) {
+          errors.push(result.error)
+        } else if (result.value) {
+          normalized.push(result.value)
+        }
+      })
+      return { value: normalized.length > 0 ? normalized : null, errors }
+    } else {
+      const error: CalendarError = {
+        type: 'normalization',
+        field: fieldName,
+        value,
+        message: `Invalid multi format: expected array of date objects`
+      }
+      if (isDevelopment) {
+        console.warn(`[react-calendar-datetime-picker] ${error.message}`, value)
+      }
+      errors.push(error)
+    }
+    return { value: null, errors }
+  }
+
+  return { value: null, errors }
+}
+
+/**
+ * Normalize initial value based on calendar type (backward compatible)
+ * @deprecated Use normalizeInitValueWithErrors for error information
  */
 export function normalizeInitValue(
   value: unknown,
   locale: CalendarLocale,
   type: CalendarType
 ): Day | Range | Multi | null {
-  if (!value) return null
-
-  // Handle single date
-  if (type === 'single') {
-    return normalizeDay(value, locale)
-  }
-
-  // Handle range
-  if (type === 'range') {
-    if (isRangeObject(value)) {
-      const from = normalizeDay(value.from, locale)
-      const to = normalizeDay(value.to, locale)
-      if (from && to) {
-        return { from, to }
-      }
-    }
-    return null
-  }
-
-  // Handle multi
-  if (type === 'multi') {
-    if (isMultiArray(value)) {
-      const normalized = value
-        .map((day) => normalizeDay(day, locale))
-        .filter((day): day is Day => day !== null)
-      return normalized.length > 0 ? normalized : null
-    }
-    return null
-  }
-
-  return null
+  return normalizeInitValueWithErrors(value, locale, type).value
 }
 
 /**

@@ -64,13 +64,26 @@
   min-height: calc(var(--calendar-modal-width) / 7);
   min-width: 0; // Allow grid to control width
 
-  &:hover:not(.calendar-day-disabled):not(.calendar-day-selected) {
+  &:hover:not(.calendar-day-disabled):not(.calendar-day-selected):not(.calendar-day-other-month) {
     background: var(--calendar-bg-hover);
   }
 
   &.calendar-day-other-month {
     color: var(--calendar-text-other-month);
-    border-radius: 0;
+    background-color: var(--calendar-bg-other-month);
+    border-radius: 0; // Default: no border-radius for middle days
+  }
+
+  // First day of next month: full border-radius on left edge only
+  &.calendar-day-other-month-first {
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+  }
+
+  // Last day of previous month: full border-radius on right edge only
+  &.calendar-day-other-month-last {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
   }
 
   &.calendar-day-selected {
@@ -146,6 +159,22 @@
     }
 
     &.calendar-day-range-end {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top-left-radius: 50%;
+      border-bottom-left-radius: 50%;
+    }
+
+    // In RTL, first day of next month should have right border-radius
+    &.calendar-day-other-month-first {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-top-right-radius: 50%;
+      border-bottom-right-radius: 50%;
+    }
+
+    // In RTL, last day of previous month should have left border-radius
+    &.calendar-day-other-month-last {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
       border-top-left-radius: 50%;

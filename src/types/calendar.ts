@@ -23,9 +23,9 @@ export type InitValueInput =
   | null
 
 /**
- * Validation options for date selection (internal, normalized)
+ * Date constraints for selection (internal, normalized)
  */
-export interface CalendarValidation {
+export interface CalendarConstraints {
   /** Maximum selectable date */
   maxDate?: Day
   /** Minimum selectable date */
@@ -35,15 +35,39 @@ export interface CalendarValidation {
 }
 
 /**
- * Validation options for date selection (user-facing, accepts various formats)
+ * Date constraints for selection (user-facing, accepts various formats)
  */
-export interface CalendarValidationInput {
+export interface CalendarConstraintsInput {
   /** Maximum selectable date (accepts Day, Date, string, or number) */
   maxDate?: DateInput
   /** Minimum selectable date (accepts Day, Date, string, or number) */
   minDate?: DateInput
   /** List of disabled dates (accepts Day, Date, string, or number) */
   disabledDates?: DateInput[]
+}
+
+/**
+ * Error information for normalization/constraint failures
+ */
+export interface CalendarError {
+  /** Error type */
+  type: 'normalization' | 'validation'
+  /** Field that failed (e.g., 'initValue', 'maxDate', 'minDate', 'disabledDates') */
+  field: string
+  /** Original value that failed */
+  value: unknown
+  /** Error message */
+  message: string
+}
+
+/**
+ * Result with error information
+ */
+export interface NormalizationResult<T> {
+  /** Normalized value (null if normalization failed) */
+  value: T | null
+  /** Array of errors encountered during normalization */
+  errors: CalendarError[]
 }
 
 /**

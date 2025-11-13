@@ -23,6 +23,13 @@ export type {
   CalendarLocale,
   CalendarType,
   CalendarListStyle,
+  DateInput,
+  InitValueInput,
+  CalendarConstraints,
+  CalendarConstraintsInput,
+  CalendarError,
+  NormalizationResult,
+  CalendarCustomization,
 } from './types'
 
 // Export utilities

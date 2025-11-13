@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import type {
   CalendarLocale,
   CalendarType,
@@ -6,13 +6,14 @@ import type {
   InitValueInput
 } from '../types'
 import type {
-  CalendarValidation,
-  CalendarValidationInput,
-  CalendarCustomization
+  CalendarConstraints,
+  CalendarConstraintsInput,
+  CalendarCustomization,
+  CalendarError
 } from '../types/calendar'
 import { CalendarCore } from './CalendarCore'
 import { useCalendarState } from '../hooks/useCalendarState'
-import { normalizeInitValue } from '../utils/normalize'
+import { normalizeInitValueWithErrors } from '../utils/normalize'
 
 export interface DtCalendarProps {
   /**
@@ -59,10 +60,10 @@ export interface DtCalendarProps {
    */
   todayBtn?: boolean
   /**
-   * Date validation options (maxDate, minDate, disabledDates)
+   * Date constraints (maxDate, minDate, disabledDates)
    * Accepts Day objects, Date objects, date strings, or timestamps
    */
-  validation?: CalendarValidationInput
+  constraints?: CalendarConstraintsInput
   /**
    * Custom CSS class for calendar modal
    */
@@ -71,54 +72,84 @@ export interface DtCalendarProps {
    * Customization options (classes, icons, labels)
    */
   customization?: CalendarCustomization
+  /**
+   * Callback function called when normalization or constraint errors occur
+   * @param errors - Array of error objects describing what failed
+   */
+  onError?: (errors: CalendarError[]) => void
 }
 
 /**
- * Normalize validation props from DateInput to Day/Day[]
+ * Normalize constraints props from DateInput to Day/Day[]
+ * Returns constraints object and errors array
  */
-function normalizeValidationProps(
-  validationInput: CalendarValidationInput | undefined,
+function normalizeConstraintsProps(
+  constraintsInput: CalendarConstraintsInput | undefined,
   locale: CalendarLocale,
   _type: CalendarType
-): CalendarValidation {
-  const validation: CalendarValidation = {}
+): { constraints: CalendarConstraints; errors: CalendarError[] } {
+  const constraints: CalendarConstraints = {}
+  const errors: CalendarError[] = []
 
-  if (!validationInput) {
-    return validation
+  if (!constraintsInput) {
+    return { constraints, errors }
   }
 
-  if (validationInput.maxDate) {
-    const normalized = normalizeInitValue(
-      validationInput.maxDate,
+  if (constraintsInput.maxDate) {
+    const result = normalizeInitValueWithErrors(
+      constraintsInput.maxDate,
       locale,
-      'single'
+      'single',
+      'constraints.maxDate'
     )
-    if (normalized && 'year' in normalized) {
-      validation.maxDate = normalized as Day
+    if (result.errors.length > 0) {
+      errors.push(...result.errors)
+    }
+    if (result.value && 'year' in result.value) {
+      constraints.maxDate = result.value as Day
     }
   }
 
-  if (validationInput.minDate) {
-    const normalized = normalizeInitValue(
-      validationInput.minDate,
+  if (constraintsInput.minDate) {
+    const result = normalizeInitValueWithErrors(
+      constraintsInput.minDate,
       locale,
-      'single'
+      'single',
+      'constraints.minDate'
     )
-    if (normalized && 'year' in normalized) {
-      validation.minDate = normalized as Day
+    if (result.errors.length > 0) {
+      errors.push(...result.errors)
+    }
+    if (result.value && 'year' in result.value) {
+      constraints.minDate = result.value as Day
     }
   }
 
   if (
-    validationInput.disabledDates &&
-    validationInput.disabledDates.length > 0
+    constraintsInput.disabledDates &&
+    constraintsInput.disabledDates.length > 0
   ) {
-    validation.disabledDates = validationInput.disabledDates
-      .map((date) => normalizeInitValue(date, locale, 'single'))
-      .filter((date): date is Day => date !== null && 'year' in date)
+    const normalizedDates: Day[] = []
+    constraintsInput.disabledDates.forEach((date, index) => {
+      const result = normalizeInitValueWithErrors(
+        date,
+        locale,
+        'single',
+        `constraints.disabledDates[${index}]`
+      )
+      if (result.errors.length > 0) {
+        errors.push(...result.errors)
+      }
+      if (result.value && 'year' in result.value) {
+        normalizedDates.push(result.value as Day)
+      }
+    })
+    if (normalizedDates.length > 0) {
+      constraints.disabledDates = normalizedDates
+    }
   }
 
-  return validation
+  return { constraints, errors }
 }
 
 /**
@@ -146,16 +177,56 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     local = 'en',
     showWeekend = false,
     todayBtn = false,
-    validation: validationInput,
+    constraints: constraintsInput,
     calenderModalClass,
-    customization
+    customization,
+    onError
   } = props
 
-  // Normalize validation props
-  const validation = normalizeValidationProps(validationInput, local, type)
+  // Normalize constraints props with error tracking
+  const constraintsResult = useMemo(
+    () => normalizeConstraintsProps(constraintsInput, local, type),
+    [constraintsInput, local, type]
+  )
+  const { constraints, errors: constraintsErrors } = constraintsResult
 
-  // Normalize initValue upfront for proper initial state
-  const normalizedInitValue = normalizeInitValue(initValue, local, type)
+  // Normalize initValue upfront for proper initial state with error tracking
+  const initValueResult = useMemo(
+    () => normalizeInitValueWithErrors(initValue, local, type, 'initValue'),
+    [initValue, local, type]
+  )
+  const { value: normalizedInitValue, errors: initValueErrors } =
+    initValueResult
+
+  // Collect all errors and call onError callback if provided
+  const allErrors = useMemo(
+    () => [...constraintsErrors, ...initValueErrors],
+    [constraintsErrors, initValueErrors]
+  )
+
+  const prevErrorsRef = useRef<string>('')
+
+  useEffect(() => {
+    if (!onError) return
+
+    // Create a stable string representation of errors for comparison
+    // Only include fields that matter for comparison (exclude 'value' which might be large objects)
+    const errorsKey = JSON.stringify(
+      allErrors.map((err) => ({
+        type: err.type,
+        field: err.field,
+        message: err.message
+      }))
+    )
+
+    // Only call onError if errors actually changed
+    if (errorsKey !== prevErrorsRef.current) {
+      if (allErrors.length > 0) {
+        onError(allErrors)
+      }
+      prevErrorsRef.current = errorsKey
+    }
+  }, [allErrors, onError])
 
   // Use calendar state hook
   const { state, actions } = useCalendarState({
@@ -178,7 +249,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         type={type}
         showWeekend={showWeekend}
         todayBtn={todayBtn}
-        validation={validation}
+        constraints={constraints}
         customization={customization}
         onDateSelect={actions.selectDate}
         onMonthSelect={actions.selectMonth}

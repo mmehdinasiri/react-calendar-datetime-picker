@@ -13,7 +13,7 @@ import type {
   CalendarListStyle
 } from '../types'
 import type {
-  CalendarValidation,
+  CalendarConstraints,
   CalendarCustomization
 } from '../types/calendar'
 import { CalendarGridView } from './CalendarGridView'
@@ -37,8 +37,8 @@ export interface CalendarCoreProps {
   todayBtn?: boolean
   /** Year list style */
   yearListStyle?: CalendarListStyle
-  /** Validation options */
-  validation?: CalendarValidation
+  /** Date constraints */
+  constraints?: CalendarConstraints
   /** Customization options */
   customization?: CalendarCustomization
   /** Callback when date is selected */
@@ -63,7 +63,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     showWeekend = false,
     todayBtn = false,
     yearListStyle = 'grid',
-    validation = {},
+    constraints = {},
     customization = {},
     onDateSelect,
     onMonthSelect,
@@ -82,7 +82,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
         type={type}
         showWeekend={showWeekend}
         todayBtn={todayBtn}
-        validation={validation}
+        constraints={constraints}
         customization={customization}
         onDateSelect={onDateSelect}
         onMonthNavigate={onMonthNavigate}

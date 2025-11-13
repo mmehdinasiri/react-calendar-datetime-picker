@@ -81,8 +81,10 @@ export type CalendarListStyle = 'grid' | 'list'
 export type {
   DateInput,
   InitValueInput,
-  CalendarValidation,
-  CalendarValidationInput,
+  CalendarConstraints,
+  CalendarConstraintsInput,
+  CalendarError,
+  NormalizationResult,
   CalendarClasses,
   CalendarIcons,
   CalendarLabels,

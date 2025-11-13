@@ -6,7 +6,7 @@
 import React from 'react'
 import type { Day, Range, Multi, CalendarLocale, CalendarType } from '../types'
 import type {
-  CalendarValidation,
+  CalendarConstraints,
   CalendarCustomization
 } from '../types/calendar'
 import {
@@ -31,8 +31,8 @@ export interface CalendarGridViewProps {
   showWeekend?: boolean
   /** Show today button */
   todayBtn?: boolean
-  /** Validation options */
-  validation?: CalendarValidation
+  /** Date constraints */
+  constraints?: CalendarConstraints
   /** Customization options */
   customization?: CalendarCustomization
   /** Callback when date is selected */
@@ -51,14 +51,14 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     type,
     showWeekend = false,
     todayBtn = false,
-    validation = {},
+    constraints = {},
     customization = {},
     onDateSelect,
     onMonthNavigate,
     onViewChange
   } = props
 
-  const { maxDate, minDate, disabledDates } = validation
+  const { maxDate, minDate, disabledDates } = constraints
   const { classes = {}, icons = {}, labels = {} } = customization
 
   const { header: headerClass, days: daysClass } = classes
@@ -161,7 +161,13 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
 
       {/* Calendar grid */}
       <div className={`calendar-grid ${daysClass || ''}`}>
-        {calendarGrid.map((week, weekIndex) => {
+        {calendarGrid
+          .filter((week) => {
+            // Filter out weeks where all days are from other months
+            const hasCurrentMonthDay = week.some((day) => day.isCurrentMonth)
+            return hasCurrentMonthDay
+          })
+          .map((week, weekIndex) => {
           const hasOtherMonth = week.some((day) => !day.isCurrentMonth)
           const weekClassNames = [
             'calendar-week',
@@ -191,9 +197,34 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                   ? dayIndex === 6 || dayIndex === 5
                   : dayIndex === 0 || dayIndex === 6)
 
+              // Identify first day of next month and last day of previous month
+              const isOtherMonth = !calendarDay.isCurrentMonth
+              
+              // Determine if this is from previous month or next month
+              const isPrevMonth = isOtherMonth && (
+                calendarDay.year < displayMonth.year ||
+                (calendarDay.year === displayMonth.year && calendarDay.month < displayMonth.month)
+              )
+              const isNextMonth = isOtherMonth && (
+                calendarDay.year > displayMonth.year ||
+                (calendarDay.year === displayMonth.year && calendarDay.month > displayMonth.month)
+              )
+              
+              // Last day of previous month: previous month day where next day is current month
+              const isLastDayOfPrevMonth =
+                isPrevMonth &&
+                (dayIndex < 6 && week[dayIndex + 1].isCurrentMonth)
+              
+              // First day of next month: next month day where previous day is current month
+              const isFirstDayOfNextMonth =
+                isNextMonth &&
+                (dayIndex > 0 && week[dayIndex - 1].isCurrentMonth)
+
               const classNames = [
                 'calendar-day',
-                !calendarDay.isCurrentMonth && 'calendar-day-other-month',
+                isOtherMonth && 'calendar-day-other-month',
+                isFirstDayOfNextMonth && 'calendar-day-other-month-first',
+                isLastDayOfPrevMonth && 'calendar-day-other-month-last',
                 calendarDay.isToday && 'calendar-day-today',
                 isSelected && 'calendar-day-selected',
                 isInRange && 'calendar-day-in-range',
