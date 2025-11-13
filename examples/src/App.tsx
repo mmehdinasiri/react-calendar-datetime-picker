@@ -67,7 +67,9 @@ function App() {
           </p>
           <div className='picker-container'>
             <DtPicker
-              onChange={(date: unknown) => console.log('Persian picker date:', date)}
+              onChange={(date: unknown) =>
+                console.log('Persian picker date:', date)
+              }
               local='fa'
               placeholder='تاریخ را انتخاب کنید'
               showWeekend={true}
