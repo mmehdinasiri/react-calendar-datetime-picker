@@ -18,3 +18,6 @@ export type { MonthViewProps } from './MonthView'
 
 export { YearView } from './YearView'
 export type { YearViewProps } from './YearView'
+
+export { CalendarHeader } from './CalendarHeader'
+export type { CalendarHeaderProps } from './CalendarHeader'

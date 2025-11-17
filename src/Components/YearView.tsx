@@ -6,8 +6,9 @@
 import React, { useRef, useEffect } from 'react'
 import type { Day, CalendarLocale, CalendarListStyle } from '../types'
 import type { CalendarCustomization } from '../types/calendar'
-import { getYearRange, getMonthNames } from '../utils/calendar-grid'
+import { getYearRange } from '../utils/calendar-grid'
 import { toPersianNumeral } from '../utils/formatting'
+import { CalendarHeader } from './CalendarHeader'
 
 export interface YearViewProps {
   /** Currently displayed month */
@@ -35,13 +36,11 @@ export const YearView: React.FC<YearViewProps> = (props) => {
   } = props
 
   const { classes = {} } = customization
-  const { header: headerClass, years: yearsClass } = classes
+  const { years: yearsClass } = classes
 
   const isRTL = locale === 'fa'
   const years = getYearRange(displayMonth.year, 12, locale)
   const isGrid = yearListStyle === 'grid'
-  const monthNames = getMonthNames(locale)
-  const currentMonthName = monthNames[displayMonth.month - 1]
 
   const yearsContainerRef = useRef<HTMLDivElement>(null)
   const currentYearIndex = years.findIndex((year) => year === displayMonth.year)
@@ -86,40 +85,16 @@ export const YearView: React.FC<YearViewProps> = (props) => {
 
   return (
     <div className='calendar-core' dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className={`calendar-header ${headerClass || ''}`}>
-        <button
-          type='button'
-          onClick={() => onViewChange('months')}
-          className='calendar-nav-btn calendar-nav-prev'
-        >
-          {isRTL ? '>' : '<'}
-        </button>
-        <div className='calendar-month-year-btn'>
-          <button
-            type='button'
-            onClick={() => onViewChange('months')}
-            className='calendar-month-btn'
-          >
-            {currentMonthName}
-          </button>
-          <button
-            type='button'
-            className='calendar-year-btn'
-            disabled
-            style={{ cursor: 'default' }}
-          >
-            {locale === 'fa'
-              ? toPersianNumeral(displayMonth.year)
-              : displayMonth.year}
-          </button>
-        </div>
-        <div
-          className='calendar-nav-btn calendar-nav-next'
-          style={{ visibility: 'hidden' }}
-        >
-          {isRTL ? '<' : '>'}
-        </div>
-      </div>
+      <CalendarHeader
+        displayMonth={displayMonth}
+        locale={locale}
+        customization={customization}
+        onPrevious={() => onViewChange('months')}
+        onNext={() => {}}
+        onMonthClick={() => onViewChange('months')}
+        onYearClick={undefined}
+        showYear={true}
+      />
 
       <div className='year-wrapper'>
         <div

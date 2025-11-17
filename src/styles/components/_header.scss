@@ -19,24 +19,26 @@
   border: none;
   color: var(--calendar-text-header);
   cursor: pointer;
-  padding: var(--calendar-spacing-xs) var(--calendar-spacing-sm);
+  padding: var(--calendar-spacing-xs);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
   transition: var(--calendar-transition);
-  border-radius: var(--calendar-radius-sm);
+  border-radius: 50%;
   min-width: 32px;
   min-height: 32px;
-  width: 20px;
-  height: 20px;
+  width: 32px;
+  height: 32px;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
   }
 
   &:active {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
   }
 
   &.is-disabled {
@@ -53,6 +55,8 @@
   width: 18px;
   height: 18px;
   fill: currentColor;
+  stroke: currentColor;
+  display: block;
 }
 
 .calendar-month-year-btn {
@@ -119,24 +123,6 @@
   }
 }
 
-.calendar-today-btn {
-  position: absolute;
-  bottom: var(--calendar-spacing-sm);
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: var(--calendar-text-header);
-  cursor: pointer;
-  padding: var(--calendar-spacing-xs) var(--calendar-spacing-sm);
-  font-size: 12px;
-  border-radius: var(--calendar-radius-sm);
-  transition: var(--calendar-transition);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
-}
 
 // RTL support
 [dir='rtl'] {
@@ -151,7 +137,10 @@
     }
 
     .calendar-nav-btn {
-      transform: scale(-1);
+      // Flip icons horizontally for RTL
+      .calendar-nav-icon {
+        transform: scaleX(-1);
+      }
     }
   }
 }

@@ -258,7 +258,8 @@ function calendarReducer(
       const today = getToday(locale)
       return {
         ...state,
-        displayMonth: { year: today.year, month: today.month, day: 1 }
+        displayMonth: { year: today.year, month: today.month, day: 1 },
+        currentView: 'calendar'
       }
     }
 

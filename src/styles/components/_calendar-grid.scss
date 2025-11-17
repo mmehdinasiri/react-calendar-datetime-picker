@@ -90,8 +90,11 @@
     background-color: var(--calendar-selected-day);
     color: white;
     font-weight: 700;
-    font-size: 22px;
     border-radius: 50%;
+
+    &.calendar-day-selected-enlarged {
+      font-size: 22px;
+    }
 
     &.calendar-day-other-month {
       background-color: var(--calendar-selected-range);

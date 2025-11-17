@@ -9,15 +9,11 @@ import type {
   CalendarConstraints,
   CalendarCustomization
 } from '../types/calendar'
-import {
-  generateCalendarGrid,
-  getDayNames,
-  getMonthNames
-} from '../utils/calendar-grid'
+import { generateCalendarGrid, getDayNames } from '../utils/calendar-grid'
 import { isDateSelectable } from '../utils/validation'
 import { isDaySelected, isDayInRange } from '../utils/calendar-selection'
-import { getToday } from '../utils/date-conversion'
 import { toPersianNumeral } from '../utils/formatting'
+import { CalendarHeader } from './CalendarHeader'
 
 export interface CalendarGridViewProps {
   /** Currently selected value */
@@ -32,6 +28,8 @@ export interface CalendarGridViewProps {
   showWeekend?: boolean
   /** Show today button */
   todayBtn?: boolean
+  /** Enlarge selected day text */
+  enlargeSelectedDay?: boolean
   /** Date constraints */
   constraints?: CalendarConstraints
   /** Customization options */
@@ -42,6 +40,8 @@ export interface CalendarGridViewProps {
   onMonthNavigate: (direction: 'prev' | 'next') => void
   /** Callback when view changes */
   onViewChange: (view: 'months' | 'years') => void
+  /** Callback to navigate to today's date */
+  onGoToToday?: () => void
 }
 
 export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
@@ -52,18 +52,19 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     type,
     showWeekend = false,
     todayBtn = false,
+    enlargeSelectedDay = true,
     constraints = {},
     customization = {},
     onDateSelect,
     onMonthNavigate,
-    onViewChange
+    onViewChange,
+    onGoToToday
   } = props
 
   const { maxDate, minDate, disabledDates } = constraints
-  const { classes = {}, icons = {}, labels = {} } = customization
+  const { classes = {}, labels = {} } = customization
 
-  const { header: headerClass, days: daysClass } = classes
-  const { next: NextBtnIcon, previous: PreviousBtnIcon } = icons
+  const { days: daysClass } = classes
   const {
     nextMonth: nextMonthBtnTitle = 'next',
     previousMonth: previousMonthBtnTitle = 'previous'
@@ -71,69 +72,22 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
 
   const isRTL = locale === 'fa'
   const dayNames = getDayNames(locale)
-  const monthNames = getMonthNames(locale)
   const calendarGrid = generateCalendarGrid(displayMonth, locale)
-  const today = getToday(locale)
 
   return (
     <div className='calendar-core' dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
-      <div className={`calendar-header ${headerClass || ''}`}>
-        <button
-          type='button'
-          onClick={() => onMonthNavigate('prev')}
-          title={previousMonthBtnTitle}
-          className='calendar-nav-btn calendar-nav-prev'
-        >
-          {PreviousBtnIcon ? (
-            <PreviousBtnIcon className='calendar-nav-icon' />
-          ) : (
-            <span>{isRTL ? '>' : '<'}</span>
-          )}
-        </button>
-
-        <div className='calendar-month-year-btn'>
-          <button
-            type='button'
-            onClick={() => onViewChange('months')}
-            className='calendar-month-btn'
-          >
-            {monthNames[displayMonth.month - 1]}
-          </button>
-          <button
-            type='button'
-            onClick={() => onViewChange('years')}
-            className='calendar-year-btn'
-          >
-            {locale === 'fa'
-              ? toPersianNumeral(displayMonth.year)
-              : displayMonth.year}
-          </button>
-        </div>
-
-        <button
-          type='button'
-          onClick={() => onMonthNavigate('next')}
-          title={nextMonthBtnTitle}
-          className='calendar-nav-btn calendar-nav-next'
-        >
-          {NextBtnIcon ? (
-            <NextBtnIcon className='calendar-nav-icon' />
-          ) : (
-            <span>{isRTL ? '<' : '>'}</span>
-          )}
-        </button>
-
-        {todayBtn && (
-          <button
-            type='button'
-            onClick={() => onDateSelect(today)}
-            className='calendar-today-btn'
-          >
-            {locale === 'fa' ? 'امروز' : 'Today'}
-          </button>
-        )}
-      </div>
+      <CalendarHeader
+        displayMonth={displayMonth}
+        locale={locale}
+        customization={customization}
+        onPrevious={() => onMonthNavigate('prev')}
+        onNext={() => onMonthNavigate('next')}
+        onMonthClick={() => onViewChange('months')}
+        onYearClick={() => onViewChange('years')}
+        previousTitle={previousMonthBtnTitle}
+        nextTitle={nextMonthBtnTitle}
+      />
 
       {/* Day names */}
       <div className='calendar-day-names'>
@@ -241,6 +195,9 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                     isLastDayOfPrevMonth && 'calendar-day-other-month-last',
                     calendarDay.isToday && 'calendar-day-today',
                     isSelected && 'calendar-day-selected',
+                    isSelected &&
+                      enlargeSelectedDay &&
+                      'calendar-day-selected-enlarged',
                     isInRange && 'calendar-day-in-range',
                     !isSelectable && 'calendar-day-disabled',
                     isWeekend && 'calendar-day-weekend'
@@ -272,6 +229,23 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
             )
           })}
       </div>
+
+      {/* Footer */}
+      {todayBtn && (
+        <div className='calendar-footer'>
+          <button
+            type='button'
+            onClick={() => {
+              if (onGoToToday) {
+                onGoToToday()
+              }
+            }}
+            className='calendar-today-btn'
+          >
+            {locale === 'fa' ? 'امروز' : 'Today'}
+          </button>
+        </div>
+      )}
     </div>
   )
 }

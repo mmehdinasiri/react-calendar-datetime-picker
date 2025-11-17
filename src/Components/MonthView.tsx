@@ -7,7 +7,7 @@ import React from 'react'
 import type { Day, CalendarLocale } from '../types'
 import type { CalendarCustomization } from '../types/calendar'
 import { getMonthNames } from '../utils/calendar-grid'
-import { toPersianNumeral } from '../utils/formatting'
+import { CalendarHeader } from './CalendarHeader'
 
 export interface MonthViewProps {
   /** Currently displayed month */
@@ -32,46 +32,22 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
   } = props
 
   const { classes = {} } = customization
-  const { header: headerClass, months: monthsClass } = classes
+  const { months: monthsClass } = classes
 
   const isRTL = locale === 'fa'
   const monthNames = getMonthNames(locale)
-  const currentMonthName = monthNames[displayMonth.month - 1]
 
   return (
     <div className='calendar-core' dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className={`calendar-header ${headerClass || ''}`}>
-        <button
-          type='button'
-          onClick={() => onViewChange('calendar')}
-          className='calendar-nav-btn calendar-nav-prev'
-        >
-          {isRTL ? '>' : '<'}
-        </button>
-        <div className='calendar-month-year-btn'>
-          <button
-            type='button'
-            onClick={() => onViewChange('calendar')}
-            className='calendar-month-btn'
-          >
-            {currentMonthName}
-          </button>
-          <button
-            type='button'
-            onClick={() => onViewChange('years')}
-            className='calendar-year-btn'
-          >
-            {locale === 'fa' ? toPersianNumeral(displayMonth.year) : displayMonth.year}
-          </button>
-        </div>
-        <button
-          type='button'
-          onClick={() => onViewChange('years')}
-          className='calendar-nav-btn calendar-nav-next'
-        >
-          {isRTL ? '<' : '>'}
-        </button>
-      </div>
+      <CalendarHeader
+        displayMonth={displayMonth}
+        locale={locale}
+        customization={customization}
+        onPrevious={() => onViewChange('calendar')}
+        onNext={() => onViewChange('years')}
+        onMonthClick={() => onViewChange('calendar')}
+        onYearClick={() => onViewChange('years')}
+      />
 
       <div className={`calendar-months ${monthsClass || ''}`}>
         {monthNames.map((monthName, index) => {

@@ -1,0 +1,36 @@
+// Calendar Footer Styles
+@use '../variables' as *;
+
+.calendar-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--calendar-spacing-sm) var(--calendar-spacing-md);
+  background-color: var(--calendar-bg);
+  border-top: 1px solid var(--calendar-border);
+  border-bottom-left-radius: var(--calendar-radius-sm);
+  border-bottom-right-radius: var(--calendar-radius-sm);
+}
+
+.calendar-today-btn {
+  background: var(--calendar-primary);
+  border: none;
+  color: var(--calendar-text-header);
+  cursor: pointer;
+  padding: var(--calendar-spacing-xs) var(--calendar-spacing-md);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: var(--calendar-radius-sm);
+  transition: var(--calendar-transition);
+  min-height: 32px;
+
+  &:hover {
+    background: var(--calendar-primary-hover);
+  }
+
+  &:active {
+    background: var(--calendar-primary-hover);
+    transform: scale(0.98);
+  }
+}
+

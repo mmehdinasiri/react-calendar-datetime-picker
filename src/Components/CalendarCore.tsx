@@ -35,6 +35,8 @@ export interface CalendarCoreProps {
   showWeekend?: boolean
   /** Show today button */
   todayBtn?: boolean
+  /** Enlarge selected day text */
+  enlargeSelectedDay?: boolean
   /** Year list style */
   yearListStyle?: CalendarListStyle
   /** Date constraints */
@@ -51,6 +53,8 @@ export interface CalendarCoreProps {
   onViewChange: (view: 'calendar' | 'months' | 'years') => void
   /** Callback when navigating months */
   onMonthNavigate: (direction: 'prev' | 'next') => void
+  /** Callback to navigate to today's date */
+  onGoToToday?: () => void
 }
 
 export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
@@ -62,6 +66,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     type,
     showWeekend = false,
     todayBtn = false,
+    enlargeSelectedDay = true,
     yearListStyle = 'grid',
     constraints = {},
     customization = {},
@@ -69,7 +74,8 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     onMonthSelect,
     onYearSelect,
     onViewChange,
-    onMonthNavigate
+    onMonthNavigate,
+    onGoToToday
   } = props
 
   // Render appropriate view component
@@ -82,11 +88,13 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
         type={type}
         showWeekend={showWeekend}
         todayBtn={todayBtn}
+        enlargeSelectedDay={enlargeSelectedDay}
         constraints={constraints}
         customization={customization}
         onDateSelect={onDateSelect}
         onMonthNavigate={onMonthNavigate}
         onViewChange={onViewChange}
+        onGoToToday={onGoToToday}
       />
     )
   }

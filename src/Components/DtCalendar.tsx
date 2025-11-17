@@ -60,6 +60,11 @@ export interface DtCalendarProps {
    */
   todayBtn?: boolean
   /**
+   * Enlarge selected day text
+   * @default true
+   */
+  enlargeSelectedDay?: boolean
+  /**
    * Date constraints (maxDate, minDate, disabledDates)
    * Accepts Day objects, Date objects, date strings, or timestamps
    */
@@ -177,6 +182,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     local = 'en',
     showWeekend = false,
     todayBtn = false,
+    enlargeSelectedDay = true,
     constraints: constraintsInput,
     calenderModalClass,
     customization,
@@ -249,6 +255,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         type={type}
         showWeekend={showWeekend}
         todayBtn={todayBtn}
+        enlargeSelectedDay={enlargeSelectedDay}
         constraints={constraints}
         customization={customization}
         onDateSelect={actions.selectDate}
@@ -256,6 +263,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         onYearSelect={actions.selectYear}
         onViewChange={actions.setView}
         onMonthNavigate={actions.navigateMonth}
+        onGoToToday={actions.goToToday}
       />
     </div>
   )
