@@ -3,13 +3,44 @@
 
 .calendar-footer {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   padding: var(--calendar-spacing-sm) var(--calendar-spacing-md);
   background-color: var(--calendar-bg);
   border-top: 1px solid var(--calendar-border);
   border-bottom-left-radius: var(--calendar-radius-sm);
   border-bottom-right-radius: var(--calendar-radius-sm);
+  gap: var(--calendar-spacing-md);
+
+  // When only time selector is present, center it
+  &:has(.calendar-time-selector:only-child) {
+    .calendar-time-selector {
+      width: 100%;
+    }
+  }
+
+  // When only today button is present, center it
+  &:has(.calendar-today-btn:only-child) {
+    // Already centered by default
+  }
+
+  // When both are present, stack them vertically
+  &:has(.calendar-time-selector):has(.calendar-today-btn) {
+    .calendar-time-selector {
+      width: 100%;
+      margin-bottom: var(--calendar-spacing-xs);
+    }
+    
+    .calendar-today-btn {
+      width: 100%;
+      max-width: 200px;
+    }
+  }
+}
+
+// RTL support
+[dir='rtl'] .calendar-footer {
+  // No change needed for vertical layout
 }
 
 .calendar-today-btn {

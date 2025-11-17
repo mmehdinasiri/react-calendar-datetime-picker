@@ -344,5 +344,86 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     }
+  },
+  Time: {
+    SingleWithTime24Hour: {
+      title: 'Single Date with Time (24-hour)',
+      description:
+        'Calendar with time selection enabled using 24-hour format (0-23)',
+      component: 'DtCalendar',
+      props: {
+        withTime: true,
+        timeFormat: '24',
+        showWeekend: true,
+        todayBtn: true,
+        initValue: new Date() // Uses current system time
+      },
+      wrapper: 'calendar-container'
+    },
+    SingleWithTime12Hour: {
+      title: 'Single Date with Time (12-hour)',
+      description:
+        'Calendar with time selection enabled using 12-hour format (1-12 AM/PM)',
+      component: 'DtCalendar',
+      props: {
+        withTime: true,
+        timeFormat: '12',
+        showWeekend: true,
+        todayBtn: true,
+        initValue: new Date() // Uses current system time
+      },
+      wrapper: 'calendar-container'
+    },
+    RangeWithTime: {
+      title: 'Date Range with Time',
+      description:
+        'Range selection with time selectors for both start and end dates',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        withTime: true,
+        timeFormat: '24',
+        showWeekend: true,
+        todayBtn: true,
+        initValue: {
+          from: new Date(), // Uses current system time
+          to: (() => {
+            const tomorrow = new Date()
+            tomorrow.setDate(tomorrow.getDate() + 5)
+            return tomorrow
+          })()
+        }
+      },
+      wrapper: 'calendar-container'
+    },
+    PersianWithTime: {
+      title: 'Persian Calendar with Time',
+      description:
+        'Persian (Jalali) calendar with time selection in 24-hour format',
+      component: 'DtCalendar',
+      props: {
+        local: 'fa',
+        withTime: true,
+        timeFormat: '24',
+        showWeekend: true,
+        todayBtn: true,
+        initValue: new Date() // Uses current system time
+      },
+      wrapper: 'calendar-container'
+    },
+    DarkThemeWithTime: {
+      title: 'Dark Theme with Time',
+      description: 'Dark theme calendar with time selection in 24-hour format',
+      component: 'DtCalendar',
+      props: {
+        dark: true,
+        withTime: true,
+        timeFormat: '24',
+        showWeekend: true,
+        todayBtn: true,
+        initValue: new Date() // Uses current system time
+      },
+      wrapper: 'calendar-container'
+    }
   }
 }

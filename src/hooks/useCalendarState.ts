@@ -6,7 +6,7 @@
 import { useReducer, useEffect, useRef } from 'react'
 import type { Day, Range, Multi, CalendarLocale, CalendarType } from '../types'
 import { extractMonthFromValue } from '../utils/normalize'
-import { getToday } from '../utils/date-conversion'
+import { getToday, dateToDay } from '../utils/date-conversion'
 
 /**
  * Calendar state
@@ -28,6 +28,7 @@ export type CalendarAction =
   | { type: 'SELECT_RANGE_START'; payload: Day }
   | { type: 'SELECT_RANGE_END'; payload: Day }
   | { type: 'TOGGLE_MULTI_DATE'; payload: Day }
+  | { type: 'UPDATE_TIME'; payload: { day: Day; hour: number; minute: number } }
   | { type: 'CLEAR_SELECTION' }
   | { type: 'SET_DISPLAY_MONTH'; payload: Day }
   | { type: 'NAVIGATE_MONTH'; payload: 'prev' | 'next' }
@@ -131,19 +132,37 @@ function navigateMonth(
 }
 
 /**
+ * Add system time to a day if withTime is enabled and time is missing
+ */
+function addSystemTimeIfNeeded(day: Day, withTime: boolean): Day {
+  if (withTime && (day.hour === undefined || day.minute === undefined)) {
+    const now = new Date()
+    return {
+      ...day,
+      hour: now.getHours(),
+      minute: now.getMinutes()
+    }
+  }
+  return day
+}
+
+/**
  * Calendar reducer
  */
 function calendarReducer(
   state: CalendarState,
   action: CalendarAction,
   type: CalendarType,
-  locale: CalendarLocale
+  locale: CalendarLocale,
+  withTime: boolean = false
 ): CalendarState {
   switch (action.type) {
     case 'SELECT_DATE': {
+      // Add system time if needed before calculating new value
+      const dayWithTime = addSystemTimeIfNeeded(action.payload, withTime)
       const newValue = calculateNewValue(
         state.selectedValue,
-        action.payload,
+        dayWithTime,
         type
       )
 
@@ -205,6 +224,63 @@ function calendarReducer(
         ...state,
         selectedValue: newValue
       }
+    }
+
+    case 'UPDATE_TIME': {
+      const { day, hour, minute } = action.payload
+      const updatedDay: Day = { ...day, hour, minute }
+
+      if (type === 'single') {
+        return {
+          ...state,
+          selectedValue: updatedDay
+        }
+      }
+
+      if (type === 'range') {
+        const currentRange = state.selectedValue as Range | null
+        if (!currentRange) {
+          return state
+        }
+
+        // Check if the day matches the start or end date
+        const isStartDate =
+          currentRange.from &&
+          currentRange.from.year === day.year &&
+          currentRange.from.month === day.month &&
+          currentRange.from.day === day.day
+
+        const isEndDate =
+          currentRange.to &&
+          currentRange.to.year === day.year &&
+          currentRange.to.month === day.month &&
+          currentRange.to.day === day.day
+
+        if (isStartDate) {
+          return {
+            ...state,
+            selectedValue: {
+              ...currentRange,
+              from: updatedDay
+            }
+          }
+        }
+
+        if (isEndDate) {
+          return {
+            ...state,
+            selectedValue: {
+              ...currentRange,
+              to: updatedDay
+            }
+          }
+        }
+
+        return state
+      }
+
+      // Multi mode doesn't support time selection
+      return state
     }
 
     case 'CLEAR_SELECTION': {
@@ -293,6 +369,8 @@ export interface UseCalendarStateOptions {
   locale: CalendarLocale
   /** Calendar selection type */
   type: CalendarType
+  /** Enable time selection */
+  withTime?: boolean
   /** Callback when value changes */
   onChange: (value: Day | Range | Multi | null) => void
   /** Callback when calendar value changes (requires initValue) */
@@ -303,7 +381,7 @@ export interface UseCalendarStateOptions {
  * useCalendarState Hook
  */
 export function useCalendarState(options: UseCalendarStateOptions) {
-  const { initValue, locale, type, onChange, onCalenderChange } = options
+  const { initValue, locale, type, withTime = false, onChange, onCalenderChange } = options
 
   // Extract month from normalized initValue for initial display month
   const monthFromInitValue = extractMonthFromValue(initValue || null)
@@ -315,9 +393,9 @@ export function useCalendarState(options: UseCalendarStateOptions) {
     currentView: 'calendar'
   }
 
-  // Reducer with type and locale
+  // Reducer with type, locale, and withTime
   const reducer = (state: CalendarState, action: CalendarAction) =>
-    calendarReducer(state, action, type, locale)
+    calendarReducer(state, action, type, locale, withTime)
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
@@ -334,8 +412,12 @@ export function useCalendarState(options: UseCalendarStateOptions) {
 
   // Handle date selection
   const handleDateSelect = (day: Day) => {
+    // The reducer will add system time if needed
     dispatch({ type: 'SELECT_DATE', payload: day })
-    const newValue = calculateNewValue(state.selectedValue, day, type)
+    
+    // Calculate new value with system time added if needed
+    const dayWithTime = addSystemTimeIfNeeded(day, withTime)
+    const newValue = calculateNewValue(state.selectedValue, dayWithTime, type)
     onChange(newValue)
 
     // Call onCalenderChange if provided and initValue exists
@@ -344,9 +426,59 @@ export function useCalendarState(options: UseCalendarStateOptions) {
     }
   }
 
+  // Handle time update
+  const handleTimeUpdate = (day: Day, hour: number, minute: number) => {
+    dispatch({ type: 'UPDATE_TIME', payload: { day, hour, minute } })
+    
+    // Calculate new value with updated time
+    let newValue: Day | Range | Multi | null = null
+    
+    if (type === 'single') {
+      newValue = { ...day, hour, minute }
+    } else if (type === 'range') {
+      const currentRange = state.selectedValue as Range | null
+      if (currentRange) {
+        const isStartDate =
+          currentRange.from &&
+          currentRange.from.year === day.year &&
+          currentRange.from.month === day.month &&
+          currentRange.from.day === day.day
+
+        const isEndDate =
+          currentRange.to &&
+          currentRange.to.year === day.year &&
+          currentRange.to.month === day.month &&
+          currentRange.to.day === day.day
+
+        if (isStartDate) {
+          newValue = {
+            ...currentRange,
+            from: { ...day, hour, minute }
+          }
+        } else if (isEndDate) {
+          newValue = {
+            ...currentRange,
+            to: { ...day, hour, minute }
+          }
+        } else {
+          newValue = currentRange
+        }
+      }
+    }
+    // Multi mode doesn't support time selection
+
+    if (newValue !== null) {
+      onChange(newValue)
+      if (onCalenderChange && initValue !== undefined) {
+        onCalenderChange(newValue)
+      }
+    }
+  }
+
   // Actions
   const actions = {
     selectDate: handleDateSelect,
+    updateTime: handleTimeUpdate,
     clearSelection: () => {
       dispatch({ type: 'CLEAR_SELECTION' })
       onChange(null)

@@ -45,6 +45,12 @@ export interface DtCalendarProps {
    */
   withTime?: boolean
   /**
+   * Time format: '12' for 12-hour format, '24' for 24-hour format
+   * Only applies when withTime is true
+   * @default '24'
+   */
+  timeFormat?: '12' | '24'
+  /**
    * Calendar locale: 'en' (Gregorian) or 'fa' (Jalali)
    * @default 'en'
    */
@@ -183,7 +189,8 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     onChange,
     onCalenderChange,
     type = 'single',
-    withTime: _withTime = false,
+    withTime = false,
+    timeFormat = '24',
     local = 'en',
     showWeekend = false,
     todayBtn = false,
@@ -246,7 +253,8 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     locale: local,
     type,
     onChange,
-    onCalenderChange
+    onCalenderChange,
+    withTime
   })
 
   return (
@@ -260,12 +268,15 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         currentView={state.currentView}
         locale={local}
         type={type}
+        withTime={withTime}
+        timeFormat={timeFormat}
         showWeekend={showWeekend}
         todayBtn={todayBtn}
         enlargeSelectedDay={enlargeSelectedDay}
         constraints={constraints}
         customization={customization}
         onDateSelect={actions.selectDate}
+        onTimeChange={actions.updateTime}
         onMonthSelect={actions.selectMonth}
         onYearSelect={actions.selectYear}
         onViewChange={actions.setView}

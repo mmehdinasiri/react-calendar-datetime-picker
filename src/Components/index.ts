@@ -21,3 +21,6 @@ export type { YearViewProps } from './YearView'
 
 export { CalendarHeader } from './CalendarHeader'
 export type { CalendarHeaderProps } from './CalendarHeader'
+
+export { TimeSelector } from './TimeSelector'
+export type { TimeSelectorProps } from './TimeSelector'

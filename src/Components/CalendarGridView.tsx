@@ -19,6 +19,7 @@ import {
 } from '../utils/calendar-selection'
 import { toPersianNumeral } from '../utils/formatting'
 import { CalendarHeader } from './CalendarHeader'
+import { TimeSelector } from './TimeSelector'
 
 export interface CalendarGridViewProps {
   /** Currently selected value */
@@ -29,6 +30,10 @@ export interface CalendarGridViewProps {
   locale: CalendarLocale
   /** Calendar selection type */
   type: CalendarType
+  /** Enable time selection */
+  withTime?: boolean
+  /** Time format: '12' for 12-hour format, '24' for 24-hour format */
+  timeFormat?: '12' | '24'
   /** Show weekend highlighting */
   showWeekend?: boolean
   /** Show today button */
@@ -41,6 +46,8 @@ export interface CalendarGridViewProps {
   customization?: CalendarCustomization
   /** Callback when date is selected */
   onDateSelect: (day: Day) => void
+  /** Callback when time changes */
+  onTimeChange?: (day: Day, hour: number, minute: number) => void
   /** Callback when navigating months */
   onMonthNavigate: (direction: 'prev' | 'next') => void
   /** Callback when view changes */
@@ -55,12 +62,15 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     displayMonth,
     locale,
     type,
+    withTime = false,
+    timeFormat = '24',
     showWeekend = false,
     todayBtn = false,
     enlargeSelectedDay = true,
     constraints = {},
     customization = {},
     onDateSelect,
+    onTimeChange,
     onMonthNavigate,
     onViewChange,
     onGoToToday
@@ -240,19 +250,71 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
       </div>
 
       {/* Footer */}
-      {todayBtn && (
+      {(todayBtn || (withTime && type !== 'multi' && onTimeChange)) && (
         <div className='calendar-footer'>
-          <button
-            type='button'
-            onClick={() => {
-              if (onGoToToday) {
-                onGoToToday()
-              }
-            }}
-            className='calendar-today-btn'
-          >
-            {locale === 'fa' ? 'امروز' : 'Today'}
-          </button>
+          {/* Time Selector - Only for single and range modes, not multi */}
+          {withTime && type !== 'multi' && onTimeChange && (
+            <div className='calendar-time-selector'>
+              {type === 'single' ? (
+                <TimeSelector
+                  day={selectedValue as Day | null}
+                  timeFormat={timeFormat}
+                  locale={locale}
+                  disabled={!selectedValue}
+                  onTimeChange={(hour, minute) => {
+                    const day = selectedValue as Day | null
+                    if (day) {
+                      onTimeChange(day, hour, minute)
+                    }
+                  }}
+                />
+              ) : type === 'range' ? (
+                <div className='calendar-time-selector-range'>
+                  <TimeSelector
+                    day={(selectedValue as Range | null)?.from || null}
+                    timeFormat={timeFormat}
+                    locale={locale}
+                    label={locale === 'fa' ? 'از' : 'From'}
+                    disabled={!(selectedValue as Range | null)?.from}
+                    onTimeChange={(hour, minute) => {
+                      const range = selectedValue as Range | null
+                      if (range?.from) {
+                        onTimeChange(range.from, hour, minute)
+                      }
+                    }}
+                  />
+                  <TimeSelector
+                    day={(selectedValue as Range | null)?.to || null}
+                    timeFormat={timeFormat}
+                    locale={locale}
+                    label={locale === 'fa' ? 'تا' : 'To'}
+                    disabled={!(selectedValue as Range | null)?.to}
+                    onTimeChange={(hour, minute) => {
+                      const range = selectedValue as Range | null
+                      if (range?.to) {
+                        onTimeChange(range.to, hour, minute)
+                      }
+                    }}
+                  />
+                </div>
+              ) : null}
+            </div>
+          )}
+
+          {/* Today Button */}
+          {todayBtn && (
+            <button
+              type='button'
+              onClick={() => {
+                if (onGoToToday) {
+                  onGoToToday()
+                }
+              }}
+              className='calendar-today-btn'
+            >
+              {locale === 'fa' ? 'امروز' : 'Today'}
+            </button>
+          )}
         </div>
       )}
     </div>

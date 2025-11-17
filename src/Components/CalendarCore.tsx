@@ -31,6 +31,10 @@ export interface CalendarCoreProps {
   locale: CalendarLocale
   /** Calendar selection type */
   type: CalendarType
+  /** Enable time selection */
+  withTime?: boolean
+  /** Time format: '12' for 12-hour format, '24' for 24-hour format */
+  timeFormat?: '12' | '24'
   /** Show weekend highlighting */
   showWeekend?: boolean
   /** Show today button */
@@ -45,6 +49,8 @@ export interface CalendarCoreProps {
   customization?: CalendarCustomization
   /** Callback when date is selected */
   onDateSelect: (day: Day) => void
+  /** Callback when time changes */
+  onTimeChange?: (day: Day, hour: number, minute: number) => void
   /** Callback when month is selected */
   onMonthSelect: (month: number) => void
   /** Callback when year is selected */
@@ -64,6 +70,8 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     currentView,
     locale,
     type,
+    withTime = false,
+    timeFormat = '24',
     showWeekend = false,
     todayBtn = false,
     enlargeSelectedDay = true,
@@ -71,6 +79,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     constraints = {},
     customization = {},
     onDateSelect,
+    onTimeChange,
     onMonthSelect,
     onYearSelect,
     onViewChange,
@@ -86,12 +95,15 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
         displayMonth={displayMonth}
         locale={locale}
         type={type}
+        withTime={withTime}
+        timeFormat={timeFormat}
         showWeekend={showWeekend}
         todayBtn={todayBtn}
         enlargeSelectedDay={enlargeSelectedDay}
         constraints={constraints}
         customization={customization}
         onDateSelect={onDateSelect}
+        onTimeChange={onTimeChange}
         onMonthNavigate={onMonthNavigate}
         onViewChange={onViewChange}
         onGoToToday={onGoToToday}
