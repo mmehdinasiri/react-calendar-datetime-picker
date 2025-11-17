@@ -279,6 +279,18 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
+    PersianDateRangeSelection: {
+      title: 'Persian Date Range Selection',
+      description: 'Select a range of dates with Persian (Jalali) calendar',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        local: 'fa',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
     MultipleDateSelection: {
       title: 'Multiple Date Selection',
       description: 'Select multiple dates',

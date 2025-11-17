@@ -146,12 +146,27 @@ function calendarReducer(
         action.payload,
         type
       )
-      const monthFromValue = extractMonthFromValue(newValue)
+
+      // Only update displayMonth when starting a new selection, not when completing a range
+      let newDisplayMonth = state.displayMonth
+      if (type === 'range') {
+        const currentRange = state.selectedValue as Range | null
+        // Only navigate if starting a new range (no range exists or range is complete)
+        if (!currentRange || !currentRange.from || currentRange.to) {
+          const monthFromValue = extractMonthFromValue(newValue)
+          newDisplayMonth = monthFromValue || state.displayMonth
+        }
+        // Otherwise, keep the current displayMonth when selecting end date
+      } else {
+        // For single and multi, always update displayMonth to selected date
+        const monthFromValue = extractMonthFromValue(newValue)
+        newDisplayMonth = monthFromValue || state.displayMonth
+      }
 
       return {
         ...state,
         selectedValue: newValue,
-        displayMonth: monthFromValue || state.displayMonth,
+        displayMonth: newDisplayMonth,
         currentView: 'calendar'
       }
     }

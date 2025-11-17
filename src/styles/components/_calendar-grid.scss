@@ -1,6 +1,25 @@
 // Calendar Grid View Styles (Days List)
 @use '../variables' as *;
 
+// Prevent border-radius from transitioning during selection
+// But delay border-radius change when deselecting to match background transition
+.calendar-day {
+  // For range states, only transition background and color
+  &.calendar-day-in-range,
+  &.calendar-day-range-start,
+  &.calendar-day-range-end {
+    // Explicitly exclude border-radius from transitions
+    transition-property: background-color, color !important;
+  }
+  
+  // When NOT in range (deselecting), delay border-radius change until after background transition
+  &:not(.calendar-day-in-range):not(.calendar-day-range-start):not(.calendar-day-range-end) {
+    transition-property: background-color, color, border-radius !important;
+    transition-duration: 0.2s, 0.2s, 0s !important;
+    transition-delay: 0s, 0s, 0.2s !important;
+  }
+}
+
 // Day Names Row
 .calendar-day-names {
   display: grid;
@@ -52,7 +71,10 @@
   cursor: pointer;
   padding: 0;
   font-size: 14px;
-  transition: var(--calendar-transition);
+  // Only transition background and color, not border-radius
+  transition-property: background-color, color !important;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
   position: relative;
   text-align: center;
   box-sizing: border-box;
@@ -64,7 +86,7 @@
   min-height: calc(var(--calendar-modal-width) / 7);
   min-width: 0; // Allow grid to control width
 
-  &:hover:not(.calendar-day-disabled):not(.calendar-day-selected):not(.calendar-day-other-month) {
+  &:hover:not(.calendar-day-disabled):not(.calendar-day-selected):not(.calendar-day-other-month):not(.calendar-day-range-start):not(.calendar-day-range-end) {
     background: var(--calendar-bg-hover);
   }
 
@@ -90,7 +112,10 @@
     background-color: var(--calendar-selected-day);
     color: white;
     font-weight: 700;
-    border-radius: 50%;
+    border-radius: 50% !important;
+    transition-property: background-color, color !important;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
 
     &.calendar-day-selected-enlarged {
       font-size: 22px;
@@ -117,37 +142,85 @@
     background-color: var(--calendar-bg-disabled);
     color: var(--calendar-text-disabled);
     opacity: 1;
+    // Disabled dates should remain circular (inherit from base)
   }
 
   &.calendar-day-in-range {
-    color: var(--calendar-selected-range-color);
-    border-radius: 0;
-    background-color: var(--calendar-selected-range);
+    color: white;
+    border-radius: 0 !important;
+    background-color: var(--calendar-selected-day);
+    transition-property: background-color, color !important;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    
+    // Prevent hover from changing background when in range
+    &:hover {
+      background-color: var(--calendar-selected-day) !important;
+      color: white !important;
+    }
   }
 
   &.calendar-day-weekend {
     color: var(--calendar-weekends);
+    
+    // When weekend is selected or in range, use white text for better readability
+    &.calendar-day-selected,
+    &.calendar-day-in-range,
+    &.calendar-day-range-start,
+    &.calendar-day-range-end {
+      color: white;
+    }
   }
 
-  // Range selection styles
+  // Range selection styles - all range days share the same background as single selected date
   &.calendar-day-range-start {
     background-color: var(--calendar-selected-day);
-    border-radius: 0;
-    border-top-left-radius: 50%;
-    border-bottom-left-radius: 50%;
     color: white;
+    border-radius: 0 !important;
+    border-top-left-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+    transition-property: background-color, color !important;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    // Keep rounded left corners even when background is transitioning out
+    
+    // Prevent hover from changing background when selected
+    &:hover {
+      background-color: var(--calendar-selected-day) !important;
+      color: white !important;
+    }
   }
 
   &.calendar-day-range-end {
     background-color: var(--calendar-selected-day);
-    border-radius: 0;
-    border-top-right-radius: 50%;
-    border-bottom-right-radius: 50%;
+    color: white;
+    border-radius: 0 !important;
+    border-top-right-radius: 50% !important;
+    border-bottom-right-radius: 50% !important;
+    transition-property: background-color, color !important;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+    // Keep rounded right corners even when background is transitioning out
+    
+    // Prevent hover from changing background when selected
+    &:hover {
+      background-color: var(--calendar-selected-day) !important;
+      color: white !important;
+    }
+  }
+
+  // When start and end are the same day (single day range)
+  &.calendar-day-range-start.calendar-day-range-end {
+    border-radius: 50% !important;
+    background-color: var(--calendar-selected-day);
     color: white;
   }
 
-  &.calendar-day-range-start.calendar-day-range-end {
-    border-radius: 50% !important;
+  // Range start and end should also have the same background when combined with in-range
+  &.calendar-day-range-start.calendar-day-in-range,
+  &.calendar-day-range-end.calendar-day-in-range {
+    background-color: var(--calendar-selected-day);
+    color: white;
   }
 }
 
@@ -155,17 +228,22 @@
 [dir='rtl'] {
   .calendar-day {
     &.calendar-day-range-start {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      border-top-right-radius: 50%;
-      border-bottom-right-radius: 50%;
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+      border-top-right-radius: 50% !important;
+      border-bottom-right-radius: 50% !important;
     }
 
     &.calendar-day-range-end {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      border-top-left-radius: 50%;
-      border-bottom-left-radius: 50%;
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+      border-top-left-radius: 50% !important;
+      border-bottom-left-radius: 50% !important;
+    }
+
+    // When start and end are the same day in RTL
+    &.calendar-day-range-start.calendar-day-range-end {
+      border-radius: 50% !important;
     }
 
     // In RTL, first day of next month should have right border-radius

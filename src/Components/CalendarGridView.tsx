@@ -11,7 +11,12 @@ import type {
 } from '../types/calendar'
 import { generateCalendarGrid, getDayNames } from '../utils/calendar-grid'
 import { isDateSelectable } from '../utils/validation'
-import { isDaySelected, isDayInRange } from '../utils/calendar-selection'
+import {
+  isDaySelected,
+  isDayInRange,
+  isRangeStart,
+  isRangeEnd
+} from '../utils/calendar-selection'
 import { toPersianNumeral } from '../utils/formatting'
 import { CalendarHeader } from './CalendarHeader'
 
@@ -149,6 +154,8 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                     type,
                     locale
                   )
+                  const isStart = isRangeStart(day, selectedValue, type)
+                  const isEnd = isRangeEnd(day, selectedValue, type)
                   const isSelectable = isDateSelectable(day, {
                     minDate,
                     maxDate,
@@ -199,6 +206,8 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                       enlargeSelectedDay &&
                       'calendar-day-selected-enlarged',
                     isInRange && 'calendar-day-in-range',
+                    isStart && 'calendar-day-range-start',
+                    isEnd && 'calendar-day-range-end',
                     !isSelectable && 'calendar-day-disabled',
                     isWeekend && 'calendar-day-weekend'
                   ]

@@ -273,16 +273,16 @@ export function getYearRange(
     return years
   } else {
     // Gregorian calendar: 1900 to current year + 30
-    const currentYear = new Date().getFullYear()
-    const startYear = 1900
-    const endYear = currentYear + 30
-    const years: number[] = []
-    
-    for (let year = startYear; year <= endYear; year++) {
-      years.push(year)
-    }
-    
-    return years
+  const currentYear = new Date().getFullYear()
+  const startYear = 1900
+  const endYear = currentYear + 30
+  const years: number[] = []
+  
+  for (let year = startYear; year <= endYear; year++) {
+    years.push(year)
+  }
+  
+  return years
   }
 }
 
