@@ -65,6 +65,11 @@ export interface DtCalendarProps {
    */
   enlargeSelectedDay?: boolean
   /**
+   * Enable dark theme
+   * @default false
+   */
+  dark?: boolean
+  /**
    * Date constraints (maxDate, minDate, disabledDates)
    * Accepts Day objects, Date objects, date strings, or timestamps
    */
@@ -183,6 +188,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     showWeekend = false,
     todayBtn = false,
     enlargeSelectedDay = true,
+    dark = false,
     constraints: constraintsInput,
     calenderModalClass,
     customization,
@@ -246,6 +252,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
   return (
     <div
       className={`react-calendar-datetime-picker ${calenderModalClass || ''}`}
+      data-theme={dark ? 'dark' : undefined}
     >
       <CalendarCore
         selectedValue={state.selectedValue}

@@ -31,48 +31,11 @@
   }
 }
 
-// Year wrapper with gradient fade effect at top and bottom
+// Year wrapper - gradient removed per user request
 .year-wrapper {
   position: relative;
   margin: 8px 0;
   overflow: hidden;
-
-  &::after,
-  &::before {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 80px;
-    position: absolute;
-    left: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  &::before {
-    // Bottom fade - fades from background to transparent (going up)
-    background-image: linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.7) 0%,
-      rgba(255, 255, 255, 0.4) 30%,
-      rgba(255, 255, 255, 0.1) 60%,
-      transparent 100%
-    );
-    bottom: 0;
-  }
-
-  &::after {
-    // Top fade - fades from background to transparent (going down)
-    background-image: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.7) 0%,
-      rgba(255, 255, 255, 0.4) 30%,
-      rgba(255, 255, 255, 0.1) 60%,
-      transparent 100%
-    );
-    top: 0;
-  }
 }
 
 .calendar-year-item {

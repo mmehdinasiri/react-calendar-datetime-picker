@@ -21,6 +21,7 @@
   --calendar-bg-disabled: #e4ebe5;
   --calendar-bg-other-month: #e4ebe5;
   --calendar-light-gray: #efefef;
+  --calendar-header-bg: var(--calendar-primary); // Default: use primary color
 
   // Text colors
   --calendar-text: #444;
@@ -59,6 +60,52 @@
 
   // Transitions
   --calendar-transition: all 0.2s ease-in-out;
+}
+
+// Dark theme support
+.react-calendar-datetime-picker[data-theme='dark'] {
+  // Colors - Dark theme (darker green for primary)
+  --calendar-primary: #16a34a;
+  --calendar-primary-hover: #15803d;
+  --calendar-primary-light: #14532d;
+  --calendar-selected-day: #16a34a;
+  --calendar-today: #15803d;
+  --calendar-selected-range: #14532d;
+  --calendar-selected-range-color: #4ade80;
+  --calendar-weekends: #f87171;
+  --calendar-secondary: #6b7280;
+  --calendar-danger: #ef4444;
+  --calendar-warning: #fbbf24;
+  --calendar-info: #60a5fa;
+
+  // Background colors
+  --calendar-bg: #1f2937;
+  --calendar-bg-hover: #374151;
+  --calendar-bg-selected: #1f2937;
+  --calendar-bg-disabled: #374151;
+  --calendar-bg-other-month: #111827;
+  --calendar-light-gray: #374151;
+  --calendar-header-bg: #1f2937; // Dark gray header matching grid
+
+  // Text colors
+  --calendar-text: #f3f4f6;
+  --calendar-text-light: #e5e7eb;
+  --calendar-text-lighter: #9ca3af;
+  --calendar-text-disabled: #6b7280;
+  --calendar-text-header: #ffffff;
+  --calendar-text-day-names: #9ca3af;
+  --calendar-text-other-month: #6b7280;
+  --calendar-icon-color: #9ca3af;
+
+  // Border colors
+  --calendar-border: #374151;
+  --calendar-border-focus: #16a34a;
+  --calendar-border-selected: #16a34a;
+
+  // Shadows
+  --calendar-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --calendar-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --calendar-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
 }
 
 // RTL support

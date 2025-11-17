@@ -170,4 +170,5 @@
   --calendar-today: #004d99;
   --calendar-selected-range: #b3d9ff;
   --calendar-selected-range-color: #0052a3;
+  --calendar-header-bg: #0066cc; /* Override header background to blue */
 }

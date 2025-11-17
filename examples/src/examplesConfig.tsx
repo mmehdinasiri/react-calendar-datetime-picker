@@ -208,6 +208,19 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
+    }
+  },
+  Themes: {
+    DarkTheme: {
+      title: 'Dark Theme',
+      description: 'Calendar with dark theme enabled using the dark prop',
+      component: 'DtCalendar',
+      props: {
+        dark: true,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
     },
     CustomBlueTheme: {
       title: 'Custom Color Theme (Blue)',
