@@ -1,0 +1,167 @@
+// Date Picker Component Styles
+
+.calendar-picker {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.calendar-picker-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.calendar-picker-input {
+  width: 100%;
+  padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--calendar-text);
+  background-color: var(--calendar-bg);
+  border: 1px solid var(--calendar-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  &:hover:not(:disabled) {
+    border-color: var(--calendar-border-focus);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--calendar-border-focus);
+    box-shadow: 0 0 0 2px rgba(0, 154, 23, 0.1);
+  }
+
+  &:disabled {
+    background-color: var(--calendar-bg-disabled);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &::placeholder {
+    color: var(--calendar-text-lighter);
+  }
+}
+
+.calendar-picker-toggle {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--calendar-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease-in-out;
+
+  &:hover:not(:disabled) {
+    color: var(--calendar-primary);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.calendar-picker-clear {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--calendar-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease-in-out;
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--calendar-danger);
+    background-color: var(--calendar-bg-hover);
+  }
+}
+
+// RTL support
+[dir='rtl'] .calendar-picker-input {
+  padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+}
+
+[dir='rtl'] .calendar-picker-toggle {
+  right: auto;
+  left: 0.5rem;
+}
+
+[dir='rtl'] .calendar-picker-clear {
+  right: auto;
+  left: 2rem;
+}
+
+// Modal container
+.calendar-picker-modal {
+  position: fixed;
+  background-color: transparent;
+  border-radius: 8px;
+  animation: slideDown 0.2s ease-out;
+  z-index: 1000;
+  max-width: 400px;
+  width: 100%;
+  max-height: calc(100vh - 2rem);
+  overflow: visible;
+  padding: 0;
+  margin: 0;
+  pointer-events: none; // Allow clicks to pass through transparent areas
+
+  .calendar-core {
+    margin: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06),
+      0 0 0 1px rgba(0, 0, 0, 0.05);
+    pointer-events: auto; // Re-enable pointer events on the calendar itself
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Dark theme support
+[data-theme='dark'] {
+  .calendar-picker-input {
+    background-color: var(--calendar-bg);
+    border-color: var(--calendar-border);
+    color: var(--calendar-text);
+
+    &:focus {
+      border-color: var(--calendar-border-focus);
+      box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+    }
+  }
+
+  .calendar-picker-modal {
+    background-color: var(--calendar-bg);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+}
+

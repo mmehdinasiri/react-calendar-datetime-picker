@@ -105,25 +105,26 @@ export type ExamplesConfig = Record<string, Record<string, ExampleConfig>>
 // Examples configuration
 export const examples: ExamplesConfig = {
   Basic: {
-    SingleDatePicker: createExampleConfig(
-      {
-        title: 'Single Date Picker',
-        component: 'DtPicker',
-        props: {
-          local: 'en',
-          placeholder: 'Select a date'
-        },
-        wrapper: 'picker-container'
+    SingleDatePicker: {
+      title: 'Single Date Picker',
+      description: 'Basic date picker with input field',
+      component: 'DtPicker',
+      props: {
+        local: 'en',
+        placeholder: 'Select a date'
       },
-      (value: Day | null) => {
-        if (!value) return null
-        return (
-          <p>
-            Selected: {value.year}-{value.month}-{value.day}
-          </p>
-        )
-      }
-    ),
+      wrapper: 'picker-container'
+    },
+    DatePickerWithInitialValue: {
+      title: 'Date Picker with Initial Value',
+      description: 'Date picker pre-filled with a date',
+      component: 'DtPicker',
+      props: {
+        initValue: new Date(),
+        placeholder: 'Select a date'
+      },
+      wrapper: 'picker-container'
+    },
     StandaloneCalendar: {
       title: 'Standalone Calendar',
       component: 'DtCalendar',
@@ -246,6 +247,18 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
+    MinDatePicker: {
+      title: 'Date Picker with Min Date',
+      description: 'Date picker with minimum date constraint',
+      component: 'DtPicker',
+      props: {
+        constraints: {
+          minDate: new Date()
+        },
+        placeholder: 'Select a date (today or later)'
+      },
+      wrapper: 'picker-container'
+    },
     MaxDateConstraint: {
       title: 'Max Date Constraint',
       description: 'Calendar with maximum date constraint',
@@ -256,6 +269,18 @@ export const examples: ExamplesConfig = {
         }
       },
       wrapper: 'calendar-container'
+    },
+    MaxDatePicker: {
+      title: 'Date Picker with Max Date',
+      description: 'Date picker with maximum date constraint',
+      component: 'DtPicker',
+      props: {
+        constraints: {
+          maxDate: new Date(2025, 11, 31)
+        },
+        placeholder: 'Select a date (before Dec 31, 2025)'
+      },
+      wrapper: 'picker-container'
     },
     DisabledDates: {
       title: 'Disabled Dates',
@@ -271,6 +296,22 @@ export const examples: ExamplesConfig = {
         }
       },
       wrapper: 'calendar-container'
+    },
+    DatePickerWithDisabledDates: {
+      title: 'Date Picker with Disabled Dates',
+      description: 'Date picker with specific disabled dates',
+      component: 'DtPicker',
+      props: {
+        constraints: {
+          disabledDates: [
+            new Date(2024, 11, 25),
+            new Date(2024, 11, 26),
+            new Date(2024, 11, 27)
+          ]
+        },
+        placeholder: 'Select a date (Dec 25-27 disabled)'
+      },
+      wrapper: 'picker-container'
     }
   },
   Types: {
@@ -283,6 +324,16 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
+    SingleDatePicker: {
+      title: 'Single Date Picker',
+      description: 'Date picker for single date selection',
+      component: 'DtPicker',
+      props: {
+        type: 'single',
+        placeholder: 'Select a date'
+      },
+      wrapper: 'picker-container'
+    },
     DateRangeSelection: {
       title: 'Date Range Selection',
       description: 'Select a range of dates',
@@ -291,6 +342,16 @@ export const examples: ExamplesConfig = {
         type: 'range'
       },
       wrapper: 'calendar-container'
+    },
+    DateRangePicker: {
+      title: 'Date Range Picker',
+      description: 'Date picker for selecting a range of dates',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        placeholder: 'Select date range'
+      },
+      wrapper: 'picker-container'
     },
     PersianDateRangeSelection: {
       title: 'Persian Date Range Selection',
@@ -304,6 +365,19 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
+    PersianDateRangePicker: {
+      title: 'Persian Date Range Picker',
+      description: 'Date range picker with Persian (Jalali) calendar',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        local: 'fa',
+        placeholder: 'انتخاب بازه تاریخ',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
     MultipleDateSelection: {
       title: 'Multiple Date Selection',
       description: 'Select multiple dates',
@@ -312,6 +386,16 @@ export const examples: ExamplesConfig = {
         type: 'multi'
       },
       wrapper: 'calendar-container'
+    },
+    MultipleDatePicker: {
+      title: 'Multiple Date Picker',
+      description: 'Date picker for selecting multiple dates',
+      component: 'DtPicker',
+      props: {
+        type: 'multi',
+        placeholder: 'Select multiple dates'
+      },
+      wrapper: 'picker-container'
     }
   },
   Features: {
@@ -324,6 +408,16 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
+    DatePickerWithWeekend: {
+      title: 'Date Picker with Weekend Highlighting',
+      description: 'Date picker with weekend days highlighted',
+      component: 'DtPicker',
+      props: {
+        showWeekend: true,
+        placeholder: 'Select a date'
+      },
+      wrapper: 'picker-container'
+    },
     TodayButton: {
       title: 'Today Button',
       description: 'Calendar with Today button in footer',
@@ -332,6 +426,26 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
+    },
+    DatePickerWithTodayButton: {
+      title: 'Date Picker with Today Button',
+      description: 'Date picker with Today button in calendar footer',
+      component: 'DtPicker',
+      props: {
+        todayBtn: true,
+        placeholder: 'Select a date'
+      },
+      wrapper: 'picker-container'
+    },
+    DatePickerWithClearButton: {
+      title: 'Date Picker with Clear Button',
+      description: 'Date picker with clear button to reset selection',
+      component: 'DtPicker',
+      props: {
+        clearBtn: true,
+        placeholder: 'Select a date'
+      },
+      wrapper: 'picker-container'
     },
     AllFeaturesCombined: {
       title: 'All Features Combined',
@@ -343,6 +457,18 @@ export const examples: ExamplesConfig = {
         local: 'en'
       },
       wrapper: 'calendar-container'
+    },
+    DatePickerAllFeatures: {
+      title: 'Date Picker - All Features',
+      description: 'Date picker with all features enabled',
+      component: 'DtPicker',
+      props: {
+        showWeekend: true,
+        todayBtn: true,
+        clearBtn: true,
+        placeholder: 'Select a date'
+      },
+      wrapper: 'picker-container'
     }
   },
   Time: {
@@ -360,6 +486,19 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
+    DatePickerWithTime24Hour: {
+      title: 'Date Picker with Time (24-hour)',
+      description: 'Date picker with time selection in 24-hour format (0-23)',
+      component: 'DtPicker',
+      props: {
+        withTime: true,
+        timeFormat: '24',
+        showTimeInput: true,
+        placeholder: 'Select date and time',
+        initValue: new Date() // Uses current system time
+      },
+      wrapper: 'picker-container'
+    },
     SingleWithTime12Hour: {
       title: 'Single Date with Time (12-hour)',
       description:
@@ -373,6 +512,20 @@ export const examples: ExamplesConfig = {
         initValue: new Date() // Uses current system time
       },
       wrapper: 'calendar-container'
+    },
+    DatePickerWithTime12Hour: {
+      title: 'Date Picker with Time (12-hour)',
+      description:
+        'Date picker with time selection in 12-hour format (1-12 AM/PM)',
+      component: 'DtPicker',
+      props: {
+        withTime: true,
+        timeFormat: '12',
+        showTimeInput: true,
+        placeholder: 'Select date and time',
+        initValue: new Date() // Uses current system time
+      },
+      wrapper: 'picker-container'
     },
     RangeWithTime: {
       title: 'Date Range with Time',
@@ -396,6 +549,28 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
+    DateRangePickerWithTime: {
+      title: 'Date Range Picker with Time',
+      description:
+        'Date range picker with time selectors for both start and end dates',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        withTime: true,
+        timeFormat: '24',
+        showTimeInput: true,
+        placeholder: 'Select date range with time',
+        initValue: {
+          from: new Date(), // Uses current system time
+          to: (() => {
+            const tomorrow = new Date()
+            tomorrow.setDate(tomorrow.getDate() + 5)
+            return tomorrow
+          })()
+        }
+      },
+      wrapper: 'picker-container'
+    },
     PersianWithTime: {
       title: 'Persian Calendar with Time',
       description:
@@ -410,6 +585,21 @@ export const examples: ExamplesConfig = {
         initValue: new Date() // Uses current system time
       },
       wrapper: 'calendar-container'
+    },
+    PersianDatePickerWithTime: {
+      title: 'Persian Date Picker with Time',
+      description:
+        'Persian (Jalali) date picker with time selection in 24-hour format',
+      component: 'DtPicker',
+      props: {
+        local: 'fa',
+        withTime: true,
+        timeFormat: '24',
+        showTimeInput: true,
+        placeholder: 'انتخاب تاریخ و زمان',
+        initValue: new Date() // Uses current system time
+      },
+      wrapper: 'picker-container'
     },
     DarkThemeWithTime: {
       title: 'Dark Theme with Time',

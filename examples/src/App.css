@@ -289,6 +289,13 @@
   margin-bottom: 20px;
 }
 
+.picker-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding: 1rem 0;
+}
+
 .error-display {
   margin-top: 30px;
   padding: 20px;
