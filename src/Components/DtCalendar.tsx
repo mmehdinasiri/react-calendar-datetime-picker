@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react'
+import type { CalendarLocale, CalendarType, InitValueInput } from '../types'
 import type {
-  CalendarLocale,
-  CalendarType,
-  Day,
-  InitValueInput
-} from '../types'
-import type {
-  CalendarConstraints,
   CalendarConstraintsInput,
   CalendarCustomization,
   CalendarError
@@ -14,6 +8,7 @@ import type {
 import { CalendarCore } from './CalendarCore'
 import { useCalendarState } from '../hooks/useCalendarState'
 import { normalizeInitValueWithErrors } from '../utils/normalize'
+import { normalizeConstraintsProps } from '../utils/constraints'
 
 export interface DtCalendarProps {
   /**
@@ -93,79 +88,6 @@ export interface DtCalendarProps {
    * @param errors - Array of error objects describing what failed
    */
   onError?: (errors: CalendarError[]) => void
-}
-
-/**
- * Normalize constraints props from DateInput to Day/Day[]
- * Returns constraints object and errors array
- */
-function normalizeConstraintsProps(
-  constraintsInput: CalendarConstraintsInput | undefined,
-  locale: CalendarLocale,
-  _type: CalendarType
-): { constraints: CalendarConstraints; errors: CalendarError[] } {
-  const constraints: CalendarConstraints = {}
-  const errors: CalendarError[] = []
-
-  if (!constraintsInput) {
-    return { constraints, errors }
-  }
-
-  if (constraintsInput.maxDate) {
-    const result = normalizeInitValueWithErrors(
-      constraintsInput.maxDate,
-      locale,
-      'single',
-      'constraints.maxDate'
-    )
-    if (result.errors.length > 0) {
-      errors.push(...result.errors)
-    }
-    if (result.value && 'year' in result.value) {
-      constraints.maxDate = result.value as Day
-    }
-  }
-
-  if (constraintsInput.minDate) {
-    const result = normalizeInitValueWithErrors(
-      constraintsInput.minDate,
-      locale,
-      'single',
-      'constraints.minDate'
-    )
-    if (result.errors.length > 0) {
-      errors.push(...result.errors)
-    }
-    if (result.value && 'year' in result.value) {
-      constraints.minDate = result.value as Day
-    }
-  }
-
-  if (
-    constraintsInput.disabledDates &&
-    constraintsInput.disabledDates.length > 0
-  ) {
-    const normalizedDates: Day[] = []
-    constraintsInput.disabledDates.forEach((date, index) => {
-      const result = normalizeInitValueWithErrors(
-        date,
-        locale,
-        'single',
-        `constraints.disabledDates[${index}]`
-      )
-      if (result.errors.length > 0) {
-        errors.push(...result.errors)
-      }
-      if (result.value && 'year' in result.value) {
-        normalizedDates.push(result.value as Day)
-      }
-    })
-    if (normalizedDates.length > 0) {
-      constraints.disabledDates = normalizedDates
-    }
-  }
-
-  return { constraints, errors }
 }
 
 /**

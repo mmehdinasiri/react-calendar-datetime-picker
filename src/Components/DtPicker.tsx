@@ -1,6 +1,13 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import type { CalendarLocale, CalendarType, InitValueInput } from '../types'
 import type { CalendarConstraintsInput } from '../types/calendar'
+import { CalendarCore } from './CalendarCore'
+import {
+  useCalendarPicker,
+  useModalPosition,
+  useClickOutside,
+  useEscapeKey
+} from '../hooks'
 
 export interface DtPickerProps {
   /**
@@ -105,11 +112,148 @@ export interface DtPickerProps {
  * }
  * ```
  */
-export const DtPicker: React.FC<DtPickerProps> = (_props) => {
-  // TODO: Implement component
+export const DtPicker: React.FC<DtPickerProps> = (props) => {
+  const {
+    initValue,
+    onChange,
+    type = 'single',
+    withTime = false,
+    showTimeInput = false,
+    local = 'en',
+    showWeekend = false,
+    clearBtn = false,
+    isRequired = false,
+    todayBtn = false,
+    isDisabled = false,
+    constraints: constraintsInput,
+    placeholder = 'Select date',
+    inputClass,
+    calenderModalClass,
+    autoClose = true,
+    inputId
+  } = props
+
+  const [isOpen, setIsOpen] = useState(false)
+  const pickerRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
+
+  // Use calendar picker hook for shared calendar logic
+  const { state, actions, constraints, displayValue } = useCalendarPicker(
+    initValue,
+    onChange,
+    type,
+    local,
+    withTime,
+    constraintsInput,
+    showTimeInput,
+    autoClose,
+    () => setIsOpen(false)
+  )
+
+  // Use modal position hook
+  const { modalPosition } = useModalPosition(inputRef, modalRef, isOpen, local)
+
+  // Use click outside hook
+  useClickOutside(isOpen, pickerRef, modalRef, () => setIsOpen(false))
+
+  // Use escape key hook
+  useEscapeKey(isOpen, () => setIsOpen(false))
+
+  // Handle input click
+  const handleInputClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (!isDisabled) {
+      setIsOpen((prev) => !prev)
+    }
+  }
+
+  // Handle clear button
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onChange(null)
+    setIsOpen(false)
+  }
+
+  const inputWrapperClass = `calendar-picker-input-wrapper ${inputClass || ''}`
+  const modalClass = `calendar-picker-modal ${calenderModalClass || ''}`
+  const isRTL = local === 'fa'
+  const timeFormat = '24' // DtPicker uses 24-hour format by default
+
   return (
-    <div className='react-calendar-datetime-picker'>
-      <div>DtPicker - Coming soon</div>
+    <div
+      ref={pickerRef}
+      className='calendar-picker'
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
+      <div className={inputWrapperClass}>
+        <input
+          ref={inputRef}
+          id={inputId}
+          type='text'
+          readOnly
+          value={displayValue}
+          placeholder={placeholder}
+          disabled={isDisabled}
+          required={isRequired}
+          onClick={handleInputClick}
+          className='calendar-picker-input'
+        />
+        {clearBtn && state.selectedValue && (
+          <button
+            type='button'
+            onClick={handleClear}
+            className='calendar-picker-clear'
+            aria-label='Clear selection'
+          >
+            ×
+          </button>
+        )}
+        <button
+          type='button'
+          onClick={handleInputClick}
+          disabled={isDisabled}
+          className='calendar-picker-toggle'
+          aria-label='Open calendar'
+        >
+          📅
+        </button>
+      </div>
+
+      {isOpen && (
+        <div
+          ref={modalRef}
+          className={modalClass}
+          style={{
+            position: 'fixed',
+            top: modalPosition ? `${modalPosition.top}px` : '-9999px',
+            left: modalPosition ? `${modalPosition.left}px` : '-9999px',
+            zIndex: 1000,
+            visibility: modalPosition ? 'visible' : 'hidden'
+          }}
+        >
+          <CalendarCore
+            selectedValue={state.selectedValue}
+            displayMonth={state.displayMonth}
+            currentView={state.currentView}
+            locale={local}
+            type={type}
+            withTime={withTime}
+            timeFormat={timeFormat}
+            showWeekend={showWeekend}
+            todayBtn={todayBtn}
+            enlargeSelectedDay={true}
+            constraints={constraints}
+            onDateSelect={actions.selectDate}
+            onTimeChange={actions.updateTime}
+            onMonthSelect={actions.selectMonth}
+            onYearSelect={actions.selectYear}
+            onViewChange={actions.setView}
+            onMonthNavigate={actions.navigateMonth}
+            onGoToToday={actions.goToToday}
+          />
+        </div>
+      )}
     </div>
   )
 }

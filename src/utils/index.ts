@@ -16,7 +16,12 @@ export {
 export { normalizeInitValue, extractMonthFromValue } from './normalize'
 
 // Formatting
-export { formatDateForInput, dayToString, parseDateString, toPersianNumeral } from './formatting'
+export {
+  formatDateForInput,
+  dayToString,
+  parseDateString,
+  toPersianNumeral
+} from './formatting'
 
 // Validation
 export {
@@ -27,6 +32,9 @@ export {
   compareDays,
   getDaysInMonth
 } from './validation'
+
+// Constraints
+export { normalizeConstraintsProps } from './constraints'
 
 // Calendar grid
 export {
