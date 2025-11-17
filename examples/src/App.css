@@ -145,6 +145,78 @@
   overflow-y: auto;
 }
 
+.props-editor-container {
+  position: relative;
+}
+
+.props-editor {
+  width: 100%;
+  min-height: 150px;
+  max-height: 300px;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  color: #333;
+  resize: vertical;
+  overflow-y: auto;
+  line-height: 1.5;
+  tab-size: 2;
+}
+
+.props-editor:focus {
+  outline: none;
+  border-color: #009a17;
+  box-shadow: 0 0 0 2px rgba(0, 154, 23, 0.1);
+}
+
+.props-editor-error {
+  border-color: #dc3545;
+  background: #fff5f5;
+}
+
+.props-editor-error:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+}
+
+.props-error {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: #fff5f5;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+  color: #dc3545;
+  font-size: 0.8125rem;
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+}
+
+.props-reset-btn {
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  color: #666;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.props-reset-btn:hover {
+  background: #e9ecef;
+  border-color: #009a17;
+  color: #009a17;
+}
+
+.props-reset-btn:active {
+  background: #dee2e6;
+}
+
 .theme-code {
   color: #e65100;
   border-color: #ffcc80;

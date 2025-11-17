@@ -1,5 +1,9 @@
-import { useState } from 'react'
-import { DtPicker, DtCalendar } from 'react-calendar-datetime-picker'
+import { useState, useMemo, useEffect } from 'react'
+import {
+  DtPicker,
+  DtCalendar,
+  normalizeInitValue
+} from 'react-calendar-datetime-picker'
 import type { Day, Range, Multi } from 'react-calendar-datetime-picker'
 import { examples, type ExampleConfig } from './examplesConfig'
 // Import the library styles
@@ -145,24 +149,189 @@ const formatProps = (props: Record<string, unknown>): string => {
   return formatted.join('\n')
 }
 
+const parsePropsString = (propsString: string): Record<string, unknown> => {
+  if (!propsString.trim() || propsString.trim() === '{}') {
+    return {}
+  }
+
+  try {
+    // Try to parse as JSON first
+    const parsed = JSON.parse(propsString)
+    if (
+      typeof parsed === 'object' &&
+      parsed !== null &&
+      !Array.isArray(parsed)
+    ) {
+      return parsed
+    }
+    return {}
+  } catch {
+    // If JSON parsing fails, try to handle common cases
+    try {
+      // Remove comments and clean up
+      let cleaned = propsString
+        .replace(/\/\/.*$/gm, '') // Remove single-line comments
+        .replace(/\/\*[\s\S]*?\*\//g, '') // Remove multi-line comments
+        .trim()
+
+      // Handle new Date() calls - convert to ISO string for JSON
+      cleaned = cleaned.replace(/new Date\(([^)]+)\)/g, (match, dateStr) => {
+        try {
+          const date = new Date(dateStr.replace(/['"]/g, ''))
+          return JSON.stringify(date.toISOString())
+        } catch {
+          return match
+        }
+      })
+
+      // Try JSON parse again after Date conversion
+      try {
+        const parsed = JSON.parse(cleaned)
+        if (
+          typeof parsed === 'object' &&
+          parsed !== null &&
+          !Array.isArray(parsed)
+        ) {
+          // Convert ISO strings back to Date objects
+          const result: Record<string, unknown> = {}
+          for (const [key, value] of Object.entries(parsed)) {
+            if (
+              typeof value === 'string' &&
+              /^\d{4}-\d{2}-\d{2}T/.test(value)
+            ) {
+              result[key] = new Date(value)
+            } else {
+              result[key] = value
+            }
+          }
+          return result
+        }
+      } catch {
+        // If still fails, try evaluating as JavaScript (less safe but more flexible)
+        const func = new Function(`return ${cleaned}`)
+        const result = func()
+        return typeof result === 'object' &&
+          result !== null &&
+          !Array.isArray(result)
+          ? result
+          : {}
+      }
+    } catch {
+      return {}
+    }
+  }
+  return {}
+}
+
 const ExampleRenderer: React.FC<ExampleRendererProps> = ({
   config,
   exampleKey
 }) => {
+  const [propsString, setPropsString] = useState<string>(
+    JSON.stringify(config.props || {}, null, 2)
+  )
+  const [propsError, setPropsError] = useState<string | null>(null)
+
+  // Parse props from string
+  const props = useMemo(() => {
+    try {
+      const parsed = parsePropsString(propsString)
+      if (
+        Object.keys(parsed).length === 0 &&
+        propsString.trim() !== '' &&
+        propsString.trim() !== '{}'
+      ) {
+        setPropsError('Invalid JSON format')
+        return config.props || {}
+      }
+      setPropsError(null)
+      return parsed
+    } catch (error) {
+      // Only show error if the string is not empty and not just whitespace
+      if (propsString.trim() !== '' && propsString.trim() !== '{}') {
+        setPropsError(
+          error instanceof Error ? error.message : 'Invalid props format'
+        )
+      } else {
+        setPropsError(null)
+      }
+      return config.props || {}
+    }
+  }, [propsString, config.props])
+
+  // Initialize selectedValue from initValue prop
   const [selectedValue, setSelectedValue] = useState<
     Day | Range | Multi | null
-  >(null)
+  >(() => {
+    const initValue = config.props?.initValue
+    const locale = (config.props?.local as 'en' | 'fa') || 'en'
+    const type =
+      (config.props?.type as 'single' | 'range' | 'multi') || 'single'
+    if (initValue) {
+      return normalizeInitValue(initValue, locale, type) as
+        | Day
+        | Range
+        | Multi
+        | null
+    }
+    return null
+  })
+
+  // Update selectedValue when initValue prop changes
+  useEffect(() => {
+    const initValue = props.initValue || config.props?.initValue
+    const locale =
+      (props.local as 'en' | 'fa') ||
+      (config.props?.local as 'en' | 'fa') ||
+      'en'
+    const type =
+      (props.type as 'single' | 'range' | 'multi') ||
+      (config.props?.type as 'single' | 'range' | 'multi') ||
+      'single'
+    if (initValue) {
+      const normalized = normalizeInitValue(initValue, locale, type) as
+        | Day
+        | Range
+        | Multi
+        | null
+      setSelectedValue(normalized)
+    } else {
+      setSelectedValue(null)
+    }
+  }, [
+    props.initValue,
+    config.props?.initValue,
+    props.local,
+    config.props?.local,
+    props.type,
+    config.props?.type
+  ])
 
   const handleChange = (date: unknown) => {
     setSelectedValue(date as Day | Range | Multi | null)
     console.log(`${config.title}:`, date)
   }
 
+  // Use onCalenderChange to sync the value when initValue is provided
+  // This will be called when the component initializes with initValue
+  const handleCalenderChange = (date: unknown) => {
+    setSelectedValue(date as Day | Range | Multi | null)
+  }
+
   const Component = config.component === 'DtPicker' ? DtPicker : DtCalendar
   const wrapperClass = config.wrapper || 'calendar-container'
-  const props = config.props || {}
 
-  const content = <Component {...props} onChange={handleChange} />
+  const handlePropsChange = (newPropsString: string) => {
+    setPropsString(newPropsString)
+  }
+
+  const content = (
+    <Component
+      {...props}
+      onChange={handleChange}
+      onCalenderChange={props.initValue ? handleCalenderChange : undefined}
+    />
+  )
 
   return (
     <section className='example-section'>
@@ -202,7 +371,30 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                 )}
                 <div className='example-props'>
                   <h3>Props</h3>
-                  <pre className='props-code'>{formatProps(props)}</pre>
+                  <div className='props-editor-container'>
+                    <textarea
+                      className={`props-editor ${propsError ? 'props-editor-error' : ''}`}
+                      value={propsString}
+                      onChange={(e) => handlePropsChange(e.target.value)}
+                      spellCheck={false}
+                      placeholder='Edit props as JSON...'
+                    />
+                    {propsError && (
+                      <div className='props-error'>{propsError}</div>
+                    )}
+                  </div>
+                  <button
+                    className='props-reset-btn'
+                    onClick={() => {
+                      setPropsString(
+                        JSON.stringify(config.props || {}, null, 2)
+                      )
+                      setPropsError(null)
+                    }}
+                    type='button'
+                  >
+                    Reset to Default
+                  </button>
                 </div>
                 <div className='example-result'>
                   <h3>Result Value</h3>
