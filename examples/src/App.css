@@ -35,6 +35,143 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.example-content {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.example-sidebar {
+  flex: 0 0 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.example-theme,
+.example-props,
+.example-result {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.example-theme {
+  background: #fff3e0;
+  border-color: #ff9800;
+}
+
+.example-theme h3 {
+  color: #e65100;
+  border-bottom-color: #ff9800;
+}
+
+.theme-instruction {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.875rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.theme-usage {
+  margin: 0.75rem 0 0 0;
+  padding: 0.75rem;
+  background: #fff8e1;
+  border: 1px solid #ffcc80;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: #5d4037;
+  line-height: 1.6;
+}
+
+.theme-usage code {
+  display: block;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: #fff;
+  border: 1px solid #ffcc80;
+  border-radius: 3px;
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 0.75rem;
+  color: #e65100;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.usage-example {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #ffcc80;
+  border-radius: 3px;
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 0.75rem;
+  color: #e65100;
+  white-space: pre;
+  overflow-x: auto;
+  line-height: 1.6;
+  display: block;
+}
+
+.example-props h3,
+.example-result h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.theme-code,
+.props-code,
+.result-code {
+  margin: 0;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  color: #333;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.theme-code {
+  color: #e65100;
+  border-color: #ffcc80;
+}
+
+.result-code {
+  color: #009a17;
+  font-weight: 500;
+}
+
+.example-calendar {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .example-content {
+    flex-direction: column;
+  }
+
+  .example-sidebar {
+    flex: 1;
+    width: 100%;
+  }
+}
+
 .example-section h2 {
   margin-bottom: 1.5rem;
   color: #333;
