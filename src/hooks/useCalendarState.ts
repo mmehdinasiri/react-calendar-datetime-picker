@@ -178,7 +178,7 @@ function calendarReducer(
         // Otherwise, keep the current displayMonth when selecting end date
       } else {
         // For single and multi, always update displayMonth to selected date
-        const monthFromValue = extractMonthFromValue(newValue)
+      const monthFromValue = extractMonthFromValue(newValue)
         newDisplayMonth = monthFromValue || state.displayMonth
       }
 

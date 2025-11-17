@@ -112,7 +112,7 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
             (locale === 'fa'
               ? index === 6 || index === 5
               : index === 0 || index === 6)
-
+          
           const dayNameClassNames = [
             'calendar-day-name',
             isWeekendDay && 'calendar-weekend'
@@ -140,18 +140,18 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
             return hasCurrentMonthDay
           })
           .map((week, weekIndex) => {
-            const hasOtherMonth = week.some((day) => !day.isCurrentMonth)
-            const weekClassNames = [
-              'calendar-week',
-              hasOtherMonth && 'calendar-week-other-month'
-            ]
-              .filter(Boolean)
-              .join(' ')
-
-            return (
+          const hasOtherMonth = week.some((day) => !day.isCurrentMonth)
+          const weekClassNames = [
+            'calendar-week',
+            hasOtherMonth && 'calendar-week-other-month'
+          ]
+            .filter(Boolean)
+            .join(' ')
+          
+          return (
               <div key={weekIndex} className={weekClassNames}>
-                {week.map((calendarDay, dayIndex) => {
-                  const day: Day = calendarDay.dayObject
+              {week.map((calendarDay, dayIndex) => {
+              const day: Day = calendarDay.dayObject
                   const isSelected = isDaySelected(
                     day,
                     selectedValue,
@@ -166,22 +166,22 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                   )
                   const isStart = isRangeStart(day, selectedValue, type)
                   const isEnd = isRangeEnd(day, selectedValue, type)
-                  const isSelectable = isDateSelectable(day, {
-                    minDate,
-                    maxDate,
-                    disabledDates,
-                    locale
-                  })
-                  const isWeekend =
-                    showWeekend &&
-                    (locale === 'fa'
-                      ? dayIndex === 6 || dayIndex === 5
-                      : dayIndex === 0 || dayIndex === 6)
+              const isSelectable = isDateSelectable(day, {
+                minDate,
+                maxDate,
+                disabledDates,
+                locale
+              })
+              const isWeekend =
+                showWeekend &&
+                (locale === 'fa'
+                  ? dayIndex === 6 || dayIndex === 5
+                  : dayIndex === 0 || dayIndex === 6)
 
-                  // Identify first day of next month and last day of previous month
-                  const isOtherMonth = !calendarDay.isCurrentMonth
-
-                  // Determine if this is from previous month or next month
+              // Identify first day of next month and last day of previous month
+              const isOtherMonth = !calendarDay.isCurrentMonth
+              
+              // Determine if this is from previous month or next month
                   const isPrevMonth =
                     isOtherMonth &&
                     (calendarDay.year < displayMonth.year ||
@@ -192,61 +192,61 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                     (calendarDay.year > displayMonth.year ||
                       (calendarDay.year === displayMonth.year &&
                         calendarDay.month > displayMonth.month))
-
-                  // Last day of previous month: previous month day where next day is current month
-                  const isLastDayOfPrevMonth =
-                    isPrevMonth &&
+              
+              // Last day of previous month: previous month day where next day is current month
+              const isLastDayOfPrevMonth =
+                isPrevMonth &&
                     dayIndex < 6 &&
                     week[dayIndex + 1].isCurrentMonth
-
-                  // First day of next month: next month day where previous day is current month
-                  const isFirstDayOfNextMonth =
-                    isNextMonth &&
+              
+              // First day of next month: next month day where previous day is current month
+              const isFirstDayOfNextMonth =
+                isNextMonth &&
                     dayIndex > 0 &&
                     week[dayIndex - 1].isCurrentMonth
 
-                  const classNames = [
-                    'calendar-day',
-                    isOtherMonth && 'calendar-day-other-month',
-                    isFirstDayOfNextMonth && 'calendar-day-other-month-first',
-                    isLastDayOfPrevMonth && 'calendar-day-other-month-last',
-                    calendarDay.isToday && 'calendar-day-today',
-                    isSelected && 'calendar-day-selected',
+              const classNames = [
+                'calendar-day',
+                isOtherMonth && 'calendar-day-other-month',
+                isFirstDayOfNextMonth && 'calendar-day-other-month-first',
+                isLastDayOfPrevMonth && 'calendar-day-other-month-last',
+                calendarDay.isToday && 'calendar-day-today',
+                isSelected && 'calendar-day-selected',
                     isSelected &&
                       enlargeSelectedDay &&
                       'calendar-day-selected-enlarged',
-                    isInRange && 'calendar-day-in-range',
+                isInRange && 'calendar-day-in-range',
                     isStart && 'calendar-day-range-start',
                     isEnd && 'calendar-day-range-end',
-                    !isSelectable && 'calendar-day-disabled',
-                    isWeekend && 'calendar-day-weekend'
-                  ]
-                    .filter(Boolean)
-                    .join(' ')
+                !isSelectable && 'calendar-day-disabled',
+                isWeekend && 'calendar-day-weekend'
+              ]
+                .filter(Boolean)
+                .join(' ')
 
-                  const handleClick = () => {
-                    if (isSelectable) {
-                      onDateSelect(day)
-                    }
-                  }
+              const handleClick = () => {
+                if (isSelectable) {
+                  onDateSelect(day)
+                }
+              }
 
-                  return (
-                    <button
-                      key={`${weekIndex}-${dayIndex}-${day.year}-${day.month}-${day.day}`}
-                      type='button'
-                      onClick={handleClick}
-                      disabled={!isSelectable}
-                      className={classNames}
-                    >
+              return (
+                <button
+                  key={`${weekIndex}-${dayIndex}-${day.year}-${day.month}-${day.day}`}
+                  type='button'
+                  onClick={handleClick}
+                  disabled={!isSelectable}
+                  className={classNames}
+                >
                       {locale === 'fa'
                         ? toPersianNumeral(calendarDay.day)
                         : calendarDay.day}
-                    </button>
-                  )
-                })}
-              </div>
-            )
-          })}
+                </button>
+              )
+            })}
+            </div>
+          )
+        })}
       </div>
 
       {/* Footer */}
