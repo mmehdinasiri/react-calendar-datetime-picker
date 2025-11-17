@@ -90,6 +90,7 @@ export interface ExampleConfig {
   props?: Record<string, unknown>
   wrapper?: string
   renderExtra?: (value: Day | null) => React.ReactNode
+  showConsoleLog?: boolean
 }
 
 // Helper function to create example config with renderExtra
@@ -223,10 +224,23 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
-    CustomBlueTheme: {
-      title: 'Custom Color Theme (Blue)',
+    DarkThemeCustomColors: {
+      title: 'Custom Dark Theme with CSS Variables + calenderModalClass',
       description:
-        'Calendar with custom CSS variables for blue color scheme - override CSS variables to change the theme',
+        'Override CSS variables in your stylesheet and apply them using the calenderModalClass prop. This gives you direct control over the calendar element.',
+      component: 'DtCalendar',
+      props: {
+        dark: true,
+        showWeekend: true,
+        todayBtn: true,
+        calenderModalClass: 'calendar-dark-custom-theme'
+      },
+      wrapper: 'calendar-container'
+    },
+    CustomBlueTheme: {
+      title: 'Custom Blue Theme with CSS Variables + Wrapper',
+      description:
+        'Override CSS variables on a wrapper element - the calendar inherits the variables. Alternative approach to using calenderModalClass.',
       component: 'DtCalendar',
       props: {
         showWeekend: true,
@@ -614,6 +628,59 @@ export const examples: ExamplesConfig = {
         initValue: new Date() // Uses current system time
       },
       wrapper: 'calendar-container'
+    }
+  },
+  Callbacks: {
+    BasicOnChange: {
+      title: 'Basic onChange Callback',
+      description:
+        'Example showing onChange callback - check browser console to see logs when date is selected',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      showConsoleLog: true
+    },
+    RangeOnChange: {
+      title: 'Range onChange Callback',
+      description:
+        'onChange callback for range selection - logs both from and to dates to console',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      showConsoleLog: true
+    },
+    MultiOnChange: {
+      title: 'Multi onChange Callback',
+      description:
+        'onChange callback for multi selection - logs array of selected dates to console',
+      component: 'DtCalendar',
+      props: {
+        type: 'multi',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      showConsoleLog: true
+    },
+    PickerOnChange: {
+      title: 'Date Picker onChange Callback',
+      description:
+        'onChange callback for date picker - logs selected date to console',
+      component: 'DtPicker',
+      props: {
+        placeholder: 'Select a date',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container',
+      showConsoleLog: true
     }
   }
 }

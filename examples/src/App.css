@@ -42,7 +42,7 @@
 }
 
 .example-sidebar {
-  flex: 0 0 300px;
+  flex: 0 0 400px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -64,7 +64,11 @@
 
 .example-theme h3 {
   color: #e65100;
-  border-bottom-color: #ff9800;
+  border-bottom: 1px solid #ff9800;
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
 }
 
 .theme-instruction {
@@ -74,46 +78,47 @@
   line-height: 1.5;
 }
 
-.theme-usage {
-  margin: 0.75rem 0 0 0;
-  padding: 0.75rem;
-  background: #fff8e1;
-  border: 1px solid #ffcc80;
-  border-radius: 4px;
-  font-size: 0.8125rem;
-  color: #5d4037;
-  line-height: 1.6;
+.theme-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.theme-usage code {
-  display: block;
-  margin-top: 0.5rem;
-  padding: 0.5rem;
+.theme-method {
+  padding: 0.875rem;
   background: #fff;
   border: 1px solid #ffcc80;
-  border-radius: 3px;
-  font-family:
-    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-  font-size: 0.75rem;
+  border-radius: 4px;
+}
+
+.theme-method strong {
+  display: block;
   color: #e65100;
-  white-space: pre;
-  overflow-x: auto;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.method-description {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.8125rem;
+  color: #666;
+  line-height: 1.5;
 }
 
 .usage-example {
-  margin-top: 0.5rem;
-  padding: 0.75rem;
+  display: block;
+  margin: 0;
+  padding: 0.625rem;
   background: #fff;
   border: 1px solid #ffcc80;
   border-radius: 3px;
   font-family:
     'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: #e65100;
   white-space: pre;
   overflow-x: auto;
-  line-height: 1.6;
-  display: block;
+  line-height: 1.5;
 }
 
 .example-props h3,
@@ -126,7 +131,6 @@
   padding-bottom: 0.5rem;
 }
 
-.theme-code,
 .props-code,
 .result-code {
   margin: 0;
@@ -215,11 +219,6 @@
 
 .props-reset-btn:active {
   background: #dee2e6;
-}
-
-.theme-code {
-  color: #e65100;
-  border-color: #ffcc80;
 }
 
 .result-code {
@@ -377,7 +376,18 @@
   gap: 2rem;
 }
 
-/* Custom color theme - Blue theme */
+/* ============================================
+   CUSTOM THEMING WITH CSS VARIABLES
+   ============================================
+   Both examples below override CSS variables to customize
+   the calendar appearance. The difference is HOW you apply them:
+   
+   Example 1: Apply to wrapper element (CSS inheritance)
+   Example 2: Apply using calenderModalClass prop (direct)
+*/
+
+/* Example 1: Wrapper Element Approach
+   Override variables on a wrapper div, the calendar will inherit them */
 .calendar-blue-theme {
   --calendar-primary: #0066cc;
   --calendar-primary-hover: #0052a3;
@@ -386,5 +396,34 @@
   --calendar-today: #004d99;
   --calendar-selected-range: #b3d9ff;
   --calendar-selected-range-color: #0052a3;
-  --calendar-header-bg: #0066cc; /* Override header background to blue */
+  --calendar-header-bg: #0066cc;
+}
+
+/* Example 2: calenderModalClass Prop Approach
+   Use the calenderModalClass prop to apply this class directly to the calendar.
+   Useful when you need higher specificity (e.g., with dark theme) */
+.react-calendar-datetime-picker.calendar-dark-custom-theme[data-theme='dark'],
+.calendar-dark-custom-theme[data-theme='dark'] {
+  /* Override only background colors - primary colors remain default dark theme green */
+  /* Using warmer dark brown tones - visually very distinct from default cool gray (#1f2937) */
+  --calendar-bg: #2c1810 !important;
+  --calendar-bg-hover: #3d2418 !important;
+  --calendar-bg-selected: #2c1810 !important;
+  --calendar-header-bg: #2c1810 !important;
+  --calendar-border: #4a2e1f !important;
+}
+
+.console-log-info {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: #1565c0;
+  line-height: 1.5;
+}
+
+.console-log-info p {
+  margin: 0;
 }

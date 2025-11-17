@@ -85,6 +85,9 @@ const getThemeCSSVars = (
   config: ExampleConfig
 ): Record<string, string> | null => {
   const wrapper = config.wrapper || ''
+  const calenderModalClass = config.props?.calenderModalClass as
+    | string
+    | undefined
 
   // Check for blue theme
   if (wrapper.includes('calendar-blue-theme')) {
@@ -100,26 +103,17 @@ const getThemeCSSVars = (
     }
   }
 
-  // Check for dark theme
-  if (config.props?.dark === true) {
+  // Check for dark theme with custom background colors
+  if (
+    wrapper.includes('calendar-dark-custom-theme') ||
+    calenderModalClass === 'calendar-dark-custom-theme'
+  ) {
     return {
-      '--calendar-primary': '#16a34a',
-      '--calendar-primary-hover': '#15803d',
-      '--calendar-primary-light': '#14532d',
-      '--calendar-selected-day': '#16a34a',
-      '--calendar-today': '#15803d',
-      '--calendar-selected-range': '#14532d',
-      '--calendar-selected-range-color': '#4ade80',
-      '--calendar-bg': '#1f2937',
-      '--calendar-bg-hover': '#374151',
-      '--calendar-bg-selected': '#1f2937',
-      '--calendar-header-bg': '#1f2937',
-      '--calendar-text': '#f3f4f6',
-      '--calendar-text-light': '#e5e7eb',
-      '--calendar-text-lighter': '#9ca3af',
-      '--calendar-border': '#374151',
-      '--calendar-border-focus': '#16a34a',
-      '--calendar-border-selected': '#16a34a'
+      '--calendar-bg': '#2c1810',
+      '--calendar-bg-hover': '#3d2418',
+      '--calendar-bg-selected': '#2c1810',
+      '--calendar-header-bg': '#2c1810',
+      '--calendar-border': '#4a2e1f'
     }
   }
 
@@ -140,7 +134,33 @@ const formatProps = (props: Record<string, unknown>): string => {
       } else if (Array.isArray(value)) {
         formatted.push(`${key}: [${value.length} items]`)
       } else {
-        formatted.push(`${key}: ${JSON.stringify(value, null, 2)}`)
+        // Handle customization object with icons
+        if (key === 'customization' && value && typeof value === 'object') {
+          const custom = value as Record<string, unknown>
+          const customFormatted: string[] = []
+          if (custom.icons) {
+            const icons = custom.icons as Record<string, unknown>
+            customFormatted.push('icons: {')
+            for (const [iconKey, iconValue] of Object.entries(icons)) {
+              if (typeof iconValue === 'function') {
+                customFormatted.push(`  ${iconKey}: React.Component`)
+              } else {
+                customFormatted.push(
+                  `  ${iconKey}: ${JSON.stringify(iconValue)}`
+                )
+              }
+            }
+            customFormatted.push('}')
+          }
+          if (custom.classes) {
+            customFormatted.push(
+              `classes: ${JSON.stringify(custom.classes, null, 2)}`
+            )
+          }
+          formatted.push(`${key}: {\n  ${customFormatted.join(',\n  ')}\n}`)
+        } else {
+          formatted.push(`${key}: ${JSON.stringify(value, null, 2)}`)
+        }
       }
     } else {
       formatted.push(`${key}: ${JSON.stringify(value)}`)
@@ -155,14 +175,45 @@ const parsePropsString = (propsString: string): Record<string, unknown> => {
   }
 
   try {
-    // Try to parse as JSON first
-    const parsed = JSON.parse(propsString)
+    // Remove comments first (single-line comments starting with //)
+    let cleaned = propsString
+      .split('\n')
+      .map((line) => {
+        // Remove comments but preserve the line structure
+        const commentIndex = line.indexOf('//')
+        if (commentIndex >= 0) {
+          // Check if // is inside a string
+          const beforeComment = line.substring(0, commentIndex)
+          const stringMatches = beforeComment.match(/"/g)
+          if (stringMatches && stringMatches.length % 2 === 0) {
+            // Even number of quotes means // is not inside a string
+            return line.substring(0, commentIndex).trimRight()
+          }
+        }
+        return line
+      })
+      .filter((line) => line.trim() !== '') // Remove empty lines
+      .join('\n')
+      .replace(/\/\*[\s\S]*?\*\//g, '') // Remove multi-line comments
+      .trim()
+
+    // Try to parse as JSON
+    const parsed = JSON.parse(cleaned)
     if (
       typeof parsed === 'object' &&
       parsed !== null &&
       !Array.isArray(parsed)
     ) {
-      return parsed
+      // Convert ISO strings back to Date objects
+      const result: Record<string, unknown> = {}
+      for (const [key, value] of Object.entries(parsed)) {
+        if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
+          result[key] = new Date(value)
+        } else {
+          result[key] = value
+        }
+      }
+      return result
     }
     return {}
   } catch {
@@ -207,14 +258,8 @@ const parsePropsString = (propsString: string): Record<string, unknown> => {
           return result
         }
       } catch {
-        // If still fails, try evaluating as JavaScript (less safe but more flexible)
-        const func = new Function(`return ${cleaned}`)
-        const result = func()
-        return typeof result === 'object' &&
-          result !== null &&
-          !Array.isArray(result)
-          ? result
-          : {}
+        // If still fails, return empty object (don't try eval for security)
+        return {}
       }
     } catch {
       return {}
@@ -227,9 +272,79 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
   config,
   exampleKey
 }) => {
-  const [propsString, setPropsString] = useState<string>(
-    JSON.stringify(config.props || {}, null, 2)
-  )
+  // Format props for display, handling functions (like icons) by creating valid JSON with comments
+  const formatPropsForDisplay = (props: Record<string, unknown>): string => {
+    // Create a copy of props without functions for JSON serialization
+    const jsonProps: Record<string, unknown> = {}
+    const functionNotes: string[] = []
+
+    for (const [key, value] of Object.entries(props)) {
+      if (value === undefined || value === null) {
+        continue
+      }
+      if (typeof value === 'function') {
+        functionNotes.push(
+          `// ${key}: function (preserved from original config)`
+        )
+        // Don't include functions in JSON
+      } else if (typeof value === 'object') {
+        if (value instanceof Date) {
+          jsonProps[key] = value.toISOString()
+        } else if (Array.isArray(value)) {
+          jsonProps[key] = value
+        } else {
+          // Handle customization object with icons
+          if (key === 'customization' && value && typeof value === 'object') {
+            const custom = value as Record<string, unknown>
+            const jsonCustom: Record<string, unknown> = {}
+
+            if (custom.icons) {
+              const icons = custom.icons as Record<string, unknown>
+              const iconNotes: string[] = []
+              for (const [iconKey, iconValue] of Object.entries(icons)) {
+                if (typeof iconValue === 'function') {
+                  iconNotes.push(
+                    `//   ${iconKey}: React.Component (preserved from original config)`
+                  )
+                } else {
+                  jsonCustom[iconKey] = iconValue
+                }
+              }
+              if (iconNotes.length > 0) {
+                functionNotes.push(`// customization.icons: {`)
+                functionNotes.push(...iconNotes)
+                functionNotes.push(`// }`)
+              }
+            }
+            if (custom.classes) {
+              jsonCustom.classes = custom.classes
+            }
+            jsonProps[key] = jsonCustom
+          } else {
+            jsonProps[key] = value
+          }
+        }
+      } else {
+        jsonProps[key] = value
+      }
+    }
+
+    // Create JSON string
+    const jsonString = JSON.stringify(jsonProps, null, 2)
+
+    // Add function notes as comments at the top
+    if (functionNotes.length > 0) {
+      return functionNotes.join('\n') + '\n' + jsonString
+    }
+
+    return jsonString
+  }
+
+  const [propsString, setPropsString] = useState<string>(() => {
+    // Format props for initial display, preserving function references as comments
+    const props = config.props || {}
+    return formatPropsForDisplay(props)
+  })
   const [propsError, setPropsError] = useState<string | null>(null)
 
   // Parse props from string
@@ -245,7 +360,29 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
         return config.props || {}
       }
       setPropsError(null)
-      return parsed
+      // Merge with original props to preserve functions/components (like icons)
+      // Functions can't be serialized, so we need to preserve them from original config
+      const merged = { ...config.props, ...parsed }
+      // Deep merge for nested objects like customization
+      if (config.props?.customization && parsed.customization) {
+        const configCustom = config.props.customization as {
+          icons?: Record<string, unknown>
+          classes?: unknown
+        }
+        const parsedCustom = parsed.customization as {
+          icons?: Record<string, unknown>
+          classes?: unknown
+        }
+        merged.customization = {
+          ...configCustom,
+          ...parsedCustom,
+          icons: {
+            ...(configCustom.icons || {}),
+            ...(parsedCustom.icons || {})
+          }
+        }
+      }
+      return merged
     } catch (error) {
       // Only show error if the string is not empty and not just whitespace
       if (propsString.trim() !== '' && propsString.trim() !== '{}') {
@@ -309,7 +446,8 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
 
   const handleChange = (date: unknown) => {
     setSelectedValue(date as Day | Range | Multi | null)
-    console.log(`${config.title}:`, date)
+    // Log to console for callback examples
+    console.log(`[${config.title}] onChange called:`, date)
   }
 
   // Use onCalenderChange to sync the value when initValue is provided
@@ -343,65 +481,100 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
         <div className='example-sidebar'>
           {(() => {
             const themeVars = getThemeCSSVars(config)
+            const wrapper = config.wrapper || ''
+            const calenderModalClass = config.props?.calenderModalClass as
+              | string
+              | undefined
             return (
               <>
                 {themeVars && (
                   <div className='example-theme'>
                     <h3>CSS Variables</h3>
                     <p className='theme-instruction'>
-                      Override these CSS variables in your CSS file or inline
-                      styles to customize the calendar theme:
+                      You can override these CSS variables to customize the
+                      calendar theme. There are multiple ways to apply them:
                     </p>
-                    <pre className='theme-code'>
-                      {Object.entries(themeVars)
-                        .map(([key, value]) => `${key}: ${value};`)
-                        .join('\n')}
-                    </pre>
-                    <p className='theme-usage'>
-                      <strong>Usage:</strong> Add a custom class to your
-                      calendar wrapper and override the variables:
-                      <br />
-                      <code className='usage-example'>
-                        {
-                          '// CSS\n.my-custom-theme {\n  --calendar-primary: #0066cc;\n  --calendar-primary-hover: #0052a3;\n  --calendar-selected-day: #0066cc;\n}\n\n// JSX\n<DtCalendar\n  calenderModalClass="my-custom-theme"\n  onChange={(value) => console.log(value)}\n/>'
-                        }
-                      </code>
-                    </p>
+                    <div className='theme-methods'>
+                      <div className='theme-method'>
+                        <strong>Option 1: Global CSS (Simplest)</strong>
+                        <p className='method-description'>
+                          Add these variables to your global CSS file - no props
+                          needed:
+                        </p>
+                        <code className='usage-example'>
+                          {calenderModalClass === 'calendar-dark-custom-theme'
+                            ? '/* styles.css - Override globally */\n.react-calendar-datetime-picker[data-theme="dark"] {\n  --calendar-bg: #2c1810;\n  --calendar-bg-hover: #3d2418;\n  --calendar-header-bg: #2c1810;\n  --calendar-border: #4a2e1f;\n}\n\n/* JSX - No extra props */\n<DtCalendar dark={true} />'
+                            : '/* styles.css - Override globally */\n.react-calendar-datetime-picker {\n  --calendar-primary: #0066cc;\n  --calendar-primary-hover: #0052a3;\n  --calendar-selected-day: #0066cc;\n}\n\n/* JSX - No extra props */\n<DtCalendar />'}
+                        </code>
+                      </div>
+
+                      <div className='theme-method'>
+                        <strong>
+                          Option 2: Using calenderModalClass (This example)
+                        </strong>
+                        <p className='method-description'>
+                          Apply a custom class to a specific calendar instance:
+                        </p>
+                        <code className='usage-example'>
+                          {calenderModalClass === 'calendar-dark-custom-theme'
+                            ? '/* styles.css */\n.my-custom-class[data-theme="dark"] {\n  --calendar-bg: #2c1810;\n  --calendar-bg-hover: #3d2418;\n  --calendar-header-bg: #2c1810;\n  --calendar-border: #4a2e1f;\n}\n\n/* JSX */\n<DtCalendar\n  dark={true}\n  calenderModalClass="my-custom-class"\n/>'
+                            : '/* styles.css */\n.my-custom-class {\n  --calendar-primary: #0066cc;\n  --calendar-primary-hover: #0052a3;\n  --calendar-selected-day: #0066cc;\n}\n\n/* JSX */\n<DtCalendar calenderModalClass="my-custom-class" />'}
+                        </code>
+                      </div>
+
+                      {wrapper.includes('calendar-blue-theme') && (
+                        <div className='theme-method'>
+                          <strong>Option 3: Using Wrapper Element</strong>
+                          <p className='method-description'>
+                            Apply variables to a parent container:
+                          </p>
+                          <code className='usage-example'>
+                            {'/* styles.css */\n.my-wrapper {\n  --calendar-primary: #0066cc;\n  --calendar-primary-hover: #0052a3;\n  --calendar-selected-day: #0066cc;\n}\n\n/* JSX */\n<div className="my-wrapper">\n  <DtCalendar />\n</div>'}
+                          </code>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
                 <div className='example-props'>
-                  <h3>Props</h3>
-                  <div className='props-editor-container'>
-                    <textarea
-                      className={`props-editor ${propsError ? 'props-editor-error' : ''}`}
-                      value={propsString}
-                      onChange={(e) => handlePropsChange(e.target.value)}
-                      spellCheck={false}
-                      placeholder='Edit props as JSON...'
-                    />
-                    {propsError && (
-                      <div className='props-error'>{propsError}</div>
-                    )}
-                  </div>
-                  <button
-                    className='props-reset-btn'
-                    onClick={() => {
-                      setPropsString(
-                        JSON.stringify(config.props || {}, null, 2)
-                      )
-                      setPropsError(null)
-                    }}
-                    type='button'
-                  >
-                    Reset to Default
-                  </button>
-                </div>
-                <div className='example-result'>
-                  <h3>Result Value</h3>
-                  <pre className='result-code'>
-                    {formatValue(selectedValue)}
-                  </pre>
-                </div>
+            <h3>Props</h3>
+            <div className='props-editor-container'>
+              <textarea
+                className={`props-editor ${propsError ? 'props-editor-error' : ''}`}
+                value={propsString}
+                onChange={(e) => handlePropsChange(e.target.value)}
+                spellCheck={false}
+                placeholder='Edit props as JSON... (Note: Functions like icons cannot be edited)'
+              />
+              {propsError && (
+                <div className='props-error'>{propsError}</div>
+              )}
+            </div>
+            <button
+              className='props-reset-btn'
+              onClick={() => {
+                setPropsString(formatPropsForDisplay(config.props || {}))
+                setPropsError(null)
+              }}
+              type='button'
+            >
+              Reset to Default
+            </button>
+          </div>
+          <div className='example-result'>
+            <h3>Result Value</h3>
+            <pre className='result-code'>
+              {formatValue(selectedValue)}
+            </pre>
+            {config.showConsoleLog && (
+              <div className='console-log-info'>
+                <p>
+                  <strong>💡 Tip:</strong> Open browser console to see
+                  onChange callback logs
+                </p>
+              </div>
+            )}
+          </div>
               </>
             )
           })()}
