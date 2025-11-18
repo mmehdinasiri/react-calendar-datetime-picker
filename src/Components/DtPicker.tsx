@@ -171,7 +171,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
   // Handle clear button
   const handleClear = (e: React.MouseEvent) => {
     e.stopPropagation()
-    onChange(null)
+    actions.clearSelection()
     setIsOpen(false)
   }
 
