@@ -32,6 +32,7 @@ export type {
   NormalizationResult,
   CalendarCustomization,
 } from './types'
+export type { PresetRangeType, PresetRangesConfig } from './types/calendar'
 
 // Export utilities
 export {

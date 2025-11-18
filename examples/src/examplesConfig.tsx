@@ -460,6 +460,90 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
+    },
+    RangeWithPresetRanges: {
+      title: 'Date Range with All Preset Buttons',
+      description: 'Range selection with all preset date range buttons',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          last7days: true,
+          last30days: true,
+          thisMonth: true,
+          lastMonth: true
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    RangeWithCustomPresets: {
+      title: 'Date Range with Custom Presets',
+      description: 'Range selection with only selected preset buttons',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          last7days: 'Past Week',
+          last30days: true,
+          thisMonth: true
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    RangePickerWithPresets: {
+      title: 'Date Range Picker with Presets',
+      description: 'Date range picker with preset buttons',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          last7days: true,
+          last30days: true,
+          thisMonth: true,
+          lastMonth: true
+        },
+        placeholder: 'Select date range',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    RangeWithSinglePreset: {
+      title: 'Date Range with Single Preset',
+      description: 'Range selection with only Yesterday button',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    RangeWithCustomLabels: {
+      title: 'Date Range with Custom Labels',
+      description: 'Range selection with preset buttons using custom labels',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          last7days: 'Past Weeeeek',
+          thisMonth: 'Current Month'
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
     }
   },
   Features: {
@@ -508,6 +592,79 @@ export const examples: ExamplesConfig = {
       props: {
         clearBtn: true,
         placeholder: 'Select a date'
+      },
+      wrapper: 'picker-container'
+    },
+    PresetRanges: {
+      title: 'Preset Date Ranges',
+      description:
+        'Calendar with all preset date range buttons (Yesterday, Last 7 days, etc.)',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          last7days: true,
+          last30days: true,
+          thisMonth: true,
+          lastMonth: true
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    PresetRangesCustom: {
+      title: 'Custom Preset Ranges',
+      description: 'Calendar with custom preset range selection',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          last7days: 'Past Week',
+          last30days: true,
+          thisMonth: true
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    PresetRangesWithLabels: {
+      title: 'Preset Ranges with Custom Labels',
+      description: 'Calendar with preset ranges using custom labels',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: 'Yesterday',
+          last7days: 'Past Week',
+          last30days: 'Past Month',
+          thisMonth: 'This Month',
+          lastMonth: 'Previous Month'
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    PresetRangesPicker: {
+      title: 'Date Range Picker with Presets',
+      description: 'Date range picker with preset buttons',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          last7days: true,
+          last30days: true,
+          thisMonth: true,
+          lastMonth: true
+        },
+        placeholder: 'Select date range',
+        showWeekend: true,
+        todayBtn: true
       },
       wrapper: 'picker-container'
     },

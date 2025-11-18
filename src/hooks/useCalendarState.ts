@@ -36,6 +36,7 @@ export type CalendarAction =
   | { type: 'SELECT_RANGE_START'; payload: Day }
   | { type: 'SELECT_RANGE_END'; payload: Day }
   | { type: 'SELECT_WEEK'; payload: Day }
+  | { type: 'SELECT_RANGE_DIRECT'; payload: Range }
   | { type: 'TOGGLE_MULTI_DATE'; payload: Day }
   | { type: 'UPDATE_TIME'; payload: { day: Day; hour: number; minute: number } }
   | { type: 'CLEAR_SELECTION' }
@@ -236,6 +237,24 @@ function calendarReducer(
       const newValue: Week = {
         from: addSystemTimeIfNeeded(weekBounds.from, withTime),
         to: addSystemTimeIfNeeded(weekBounds.to, withTime)
+      }
+
+      const monthFromValue = extractMonthFromValue(newValue)
+      const newDisplayMonth = monthFromValue || state.displayMonth
+
+      return {
+        ...state,
+        selectedValue: newValue,
+        displayMonth: newDisplayMonth,
+        currentView: 'calendar'
+      }
+    }
+
+    case 'SELECT_RANGE_DIRECT': {
+      // Directly set a range (used for preset ranges)
+      const newValue: Range = {
+        from: addSystemTimeIfNeeded(action.payload.from, withTime),
+        to: addSystemTimeIfNeeded(action.payload.to, withTime)
       }
 
       const monthFromValue = extractMonthFromValue(newValue)
@@ -594,10 +613,20 @@ export function useCalendarState(options: UseCalendarStateOptions) {
     }
   }
 
+  // Handle preset range selection
+  const handlePresetRangeSelect = (range: Range) => {
+    dispatch({ type: 'SELECT_RANGE_DIRECT', payload: range })
+    onChange(range)
+    if (onCalenderChange && initValue !== undefined) {
+      onCalenderChange(range)
+    }
+  }
+
   // Actions
   const actions = {
     selectDate: handleDateSelect,
     updateTime: handleTimeUpdate,
+    selectPresetRange: handlePresetRangeSelect,
     clearSelection: () => {
       dispatch({ type: 'CLEAR_SELECTION' })
       onChange(null)

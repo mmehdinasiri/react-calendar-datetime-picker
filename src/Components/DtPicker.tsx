@@ -1,6 +1,10 @@
 import React, { useState, useRef } from 'react'
 import type { CalendarLocale, CalendarType, InitValueInput } from '../types'
-import type { CalendarConstraintsInput } from '../types/calendar'
+import type {
+  CalendarConstraintsInput,
+  PresetRangesConfig
+} from '../types/calendar'
+import type { Range } from '../types'
 import { CalendarCore } from './CalendarCore'
 import {
   useCalendarPicker,
@@ -65,6 +69,11 @@ export interface DtPickerProps {
    */
   todayBtn?: boolean
   /**
+   * Preset range buttons configuration
+   * Only works with type='range' or type='week'
+   */
+  presetRanges?: PresetRangesConfig
+  /**
    * Disable the picker
    * @default false
    */
@@ -125,6 +134,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     clearBtn = false,
     isRequired = false,
     todayBtn = false,
+    presetRanges,
     isDisabled = false,
     constraints: constraintsInput,
     placeholder = 'Select date',
@@ -283,6 +293,14 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
             onViewChange={actions.setView}
             onMonthNavigate={actions.navigateMonth}
             onGoToToday={actions.goToToday}
+            presetRanges={presetRanges}
+            onPresetRangeSelect={(range: Range) => {
+              if (type === 'range') {
+                actions.selectPresetRange(range)
+              } else if (type === 'week') {
+                actions.selectDate(range.from)
+              }
+            }}
           />
         </div>
       )}

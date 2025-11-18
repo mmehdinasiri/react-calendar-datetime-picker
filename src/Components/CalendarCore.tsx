@@ -15,7 +15,8 @@ import type {
 } from '../types'
 import type {
   CalendarConstraints,
-  CalendarCustomization
+  CalendarCustomization,
+  PresetRangesConfig
 } from '../types/calendar'
 import { CalendarGridView } from './CalendarGridView'
 import { MonthView } from './MonthView'
@@ -40,6 +41,8 @@ export interface CalendarCoreProps {
   showWeekend?: boolean
   /** Show today button */
   todayBtn?: boolean
+  /** Preset range buttons configuration */
+  presetRanges?: PresetRangesConfig
   /** Enlarge selected day text */
   enlargeSelectedDay?: boolean
   /** Year list style */
@@ -62,6 +65,8 @@ export interface CalendarCoreProps {
   onMonthNavigate: (direction: 'prev' | 'next') => void
   /** Callback to navigate to today's date */
   onGoToToday?: () => void
+  /** Callback when preset range is selected */
+  onPresetRangeSelect?: (range: Range) => void
 }
 
 export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
@@ -75,6 +80,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     timeFormat = '24',
     showWeekend = false,
     todayBtn = false,
+    presetRanges,
     enlargeSelectedDay = true,
     yearListStyle = 'grid',
     constraints = {},
@@ -85,7 +91,8 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     onYearSelect,
     onViewChange,
     onMonthNavigate,
-    onGoToToday
+    onGoToToday,
+    onPresetRangeSelect
   } = props
 
   // Render appropriate view component
@@ -108,6 +115,8 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
         onMonthNavigate={onMonthNavigate}
         onViewChange={onViewChange}
         onGoToToday={onGoToToday}
+        presetRanges={presetRanges}
+        onPresetRangeSelect={onPresetRangeSelect}
       />
     )
   }

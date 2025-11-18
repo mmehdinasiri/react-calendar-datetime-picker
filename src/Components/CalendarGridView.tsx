@@ -4,10 +4,18 @@
  */
 
 import React, { useRef } from 'react'
-import type { Day, Range, Multi, Week, CalendarLocale, CalendarType } from '../types'
+import type {
+  Day,
+  Range,
+  Multi,
+  Week,
+  CalendarLocale,
+  CalendarType
+} from '../types'
 import type {
   CalendarConstraints,
-  CalendarCustomization
+  CalendarCustomization,
+  PresetRangesConfig
 } from '../types/calendar'
 import {
   generateCalendarGrid,
@@ -24,6 +32,7 @@ import {
 } from '../utils/calendar-selection'
 import { toPersianNumeral } from '../utils/formatting'
 import { getToday } from '../utils/date-conversion'
+import { getPresetRangesFromConfig } from '../utils/preset-ranges'
 import { CalendarHeader } from './CalendarHeader'
 import { TimeSelector } from './TimeSelector'
 import { useKeyboardNavigation, useFocusManagement } from '../hooks'
@@ -45,6 +54,8 @@ export interface CalendarGridViewProps {
   showWeekend?: boolean
   /** Show today button */
   todayBtn?: boolean
+  /** Preset range buttons configuration */
+  presetRanges?: PresetRangesConfig
   /** Enlarge selected day text */
   enlargeSelectedDay?: boolean
   /** Date constraints */
@@ -61,6 +72,8 @@ export interface CalendarGridViewProps {
   onViewChange: (view: 'months' | 'years') => void
   /** Callback to navigate to today's date */
   onGoToToday?: () => void
+  /** Callback when preset range is selected */
+  onPresetRangeSelect?: (range: Range) => void
 }
 
 export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
@@ -73,6 +86,7 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     timeFormat = '24',
     showWeekend = false,
     todayBtn = false,
+    presetRanges,
     enlargeSelectedDay = true,
     constraints = {},
     customization = {},
@@ -80,7 +94,8 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     onTimeChange,
     onMonthNavigate,
     onViewChange,
-    onGoToToday
+    onGoToToday,
+    onPresetRangeSelect
   } = props
 
   const { maxDate, minDate, disabledDates } = constraints
@@ -114,14 +129,17 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
   }
 
   // Validation function for keyboard navigation
-  const isDateSelectableForNav = React.useCallback((day: Day): boolean => {
-    return isDateSelectable(day, {
-      minDate,
-      maxDate,
-      disabledDates,
-      locale
-    })
-  }, [minDate, maxDate, disabledDates, locale])
+  const isDateSelectableForNav = React.useCallback(
+    (day: Day): boolean => {
+      return isDateSelectable(day, {
+        minDate,
+        maxDate,
+        disabledDates,
+        locale
+      })
+    },
+    [minDate, maxDate, disabledDates, locale]
+  )
 
   // Focus management
   const { focusedDate, setFocusedDate, getCellRef } = useFocusManagement({
@@ -152,7 +170,13 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
         }
       }
     }
-  }, [displayMonth.year, displayMonth.month, focusedDate, isDateSelectableForNav, setFocusedDate]) // Only when month/year changes
+  }, [
+    displayMonth.year,
+    displayMonth.month,
+    focusedDate,
+    isDateSelectableForNav,
+    setFocusedDate
+  ]) // Only when month/year changes
 
   // Wrapper for onGoToToday that also updates focused date
   const handleGoToToday = React.useCallback(() => {
@@ -467,6 +491,26 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                   />
                 </div>
               ) : null}
+            </div>
+          )}
+
+          {/* Preset Range Buttons - Only for range mode */}
+          {presetRanges && type === 'range' && (
+            <div className='calendar-preset-ranges'>
+              {getPresetRangesFromConfig(presetRanges, locale).map((preset) => (
+                <button
+                  key={preset.value}
+                  type='button'
+                  onClick={() => {
+                    if (onPresetRangeSelect) {
+                      onPresetRangeSelect(preset.range)
+                    }
+                  }}
+                  className='calendar-preset-btn'
+                >
+                  {preset.label}
+                </button>
+              ))}
             </div>
           )}
 

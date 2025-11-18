@@ -105,6 +105,34 @@ export interface CalendarLabels {
 }
 
 /**
+ * Preset range button configuration
+ * Each key can be:
+ * - `true`: Show button with default label
+ * - `string`: Show button with custom label
+ * - `undefined` or not present: Don't show button
+ * Note: 'today' is excluded as it has its own `todayBtn` prop
+ */
+export type PresetRangeType =
+  | 'yesterday'
+  | 'last7days'
+  | 'last30days'
+  | 'thisMonth'
+  | 'lastMonth'
+
+export interface PresetRangesConfig {
+  /** Show yesterday button with default or custom label */
+  yesterday?: boolean | string
+  /** Show last 7 days button with default or custom label */
+  last7days?: boolean | string
+  /** Show last 30 days button with default or custom label */
+  last30days?: boolean | string
+  /** Show this month button with default or custom label */
+  thisMonth?: boolean | string
+  /** Show last month button with default or custom label */
+  lastMonth?: boolean | string
+}
+
+/**
  * Calendar customization options
  */
 export interface CalendarCustomization {

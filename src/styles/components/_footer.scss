@@ -65,3 +65,41 @@
   }
 }
 
+// Preset Range Buttons
+.calendar-preset-ranges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: var(--calendar-spacing-xs);
+}
+
+.calendar-preset-btn {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--calendar-text);
+  background: var(--calendar-bg);
+  border: 1px solid var(--calendar-border);
+  border-radius: var(--calendar-radius-sm);
+  cursor: pointer;
+  transition: var(--calendar-transition);
+  min-height: 28px;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: var(--calendar-bg-hover);
+    border-color: var(--calendar-primary);
+    color: var(--calendar-primary);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+

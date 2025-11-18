@@ -3,12 +3,14 @@ import type { CalendarLocale, CalendarType, InitValueInput } from '../types'
 import type {
   CalendarConstraintsInput,
   CalendarCustomization,
-  CalendarError
+  CalendarError,
+  PresetRangesConfig
 } from '../types/calendar'
 import { CalendarCore } from './CalendarCore'
 import { useCalendarState } from '../hooks/useCalendarState'
 import { normalizeInitValueWithErrors } from '../utils/normalize'
 import { normalizeConstraintsProps } from '../utils/constraints'
+import type { Range } from '../types'
 
 export interface DtCalendarProps {
   /**
@@ -60,6 +62,11 @@ export interface DtCalendarProps {
    * @default false
    */
   todayBtn?: boolean
+  /**
+   * Preset range buttons configuration
+   * Only works with type='range' or type='week'
+   */
+  presetRanges?: PresetRangesConfig
   /**
    * Enlarge selected day text
    * @default true
@@ -116,6 +123,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     local = 'en',
     showWeekend = false,
     todayBtn = false,
+    presetRanges,
     enlargeSelectedDay = true,
     dark = false,
     constraints: constraintsInput,
@@ -204,6 +212,16 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         onViewChange={actions.setView}
         onMonthNavigate={actions.navigateMonth}
         onGoToToday={actions.goToToday}
+        presetRanges={presetRanges}
+        onPresetRangeSelect={(range: Range) => {
+          if (type === 'range') {
+            // Directly set the range for preset selections
+            actions.selectPresetRange(range)
+          } else if (type === 'week') {
+            // For week type, select the start date which will calculate the week bounds
+            actions.selectDate(range.from)
+          }
+        }}
       />
     </div>
   )
