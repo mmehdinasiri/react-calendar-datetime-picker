@@ -544,6 +544,62 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
+    },
+    RangeWithCustomPresetRanges: {
+      title: 'Date Range with Custom Preset Ranges',
+      description: 'Range selection with completely custom preset ranges',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          custom: [
+            {
+              label: 'Last 14 days',
+              range: (() => {
+                const today = new Date()
+                const fourteenDaysAgo = new Date(today)
+                fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 13)
+                return {
+                  from: {
+                    year: fourteenDaysAgo.getFullYear(),
+                    month: fourteenDaysAgo.getMonth() + 1,
+                    day: fourteenDaysAgo.getDate()
+                  },
+                  to: {
+                    year: today.getFullYear(),
+                    month: today.getMonth() + 1,
+                    day: today.getDate()
+                  }
+                }
+              })()
+            },
+            {
+              label: 'Next 7 days',
+              range: (() => {
+                const today = new Date()
+                const sevenDaysLater = new Date(today)
+                sevenDaysLater.setDate(sevenDaysLater.getDate() + 7)
+                return {
+                  from: {
+                    year: today.getFullYear(),
+                    month: today.getMonth() + 1,
+                    day: today.getDate()
+                  },
+                  to: {
+                    year: sevenDaysLater.getFullYear(),
+                    month: sevenDaysLater.getMonth() + 1,
+                    day: sevenDaysLater.getDate()
+                  }
+                }
+              })()
+            }
+          ]
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
     }
   },
   Features: {
@@ -643,6 +699,64 @@ export const examples: ExamplesConfig = {
           last30days: 'Past Month',
           thisMonth: 'This Month',
           lastMonth: 'Previous Month'
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    PresetRangesWithCustom: {
+      title: 'Preset Ranges with Custom Ranges',
+      description:
+        'Calendar with built-in presets and completely custom preset ranges',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          last7days: true,
+          custom: [
+            {
+              label: 'Last 14 days',
+              range: (() => {
+                const today = new Date()
+                const fourteenDaysAgo = new Date(today)
+                fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 13)
+                return {
+                  from: {
+                    year: fourteenDaysAgo.getFullYear(),
+                    month: fourteenDaysAgo.getMonth() + 1,
+                    day: fourteenDaysAgo.getDate()
+                  },
+                  to: {
+                    year: today.getFullYear(),
+                    month: today.getMonth() + 1,
+                    day: today.getDate()
+                  }
+                }
+              })()
+            },
+            {
+              label: 'Next 7 days',
+              range: (() => {
+                const today = new Date()
+                const sevenDaysLater = new Date(today)
+                sevenDaysLater.setDate(sevenDaysLater.getDate() + 7)
+                return {
+                  from: {
+                    year: today.getFullYear(),
+                    month: today.getMonth() + 1,
+                    day: today.getDate()
+                  },
+                  to: {
+                    year: sevenDaysLater.getFullYear(),
+                    month: sevenDaysLater.getMonth() + 1,
+                    day: sevenDaysLater.getDate()
+                  }
+                }
+              })()
+            }
+          ]
         },
         showWeekend: true,
         todayBtn: true

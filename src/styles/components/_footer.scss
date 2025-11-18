@@ -86,6 +86,9 @@
   transition: var(--calendar-transition);
   min-height: 28px;
   white-space: nowrap;
+  box-sizing: border-box;
+  // Use font-variant-numeric to prevent width changes when font-weight changes
+  font-variant-numeric: tabular-nums;
 
   &:hover:not(:disabled) {
     background: var(--calendar-bg-hover);
@@ -100,6 +103,23 @@
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  &.calendar-preset-btn-active {
+    background: var(--calendar-primary);
+    border-color: var(--calendar-primary);
+    color: var(--calendar-text-header);
+    // Keep font-weight the same to prevent width changes, use text-shadow for emphasis
+    font-weight: 500;
+    text-shadow: 0 0 0.5px currentColor;
+    // Ensure border width stays the same to prevent width changes
+    border-width: 1px;
+
+    &:hover {
+      background: var(--calendar-primary-hover);
+      border-color: var(--calendar-primary-hover);
+      color: var(--calendar-text-header);
+    }
   }
 }
 

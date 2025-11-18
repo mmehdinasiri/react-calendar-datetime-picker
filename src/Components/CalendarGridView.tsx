@@ -32,7 +32,10 @@ import {
 } from '../utils/calendar-selection'
 import { toPersianNumeral } from '../utils/formatting'
 import { getToday } from '../utils/date-conversion'
-import { getPresetRangesFromConfig } from '../utils/preset-ranges'
+import {
+  getPresetRangesFromConfig,
+  isPresetRangeActive
+} from '../utils/preset-ranges'
 import { CalendarHeader } from './CalendarHeader'
 import { TimeSelector } from './TimeSelector'
 import { useKeyboardNavigation, useFocusManagement } from '../hooks'
@@ -497,20 +500,36 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
           {/* Preset Range Buttons - Only for range mode */}
           {presetRanges && type === 'range' && (
             <div className='calendar-preset-ranges'>
-              {getPresetRangesFromConfig(presetRanges, locale).map((preset) => (
-                <button
-                  key={preset.value}
-                  type='button'
-                  onClick={() => {
-                    if (onPresetRangeSelect) {
-                      onPresetRangeSelect(preset.range)
-                    }
-                  }}
-                  className='calendar-preset-btn'
-                >
-                  {preset.label}
-                </button>
-              ))}
+              {getPresetRangesFromConfig(presetRanges, locale).map(
+                (preset, index) => {
+                  const currentRange = selectedValue as Range | null
+                  const isActive = isPresetRangeActive(
+                    preset.range,
+                    currentRange,
+                    locale
+                  )
+                  return (
+                    <button
+                      key={
+                        preset.value === 'custom'
+                          ? `custom-${index}`
+                          : preset.value
+                      }
+                      type='button'
+                      onClick={() => {
+                        if (onPresetRangeSelect) {
+                          onPresetRangeSelect(preset.range)
+                        }
+                      }}
+                      className={`calendar-preset-btn ${
+                        isActive ? 'calendar-preset-btn-active' : ''
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  )
+                }
+              )}
             </div>
           )}
 

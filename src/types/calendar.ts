@@ -3,7 +3,7 @@
  */
 
 import type React from 'react'
-import type { Day } from './index'
+import type { Day, Range } from './index'
 
 /**
  * Acceptable date input formats that can be normalized
@@ -119,6 +119,13 @@ export type PresetRangeType =
   | 'thisMonth'
   | 'lastMonth'
 
+export interface CustomPresetRange {
+  /** Label for the custom preset button */
+  label: string
+  /** Date range for the preset */
+  range: Range
+}
+
 export interface PresetRangesConfig {
   /** Show yesterday button with default or custom label */
   yesterday?: boolean | string
@@ -130,6 +137,8 @@ export interface PresetRangesConfig {
   thisMonth?: boolean | string
   /** Show last month button with default or custom label */
   lastMonth?: boolean | string
+  /** Custom preset ranges (completely custom ranges with custom labels) */
+  custom?: CustomPresetRange[]
 }
 
 /**

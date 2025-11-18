@@ -3,7 +3,7 @@
  * Calculate common date ranges for quick selection
  */
 
-import type { Day, Range, CalendarLocale } from '../types'
+import type { Range, CalendarLocale } from '../types'
 import { getToday, dateToDay, dayToDate } from './date-conversion'
 import { getDaysInMonth } from './validation'
 
@@ -16,7 +16,7 @@ export type PresetRangeType =
 
 export interface PresetRange {
   label: string
-  value: PresetRangeType
+  value: PresetRangeType | 'custom'
   range: Range
 }
 
@@ -29,6 +29,8 @@ export function getPresetRange(
 ): Range {
   const today = getToday(locale)
   const todayDate = dayToDate(today, locale)
+  // Use dateToDay to preserve time from current date
+  const todayWithTime = dateToDay(todayDate, locale)
 
   switch (preset) {
     case 'yesterday': {
@@ -45,9 +47,10 @@ export function getPresetRange(
       const sevenDaysAgoDate = new Date(todayDate)
       sevenDaysAgoDate.setDate(sevenDaysAgoDate.getDate() - 6) // 6 days ago + today = 7 days
       const sevenDaysAgo = dateToDay(sevenDaysAgoDate, locale)
+      // Use todayWithTime to preserve time
       return {
         from: sevenDaysAgo,
-        to: today
+        to: todayWithTime
       }
     }
 
@@ -55,25 +58,31 @@ export function getPresetRange(
       const thirtyDaysAgoDate = new Date(todayDate)
       thirtyDaysAgoDate.setDate(thirtyDaysAgoDate.getDate() - 29) // 29 days ago + today = 30 days
       const thirtyDaysAgo = dateToDay(thirtyDaysAgoDate, locale)
+      // Use todayWithTime to preserve time
       return {
         from: thirtyDaysAgo,
-        to: today
+        to: todayWithTime
       }
     }
 
     case 'thisMonth': {
-      const firstDayOfMonth: Day = {
-        year: today.year,
-        month: today.month,
-        day: 1
-      }
-      // Get the last day of the current month
+      // Create first day of month with time from today
+      const firstDayOfMonthDate = new Date(
+        todayDate.getFullYear(),
+        todayDate.getMonth(),
+        1
+      )
+      const firstDayOfMonth = dateToDay(firstDayOfMonthDate, locale)
+
+      // Get the last day of the current month with time from today
       const daysInMonth = getDaysInMonth(today.year, today.month, locale)
-      const lastDayOfMonth: Day = {
-        year: today.year,
-        month: today.month,
-        day: daysInMonth
-      }
+      const lastDayOfMonthDate = new Date(
+        todayDate.getFullYear(),
+        todayDate.getMonth(),
+        daysInMonth
+      )
+      const lastDayOfMonth = dateToDay(lastDayOfMonthDate, locale)
+
       return {
         from: firstDayOfMonth,
         to: lastDayOfMonth
@@ -81,23 +90,23 @@ export function getPresetRange(
     }
 
     case 'lastMonth': {
-      // Calculate last month
-      let lastMonth = today.month - 1
-      let lastMonthYear = today.year
-      if (lastMonth < 1) {
-        lastMonth = 12
-        lastMonthYear = today.year - 1
+      // Get first day of last month with time
+      const lastMonthFirstDate = new Date(
+        todayDate.getFullYear(),
+        todayDate.getMonth() - 1,
+        1
+      )
+      if (
+        lastMonthFirstDate.getMonth() !== todayDate.getMonth() - 1 &&
+        todayDate.getMonth() === 0
+      ) {
+        // Handle year boundary
+        lastMonthFirstDate.setFullYear(todayDate.getFullYear() - 1)
+        lastMonthFirstDate.setMonth(11)
       }
+      const lastMonthFirstDay = dateToDay(lastMonthFirstDate, locale)
 
-      // Get days in last month
-      const lastMonthFirstDay: Day = {
-        year: lastMonthYear,
-        month: lastMonth,
-        day: 1
-      }
-
-      // Calculate last day of last month
-      const lastMonthFirstDate = dayToDate(lastMonthFirstDay, locale)
+      // Calculate last day of last month with time
       const lastDayOfLastMonthDate = new Date(
         lastMonthFirstDate.getFullYear(),
         lastMonthFirstDate.getMonth() + 1,
@@ -113,8 +122,8 @@ export function getPresetRange(
 
     default:
       return {
-        from: today,
-        to: today
+        from: todayWithTime,
+        to: todayWithTime
       }
   }
 }
@@ -172,5 +181,47 @@ export function getPresetRangesFromConfig(
     }
   })
 
+  // Add custom preset ranges if provided
+  if (config.custom && Array.isArray(config.custom)) {
+    config.custom.forEach((customPreset) => {
+      presets.push({
+        label: customPreset.label,
+        value: 'custom' as const,
+        range: {
+          from: customPreset.range.from,
+          to: customPreset.range.to
+        }
+      })
+    })
+  }
+
   return presets
+}
+
+/**
+ * Check if a preset range matches the current selected range
+ */
+export function isPresetRangeActive(
+  presetRange: Range,
+  selectedRange: Range | null,
+  _locale: CalendarLocale
+): boolean {
+  if (!selectedRange || !selectedRange.from || !selectedRange.to) {
+    return false
+  }
+
+  // Compare dates ignoring time
+  const presetFrom = presetRange.from
+  const presetTo = presetRange.to
+  const selectedFrom = selectedRange.from
+  const selectedTo = selectedRange.to
+
+  return (
+    presetFrom.year === selectedFrom.year &&
+    presetFrom.month === selectedFrom.month &&
+    presetFrom.day === selectedFrom.day &&
+    presetTo.year === selectedTo.year &&
+    presetTo.month === selectedTo.month &&
+    presetTo.day === selectedTo.day
+  )
 }

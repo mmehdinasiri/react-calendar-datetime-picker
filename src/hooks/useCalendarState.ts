@@ -183,34 +183,52 @@ function calendarReducer(
         locale
       )
 
+      // Ensure both from and to have time if withTime is enabled and it's a range
+      let finalValue = newValue
+      if (type === 'range' && withTime && newValue) {
+        const range = newValue as Range
+        if (range.from && range.to) {
+          finalValue = {
+            from: addSystemTimeIfNeeded(range.from, withTime),
+            to: addSystemTimeIfNeeded(range.to, withTime)
+          } as Range
+        } else if (range.from) {
+          finalValue = {
+            from: addSystemTimeIfNeeded(range.from, withTime),
+            to: range.to
+          } as Range
+        }
+      }
+
       // Only update displayMonth when starting a new selection, not when completing a range
       let newDisplayMonth = state.displayMonth
       if (type === 'range') {
         const currentRange = state.selectedValue as Range | null
         // Only navigate if starting a new range (no range exists or range is complete)
         if (!currentRange || !currentRange.from || currentRange.to) {
-          const monthFromValue = extractMonthFromValue(newValue)
+          const monthFromValue = extractMonthFromValue(finalValue)
           newDisplayMonth = monthFromValue || state.displayMonth
         }
         // Otherwise, keep the current displayMonth when selecting end date
       } else {
         // For single and multi, always update displayMonth to selected date
-        const monthFromValue = extractMonthFromValue(newValue)
+        const monthFromValue = extractMonthFromValue(finalValue)
         newDisplayMonth = monthFromValue || state.displayMonth
       }
 
       return {
         ...state,
-        selectedValue: newValue,
+        selectedValue: finalValue,
         displayMonth: newDisplayMonth,
         currentView: 'calendar'
       }
     }
 
     case 'SELECT_RANGE_START': {
+      const fromWithTime = addSystemTimeIfNeeded(action.payload, withTime)
       return {
         ...state,
-        selectedValue: { from: action.payload, to: null as any },
+        selectedValue: { from: fromWithTime, to: null as any },
         displayMonth: {
           year: action.payload.year,
           month: action.payload.month,
@@ -225,9 +243,12 @@ function calendarReducer(
         return state
       }
 
+      const toWithTime = addSystemTimeIfNeeded(action.payload, withTime)
+      const fromWithTime = addSystemTimeIfNeeded(currentRange.from, withTime)
+
       return {
         ...state,
-        selectedValue: { from: currentRange.from, to: action.payload }
+        selectedValue: { from: fromWithTime, to: toWithTime }
       }
     }
 
