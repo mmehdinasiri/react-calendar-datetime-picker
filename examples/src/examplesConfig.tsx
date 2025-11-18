@@ -630,6 +630,156 @@ export const examples: ExamplesConfig = {
       wrapper: 'calendar-container'
     }
   },
+  Accessibility: {
+    KeyboardNavigationBasic: {
+      title: 'Keyboard Navigation - Basic',
+      description:
+        'Use arrow keys to navigate dates, Enter/Space to select, Escape to close modal (if picker)',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    KeyboardNavigationPicker: {
+      title: 'Keyboard Navigation - Date Picker',
+      description:
+        'Tab to focus input, Enter to open, arrow keys to navigate, Enter/Space to select, Escape to close',
+      component: 'DtPicker',
+      props: {
+        placeholder: 'Try keyboard navigation',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    KeyboardShortcutsToday: {
+      title: 'Keyboard Shortcuts - Today (T key)',
+      description:
+        'Press "T" key when calendar is focused to jump to today\'s date',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    KeyboardShortcutsPageUpDown: {
+      title: 'Keyboard Shortcuts - PageUp/PageDown',
+      description:
+        'Use PageUp/PageDown keys to navigate between months quickly',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    KeyboardShortcutsHomeEnd: {
+      title: 'Keyboard Shortcuts - Home/End',
+      description:
+        'Press Home to jump to first day of month, End for last day of month',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    KeyboardNavigationRange: {
+      title: 'Keyboard Navigation - Range Selection',
+      description:
+        'Navigate with arrow keys, select start date with Enter, navigate again, select end date',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    KeyboardNavigationMulti: {
+      title: 'Keyboard Navigation - Multiple Selection',
+      description:
+        'Navigate with arrow keys, press Enter/Space to toggle date selection',
+      component: 'DtCalendar',
+      props: {
+        type: 'multi',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    KeyboardNavigationPersian: {
+      title: 'Keyboard Navigation - Persian (RTL)',
+      description:
+        'Arrow keys work in RTL mode - right arrow moves backward, left arrow moves forward',
+      component: 'DtCalendar',
+      props: {
+        local: 'fa',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    FocusTrapPicker: {
+      title: 'Focus Trap - Modal Picker',
+      description:
+        'Open picker modal - focus stays trapped within calendar. Tab cycles through interactive elements.',
+      component: 'DtPicker',
+      props: {
+        placeholder: 'Open to test focus trap',
+        showWeekend: true,
+        todayBtn: true,
+        clearBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    AriaLabelsScreenReader: {
+      title: 'ARIA Labels for Screen Readers',
+      description:
+        'Calendar includes comprehensive ARIA labels, roles, and states for screen reader compatibility',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    AccessibilityWithConstraints: {
+      title: 'Keyboard Navigation with Constraints',
+      description:
+        'Disabled dates are skipped during keyboard navigation (try navigating across Dec 25-27)',
+      component: 'DtCalendar',
+      props: {
+        constraints: {
+          disabledDates: [
+            new Date(2024, 11, 25),
+            new Date(2024, 11, 26),
+            new Date(2024, 11, 27)
+          ]
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    AccessibilityComplete: {
+      title: 'Complete Accessibility Example',
+      description:
+        'All accessibility features: keyboard nav, shortcuts (T/PageUp/PageDown/Home/End), ARIA labels, focus management',
+      component: 'DtPicker',
+      props: {
+        placeholder: 'Fully accessible date picker',
+        showWeekend: true,
+        todayBtn: true,
+        clearBtn: true,
+        type: 'single'
+      },
+      wrapper: 'picker-container'
+    }
+  },
   Callbacks: {
     BasicOnChange: {
       title: 'Basic onChange Callback',

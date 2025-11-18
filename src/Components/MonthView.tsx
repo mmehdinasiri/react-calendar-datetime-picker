@@ -49,7 +49,11 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
         onYearClick={() => onViewChange('years')}
       />
 
-      <div className={`calendar-months ${monthsClass || ''}`}>
+      <div 
+        className={`calendar-months ${monthsClass || ''}`}
+        role='grid'
+        aria-label={locale === 'fa' ? 'انتخاب ماه' : 'Select month'}
+      >
         {monthNames.map((monthName, index) => {
           const month = index + 1
           const isCurrentMonth = month === displayMonth.month
@@ -65,11 +69,15 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
             <button
               key={month}
               type='button'
+              role='gridcell'
               onClick={() => {
                 onMonthSelect(month)
                 onViewChange('calendar')
               }}
               className={classNames}
+              aria-label={monthName}
+              aria-selected={isCurrentMonth}
+              aria-current={isCurrentMonth ? 'date' : undefined}
             >
               {monthName}
             </button>

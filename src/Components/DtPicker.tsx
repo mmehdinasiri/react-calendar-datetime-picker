@@ -6,7 +6,8 @@ import {
   useCalendarPicker,
   useModalPosition,
   useClickOutside,
-  useEscapeKey
+  useEscapeKey,
+  useFocusTrap
 } from '../hooks'
 
 export interface DtPickerProps {
@@ -160,11 +161,27 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
   // Use escape key hook
   useEscapeKey(isOpen, () => setIsOpen(false))
 
+  // Use focus trap hook for modal
+  useFocusTrap({
+    containerRef: modalRef,
+    enabled: isOpen,
+    autoFocus: true,
+    restoreFocus: true
+  })
+
   // Handle input click
   const handleInputClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     if (!isDisabled) {
       setIsOpen((prev) => !prev)
+    }
+  }
+
+  // Handle input keydown (Enter to open)
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !isDisabled && !isOpen) {
+      e.preventDefault()
+      setIsOpen(true)
     }
   }
 
@@ -197,7 +214,11 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
           disabled={isDisabled}
           required={isRequired}
           onClick={handleInputClick}
+          onKeyDown={handleInputKeyDown}
           className='calendar-picker-input'
+          aria-label={placeholder || 'Select date'}
+          aria-haspopup='dialog'
+          aria-expanded={isOpen}
         />
         {clearBtn && state.selectedValue && (
           <button
@@ -224,6 +245,15 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
         <div
           ref={modalRef}
           className={modalClass}
+          role='dialog'
+          aria-modal='true'
+          aria-label={
+            type === 'range'
+              ? 'Select date range'
+              : type === 'multi'
+              ? 'Select multiple dates'
+              : 'Select date'
+          }
           style={{
             position: 'fixed',
             top: modalPosition ? `${modalPosition.top}px` : '-9999px',

@@ -102,6 +102,8 @@ export const YearView: React.FC<YearViewProps> = (props) => {
           className={`calendar-years ${yearsClass || ''} ${
             isGrid ? 'calendar-years-grid' : 'calendar-years-list'
           }`}
+          role='grid'
+          aria-label={locale === 'fa' ? 'انتخاب سال' : 'Select year'}
         >
           {years.map((year) => {
             const isCurrentYear = year === displayMonth.year
@@ -113,15 +115,22 @@ export const YearView: React.FC<YearViewProps> = (props) => {
               .filter(Boolean)
               .join(' ')
 
+            const yearLabel =
+              locale === 'fa' ? toPersianNumeral(year) : year.toString()
+
             return (
               <button
                 key={year}
                 type='button'
+                role='gridcell'
                 onClick={() => {
                   onYearSelect(year)
                   onViewChange('months')
                 }}
                 className={classNames}
+                aria-label={yearLabel}
+                aria-selected={isCurrentYear}
+                aria-current={isCurrentYear ? 'date' : undefined}
               >
                 {locale === 'fa' ? toPersianNumeral(year) : year}
               </button>

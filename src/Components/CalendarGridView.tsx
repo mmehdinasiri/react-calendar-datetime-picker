@@ -3,13 +3,17 @@
  * Displays the calendar grid with days
  */
 
-import React from 'react'
+import React, { useRef } from 'react'
 import type { Day, Range, Multi, CalendarLocale, CalendarType } from '../types'
 import type {
   CalendarConstraints,
   CalendarCustomization
 } from '../types/calendar'
-import { generateCalendarGrid, getDayNames } from '../utils/calendar-grid'
+import {
+  generateCalendarGrid,
+  getDayNames,
+  getMonthNames
+} from '../utils/calendar-grid'
 import { isDateSelectable } from '../utils/validation'
 import {
   isDaySelected,
@@ -18,8 +22,10 @@ import {
   isRangeEnd
 } from '../utils/calendar-selection'
 import { toPersianNumeral } from '../utils/formatting'
+import { getToday } from '../utils/date-conversion'
 import { CalendarHeader } from './CalendarHeader'
 import { TimeSelector } from './TimeSelector'
+import { useKeyboardNavigation, useFocusManagement } from '../hooks'
 
 export interface CalendarGridViewProps {
   /** Currently selected value */
@@ -87,7 +93,93 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
 
   const isRTL = locale === 'fa'
   const dayNames = getDayNames(locale)
+  const monthNames = getMonthNames(locale)
   const calendarGrid = generateCalendarGrid(displayMonth, locale)
+
+  // Refs for keyboard navigation
+  const gridRef = useRef<HTMLDivElement>(null)
+  const gridElementRef = gridRef as unknown as React.RefObject<HTMLElement>
+
+  // Get selected date for focus management
+  const getSelectedDate = (): Day | null => {
+    if (!selectedValue) return null
+    if (type === 'single') return selectedValue as Day
+    if (type === 'range') return (selectedValue as Range).from
+    if (type === 'multi' && (selectedValue as Multi).length > 0) {
+      return (selectedValue as Multi)[0]
+    }
+    return null
+  }
+
+  // Validation function for keyboard navigation
+  const isDateSelectableForNav = React.useCallback((day: Day): boolean => {
+    return isDateSelectable(day, {
+      minDate,
+      maxDate,
+      disabledDates,
+      locale
+    })
+  }, [minDate, maxDate, disabledDates, locale])
+
+  // Focus management
+  const { focusedDate, setFocusedDate, getCellRef } = useFocusManagement({
+    initialDate: displayMonth,
+    selectedDate: getSelectedDate()
+  })
+
+  // Sync focused date when displayMonth changes (e.g., after month navigation)
+  React.useEffect(() => {
+    // If focused date is not in the current display month, adjust it
+    if (
+      focusedDate.year !== displayMonth.year ||
+      focusedDate.month !== displayMonth.month
+    ) {
+      // Keep the same day if possible, otherwise use first day of month
+      const newFocusedDate: Day = {
+        ...displayMonth,
+        day: Math.min(focusedDate.day, 31) // Will be validated by isDateSelectable
+      }
+      // Only update if the date is selectable
+      if (isDateSelectableForNav(newFocusedDate)) {
+        setFocusedDate(newFocusedDate)
+      } else {
+        // Try first day of month
+        const firstDay: Day = { ...displayMonth, day: 1 }
+        if (isDateSelectableForNav(firstDay)) {
+          setFocusedDate(firstDay)
+        }
+      }
+    }
+  }, [displayMonth.year, displayMonth.month, focusedDate, isDateSelectableForNav, setFocusedDate]) // Only when month/year changes
+
+  // Wrapper for onGoToToday that also updates focused date
+  const handleGoToToday = React.useCallback(() => {
+    if (onGoToToday) {
+      onGoToToday()
+    }
+    // Update focused date to today
+    const today = getToday(locale)
+    setFocusedDate(today)
+  }, [onGoToToday, locale, setFocusedDate])
+
+  // Keyboard navigation
+  useKeyboardNavigation({
+    focusedDate,
+    locale,
+    type,
+    containerRef: gridElementRef,
+    enabled: true,
+    onFocusedDateChange: setFocusedDate,
+    onDateSelect,
+    onGoToToday: handleGoToToday,
+    onMonthNavigate,
+    isDateSelectable: isDateSelectableForNav
+  })
+
+  // Get current month/year label for ARIA
+  const currentMonthLabel = monthNames[displayMonth.month - 1]
+  const currentYearLabel =
+    locale === 'fa' ? toPersianNumeral(displayMonth.year) : displayMonth.year
 
   return (
     <div className='calendar-core' dir={isRTL ? 'rtl' : 'ltr'}>
@@ -105,14 +197,14 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
       />
 
       {/* Day names */}
-      <div className='calendar-day-names'>
+      <div className='calendar-day-names' role='row'>
         {dayNames.map((name, index) => {
           const isWeekendDay =
             showWeekend &&
             (locale === 'fa'
               ? index === 6 || index === 5
               : index === 0 || index === 6)
-          
+
           const dayNameClassNames = [
             'calendar-day-name',
             isWeekendDay && 'calendar-weekend'
@@ -124,6 +216,8 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
             <div
               key={`day-name-${index}-${name}`}
               className={dayNameClassNames}
+              role='columnheader'
+              aria-label={name}
             >
               {name}
             </div>
@@ -132,7 +226,14 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
       </div>
 
       {/* Calendar grid */}
-      <div className={`calendar-grid ${daysClass || ''}`}>
+      <div
+        ref={gridRef}
+        className={`calendar-grid ${daysClass || ''}`}
+        role='grid'
+        aria-label={`${currentMonthLabel} ${currentYearLabel}`}
+        aria-activedescendant={`day-${focusedDate.year}-${focusedDate.month}-${focusedDate.day}`}
+        tabIndex={0}
+      >
         {calendarGrid
           .filter((week) => {
             // Filter out weeks where all days are from other months
@@ -140,18 +241,18 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
             return hasCurrentMonthDay
           })
           .map((week, weekIndex) => {
-          const hasOtherMonth = week.some((day) => !day.isCurrentMonth)
-          const weekClassNames = [
-            'calendar-week',
-            hasOtherMonth && 'calendar-week-other-month'
-          ]
-            .filter(Boolean)
-            .join(' ')
-          
-          return (
-              <div key={weekIndex} className={weekClassNames}>
-              {week.map((calendarDay, dayIndex) => {
-              const day: Day = calendarDay.dayObject
+            const hasOtherMonth = week.some((day) => !day.isCurrentMonth)
+            const weekClassNames = [
+              'calendar-week',
+              hasOtherMonth && 'calendar-week-other-month'
+            ]
+              .filter(Boolean)
+              .join(' ')
+
+            return (
+              <div key={weekIndex} className={weekClassNames} role='row'>
+                {week.map((calendarDay, dayIndex) => {
+                  const day: Day = calendarDay.dayObject
                   const isSelected = isDaySelected(
                     day,
                     selectedValue,
@@ -166,22 +267,22 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                   )
                   const isStart = isRangeStart(day, selectedValue, type)
                   const isEnd = isRangeEnd(day, selectedValue, type)
-              const isSelectable = isDateSelectable(day, {
-                minDate,
-                maxDate,
-                disabledDates,
-                locale
-              })
-              const isWeekend =
-                showWeekend &&
-                (locale === 'fa'
-                  ? dayIndex === 6 || dayIndex === 5
-                  : dayIndex === 0 || dayIndex === 6)
+                  const isSelectable = isDateSelectable(day, {
+                    minDate,
+                    maxDate,
+                    disabledDates,
+                    locale
+                  })
+                  const isWeekend =
+                    showWeekend &&
+                    (locale === 'fa'
+                      ? dayIndex === 6 || dayIndex === 5
+                      : dayIndex === 0 || dayIndex === 6)
 
-              // Identify first day of next month and last day of previous month
-              const isOtherMonth = !calendarDay.isCurrentMonth
-              
-              // Determine if this is from previous month or next month
+                  // Identify first day of next month and last day of previous month
+                  const isOtherMonth = !calendarDay.isCurrentMonth
+
+                  // Determine if this is from previous month or next month
                   const isPrevMonth =
                     isOtherMonth &&
                     (calendarDay.year < displayMonth.year ||
@@ -192,61 +293,91 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                     (calendarDay.year > displayMonth.year ||
                       (calendarDay.year === displayMonth.year &&
                         calendarDay.month > displayMonth.month))
-              
-              // Last day of previous month: previous month day where next day is current month
-              const isLastDayOfPrevMonth =
-                isPrevMonth &&
+
+                  // Last day of previous month: previous month day where next day is current month
+                  const isLastDayOfPrevMonth =
+                    isPrevMonth &&
                     dayIndex < 6 &&
                     week[dayIndex + 1].isCurrentMonth
-              
-              // First day of next month: next month day where previous day is current month
-              const isFirstDayOfNextMonth =
-                isNextMonth &&
+
+                  // First day of next month: next month day where previous day is current month
+                  const isFirstDayOfNextMonth =
+                    isNextMonth &&
                     dayIndex > 0 &&
                     week[dayIndex - 1].isCurrentMonth
 
-              const classNames = [
-                'calendar-day',
-                isOtherMonth && 'calendar-day-other-month',
-                isFirstDayOfNextMonth && 'calendar-day-other-month-first',
-                isLastDayOfPrevMonth && 'calendar-day-other-month-last',
-                calendarDay.isToday && 'calendar-day-today',
-                isSelected && 'calendar-day-selected',
+                  const classNames = [
+                    'calendar-day',
+                    isOtherMonth && 'calendar-day-other-month',
+                    isFirstDayOfNextMonth && 'calendar-day-other-month-first',
+                    isLastDayOfPrevMonth && 'calendar-day-other-month-last',
+                    calendarDay.isToday && 'calendar-day-today',
+                    isSelected && 'calendar-day-selected',
                     isSelected &&
                       enlargeSelectedDay &&
                       'calendar-day-selected-enlarged',
-                isInRange && 'calendar-day-in-range',
+                    isInRange && 'calendar-day-in-range',
                     isStart && 'calendar-day-range-start',
                     isEnd && 'calendar-day-range-end',
-                !isSelectable && 'calendar-day-disabled',
-                isWeekend && 'calendar-day-weekend'
-              ]
-                .filter(Boolean)
-                .join(' ')
+                    !isSelectable && 'calendar-day-disabled',
+                    isWeekend && 'calendar-day-weekend'
+                  ]
+                    .filter(Boolean)
+                    .join(' ')
 
-              const handleClick = () => {
-                if (isSelectable) {
-                  onDateSelect(day)
-                }
-              }
+                  const handleClick = () => {
+                    if (isSelectable) {
+                      onDateSelect(day)
+                    }
+                  }
 
-              return (
-                <button
-                  key={`${weekIndex}-${dayIndex}-${day.year}-${day.month}-${day.day}`}
-                  type='button'
-                  onClick={handleClick}
-                  disabled={!isSelectable}
-                  className={classNames}
-                >
+                  // Check if this date is focused
+                  const isFocused =
+                    focusedDate.year === day.year &&
+                    focusedDate.month === day.month &&
+                    focusedDate.day === day.day
+
+                  // Create accessible label
+                  const dayLabel =
+                    locale === 'fa'
+                      ? toPersianNumeral(calendarDay.day)
+                      : calendarDay.day
+
+                  const monthLabel = monthNames[day.month - 1]
+                  const yearLabel =
+                    locale === 'fa' ? toPersianNumeral(day.year) : day.year
+
+                  const ariaLabel = `${dayLabel} ${monthLabel} ${yearLabel}`
+                  const todayLabel = locale === 'fa' ? 'امروز' : 'Today'
+                  const fullAriaLabel = calendarDay.isToday
+                    ? `${ariaLabel}, ${todayLabel}`
+                    : ariaLabel
+
+                  return (
+                    <button
+                      key={`${weekIndex}-${dayIndex}-${day.year}-${day.month}-${day.day}`}
+                      ref={getCellRef(day)}
+                      id={`day-${day.year}-${day.month}-${day.day}`}
+                      type='button'
+                      role='gridcell'
+                      onClick={handleClick}
+                      disabled={!isSelectable}
+                      className={classNames}
+                      aria-label={fullAriaLabel}
+                      aria-selected={isSelected}
+                      aria-disabled={!isSelectable}
+                      aria-current={calendarDay.isToday ? 'date' : undefined}
+                      tabIndex={isFocused ? 0 : -1}
+                    >
                       {locale === 'fa'
                         ? toPersianNumeral(calendarDay.day)
                         : calendarDay.day}
-                </button>
-              )
-            })}
-            </div>
-          )
-        })}
+                    </button>
+                  )
+                })}
+              </div>
+            )
+          })}
       </div>
 
       {/* Footer */}
