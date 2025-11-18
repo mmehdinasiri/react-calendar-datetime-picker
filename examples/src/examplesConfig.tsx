@@ -410,6 +410,56 @@ export const examples: ExamplesConfig = {
         placeholder: 'Select multiple dates'
       },
       wrapper: 'picker-container'
+    },
+    WeekSelection: {
+      title: 'Week Selection',
+      description:
+        'Select an entire week at once - click any day in a week to select the whole week',
+      component: 'DtCalendar',
+      props: {
+        type: 'week',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    WeekPicker: {
+      title: 'Week Picker',
+      description: 'Date picker for selecting an entire week',
+      component: 'DtPicker',
+      props: {
+        type: 'week',
+        placeholder: 'Select a week',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    PersianWeekSelection: {
+      title: 'Persian Week Selection',
+      description: 'Week selection with Persian (Jalali) calendar',
+      component: 'DtCalendar',
+      props: {
+        type: 'week',
+        local: 'fa',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    WeekSelectionWithInitialValue: {
+      title: 'Week Selection with Initial Value',
+      description: 'Week selection pre-filled with a week',
+      component: 'DtCalendar',
+      props: {
+        type: 'week',
+        initValue: new Date(),
+        withTime: true,
+        timeFormat: '24',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
     }
   },
   Features: {
@@ -562,6 +612,38 @@ export const examples: ExamplesConfig = {
         }
       },
       wrapper: 'calendar-container'
+    },
+    WeekWithTime: {
+      title: 'Week Selection with Time',
+      description:
+        'Week selection with time selectors for both start and end of the week',
+      component: 'DtCalendar',
+      props: {
+        type: 'week',
+        withTime: true,
+        timeFormat: '24',
+        showWeekend: true,
+        todayBtn: true,
+        initValue: new Date() // Uses current system time
+      },
+      wrapper: 'calendar-container'
+    },
+    WeekPickerWithTime: {
+      title: 'Week Picker with Time',
+      description:
+        'Week picker with time selectors for both start and end of the week',
+      component: 'DtPicker',
+      props: {
+        type: 'week',
+        withTime: true,
+        timeFormat: '24',
+        showTimeInput: true,
+        placeholder: 'Select week with time',
+        showWeekend: true,
+        todayBtn: true,
+        initValue: new Date() // Uses current system time
+      },
+      wrapper: 'picker-container'
     },
     DateRangePickerWithTime: {
       title: 'Date Range Picker with Time',

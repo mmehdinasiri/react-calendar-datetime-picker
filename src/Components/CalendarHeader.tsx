@@ -89,7 +89,6 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
   const { header: headerClass } = classes
   const { next: NextBtnIcon, previous: PreviousBtnIcon } = icons
 
-  const isRTL = locale === 'fa'
   const monthNames = getMonthNames(locale)
 
   return (

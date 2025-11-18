@@ -49,7 +49,7 @@ export function useCalendarPicker(
       onChange(date)
       // Auto-close modal after selection if enabled
       if (autoClose && onClose) {
-        if (type === 'single') {
+        if (type === 'single' || type === 'week') {
           onClose()
         } else if (
           type === 'range' &&

@@ -3,10 +3,18 @@
  * Handles converting various input formats to normalized Day/Range/Multi objects
  */
 
-import type { Day, Range, Multi, CalendarLocale, CalendarType } from '../types'
+import type {
+  Day,
+  Range,
+  Multi,
+  Week,
+  CalendarLocale,
+  CalendarType
+} from '../types'
 import type { CalendarError } from '../types/calendar'
 import { dateToDay } from './date-conversion'
 import { parseDateString } from './formatting'
+import { getWeekBounds } from './calendar-grid'
 
 /**
  * Check if we're in development mode
@@ -195,7 +203,7 @@ export function normalizeInitValueWithErrors(
   locale: CalendarLocale,
   type: CalendarType,
   fieldName: string = 'initValue'
-): { value: Day | Range | Multi | null; errors: CalendarError[] } {
+): { value: Day | Range | Multi | Week | null; errors: CalendarError[] } {
   const errors: CalendarError[] = []
 
   if (!value) {
@@ -246,6 +254,42 @@ export function normalizeInitValueWithErrors(
     return { value: null, errors }
   }
 
+  // Handle week (similar to range but always calculates week bounds)
+  if (type === 'week') {
+    // Week can accept a single date (which will be converted to week bounds) or a week object
+    if (isRangeObject(value)) {
+      const fromResult = normalizeDayWithErrors(
+        value.from,
+        locale,
+        `${fieldName}.from`
+      )
+      const toResult = normalizeDayWithErrors(
+        value.to,
+        locale,
+        `${fieldName}.to`
+      )
+
+      if (fromResult.error) errors.push(fromResult.error)
+      if (toResult.error) errors.push(toResult.error)
+
+      if (fromResult.value && toResult.value) {
+        return { value: { from: fromResult.value, to: toResult.value }, errors }
+      }
+    } else {
+      // Single date - convert to week bounds
+      const dayResult = normalizeDayWithErrors(value, locale, fieldName)
+      if (dayResult.error) {
+        errors.push(dayResult.error)
+        return { value: null, errors }
+      }
+      if (dayResult.value) {
+        const weekBounds = getWeekBounds(dayResult.value, locale)
+        return { value: weekBounds, errors }
+      }
+    }
+    return { value: null, errors }
+  }
+
   // Handle multi
   if (type === 'multi') {
     if (isMultiArray(value)) {
@@ -289,7 +333,7 @@ export function normalizeInitValue(
   value: unknown,
   locale: CalendarLocale,
   type: CalendarType
-): Day | Range | Multi | null {
+): Day | Range | Multi | Week | null {
   return normalizeInitValueWithErrors(value, locale, type).value
 }
 
@@ -297,7 +341,7 @@ export function normalizeInitValue(
  * Extract month from a value for display purposes
  */
 export function extractMonthFromValue(
-  value: Day | Range | Multi | null
+  value: Day | Range | Multi | Week | null
 ): Day | null {
   if (!value) return null
 

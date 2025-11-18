@@ -3,7 +3,14 @@
  * Helper functions for determining selection state
  */
 
-import type { Day, Range, Multi, CalendarType, CalendarLocale } from '../types'
+import type {
+  Day,
+  Range,
+  Multi,
+  Week,
+  CalendarType,
+  CalendarLocale
+} from '../types'
 import { compareDays } from './validation'
 
 /**
@@ -11,7 +18,7 @@ import { compareDays } from './validation'
  */
 export function isDaySelected(
   day: Day,
-  selectedValue: Day | Range | Multi | null,
+  selectedValue: Day | Range | Multi | Week | null,
   type: CalendarType,
   locale: CalendarLocale = 'en'
 ): boolean {
@@ -34,6 +41,14 @@ export function isDaySelected(
     return dayCompare >= 0 && toCompare <= 0
   }
 
+  if (type === 'week') {
+    const week = selectedValue as Week
+    if (!week.from || !week.to) return false
+    const dayCompare = compareDays(day, week.from, locale)
+    const toCompare = compareDays(day, week.to, locale)
+    return dayCompare >= 0 && toCompare <= 0
+  }
+
   if (type === 'multi') {
     const multi = selectedValue as Multi
     return multi.some(
@@ -48,61 +63,85 @@ export function isDaySelected(
 }
 
 /**
- * Check if a day is in range selection (for range type)
+ * Check if a day is in range selection (for range or week type)
  * Returns true if day is between from and to (exclusive of boundaries for styling)
  */
 export function isDayInRange(
   day: Day,
-  selectedValue: Day | Range | Multi | null,
+  selectedValue: Day | Range | Multi | Week | null,
   type: CalendarType,
   locale: CalendarLocale = 'en'
 ): boolean {
-  if (type !== 'range' || !selectedValue) return false
-  const range = selectedValue as Range
-  if (!range.from || !range.to) return false
+  if ((type !== 'range' && type !== 'week') || !selectedValue) return false
 
-  const dayCompare = compareDays(day, range.from, locale)
-  const toCompare = compareDays(day, range.to, locale)
+  let from: Day | null = null
+  let to: Day | null = null
+
+  if (type === 'range') {
+    const range = selectedValue as Range
+    from = range.from
+    to = range.to
+  } else if (type === 'week') {
+    const week = selectedValue as Week
+    from = week.from
+    to = week.to
+  }
+
+  if (!from || !to) return false
+
+  const dayCompare = compareDays(day, from, locale)
+  const toCompare = compareDays(day, to, locale)
 
   // Day is between from and to (exclusive of boundaries for styling)
   return dayCompare > 0 && toCompare < 0
 }
 
 /**
- * Check if a day is the start of a range selection
+ * Check if a day is the start of a range or week selection
  */
 export function isRangeStart(
   day: Day,
-  selectedValue: Day | Range | Multi | null,
+  selectedValue: Day | Range | Multi | Week | null,
   type: CalendarType
 ): boolean {
-  if (type !== 'range' || !selectedValue) return false
-  const range = selectedValue as Range
-  if (!range.from) return false
+  if ((type !== 'range' && type !== 'week') || !selectedValue) return false
+
+  let from: Day | null = null
+  if (type === 'range') {
+    const range = selectedValue as Range
+    from = range.from
+  } else if (type === 'week') {
+    const week = selectedValue as Week
+    from = week.from
+  }
+
+  if (!from) return false
 
   return (
-    day.year === range.from.year &&
-    day.month === range.from.month &&
-    day.day === range.from.day
+    day.year === from.year && day.month === from.month && day.day === from.day
   )
 }
 
 /**
- * Check if a day is the end of a range selection
+ * Check if a day is the end of a range or week selection
  */
 export function isRangeEnd(
   day: Day,
-  selectedValue: Day | Range | Multi | null,
+  selectedValue: Day | Range | Multi | Week | null,
   type: CalendarType
 ): boolean {
-  if (type !== 'range' || !selectedValue) return false
-  const range = selectedValue as Range
-  if (!range.to) return false
+  if ((type !== 'range' && type !== 'week') || !selectedValue) return false
 
-  return (
-    day.year === range.to.year &&
-    day.month === range.to.month &&
-    day.day === range.to.day
-  )
+  let to: Day | null = null
+  if (type === 'range') {
+    const range = selectedValue as Range
+    to = range.to
+  } else if (type === 'week') {
+    const week = selectedValue as Week
+    to = week.to
+  }
+
+  if (!to) return false
+
+  return day.year === to.year && day.month === to.month && day.day === to.day
 }
-

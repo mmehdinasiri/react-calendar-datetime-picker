@@ -8,6 +8,7 @@ import type {
   Day,
   Range,
   Multi,
+  Week,
   CalendarLocale,
   CalendarType,
   CalendarListStyle
@@ -22,7 +23,7 @@ import { YearView } from './YearView'
 
 export interface CalendarCoreProps {
   /** Currently selected value */
-  selectedValue: Day | Range | Multi | null
+  selectedValue: Day | Range | Multi | Week | null
   /** Currently displayed month */
   displayMonth: Day
   /** Current view: 'calendar', 'months', or 'years' */

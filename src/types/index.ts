@@ -56,6 +56,16 @@ export interface Range {
 export type Multi = Day[]
 
 /**
+ * Week representation (start and end of week)
+ */
+export interface Week {
+  /** Start date of the week */
+  from: Day
+  /** End date of the week */
+  to: Day
+}
+
+/**
  * Calendar locale
  * - 'en': Gregorian calendar
  * - 'fa': Jalali (Persian) calendar
@@ -67,8 +77,9 @@ export type CalendarLocale = 'en' | 'fa'
  * - 'single': Select a single date
  * - 'range': Select a date range
  * - 'multi': Select multiple dates
+ * - 'week': Select an entire week
  */
-export type CalendarType = 'single' | 'range' | 'multi'
+export type CalendarType = 'single' | 'range' | 'multi' | 'week'
 
 /**
  * Calendar list style for year/month views

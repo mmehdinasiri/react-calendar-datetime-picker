@@ -18,6 +18,7 @@ export type {
   Day,
   Range,
   Multi,
+  Week,
   Time,
   TimeRange,
   CalendarLocale,

@@ -2,7 +2,7 @@
  * Date formatting utilities for display in input fields
  */
 
-import type { Day, Range, Multi, CalendarLocale, CalendarType } from '../types'
+import type { Day, Range, Multi, Week, CalendarLocale, CalendarType } from '../types'
 
 /**
  * Format a single day for display
@@ -31,7 +31,7 @@ function formatDay(
  * Format a date value for input display based on type
  */
 export function formatDateForInput(
-  value: Day | Range | Multi | null,
+  value: Day | Range | Multi | Week | null,
   locale: CalendarLocale,
   type: CalendarType,
   showTime = false,
@@ -49,6 +49,14 @@ export function formatDateForInput(
     const fromStr = formatDay(range.from, locale, showTime)
     const toStr = formatDay(range.to, locale, showTime)
     return `${fromLabel} ${fromStr} ${toLabel} ${toStr}`
+  }
+
+  if (type === 'week' && 'from' in value && 'to' in value) {
+    const week = value as Week
+    const fromStr = formatDay(week.from, locale, showTime)
+    const toStr = formatDay(week.to, locale, showTime)
+    const weekLabel = locale === 'fa' ? 'هفته' : 'Week'
+    return `${weekLabel}: ${fromStr} - ${toStr}`
   }
 
   if (type === 'multi' && Array.isArray(value)) {

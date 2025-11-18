@@ -4,16 +4,24 @@
  */
 
 import { useReducer, useEffect, useRef } from 'react'
-import type { Day, Range, Multi, CalendarLocale, CalendarType } from '../types'
+import type {
+  Day,
+  Range,
+  Multi,
+  Week,
+  CalendarLocale,
+  CalendarType
+} from '../types'
 import { extractMonthFromValue } from '../utils/normalize'
-import { getToday, dateToDay } from '../utils/date-conversion'
+import { getToday } from '../utils/date-conversion'
+import { getWeekBounds } from '../utils/calendar-grid'
 
 /**
  * Calendar state
  */
 export interface CalendarState {
   /** Currently selected value */
-  selectedValue: Day | Range | Multi | null
+  selectedValue: Day | Range | Multi | Week | null
   /** Currently displayed month */
   displayMonth: Day
   /** Current view: 'calendar', 'months', or 'years' */
@@ -27,6 +35,7 @@ export type CalendarAction =
   | { type: 'SELECT_DATE'; payload: Day }
   | { type: 'SELECT_RANGE_START'; payload: Day }
   | { type: 'SELECT_RANGE_END'; payload: Day }
+  | { type: 'SELECT_WEEK'; payload: Day }
   | { type: 'TOGGLE_MULTI_DATE'; payload: Day }
   | { type: 'UPDATE_TIME'; payload: { day: Day; hour: number; minute: number } }
   | { type: 'CLEAR_SELECTION' }
@@ -35,19 +44,25 @@ export type CalendarAction =
   | { type: 'SET_VIEW'; payload: 'calendar' | 'months' | 'years' }
   | { type: 'SELECT_MONTH'; payload: number }
   | { type: 'SELECT_YEAR'; payload: number }
-  | { type: 'SYNC_INIT_VALUE'; payload: Day | Range | Multi | null }
+  | { type: 'SYNC_INIT_VALUE'; payload: Day | Range | Multi | Week | null }
   | { type: 'GO_TO_TODAY' }
 
 /**
  * Calculate new value based on selection type
  */
 function calculateNewValue(
-  currentValue: Day | Range | Multi | null,
+  currentValue: Day | Range | Multi | Week | null,
   selectedDay: Day,
-  type: CalendarType
-): Day | Range | Multi | null {
+  type: CalendarType,
+  locale: CalendarLocale = 'en'
+): Day | Range | Multi | Week | null {
   if (type === 'single') {
     return selectedDay
+  }
+
+  if (type === 'week') {
+    // Calculate week bounds for the selected day
+    return getWeekBounds(selectedDay, locale)
   }
 
   if (type === 'range') {
@@ -163,7 +178,8 @@ function calendarReducer(
       const newValue = calculateNewValue(
         state.selectedValue,
         dayWithTime,
-        type
+        type,
+        locale
       )
 
       // Only update displayMonth when starting a new selection, not when completing a range
@@ -178,7 +194,7 @@ function calendarReducer(
         // Otherwise, keep the current displayMonth when selecting end date
       } else {
         // For single and multi, always update displayMonth to selected date
-      const monthFromValue = extractMonthFromValue(newValue)
+        const monthFromValue = extractMonthFromValue(newValue)
         newDisplayMonth = monthFromValue || state.displayMonth
       }
 
@@ -214,11 +230,31 @@ function calendarReducer(
       }
     }
 
+    case 'SELECT_WEEK': {
+      // Calculate week bounds for the selected day
+      const weekBounds = getWeekBounds(action.payload, locale)
+      const newValue: Week = {
+        from: addSystemTimeIfNeeded(weekBounds.from, withTime),
+        to: addSystemTimeIfNeeded(weekBounds.to, withTime)
+      }
+
+      const monthFromValue = extractMonthFromValue(newValue)
+      const newDisplayMonth = monthFromValue || state.displayMonth
+
+      return {
+        ...state,
+        selectedValue: newValue,
+        displayMonth: newDisplayMonth,
+        currentView: 'calendar'
+      }
+    }
+
     case 'TOGGLE_MULTI_DATE': {
       const newValue = calculateNewValue(
         state.selectedValue,
         action.payload,
-        'multi'
+        'multi',
+        locale
       )
       return {
         ...state,
@@ -271,6 +307,48 @@ function calendarReducer(
             ...state,
             selectedValue: {
               ...currentRange,
+              to: updatedDay
+            }
+          }
+        }
+
+        return state
+      }
+
+      if (type === 'week') {
+        const currentWeek = state.selectedValue as Week | null
+        if (!currentWeek) {
+          return state
+        }
+
+        // Check if the day matches the start or end date
+        const isStartDate =
+          currentWeek.from &&
+          currentWeek.from.year === day.year &&
+          currentWeek.from.month === day.month &&
+          currentWeek.from.day === day.day
+
+        const isEndDate =
+          currentWeek.to &&
+          currentWeek.to.year === day.year &&
+          currentWeek.to.month === day.month &&
+          currentWeek.to.day === day.day
+
+        if (isStartDate) {
+          return {
+            ...state,
+            selectedValue: {
+              ...currentWeek,
+              from: updatedDay
+            }
+          }
+        }
+
+        if (isEndDate) {
+          return {
+            ...state,
+            selectedValue: {
+              ...currentWeek,
               to: updatedDay
             }
           }
@@ -381,7 +459,14 @@ export interface UseCalendarStateOptions {
  * useCalendarState Hook
  */
 export function useCalendarState(options: UseCalendarStateOptions) {
-  const { initValue, locale, type, withTime = false, onChange, onCalenderChange } = options
+  const {
+    initValue,
+    locale,
+    type,
+    withTime = false,
+    onChange,
+    onCalenderChange
+  } = options
 
   // Extract month from normalized initValue for initial display month
   const monthFromInitValue = extractMonthFromValue(initValue || null)
@@ -414,10 +499,15 @@ export function useCalendarState(options: UseCalendarStateOptions) {
   const handleDateSelect = (day: Day) => {
     // The reducer will add system time if needed
     dispatch({ type: 'SELECT_DATE', payload: day })
-    
+
     // Calculate new value with system time added if needed
     const dayWithTime = addSystemTimeIfNeeded(day, withTime)
-    const newValue = calculateNewValue(state.selectedValue, dayWithTime, type)
+    const newValue = calculateNewValue(
+      state.selectedValue,
+      dayWithTime,
+      type,
+      locale
+    )
     onChange(newValue)
 
     // Call onCalenderChange if provided and initValue exists
@@ -429,10 +519,10 @@ export function useCalendarState(options: UseCalendarStateOptions) {
   // Handle time update
   const handleTimeUpdate = (day: Day, hour: number, minute: number) => {
     dispatch({ type: 'UPDATE_TIME', payload: { day, hour, minute } })
-    
+
     // Calculate new value with updated time
-    let newValue: Day | Range | Multi | null = null
-    
+    let newValue: Day | Range | Multi | Week | null = null
+
     if (type === 'single') {
       newValue = { ...day, hour, minute }
     } else if (type === 'range') {
@@ -462,6 +552,35 @@ export function useCalendarState(options: UseCalendarStateOptions) {
           }
         } else {
           newValue = currentRange
+        }
+      }
+    } else if (type === 'week') {
+      const currentWeek = state.selectedValue as Week | null
+      if (currentWeek) {
+        const isStartDate =
+          currentWeek.from &&
+          currentWeek.from.year === day.year &&
+          currentWeek.from.month === day.month &&
+          currentWeek.from.day === day.day
+
+        const isEndDate =
+          currentWeek.to &&
+          currentWeek.to.year === day.year &&
+          currentWeek.to.month === day.month &&
+          currentWeek.to.day === day.day
+
+        if (isStartDate) {
+          newValue = {
+            ...currentWeek,
+            from: { ...day, hour, minute }
+          }
+        } else if (isEndDate) {
+          newValue = {
+            ...currentWeek,
+            to: { ...day, hour, minute }
+          }
+        } else {
+          newValue = currentWeek
         }
       }
     }

@@ -4,7 +4,7 @@
  */
 
 import React, { useRef } from 'react'
-import type { Day, Range, Multi, CalendarLocale, CalendarType } from '../types'
+import type { Day, Range, Multi, Week, CalendarLocale, CalendarType } from '../types'
 import type {
   CalendarConstraints,
   CalendarCustomization
@@ -12,7 +12,8 @@ import type {
 import {
   generateCalendarGrid,
   getDayNames,
-  getMonthNames
+  getMonthNames,
+  getWeekBounds
 } from '../utils/calendar-grid'
 import { isDateSelectable } from '../utils/validation'
 import {
@@ -29,7 +30,7 @@ import { useKeyboardNavigation, useFocusManagement } from '../hooks'
 
 export interface CalendarGridViewProps {
   /** Currently selected value */
-  selectedValue: Day | Range | Multi | null
+  selectedValue: Day | Range | Multi | Week | null
   /** Currently displayed month */
   displayMonth: Day
   /** Calendar locale */
@@ -105,6 +106,7 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     if (!selectedValue) return null
     if (type === 'single') return selectedValue as Day
     if (type === 'range') return (selectedValue as Range).from
+    if (type === 'week') return (selectedValue as Week).from
     if (type === 'multi' && (selectedValue as Multi).length > 0) {
       return (selectedValue as Multi)[0]
     }
@@ -327,7 +329,14 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
 
                   const handleClick = () => {
                     if (isSelectable) {
-                      onDateSelect(day)
+                      // For week type, select the entire week containing this day
+                      if (type === 'week') {
+                        const weekBounds = getWeekBounds(day, locale)
+                        // Select the first day of the week (the week selection logic will handle the rest)
+                        onDateSelect(weekBounds.from)
+                      } else {
+                        onDateSelect(day)
+                      }
                     }
                   }
 
@@ -383,7 +392,7 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
       {/* Footer */}
       {(todayBtn || (withTime && type !== 'multi' && onTimeChange)) && (
         <div className='calendar-footer'>
-          {/* Time Selector - Only for single and range modes, not multi */}
+          {/* Time Selector - Only for single, range, and week modes, not multi */}
           {withTime && type !== 'multi' && onTimeChange && (
             <div className='calendar-time-selector'>
               {type === 'single' ? (
@@ -424,6 +433,35 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                       const range = selectedValue as Range | null
                       if (range?.to) {
                         onTimeChange(range.to, hour, minute)
+                      }
+                    }}
+                  />
+                </div>
+              ) : type === 'week' ? (
+                <div className='calendar-time-selector-range'>
+                  <TimeSelector
+                    day={(selectedValue as Week | null)?.from || null}
+                    timeFormat={timeFormat}
+                    locale={locale}
+                    label={locale === 'fa' ? 'از' : 'From'}
+                    disabled={!(selectedValue as Week | null)?.from}
+                    onTimeChange={(hour, minute) => {
+                      const week = selectedValue as Week | null
+                      if (week?.from) {
+                        onTimeChange(week.from, hour, minute)
+                      }
+                    }}
+                  />
+                  <TimeSelector
+                    day={(selectedValue as Week | null)?.to || null}
+                    timeFormat={timeFormat}
+                    locale={locale}
+                    label={locale === 'fa' ? 'تا' : 'To'}
+                    disabled={!(selectedValue as Week | null)?.to}
+                    onTimeChange={(hour, minute) => {
+                      const week = selectedValue as Week | null
+                      if (week?.to) {
+                        onTimeChange(week.to, hour, minute)
                       }
                     }}
                   />

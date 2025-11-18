@@ -163,7 +163,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
 
   // Use focus trap hook for modal
   useFocusTrap({
-    containerRef: modalRef,
+    containerRef: modalRef as React.RefObject<HTMLElement>,
     enabled: isOpen,
     autoFocus: true,
     restoreFocus: true
@@ -252,6 +252,8 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
               ? 'Select date range'
               : type === 'multi'
               ? 'Select multiple dates'
+              : type === 'week'
+              ? 'Select week'
               : 'Select date'
           }
           style={{
