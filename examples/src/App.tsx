@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import Editor from '@monaco-editor/react'
 import {
   DtPicker,
   DtCalendar,
@@ -181,97 +180,219 @@ const parsePropsString = (propsString: string): Record<string, unknown> => {
   }
 
   try {
-    // Remove comments first (single-line comments starting with //)
-    let cleaned = propsString
-      .split('\n')
-      .map((line) => {
-        // Remove comments but preserve the line structure
-        const commentIndex = line.indexOf('//')
-        if (commentIndex >= 0) {
-          // Check if // is inside a string
-          const beforeComment = line.substring(0, commentIndex)
-          const stringMatches = beforeComment.match(/"/g)
-          if (stringMatches && stringMatches.length % 2 === 0) {
-            // Even number of quotes means // is not inside a string
-            return line.substring(0, commentIndex).trimRight()
-          }
-        }
-        return line
-      })
-      .filter((line) => line.trim() !== '') // Remove empty lines
-      .join('\n')
-      .replace(/\/\*[\s\S]*?\*\//g, '') // Remove multi-line comments
-      .trim()
-
-    // Try to parse as JSON
-    const parsed = JSON.parse(cleaned)
-    if (
-      typeof parsed === 'object' &&
-      parsed !== null &&
-      !Array.isArray(parsed)
-    ) {
-      // Convert ISO strings back to Date objects
-      const result: Record<string, unknown> = {}
-      for (const [key, value] of Object.entries(parsed)) {
-        if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
-          result[key] = new Date(value)
-        } else {
-          result[key] = value
-        }
-      }
-      return result
+    // Parse JSX code to extract props
+    // Remove wrapper div if present
+    let jsxCode = propsString.trim()
+    const wrapperMatch = jsxCode.match(/<div[^>]*>([\s\S]*?)<\/div>/)
+    if (wrapperMatch) {
+      jsxCode = wrapperMatch[1].trim()
     }
-    return {}
-  } catch {
-    // If JSON parsing fails, try to handle common cases
-    try {
-      // Remove comments and clean up
-      let cleaned = propsString
-        .replace(/\/\/.*$/gm, '') // Remove single-line comments
-        .replace(/\/\*[\s\S]*?\*\//g, '') // Remove multi-line comments
-        .trim()
 
-      // Handle new Date() calls - convert to ISO string for JSON
-      cleaned = cleaned.replace(/new Date\(([^)]+)\)/g, (match, dateStr) => {
-        try {
-          const date = new Date(dateStr.replace(/['"]/g, ''))
-          return JSON.stringify(date.toISOString())
-        } catch {
-          return match
-        }
-      })
+    // Find the component tag (handle multi-line)
+    const componentMatch = jsxCode.match(/<(\w+)([\s\S]*?)(?:\/>|>)/)
 
-      // Try JSON parse again after Date conversion
-      try {
-        const parsed = JSON.parse(cleaned)
-        if (
-          typeof parsed === 'object' &&
-          parsed !== null &&
-          !Array.isArray(parsed)
-        ) {
-          // Convert ISO strings back to Date objects
-          const result: Record<string, unknown> = {}
-          for (const [key, value] of Object.entries(parsed)) {
-            if (
-              typeof value === 'string' &&
-              /^\d{4}-\d{2}-\d{2}T/.test(value)
-            ) {
-              result[key] = new Date(value)
-            } else {
-              result[key] = value
-            }
-          }
-          return result
-        }
-      } catch {
-        // If still fails, return empty object (don't try eval for security)
-        return {}
-      }
-    } catch {
+    if (!componentMatch) {
       return {}
     }
+
+    const propsStr = componentMatch[2].trim()
+    const props: Record<string, unknown> = {}
+
+    if (!propsStr) return props
+
+    // Parse JSX attributes with proper handling of nested braces
+    let i = 0
+    while (i < propsStr.length) {
+      // Skip whitespace and newlines
+      while (i < propsStr.length && /\s/.test(propsStr[i])) i++
+      if (i >= propsStr.length) break
+
+      // Find attribute name
+      const nameMatch = propsStr.slice(i).match(/^(\w+)/)
+      if (!nameMatch) break
+
+      const key = nameMatch[1]
+      i += nameMatch[0].length
+
+      // Skip whitespace
+      while (i < propsStr.length && /\s/.test(propsStr[i])) i++
+
+      // Check if this is a boolean attribute (no value, like <div disabled />)
+      if (i >= propsStr.length || propsStr[i] !== '=') {
+        // Boolean attribute without value (e.g., showWeekend)
+        props[key] = true
+        continue
+      }
+
+      // Skip the '=' sign
+      i++
+
+      // Skip whitespace after '='
+      while (i < propsStr.length && /\s/.test(propsStr[i])) i++
+      if (i >= propsStr.length) break
+
+      // Parse attribute value
+      let value: string | null = null
+
+      if (propsStr[i] === '"' || propsStr[i] === "'") {
+        // String value
+        const quote = propsStr[i]
+        i++
+        const endQuote = propsStr.indexOf(quote, i)
+        if (endQuote !== -1) {
+          value = propsStr.slice(i, endQuote)
+          i = endQuote + 1
+        }
+      } else if (propsStr[i] === '{') {
+        // Expression value - need to handle nested braces
+        const start = i
+        let braceCount = 0
+        let j = i + 1
+
+        // Check for empty braces immediately (e.g., todayBtn={})
+        if (j < propsStr.length && propsStr[j] === '}') {
+          value = ''
+          i = j + 1
+        } else {
+          // Parse the content between braces
+          while (j < propsStr.length) {
+            const char = propsStr[j]
+            if (char === '{') {
+              braceCount++
+            } else if (char === '}') {
+              if (braceCount === 0) {
+                value = propsStr.slice(start + 1, j).trim()
+                i = j + 1
+                break
+              }
+              braceCount--
+            }
+            j++
+          }
+          if (j >= propsStr.length) {
+            value = propsStr.slice(start + 1).trim()
+            i = j
+          }
+        }
+      }
+
+      if (value !== null) {
+        // Parse the value
+        try {
+          // Handle empty braces {} - for boolean props, treat as false
+          if (value.trim() === '') {
+            const booleanProps = [
+              'todayBtn',
+              'showWeekend',
+              'withTime',
+              'dark',
+              'clearBtn',
+              'showTimeInput',
+              'enlargeSelectedDay'
+            ]
+            if (booleanProps.includes(key)) {
+              props[key] = false
+            }
+            continue
+          }
+
+          // Robust boolean conversion - trim to handle any whitespace
+          const trimmedValue = value.trim()
+
+          // Check for boolean props first
+          const booleanProps = [
+            'todayBtn',
+            'showWeekend',
+            'withTime',
+            'dark',
+            'clearBtn',
+            'showTimeInput',
+            'enlargeSelectedDay'
+          ]
+
+          if (booleanProps.includes(key)) {
+            // For boolean props, explicitly convert string values to booleans
+            if (trimmedValue === 'true') {
+              props[key] = true
+              continue // Skip further processing
+            } else if (trimmedValue === 'false') {
+              props[key] = false
+              continue // Skip further processing
+            } else {
+              // Skip incomplete "true" or "false" (like "t", "tr", "tru", "f", "fa", "fal", "fals")
+              const looksIncomplete =
+                /^[tf]$|^tr$|^tru$|^fa$|^fal$|^fals$|^te$/i.test(trimmedValue)
+              if (looksIncomplete) {
+                // Don't set the prop - let config default or undefined take over
+                continue
+              }
+              // For other values on boolean props, try to evaluate as JavaScript
+              // This handles cases like todayBtn={someVariable} or todayBtn={!false}
+              try {
+                const evaluated = new Function('return ' + trimmedValue)()
+                if (typeof evaluated === 'boolean') {
+                  props[key] = evaluated
+                } else {
+                  // If evaluation doesn't result in boolean, treat as truthy/falsy
+                  props[key] = Boolean(evaluated)
+                }
+                continue // Skip further processing
+              } catch {
+                // If evaluation fails, skip this prop
+                continue
+              }
+            }
+          } else if (trimmedValue === 'true') {
+            props[key] = true
+            continue // Skip further processing
+          } else if (trimmedValue === 'false') {
+            props[key] = false
+            continue // Skip further processing
+          }
+
+          // Process non-boolean values
+          if (/^-?\d+\.?\d*$/.test(value)) {
+            props[key] = Number(value)
+          } else if (value.includes('new Date(')) {
+            const dateMatch = value.match(/new Date\(['"]([^'"]+)['"]\)/)
+            if (dateMatch) {
+              props[key] = new Date(dateMatch[1])
+            } else {
+              props[key] = value
+            }
+          } else if (value.includes('=>')) {
+            // Function
+            try {
+              props[key] = new Function('return ' + value)()
+            } catch {
+              props[key] = value
+            }
+          } else if (
+            (value.startsWith('[') && value.endsWith(']')) ||
+            (value.startsWith('{') && value.endsWith('}'))
+          ) {
+            // Array or Object
+            try {
+              const func = new Function('return ' + value)
+              props[key] = func()
+            } catch {
+              props[key] = value
+            }
+          } else {
+            // String value
+            props[key] = value
+          }
+        } catch {
+          props[key] = value
+        }
+      }
+    }
+
+    return props
+  } catch (error) {
+    // If parsing fails, return empty object
+    return {}
   }
-  return {}
 }
 
 const ExampleRenderer: React.FC<ExampleRendererProps> = ({
@@ -375,111 +496,9 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
     return componentTag
   }
 
-  // Format props for display, handling functions (like icons) by creating valid JSON with comments
-  const formatPropsForDisplay = (props: Record<string, unknown>): string => {
-    // Create a copy of props without functions for JSON serialization
-    const jsonProps: Record<string, unknown> = {}
-    const functionNotes: string[] = []
-
-    for (const [key, value] of Object.entries(props)) {
-      if (value === undefined || value === null) {
-        continue
-      }
-      if (typeof value === 'function') {
-        // Add helpful comment explaining the limitation
-        if (key === 'isDateDisabled') {
-          functionNotes.push(
-            `// ${key}: function (cannot be edited in JSON - functions are not supported in JSON format)`
-          )
-        } else {
-          functionNotes.push(
-            `// ${key}: function (cannot be edited in JSON - functions are not supported in JSON format)`
-          )
-        }
-        // Don't include functions in JSON
-      } else if (typeof value === 'object') {
-        if (value instanceof Date) {
-          jsonProps[key] = value.toISOString()
-        } else if (Array.isArray(value)) {
-          jsonProps[key] = value
-        } else {
-          // Handle nested objects (like constraints, customization)
-          if (key === 'constraints' && value && typeof value === 'object') {
-            const constraints = value as Record<string, unknown>
-            const jsonConstraints: Record<string, unknown> = {}
-
-            for (const [constraintKey, constraintValue] of Object.entries(
-              constraints
-            )) {
-              if (typeof constraintValue === 'function') {
-                if (constraintKey === 'isDateDisabled') {
-                  functionNotes.push(
-                    `// constraints.${constraintKey}: function (cannot be edited in JSON - functions are not supported in JSON format)`
-                  )
-                } else {
-                  functionNotes.push(
-                    `// constraints.${constraintKey}: function (cannot be edited in JSON - functions are not supported in JSON format)`
-                  )
-                }
-              } else {
-                jsonConstraints[constraintKey] = constraintValue
-              }
-            }
-            jsonProps[key] = jsonConstraints
-          } else if (
-            key === 'customization' &&
-            value &&
-            typeof value === 'object'
-          ) {
-            const custom = value as Record<string, unknown>
-            const jsonCustom: Record<string, unknown> = {}
-
-            if (custom.icons) {
-              const icons = custom.icons as Record<string, unknown>
-              const iconNotes: string[] = []
-              for (const [iconKey, iconValue] of Object.entries(icons)) {
-                if (typeof iconValue === 'function') {
-                  iconNotes.push(
-                    `//   ${iconKey}: React.Component (cannot be edited in JSON - functions are not supported in JSON format)`
-                  )
-                } else {
-                  jsonCustom[iconKey] = iconValue
-                }
-              }
-              if (iconNotes.length > 0) {
-                functionNotes.push(`// customization.icons: {`)
-                functionNotes.push(...iconNotes)
-                functionNotes.push(`// }`)
-              }
-            }
-            if (custom.classes) {
-              jsonCustom.classes = custom.classes
-            }
-            jsonProps[key] = jsonCustom
-          } else {
-            jsonProps[key] = value
-          }
-        }
-      } else {
-        jsonProps[key] = value
-      }
-    }
-
-    // Create JSON string
-    const jsonString = JSON.stringify(jsonProps, null, 2)
-
-    // Add function notes as comments at the top
-    if (functionNotes.length > 0) {
-      return functionNotes.join('\n') + '\n' + jsonString
-    }
-
-    return jsonString
-  }
-
   const [propsString, setPropsString] = useState<string>(() => {
-    // Format props for initial display, preserving function references as comments
-    const props = config.props || {}
-    return formatPropsForDisplay(props)
+    // Format props for initial display as JSX code
+    return formatJSXForDisplay(config)
   })
   const [propsError, setPropsError] = useState<string | null>(null)
 
@@ -492,13 +511,31 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
         propsString.trim() !== '' &&
         propsString.trim() !== '{}'
       ) {
-        setPropsError('Invalid JSON format')
+        // Check if it's just a component tag without props (valid case)
+        const hasComponentTag = /<\w+/.test(propsString)
+        if (hasComponentTag && !propsString.match(/<\w+\s+\w+=/)) {
+          // Component tag without props - this is valid
+          setPropsError(null)
+          return config.props || {}
+        }
+        setPropsError('Invalid code format. Please check your syntax.')
         return config.props || {}
       }
       setPropsError(null)
+
       // Merge with original props to preserve functions/components (like icons)
       // Functions can't be serialized, so we need to preserve them from original config
-      const merged = { ...config.props, ...parsed }
+      // IMPORTANT: Start with config props, then explicitly override with parsed props
+      // This ensures that false values from parsed override true values from config
+      const merged: Record<string, unknown> = { ...config.props }
+
+      // Explicitly assign all parsed props to ensure false values override config defaults
+      // Use Object.entries to ensure we capture all properties including those with false values
+      for (const [key, value] of Object.entries(parsed)) {
+        // Directly assign the value from parsed, even if it's false
+        // This ensures false values override true values from config
+        merged[key] = value
+      }
 
       // Deep merge for nested objects like customization
       if (config.props?.customization && parsed.customization) {
@@ -625,9 +662,40 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
     setPropsString(newPropsString)
   }
 
+  // Explicitly extract boolean props to ensure false values are passed correctly
+  const booleanPropNames = [
+    'todayBtn',
+    'showWeekend',
+    'withTime',
+    'dark',
+    'clearBtn',
+    'showTimeInput',
+    'enlargeSelectedDay'
+  ]
+
+  const {
+    todayBtn,
+    showWeekend,
+    withTime,
+    dark,
+    clearBtn,
+    showTimeInput,
+    enlargeSelectedDay,
+    ...restProps
+  } = props
+
+  const componentProps: Record<string, unknown> = { ...restProps }
+
+  // Explicitly pass boolean props if they exist in props (including false values)
+  booleanPropNames.forEach((propName) => {
+    if (Object.prototype.hasOwnProperty.call(props, propName)) {
+      componentProps[propName] = props[propName]
+    }
+  })
+
   const content = (
     <Component
-      {...props}
+      {...componentProps}
       onChange={handleChange}
       onCalenderChange={props.initValue ? handleCalenderChange : undefined}
     />
@@ -701,33 +769,50 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                   </div>
                 )}
                 <div className='example-props'>
-                  <h3>Code Example</h3>
-                  <div className='code-display'>
-                    <SyntaxHighlighter
-                      language='jsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '4px',
-                        fontSize: '14px'
-                      }}
-                    >
-                      {formatJSXForDisplay(config)}
-                    </SyntaxHighlighter>
-                  </div>
-
-                  <h3 style={{ marginTop: '1.5rem' }}>Edit Props (JSON)</h3>
+                  <h3>Edit Code</h3>
                   <div className='props-editor-container'>
-                    <textarea
-                      className={`props-editor ${propsError ? 'props-editor-error' : ''}`}
+                    <Editor
+                      height='400px'
+                      defaultLanguage='javascript'
+                      language='javascript'
                       value={propsString}
-                      onChange={(e) => handlePropsChange(e.target.value)}
-                      spellCheck={false}
-                      placeholder='Edit props as JSON... (Note: Functions like icons cannot be edited)'
-                      onFocus={(e) => {
-                        // Prevent auto-scroll when textarea gets focus
-                        e.preventDefault()
-                        e.target.focus({ preventScroll: true })
+                      onChange={(value) => {
+                        if (value !== undefined) {
+                          handlePropsChange(value)
+                        }
+                      }}
+                      theme='vs-dark'
+                      options={{
+                        minimap: { enabled: false },
+                        fontSize: 14,
+                        lineNumbers: 'on',
+                        scrollBeyondLastLine: false,
+                        automaticLayout: true,
+                        tabSize: 2,
+                        wordWrap: 'on',
+                        scrollbar: {
+                          vertical: 'auto',
+                          horizontal: 'auto'
+                        },
+                        quickSuggestions: false,
+                        suggestOnTriggerCharacters: false,
+                        acceptSuggestionOnEnter: 'off',
+                        tabCompletion: 'off',
+                        wordBasedSuggestions: 'off'
+                      }}
+                      beforeMount={(monaco) => {
+                        // Disable JavaScript/TypeScript validation
+                        monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions(
+                          {
+                            noSemanticValidation: true,
+                            noSyntaxValidation: true,
+                            noSuggestionDiagnostics: true
+                          }
+                        )
+                      }}
+                      onMount={(editor) => {
+                        // Prevent editor from causing scroll
+                        editor.updateOptions({ readOnly: false })
                       }}
                     />
                     {propsError && (
@@ -737,7 +822,7 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                   <button
                     className='props-reset-btn'
                     onClick={() => {
-                      setPropsString(formatPropsForDisplay(config.props || {}))
+                      setPropsString(formatJSXForDisplay(config))
                       setPropsError(null)
                     }}
                     type='button'
