@@ -123,7 +123,7 @@ export function isDateInRange(
 /**
  * Check if a date is in the disabled dates list
  */
-export function isDateDisabled(
+export function isDateInDisabledList(
   day: Day,
   disabledDates?: Day[],
   locale: CalendarLocale = 'en'
@@ -146,6 +146,36 @@ export function isDateDisabled(
 }
 
 /**
+ * Check if a date is disabled (either in disabledDates list or via callback)
+ */
+export function isDateDisabled(
+  day: Day,
+  options: {
+    disabledDates?: Day[]
+    isDateDisabled?: (date: Day) => boolean
+    locale?: CalendarLocale
+  }
+): boolean {
+  const {
+    disabledDates,
+    isDateDisabled: isDateDisabledCallback,
+    locale = 'en'
+  } = options
+
+  // Check custom callback first
+  if (isDateDisabledCallback && isDateDisabledCallback(day)) {
+    return true
+  }
+
+  // Check disabled dates list
+  if (isDateInDisabledList(day, disabledDates, locale)) {
+    return true
+  }
+
+  return false
+}
+
+/**
  * Check if a date can be selected (valid, in range, not disabled)
  */
 export function isDateSelectable(
@@ -154,14 +184,28 @@ export function isDateSelectable(
     minDate?: Day
     maxDate?: Day
     disabledDates?: Day[]
+    isDateDisabled?: (date: Day) => boolean
     locale?: CalendarLocale
   }
 ): boolean {
-  const { minDate, maxDate, disabledDates, locale = 'en' } = options
+  const {
+    minDate,
+    maxDate,
+    disabledDates,
+    isDateDisabled: isDateDisabledCallback,
+    locale = 'en'
+  } = options
 
   if (!isValidDay(day, locale)) return false
   if (!isDateInRange(day, minDate, maxDate, locale)) return false
-  if (isDateDisabled(day, disabledDates, locale)) return false
+  if (
+    isDateDisabled(day, {
+      disabledDates,
+      isDateDisabled: isDateDisabledCallback,
+      locale
+    })
+  )
+    return false
 
   return true
 }

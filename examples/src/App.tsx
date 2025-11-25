@@ -1,4 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import {
   DtPicker,
   DtCalendar,
@@ -25,6 +27,10 @@ const Tabs: React.FC<TabProps> = ({ tabs, activeTab, onTabChange }) => {
           key={tab}
           className={`tab ${activeTab === tab ? 'tab-active' : ''}`}
           onClick={() => onTabChange(tab)}
+          onFocus={(e) => {
+            // Prevent scroll when button gets focus
+            e.target.blur()
+          }}
         >
           {tab}
         </button>
@@ -272,6 +278,103 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
   config,
   exampleKey
 }) => {
+  // Format JSX code for display
+  const formatJSXForDisplay = (config: ExampleConfig): string => {
+    const componentName =
+      config.component === 'DtPicker' ? 'DtPicker' : 'DtCalendar'
+    const wrapper = config.wrapper || ''
+    const props = config.props || {}
+
+    // Format props for JSX with full object structure
+    const formatValueForJSX = (val: unknown, indent: number = 0): string => {
+      const indentStr = '  '.repeat(indent)
+
+      if (typeof val === 'string') {
+        return JSON.stringify(val)
+      } else if (typeof val === 'boolean') {
+        return String(val)
+      } else if (typeof val === 'number') {
+        return String(val)
+      } else if (val instanceof Date) {
+        return `new Date('${val.toISOString()}')`
+      } else if (typeof val === 'function') {
+        // Show function code
+        const funcStr = val.toString()
+        // Format multi-line functions with proper indentation
+        const lines = funcStr.split('\n')
+        if (lines.length > 1) {
+          // Multi-line function - indent each line
+          const indentedLines = lines.map((line, idx) =>
+            idx === 0 ? line : `${indentStr}  ${line}`
+          )
+          return indentedLines.join('\n')
+        }
+        return funcStr
+      } else if (Array.isArray(val)) {
+        if (val.length === 0) return '[]'
+        const items = val
+          .map((item) => `${indentStr}  ${formatValueForJSX(item, indent + 1)}`)
+          .join(',\n')
+        return `[\n${items}\n${indentStr}]`
+      } else if (typeof val === 'object' && val !== null) {
+        const obj = val as Record<string, unknown>
+        const entries = Object.entries(obj).filter(
+          ([_, v]) => v !== undefined && v !== null
+        )
+        if (entries.length === 0) return '{}'
+        const props = entries
+          .map(([k, v]) => {
+            const formattedKey = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(k)
+              ? k
+              : JSON.stringify(k)
+            return `${indentStr}  ${formattedKey}: ${formatValueForJSX(v, indent + 1)}`
+          })
+          .join(',\n')
+        return `{\n${props}\n${indentStr}}`
+      }
+      return JSON.stringify(val)
+    }
+
+    const formatPropsForJSX = (props: Record<string, unknown>): string => {
+      const entries = Object.entries(props).filter(
+        ([_, val]) => val !== undefined && val !== null
+      )
+
+      if (entries.length === 0) return ''
+
+      return entries
+        .map(([key, val]) => {
+          if (typeof val === 'string') {
+            return `  ${key}="${val}"`
+          } else if (typeof val === 'boolean') {
+            return val ? `  ${key}` : `  ${key}={false}`
+          } else {
+            const formattedValue = formatValueForJSX(val, 1)
+            // For functions, wrap in braces but don't add extra indentation
+            if (typeof val === 'function') {
+              return `  ${key}={${formattedValue}}`
+            }
+            return `  ${key}={${formattedValue}}`
+          }
+        })
+        .join('\n')
+    }
+
+    const jsxProps = formatPropsForJSX(props)
+    const componentTag = jsxProps
+      ? `<${componentName}\n${jsxProps}\n/>`
+      : `<${componentName} />`
+
+    if (
+      wrapper &&
+      wrapper !== 'calendar-container' &&
+      wrapper !== 'picker-container'
+    ) {
+      return `<div className="${wrapper}">\n  ${componentTag}\n</div>`
+    }
+    return componentTag
+  }
+
   // Format props for display, handling functions (like icons) by creating valid JSON with comments
   const formatPropsForDisplay = (props: Record<string, unknown>): string => {
     // Create a copy of props without functions for JSON serialization
@@ -283,9 +386,16 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
         continue
       }
       if (typeof value === 'function') {
-        functionNotes.push(
-          `// ${key}: function (preserved from original config)`
-        )
+        // Add helpful comment explaining the limitation
+        if (key === 'isDateDisabled') {
+          functionNotes.push(
+            `// ${key}: function (cannot be edited in JSON - functions are not supported in JSON format)`
+          )
+        } else {
+          functionNotes.push(
+            `// ${key}: function (cannot be edited in JSON - functions are not supported in JSON format)`
+          )
+        }
         // Don't include functions in JSON
       } else if (typeof value === 'object') {
         if (value instanceof Date) {
@@ -293,8 +403,34 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
         } else if (Array.isArray(value)) {
           jsonProps[key] = value
         } else {
-          // Handle customization object with icons
-          if (key === 'customization' && value && typeof value === 'object') {
+          // Handle nested objects (like constraints, customization)
+          if (key === 'constraints' && value && typeof value === 'object') {
+            const constraints = value as Record<string, unknown>
+            const jsonConstraints: Record<string, unknown> = {}
+
+            for (const [constraintKey, constraintValue] of Object.entries(
+              constraints
+            )) {
+              if (typeof constraintValue === 'function') {
+                if (constraintKey === 'isDateDisabled') {
+                  functionNotes.push(
+                    `// constraints.${constraintKey}: function (cannot be edited in JSON - functions are not supported in JSON format)`
+                  )
+                } else {
+                  functionNotes.push(
+                    `// constraints.${constraintKey}: function (cannot be edited in JSON - functions are not supported in JSON format)`
+                  )
+                }
+              } else {
+                jsonConstraints[constraintKey] = constraintValue
+              }
+            }
+            jsonProps[key] = jsonConstraints
+          } else if (
+            key === 'customization' &&
+            value &&
+            typeof value === 'object'
+          ) {
             const custom = value as Record<string, unknown>
             const jsonCustom: Record<string, unknown> = {}
 
@@ -304,7 +440,7 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
               for (const [iconKey, iconValue] of Object.entries(icons)) {
                 if (typeof iconValue === 'function') {
                   iconNotes.push(
-                    `//   ${iconKey}: React.Component (preserved from original config)`
+                    `//   ${iconKey}: React.Component (cannot be edited in JSON - functions are not supported in JSON format)`
                   )
                 } else {
                   jsonCustom[iconKey] = iconValue
@@ -363,6 +499,7 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
       // Merge with original props to preserve functions/components (like icons)
       // Functions can't be serialized, so we need to preserve them from original config
       const merged = { ...config.props, ...parsed }
+
       // Deep merge for nested objects like customization
       if (config.props?.customization && parsed.customization) {
         const configCustom = config.props.customization as {
@@ -382,6 +519,33 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
           }
         }
       }
+
+      // Deep merge for constraints to preserve isDateDisabled function
+      if (config.props?.constraints) {
+        const configConstraints = config.props.constraints as Record<
+          string,
+          unknown
+        >
+        const parsedConstraints = parsed.constraints as
+          | Record<string, unknown>
+          | undefined
+
+        if (parsedConstraints) {
+          // Merge parsed constraints with config constraints, preserving functions from config
+          merged.constraints = {
+            ...configConstraints,
+            ...parsedConstraints,
+            // Always preserve isDateDisabled from config if it exists (functions can't be parsed from JSON)
+            isDateDisabled:
+              configConstraints.isDateDisabled ||
+              parsedConstraints.isDateDisabled
+          }
+        } else {
+          // If no parsed constraints, use config constraints (preserves functions)
+          merged.constraints = configConstraints
+        }
+      }
+
       return merged
     } catch (error) {
       // Only show error if the string is not empty and not just whitespace
@@ -446,8 +610,6 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
 
   const handleChange = (date: unknown) => {
     setSelectedValue(date as Day | Range | Multi | null)
-    // Log to console for callback examples
-    console.log(`[${config.title}] onChange called:`, date)
   }
 
   // Use onCalenderChange to sync the value when initValue is provided
@@ -529,7 +691,9 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                             Apply variables to a parent container:
                           </p>
                           <code className='usage-example'>
-                            {'/* styles.css */\n.my-wrapper {\n  --calendar-primary: #0066cc;\n  --calendar-primary-hover: #0052a3;\n  --calendar-selected-day: #0066cc;\n}\n\n/* JSX */\n<div className="my-wrapper">\n  <DtCalendar />\n</div>'}
+                            {
+                              '/* styles.css */\n.my-wrapper {\n  --calendar-primary: #0066cc;\n  --calendar-primary-hover: #0052a3;\n  --calendar-selected-day: #0066cc;\n}\n\n/* JSX */\n<div className="my-wrapper">\n  <DtCalendar />\n</div>'
+                            }
                           </code>
                         </div>
                       )}
@@ -537,44 +701,64 @@ const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                   </div>
                 )}
                 <div className='example-props'>
-            <h3>Props</h3>
-            <div className='props-editor-container'>
-              <textarea
-                className={`props-editor ${propsError ? 'props-editor-error' : ''}`}
-                value={propsString}
-                onChange={(e) => handlePropsChange(e.target.value)}
-                spellCheck={false}
-                placeholder='Edit props as JSON... (Note: Functions like icons cannot be edited)'
-              />
-              {propsError && (
-                <div className='props-error'>{propsError}</div>
-              )}
-            </div>
-            <button
-              className='props-reset-btn'
-              onClick={() => {
-                setPropsString(formatPropsForDisplay(config.props || {}))
-                setPropsError(null)
-              }}
-              type='button'
-            >
-              Reset to Default
-            </button>
-          </div>
-          <div className='example-result'>
-            <h3>Result Value</h3>
-            <pre className='result-code'>
-              {formatValue(selectedValue)}
-            </pre>
-            {config.showConsoleLog && (
-              <div className='console-log-info'>
-                <p>
-                  <strong>💡 Tip:</strong> Open browser console to see
-                  onChange callback logs
-                </p>
-              </div>
-            )}
-          </div>
+                  <h3>Code Example</h3>
+                  <div className='code-display'>
+                    <SyntaxHighlighter
+                      language='jsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '4px',
+                        fontSize: '14px'
+                      }}
+                    >
+                      {formatJSXForDisplay(config)}
+                    </SyntaxHighlighter>
+                  </div>
+
+                  <h3 style={{ marginTop: '1.5rem' }}>Edit Props (JSON)</h3>
+                  <div className='props-editor-container'>
+                    <textarea
+                      className={`props-editor ${propsError ? 'props-editor-error' : ''}`}
+                      value={propsString}
+                      onChange={(e) => handlePropsChange(e.target.value)}
+                      spellCheck={false}
+                      placeholder='Edit props as JSON... (Note: Functions like icons cannot be edited)'
+                      onFocus={(e) => {
+                        // Prevent auto-scroll when textarea gets focus
+                        e.preventDefault()
+                        e.target.focus({ preventScroll: true })
+                      }}
+                    />
+                    {propsError && (
+                      <div className='props-error'>{propsError}</div>
+                    )}
+                  </div>
+                  <button
+                    className='props-reset-btn'
+                    onClick={() => {
+                      setPropsString(formatPropsForDisplay(config.props || {}))
+                      setPropsError(null)
+                    }}
+                    type='button'
+                  >
+                    Reset to Default
+                  </button>
+                </div>
+                <div className='example-result'>
+                  <h3>Result Value</h3>
+                  <pre className='result-code'>
+                    {formatValue(selectedValue)}
+                  </pre>
+                  {config.showConsoleLog && (
+                    <div className='console-log-info'>
+                      <p>
+                        <strong>💡 Tip:</strong> Open browser console to see
+                        onChange callback logs
+                      </p>
+                    </div>
+                  )}
+                </div>
               </>
             )
           })()}

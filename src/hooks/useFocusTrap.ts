@@ -57,7 +57,7 @@ export const useFocusTrap = (options: UseFocusTrapOptions) => {
       if (focusableElements.length > 0) {
         // Small delay to ensure DOM is ready
         setTimeout(() => {
-          focusableElements[0].focus()
+          focusableElements[0].focus({ preventScroll: true })
         }, 10)
       }
     }
@@ -78,14 +78,14 @@ export const useFocusTrap = (options: UseFocusTrapOptions) => {
       if (event.shiftKey) {
         if (document.activeElement === firstElement) {
           event.preventDefault()
-          lastElement.focus()
+          lastElement.focus({ preventScroll: true })
         }
       }
       // Tab
       else {
         if (document.activeElement === lastElement) {
           event.preventDefault()
-          firstElement.focus()
+          firstElement.focus({ preventScroll: true })
         }
       }
     }
@@ -103,4 +103,3 @@ export const useFocusTrap = (options: UseFocusTrapOptions) => {
     }
   }, [containerRef, enabled, autoFocus, restoreFocus])
 }
-

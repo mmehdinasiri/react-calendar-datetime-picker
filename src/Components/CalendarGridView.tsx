@@ -101,7 +101,7 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     onPresetRangeSelect
   } = props
 
-  const { maxDate, minDate, disabledDates } = constraints
+  const { maxDate, minDate, disabledDates, isDateDisabled } = constraints
   const { classes = {}, labels = {} } = customization
 
   const { days: daysClass } = classes
@@ -138,10 +138,11 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
         minDate,
         maxDate,
         disabledDates,
+        isDateDisabled,
         locale
       })
     },
-    [minDate, maxDate, disabledDates, locale]
+    [minDate, maxDate, disabledDates, isDateDisabled, locale]
   )
 
   // Focus management
@@ -300,6 +301,7 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
                     minDate,
                     maxDate,
                     disabledDates,
+                    isDateDisabled,
                     locale
                   })
                   const isWeekend =

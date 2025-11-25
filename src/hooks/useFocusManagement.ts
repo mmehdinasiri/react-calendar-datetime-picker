@@ -72,7 +72,7 @@ export const useFocusManagement = (
       const key = getDateKey(date)
       const element = cellRefs.current.get(key)
       if (element) {
-        element.focus()
+        element.focus({ preventScroll: true })
       }
     },
     [getDateKey]
@@ -106,9 +106,9 @@ export const useFocusManagement = (
     if (element) {
       // Use a small delay to ensure DOM is ready after re-renders
       const timeoutId = setTimeout(() => {
-        element.focus()
+        element.focus({ preventScroll: true })
       }, 0)
-      
+
       return () => clearTimeout(timeoutId)
     }
   }, [focusedDate, getDateKey])

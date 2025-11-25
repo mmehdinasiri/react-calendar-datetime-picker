@@ -12,8 +12,8 @@ const Light = dynamic(() => import('react-syntax-highlighter'), {
 	ssr: false
 })
 const Utilities = () => {
-	const [convertToEnDate, setConvertToEnDate] = useState(null)
-	const [convertToFaDate, setConvertToFaDate] = useState(null)
+	const [convertToEnDate, setConvertToEnDate] = useState<unknown>(null)
+	const [convertToFaDate, setConvertToFaDate] = useState<unknown>(null)
 	return (
 		<DocLayout>
 			<section className=''>
@@ -49,7 +49,11 @@ const Utilities = () => {
 								<br />
 								converted value:
 								<pre>
-									{JSON.stringify(convertToFa(convertToEnDate), null, 2)}
+									{JSON.stringify(
+										convertToEnDate ? convertToFa(convertToEnDate as any) : null,
+										null,
+										2
+									)}
 								</pre>
 							</div>
 						</div>
@@ -77,7 +81,11 @@ const Utilities = () => {
 								<br />
 								converted value:
 								<pre>
-									{JSON.stringify(convertToEn(convertToFaDate, '-'), null, 2)}
+									{JSON.stringify(
+										convertToFaDate ? convertToEn(convertToFaDate as any, '-') : null,
+										null,
+										2
+									)}
 								</pre>
 							</div>
 						</div>

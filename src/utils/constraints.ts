@@ -82,5 +82,10 @@ export function normalizeConstraintsProps(
     }
   }
 
+  // Pass through the isDateDisabled callback
+  if (constraintsInput.isDateDisabled) {
+    constraints.isDateDisabled = constraintsInput.isDateDisabled
+  }
+
   return { constraints, errors }
 }

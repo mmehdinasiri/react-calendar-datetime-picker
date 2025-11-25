@@ -32,6 +32,8 @@ export interface CalendarConstraints {
   minDate?: Day
   /** List of disabled dates */
   disabledDates?: Day[]
+  /** Custom function to check if a date should be disabled */
+  isDateDisabled?: (date: Day) => boolean
 }
 
 /**
@@ -44,6 +46,8 @@ export interface CalendarConstraintsInput {
   minDate?: DateInput
   /** List of disabled dates (accepts Day, Date, string, or number) */
   disabledDates?: DateInput[]
+  /** Custom function to check if a date should be disabled */
+  isDateDisabled?: (date: Day) => boolean
 }
 
 /**

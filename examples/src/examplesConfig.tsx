@@ -326,6 +326,87 @@ export const examples: ExamplesConfig = {
         placeholder: 'Select a date (Dec 25-27 disabled)'
       },
       wrapper: 'picker-container'
+    },
+    IsDateDisabledExample: {
+      title: 'Custom Date Validator (isDateDisabled)',
+      description:
+        'Use isDateDisabled callback to implement custom validation logic. Example: disable weekends (Saturday and Sunday). The callback receives a Day object and should return true if the date should be disabled.',
+      component: 'DtCalendar',
+      props: {
+        constraints: {
+          isDateDisabled: (date: Day) => {
+            // Convert Day to Date to get day of week
+            // For Gregorian: 0 = Sunday, 6 = Saturday
+            const dateObj = new Date(date.year, date.month - 1, date.day)
+            const dayOfWeek = dateObj.getDay()
+            return dayOfWeek === 0 || dayOfWeek === 6 // Disable Sunday and Saturday
+          }
+        },
+        showWeekend: true
+      },
+      wrapper: 'calendar-container'
+    },
+    DisableMondays: {
+      title: 'Disable Mondays',
+      description:
+        'Calendar with all Mondays disabled using isDateDisabled callback',
+      component: 'DtCalendar',
+      props: {
+        constraints: {
+          isDateDisabled: (date: Day) => {
+            // Convert Day to Date to get day of week
+            const dateObj = new Date(date.year, date.month - 1, date.day)
+            const dayOfWeek = dateObj.getDay()
+            // Monday = 1, disable all Mondays
+            return dayOfWeek === 1
+          }
+        },
+        showWeekend: true
+      },
+      wrapper: 'calendar-container'
+    },
+    BusinessDaysOnly: {
+      title: 'Business Days Only',
+      description:
+        'Calendar allowing only weekdays (Monday-Friday) using isDateDisabled callback',
+      component: 'DtCalendar',
+      props: {
+        constraints: {
+          isDateDisabled: (date: Day) => {
+            // Convert Day to Date to get day of week
+            const dateObj = new Date(date.year, date.month - 1, date.day)
+            const dayOfWeek = dateObj.getDay()
+            // Disable weekends (Sunday = 0, Saturday = 6)
+            return dayOfWeek === 0 || dayOfWeek === 6
+          }
+        },
+        showWeekend: true
+      },
+      wrapper: 'calendar-container'
+    },
+    ComplexValidator: {
+      title: 'Complex Date Validator',
+      description:
+        'Calendar with complex validation: disable weekends, specific dates, and dates before today',
+      component: 'DtCalendar',
+      props: {
+        constraints: {
+          disabledDates: [new Date(2024, 11, 25), new Date(2024, 11, 31)],
+          isDateDisabled: (date: Day) => {
+            const dateObj = new Date(date.year, date.month - 1, date.day)
+            const dayOfWeek = dateObj.getDay()
+            const today = new Date()
+            today.setHours(0, 0, 0, 0)
+            // Disable weekends
+            if (dayOfWeek === 0 || dayOfWeek === 6) return true
+            // Disable dates before today
+            if (dateObj < today) return true
+            return false
+          }
+        },
+        showWeekend: true
+      },
+      wrapper: 'calendar-container'
     }
   },
   Types: {
@@ -338,16 +419,6 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
-    SingleDatePicker: {
-      title: 'Single Date Picker',
-      description: 'Date picker for single date selection',
-      component: 'DtPicker',
-      props: {
-        type: 'single',
-        placeholder: 'Select a date'
-      },
-      wrapper: 'picker-container'
-    },
     DateRangeSelection: {
       title: 'Date Range Selection',
       description: 'Select a range of dates',
@@ -356,16 +427,6 @@ export const examples: ExamplesConfig = {
         type: 'range'
       },
       wrapper: 'calendar-container'
-    },
-    DateRangePicker: {
-      title: 'Date Range Picker',
-      description: 'Date picker for selecting a range of dates',
-      component: 'DtPicker',
-      props: {
-        type: 'range',
-        placeholder: 'Select date range'
-      },
-      wrapper: 'picker-container'
     },
     PersianDateRangeSelection: {
       title: 'Persian Date Range Selection',
@@ -401,16 +462,6 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
-    MultipleDatePicker: {
-      title: 'Multiple Date Picker',
-      description: 'Date picker for selecting multiple dates',
-      component: 'DtPicker',
-      props: {
-        type: 'multi',
-        placeholder: 'Select multiple dates'
-      },
-      wrapper: 'picker-container'
-    },
     WeekSelection: {
       title: 'Week Selection',
       description:
@@ -422,18 +473,6 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
-    },
-    WeekPicker: {
-      title: 'Week Picker',
-      description: 'Date picker for selecting an entire week',
-      component: 'DtPicker',
-      props: {
-        type: 'week',
-        placeholder: 'Select a week',
-        showWeekend: true,
-        todayBtn: true
-      },
-      wrapper: 'picker-container'
     },
     PersianWeekSelection: {
       title: 'Persian Week Selection',
@@ -495,25 +534,6 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
-    },
-    RangePickerWithPresets: {
-      title: 'Date Range Picker with Presets',
-      description: 'Date range picker with preset buttons',
-      component: 'DtPicker',
-      props: {
-        type: 'range',
-        presetRanges: {
-          yesterday: true,
-          last7days: true,
-          last30days: true,
-          thisMonth: true,
-          lastMonth: true
-        },
-        placeholder: 'Select date range',
-        showWeekend: true,
-        todayBtn: true
-      },
-      wrapper: 'picker-container'
     },
     RangeWithSinglePreset: {
       title: 'Date Range with Single Preset',
@@ -612,16 +632,6 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
-    DatePickerWithWeekend: {
-      title: 'Date Picker with Weekend Highlighting',
-      description: 'Date picker with weekend days highlighted',
-      component: 'DtPicker',
-      props: {
-        showWeekend: true,
-        placeholder: 'Select a date'
-      },
-      wrapper: 'picker-container'
-    },
     TodayButton: {
       title: 'Today Button',
       description: 'Calendar with Today button in footer',
@@ -630,26 +640,6 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
-    },
-    DatePickerWithTodayButton: {
-      title: 'Date Picker with Today Button',
-      description: 'Date picker with Today button in calendar footer',
-      component: 'DtPicker',
-      props: {
-        todayBtn: true,
-        placeholder: 'Select a date'
-      },
-      wrapper: 'picker-container'
-    },
-    DatePickerWithClearButton: {
-      title: 'Date Picker with Clear Button',
-      description: 'Date picker with clear button to reset selection',
-      component: 'DtPicker',
-      props: {
-        clearBtn: true,
-        placeholder: 'Select a date'
-      },
-      wrapper: 'picker-container'
     },
     PresetRanges: {
       title: 'Preset Date Ranges',
@@ -763,25 +753,6 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
-    PresetRangesPicker: {
-      title: 'Date Range Picker with Presets',
-      description: 'Date range picker with preset buttons',
-      component: 'DtPicker',
-      props: {
-        type: 'range',
-        presetRanges: {
-          yesterday: true,
-          last7days: true,
-          last30days: true,
-          thisMonth: true,
-          lastMonth: true
-        },
-        placeholder: 'Select date range',
-        showWeekend: true,
-        todayBtn: true
-      },
-      wrapper: 'picker-container'
-    },
     AllFeaturesCombined: {
       title: 'All Features Combined',
       description: 'Calendar with all features enabled',
@@ -792,18 +763,6 @@ export const examples: ExamplesConfig = {
         local: 'en'
       },
       wrapper: 'calendar-container'
-    },
-    DatePickerAllFeatures: {
-      title: 'Date Picker - All Features',
-      description: 'Date picker with all features enabled',
-      component: 'DtPicker',
-      props: {
-        showWeekend: true,
-        todayBtn: true,
-        clearBtn: true,
-        placeholder: 'Select a date'
-      },
-      wrapper: 'picker-container'
     }
   },
   Time: {
@@ -1117,20 +1076,6 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
-    },
-    AccessibilityComplete: {
-      title: 'Complete Accessibility Example',
-      description:
-        'All accessibility features: keyboard nav, shortcuts (T/PageUp/PageDown/Home/End), ARIA labels, focus management',
-      component: 'DtPicker',
-      props: {
-        placeholder: 'Fully accessible date picker',
-        showWeekend: true,
-        todayBtn: true,
-        clearBtn: true,
-        type: 'single'
-      },
-      wrapper: 'picker-container'
     }
   },
   Callbacks: {

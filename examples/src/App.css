@@ -42,7 +42,7 @@
 }
 
 .example-sidebar {
-  flex: 0 0 400px;
+  flex: 0 0 600px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -149,42 +149,46 @@
   overflow-y: auto;
 }
 
-.props-editor-container {
-  position: relative;
-}
-
-.props-editor {
-  width: 100%;
-  min-height: 150px;
-  max-height: 300px;
-  padding: 0.75rem;
-  background: #fff;
+.code-display {
+  margin-bottom: 1rem;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  font-size: 0.875rem;
+  overflow: hidden;
+}
+
+.props-editor-container {
+  position: relative;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  resize: vertical;
+  min-height: 250px;
+  max-height: 600px;
+}
+
+.props-editor-container textarea {
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+  padding: 1rem;
+  border: none;
+  outline: none;
   font-family:
     'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-  color: #333;
-  resize: vertical;
-  overflow-y: auto;
+  font-size: 14px;
   line-height: 1.5;
-  tab-size: 2;
+  resize: none;
+  background: #1e1e1e;
+  color: #d4d4d4;
 }
 
-.props-editor:focus {
-  outline: none;
-  border-color: #009a17;
-  box-shadow: 0 0 0 2px rgba(0, 154, 23, 0.1);
-}
-
-.props-editor-error {
+.props-editor-container.error {
   border-color: #dc3545;
-  background: #fff5f5;
 }
 
-.props-editor-error:focus {
-  border-color: #dc3545;
-  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.1);
+/* Monaco Editor will handle its own styling */
+.props-editor-container .monaco-editor {
+  border-radius: 4px;
 }
 
 .props-error {
@@ -227,7 +231,7 @@
 }
 
 .example-calendar {
-  flex: 1;
+  flex: 0 0 350px;
   min-width: 0;
 }
 
@@ -426,4 +430,56 @@
 
 .console-log-info p {
   margin: 0;
+}
+
+.constraint-functions-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.constraint-functions-section h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.function-code-block {
+  margin-top: 0.5rem;
+}
+
+.function-code {
+  margin: 0;
+  padding: 1rem;
+  background: #282c34;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.function-code code {
+  color: #abb2bf;
+  display: block;
+  white-space: pre;
+}
+
+/* Basic syntax highlighting for JavaScript/TypeScript */
+.function-code code {
+  color: #abb2bf;
+}
+
+.function-code code {
+  /* Keywords */
+  background: #282c34;
+}
+
+/* Simple syntax highlighting using text color */
+.function-code {
+  color: #abb2bf;
 }

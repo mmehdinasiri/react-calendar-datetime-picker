@@ -4,8 +4,8 @@ import { Layout } from '../Component'
 import { DtCalendar } from 'react-calendar-datetime-picker'
 
 const Home = () => {
-	const [, setWithoutInputEn] = useState(null)
-	const [, setWithoutInputFa] = useState(null)
+	const [, setWithoutInputEn] = useState<unknown>(null)
+	const [, setWithoutInputFa] = useState<unknown>(null)
 	return (
 		<Layout>
 			<div className='mx-auto text-center '>
