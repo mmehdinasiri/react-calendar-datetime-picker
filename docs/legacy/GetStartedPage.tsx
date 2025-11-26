@@ -1,5 +1,6 @@
+"use client"
 import dynamic from 'next/dynamic'
-import { DocLayout } from '../../Component'
+import { DocLayout } from './Component'
 import tomorrowNightEighties from 'react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-eighties'
 
 const Light = dynamic(() => import('react-syntax-highlighter'), {
@@ -7,7 +8,8 @@ const Light = dynamic(() => import('react-syntax-highlighter'), {
 })
 
 const usageString = `
-import { DtPicker } from 'react-calendar-datetime-picker'
+import { DtPicker } // @ts-ignore
+from 'react-calendar-datetime-picker-legacy'
 import 'react-calendar-datetime-picker/dist/style.css'
 
 const DatePicker = () => {

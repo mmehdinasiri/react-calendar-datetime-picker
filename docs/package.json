@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "react-calendar-datetime-picker": "workspace:*",
+    "react-calendar-datetime-picker-legacy": "npm:react-calendar-datetime-picker@1.7.5",
     "next": "^15.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

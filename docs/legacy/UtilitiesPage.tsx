@@ -1,12 +1,14 @@
+"use client"
 import { useState } from 'react'
-import { DocLayout } from '../../Component'
+import { DocLayout } from './Component'
 import tomorrowNightEighties from 'react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-eighties'
-import { convertToEnStr, convertToFaStr } from '../../Constant/sampleString'
+import { convertToEnStr, convertToFaStr } from './Constant/sampleString'
 import {
 	DtPicker,
 	convertToFa,
 	convertToEn
-} from 'react-calendar-datetime-picker'
+} // @ts-ignore
+from 'react-calendar-datetime-picker-legacy'
 import dynamic from 'next/dynamic'
 const Light = dynamic(() => import('react-syntax-highlighter'), {
 	ssr: false

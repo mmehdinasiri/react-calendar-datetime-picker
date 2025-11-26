@@ -72,6 +72,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     Single day with initial date
                   </Link>
+
                   <Link
                     href='#updateInitialDate'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -80,6 +81,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     update initial date
                   </Link>
+
                   <Link
                     href='#selectSinglePersian(Jalali)day'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -89,6 +91,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     Jalali day
                   </Link>
+
                   <Link
                     href='#selectAListOfDaysBetweenTwoDays'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -98,6 +101,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     Select a list of days between two days
                   </Link>
+
                   <Link
                     href='#rangeOfDaysWithInitialDate'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -107,6 +111,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     Range of days with initial date
                   </Link>
+
                   <Link
                     href='#selectMultiDays'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -115,6 +120,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     Select multi days
                   </Link>
+
                   <Link
                     href='#multiDaysWithInitialDate'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -124,6 +130,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     Multi days with initial date
                   </Link>
+
                   <Link
                     href='#singleDayWithTime'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -132,6 +139,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     Single day with time
                   </Link>
+
                   <Link
                     href='#showWeekendClearBtnAndTodayBtnOptions'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -142,6 +150,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     ShowWeekend, clearBtn and todayBtn options
                   </Link>
+
                   <Link
                     href='#openCloseAndChangeCallbackApi'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -151,6 +160,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     Open, close and change callback api
                   </Link>
+
                   <Link
                     href='#setMinimumAndMaximumDate'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -160,6 +170,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     Set minimum and maximum date
                   </Link>
+
                   <Link
                     href='#setAListOfDisabledDates'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -169,6 +180,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     Set a list of disabled dates
                   </Link>
+
                   <Link
                     href='#AutoClose'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -177,6 +189,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     AutoClose
                   </Link>
+
                   <Link
                     href='#WithoutInput'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${
@@ -185,6 +198,7 @@ const DocLayout = ({ children }: IDocLayout) => {
                   >
                     Without input
                   </Link>
+
                   <Link
                     href='#CustomCalender'
                     className={`block pl-5 text-sm pb-2 hover:text-primary leading-snug ${

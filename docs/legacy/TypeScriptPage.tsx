@@ -1,8 +1,10 @@
+"use client"
 import { useState, FC } from 'react'
-import { DocLayout } from '../../Component'
+import { DocLayout } from './Component'
 import tomorrowNightEighties from 'react-syntax-highlighter/dist/cjs/styles/hljs/tomorrow-night-eighties'
-import { DtPicker, Day, Range, Multi } from 'react-calendar-datetime-picker'
-import { typescriptStr } from '../../Constant/sampleString'
+import { DtPicker, Day, Range, Multi } // @ts-ignore
+from 'react-calendar-datetime-picker-legacy'
+import { typescriptStr } from './Constant/sampleString'
 import dynamic from 'next/dynamic'
 const Light = dynamic(() => import('react-syntax-highlighter'), {
 	ssr: false
