@@ -16,6 +16,22 @@ export const formatPropsForEditor = (config: ExampleConfig): string => {
     return '{}'
   }
 
+  // Check if value is a React component
+  const isReactComponent = (val: unknown): boolean => {
+    if (typeof val === 'object' && val !== null) {
+      // React elements have $$typeof property
+      return '$$typeof' in val
+    }
+    // React components are functions that contain JSX code
+    if (typeof val === 'function') {
+      const funcStr = val.toString()
+      // Check if function contains JSX patterns (like <svg, <div, return <, etc.)
+      // This indicates it's a React component function, not a regular function
+      return /return\s*<|^\s*<|jsxDEV|React\.createElement/.test(funcStr)
+    }
+    return false
+  }
+
   // Format each property manually to handle functions and Dates
   const formatValue = (val: unknown, indent: number = 0): string => {
     const indentStr = '  '.repeat(indent)
@@ -26,6 +42,13 @@ export const formatPropsForEditor = (config: ExampleConfig): string => {
       return String(val)
     } else if (val instanceof Date) {
       return `new Date('${val.toISOString()}')`
+    } else if (isReactComponent(val)) {
+      // React components cannot be serialized - show as comment
+      const componentName =
+        (val as { displayName?: string; name?: string }).displayName ||
+        (val as { name?: string }).name ||
+        'ReactComponent'
+      return `/* ${componentName} - React component (cannot be edited) */ null`
     } else if (typeof val === 'function') {
       // Show function code with proper indentation
       const funcStr = val.toString()

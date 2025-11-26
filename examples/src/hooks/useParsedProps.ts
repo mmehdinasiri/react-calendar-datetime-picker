@@ -42,22 +42,31 @@ export const useParsedProps = (config: ExampleConfig) => {
       }
 
       // Deep merge for nested objects like customization
-      if (config.props?.customization && parsed.customization) {
+      // IMPORTANT: Always preserve React components (icons) from config since they can't be parsed
+      if (config.props?.customization) {
         const configCustom = config.props.customization as {
           icons?: Record<string, unknown>
           classes?: unknown
         }
-        const parsedCustom = parsed.customization as {
-          icons?: Record<string, unknown>
-          classes?: unknown
-        }
-        merged.customization = {
-          ...configCustom,
-          ...parsedCustom,
-          icons: {
-            ...(configCustom.icons || {}),
-            ...(parsedCustom.icons || {})
+        const parsedCustom = parsed.customization as
+          | {
+              icons?: Record<string, unknown>
+              classes?: unknown
+            }
+          | undefined
+
+        if (parsedCustom) {
+          // Merge parsed customization with config, but ALWAYS preserve icons from config
+          // (React components can't be serialized/parsed - they cause jsxDEV errors)
+          merged.customization = {
+            ...configCustom,
+            ...parsedCustom,
+            // Always use icons from config, never from parsed (React components)
+            icons: configCustom.icons || {}
           }
+        } else {
+          // If no parsed customization, use config customization (preserves React components)
+          merged.customization = configCustom
         }
       }
 
