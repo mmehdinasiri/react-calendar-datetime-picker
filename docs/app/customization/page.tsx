@@ -6,6 +6,13 @@ import '../../../src/styles/index.scss'
 import { ExampleRenderer } from '../components/ExampleRenderer'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import {
+  cssVariables,
+  getColorValue,
+  getDarkColorValue
+} from '../data/cssVariables'
+import type { InitValueInput } from '../../../src/types'
+import { getToday, subtractDays } from '../../../src/utils'
 
 // Custom Icons
 const ArrowLeftIcon = ({ className }: { className?: string }) => (
@@ -87,177 +94,37 @@ const CircleRightIcon = ({ className }: { className?: string }) => (
 )
 
 export default function Customization() {
-  const [customDate, setCustomDate] = useState<unknown>(null)
-  const [darkDate, setDarkDate] = useState<unknown>(null)
+  const [customDate, setCustomDate] = useState<any>(null)
+  const [darkDate, setDarkDate] = useState<InitValueInput | undefined>(
+    undefined
+  )
+  const [presetRangeDate, setPresetRangeDate] = useState<
+    InitValueInput | undefined
+  >(undefined)
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
-      <div className="prose prose-lg max-w-none mb-12">
+    <div className='max-w-6xl mx-auto px-6 py-12'>
+      <div className='prose prose-lg max-w-none mb-12'>
         <h1>Customization</h1>
 
         <p>
-          React Calendar DateTime Picker offers extensive customization options to match your application's design.
-          You can customize themes, colors, icons, labels, and more.
+          React Calendar DateTime Picker offers extensive customization options
+          to match your application's design. You can customize themes, colors,
+          icons, labels, and more.
         </p>
       </div>
 
-      <div className="space-y-12">
-        {/* CSS Variables */}
-        <section id="css-variables" className="bg-bg-secondary rounded-lg border border-border p-8">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-white mb-2">CSS Variables (Recommended)</h2>
-            <p className="text-gray-300">
-              The easiest way to customize the calendar appearance is by overriding CSS variables.
-              Apply custom variables to a wrapper element or globally.
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Wrapper Element Approach</h3>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                  <div className="calendar-container calendar-blue-theme">
-                    <DtCalendar
-                      initValue={customDate}
-                      onChange={setCustomDate}
-                      showWeekend={true}
-                      todayBtn={true}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="rounded-lg overflow-hidden border border-border">
-                    <SyntaxHighlighter
-                      language="css"
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`/* CSS Variables */
-.calendar-blue-theme {
-  --calendar-bg: #eff6ff;
-  --calendar-text: #1e40af;
-  --calendar-border: #3b82f6;
-  --calendar-hover: #dbeafe;
-  --calendar-selected: #2563eb;
-  --calendar-today: #1d4ed8;
-  --calendar-disabled: #9ca3af;
-}
-
-/* Apply to wrapper */
-<div className="calendar-blue-theme">
-  <DtCalendar ... />
-</div>`}
-                    </SyntaxHighlighter>
-                  </div>
-                  <div className="bg-bg-tertiary border-l-4 border-accent p-4">
-                    <p className="text-sm text-gray-200">
-                      <strong>Tip:</strong> This approach allows different themes for different calendar instances.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Available CSS Variables</h3>
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-border border border-border rounded-lg">
-                  <thead className="bg-bg-tertiary">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Variable</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Default</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Description</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-bg-secondary divide-y divide-border">
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><code>--calendar-bg</code></td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300"><code>white</code></td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Calendar background color</td>
-                    </tr>
-                    <tr className="bg-bg-tertiary">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><code>--calendar-text</code></td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300"><code>#374151</code></td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Primary text color</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><code>--calendar-border</code></td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300"><code>#d1d5db</code></td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Border color</td>
-                    </tr>
-                    <tr className="bg-bg-tertiary">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><code>--calendar-hover</code></td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300"><code>#f3f4f6</code></td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Hover background color</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><code>--calendar-selected</code></td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300"><code>#3b82f6</code></td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Selected date background</td>
-                    </tr>
-                    <tr className="bg-bg-tertiary">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><code>--calendar-today</code></td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300"><code>#f59e0b</code></td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Today indicator color</td>
-                    </tr>
-                    <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><code>--calendar-disabled</code></td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300"><code>#9ca3af</code></td>
-                      <td className="px-6 py-4 text-sm text-gray-300">Disabled date color</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          {/* CSS Variables Examples */}
-          <div className='mt-8 space-y-6'>
-            <ExampleRenderer
-              config={{
-                title: 'Custom Dark Theme with CSS Variables',
-                description:
-                  'Override CSS variables in your stylesheet and apply them using the calenderModalClass prop',
-                component: 'DtCalendar',
-                props: {
-                  dark: true,
-                  showWeekend: true,
-                  todayBtn: true,
-                  calenderModalClass: 'calendar-dark-custom-theme'
-                },
-                wrapper: 'calendar-container'
-              }}
-              exampleKey='DarkThemeCustomColors'
-            />
-            <ExampleRenderer
-              config={{
-                title: 'Custom Blue Theme with CSS Variables',
-                description:
-                  'Override CSS variables on a wrapper element - the calendar inherits the variables',
-                component: 'DtCalendar',
-                props: {
-                  showWeekend: true,
-                  todayBtn: true
-                },
-                wrapper: 'calendar-container calendar-blue-theme'
-              }}
-              exampleKey='CustomBlueTheme'
-            />
-          </div>
-        </section>
-
+      <div className='space-y-12'>
         {/* Themes */}
-        <section id="themes" className="bg-bg-secondary rounded-lg border border-border p-8">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-white mb-2">Themes</h2>
-            <p className="text-gray-300">
-              The calendar supports light and dark themes, as well as custom themes using CSS variables.
+        <section
+          id='themes'
+          className='bg-bg-secondary rounded-lg border border-border p-8'
+        >
+          <div className='mb-6'>
+            <h2 className='text-2xl font-bold text-white mb-2'>Themes</h2>
+            <p className='text-gray-300'>
+              The calendar supports light and dark themes, as well as custom
+              themes using CSS variables.
             </p>
           </div>
 
@@ -279,7 +146,8 @@ export default function Customization() {
             <ExampleRenderer
               config={{
                 title: 'Dark Theme',
-                description: 'Calendar with dark theme enabled using the dark prop',
+                description:
+                  'Calendar with dark theme enabled using the dark prop',
                 component: 'DtCalendar',
                 props: {
                   dark: true,
@@ -293,20 +161,331 @@ export default function Customization() {
           </div>
         </section>
 
-        {/* Custom Classes */}
-        <section className="bg-bg-secondary rounded-lg border border-border p-8">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-white mb-2">Custom CSS Classes</h2>
-            <p className="text-gray-300">
-              Override specific calendar elements using the <code>calenderModalClass</code> prop
-              and custom CSS.
+        {/* CSS Variables */}
+        <section
+          id='css-variables'
+          className='bg-bg-secondary rounded-lg border border-border p-8'
+        >
+          <div className='mb-6'>
+            <h2 className='text-2xl font-bold text-white mb-2'>
+              CSS Variables (Recommended)
+            </h2>
+            <p className='text-gray-300'>
+              The easiest way to customize the calendar appearance is by
+              overriding CSS variables. Apply custom variables using the
+              calenderModalClass prop.
             </p>
           </div>
 
-          <div className="space-y-6">
-            <div className="rounded-lg overflow-hidden border border-border">
+          <div className='space-y-6'>
+            <div>
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Available CSS Variables
+              </h3>
+              <div className='overflow-x-auto'>
+                <table className='min-w-full divide-y divide-border border border-border rounded-lg'>
+                  <thead className='bg-bg-tertiary'>
+                    <tr>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'>
+                        Variable
+                      </th>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'>
+                        Light Theme Default
+                      </th>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'>
+                        Dark Theme Default
+                      </th>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'>
+                        Description
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className='bg-bg-secondary divide-y divide-border'>
+                    {cssVariables.map((variable, index) => {
+                      const lightColor = getColorValue(variable.lightTheme)
+                      const darkColor = getDarkColorValue(variable.darkTheme)
+                      const isEven = index % 2 === 0
+
+                      return (
+                        <tr
+                          key={variable.name}
+                          className={isEven ? '' : 'bg-bg-tertiary'}
+                        >
+                          <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-white'>
+                            <code>{variable.name}</code>
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
+                            <div className='flex items-center gap-2'>
+                              <code>{variable.lightTheme}</code>
+                              <div
+                                className='w-6 h-6 rounded border border-border'
+                                style={{ backgroundColor: lightColor }}
+                              />
+                            </div>
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
+                            <div className='flex items-center gap-2'>
+                              <code>{variable.darkTheme}</code>
+                              <div
+                                className='w-6 h-6 rounded border border-border'
+                                style={{ backgroundColor: darkColor }}
+                              />
+                            </div>
+                          </td>
+                          <td className='px-6 py-4 text-sm text-gray-300'>
+                            {variable.description}
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div>
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Using calenderModalClass Prop
+              </h3>
+              <div className='bg-bg-tertiary border-l-4 border-accent p-4'>
+                <p className='text-sm text-gray-200'>
+                  <strong>Tip:</strong> This approach applies the class directly
+                  to the calendar component, making it cleaner and more direct.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* CSS Variables Examples */}
+          <div className='mt-8 space-y-6'>
+            <div className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'>
+              <div className='mb-6'>
+                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
+                  Blue Theme Example
+                </h2>
+                <p className='text-gray-700 dark:text-gray-300'>
+                  Custom blue theme using CSS variables with calenderModalClass
+                  prop
+                </p>
+              </div>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Component
+                  </h3>
+                  <div className='calendar-container'>
+                    <DtCalendar
+                      initValue={customDate}
+                      onChange={setCustomDate}
+                      showWeekend={true}
+                      todayBtn={true}
+                      calenderModalClass='calendar-blue-theme'
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    CSS Styles
+                  </h3>
+                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                    <SyntaxHighlighter
+                      language='css'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`/* styles.css */
+.calendar-blue-theme {
+  --calendar-bg: #eff6ff;
+  --calendar-text: #1e40af;
+  --calendar-text-light: #1e40af;
+  --calendar-border: #3b82f6;
+  --calendar-bg-hover: #dbeafe;
+  --calendar-selected-day: #2563eb;
+  --calendar-today: #1d4ed8;
+  --calendar-bg-disabled: #9ca3af;
+  --calendar-text-disabled: #9ca3af;
+  --calendar-border-focus: #2563eb;
+  --calendar-primary: #2563eb;
+  --calendar-header-bg: #2563eb;
+}`}
+                    </SyntaxHighlighter>
+                  </div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Code
+                  </h3>
+                  <div className='rounded-lg overflow-hidden border border-border'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      showWeekend={true}
+      todayBtn={true}
+      calenderModalClass="calendar-blue-theme"
+      onChange={setDate}
+    />
+  )
+}`}
+                    </SyntaxHighlighter>
+                  </div>
+                  <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
+                    <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-2'>
+                      Result
+                    </h4>
+                    <p className='text-sm text-gray-700 dark:text-gray-200'>
+                      Selected value:{' '}
+                      <code className='text-xs'>
+                        {customDate
+                          ? JSON.stringify(customDate, null, 2)
+                          : 'null'}
+                      </code>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'>
+              <div className='mb-6'>
+                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
+                  Brown Theme Example
+                </h2>
+                <p className='text-gray-700 dark:text-gray-300'>
+                  Custom brown dark theme using CSS variables with
+                  calenderModalClass prop
+                </p>
+              </div>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Component
+                  </h3>
+                  <div className='calendar-container'>
+                    <DtCalendar
+                      initValue={darkDate}
+                      onChange={(date) =>
+                        setDarkDate(date as InitValueInput | undefined)
+                      }
+                      dark={true}
+                      showWeekend={true}
+                      todayBtn={true}
+                      calenderModalClass='calendar-dark-custom-theme'
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    CSS Styles
+                  </h3>
+                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                    <SyntaxHighlighter
+                      language='css'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`/* styles.css */
+.react-calendar-datetime-picker.calendar-dark-custom-theme[data-theme='dark'],
+.calendar-dark-custom-theme[data-theme='dark'] {
+  /* Override only background colors - primary colors remain default dark theme green */
+  /* Using warmer dark brown tones - visually very distinct from default cool gray (#1f2937) */
+  --calendar-bg: #2c1810;
+  --calendar-bg-hover: #3d2418;
+  --calendar-bg-selected: #2c1810;
+  --calendar-header-bg: #2c1810;
+  --calendar-border: #4a2e1f;
+}`}
+                    </SyntaxHighlighter>
+                  </div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Code
+                  </h3>
+                  <div className='rounded-lg overflow-hidden border border-border'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      dark={true}
+      showWeekend={true}
+      todayBtn={true}
+      calenderModalClass="calendar-dark-custom-theme"
+      onChange={setDate}
+    />
+  )
+}`}
+                    </SyntaxHighlighter>
+                  </div>
+                  <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
+                    <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-2'>
+                      Result
+                    </h4>
+                    <p className='text-sm text-gray-700 dark:text-gray-200'>
+                      Selected value:{' '}
+                      <code className='text-xs'>
+                        {darkDate ? JSON.stringify(darkDate, null, 2) : 'null'}
+                      </code>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Custom Classes */}
+        <section
+          id='custom-classes'
+          className='bg-bg-secondary rounded-lg border border-border p-8'
+        >
+          <div className='mb-6'>
+            <h2 className='text-2xl font-bold text-white mb-2'>
+              Custom CSS Classes
+            </h2>
+            <p className='text-gray-300'>
+              Override specific calendar elements using the{' '}
+              <code>calenderModalClass</code> prop and custom CSS.
+            </p>
+          </div>
+
+          <div className='space-y-6'>
+            <div className='rounded-lg overflow-hidden border border-border'>
               <SyntaxHighlighter
-                language="tsx"
+                language='tsx'
                 style={vscDarkPlus}
                 customStyle={{
                   margin: 0,
@@ -323,26 +502,53 @@ export default function Customization() {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Available CSS Classes</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Available CSS Classes
+              </h3>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 <div>
-                  <h4 className="font-medium text-white mb-2">Calendar Structure</h4>
-                  <ul className="text-sm text-gray-300 space-y-1">
-                    <li><code>.react-calendar-datetime-picker</code> - Root container</li>
-                    <li><code>.calendar-header</code> - Header section</li>
-                    <li><code>.calendar-days-grid</code> - Days grid container</li>
-                    <li><code>.calendar-months-view</code> - Months selection view</li>
-                    <li><code>.calendar-years-view</code> - Years selection view</li>
+                  <h4 className='font-medium text-white mb-2'>
+                    Calendar Structure
+                  </h4>
+                  <ul className='text-sm text-gray-300 space-y-1'>
+                    <li>
+                      <code>.react-calendar-datetime-picker</code> - Root
+                      container
+                    </li>
+                    <li>
+                      <code>.calendar-header</code> - Header section
+                    </li>
+                    <li>
+                      <code>.calendar-days-grid</code> - Days grid container
+                    </li>
+                    <li>
+                      <code>.calendar-months-view</code> - Months selection view
+                    </li>
+                    <li>
+                      <code>.calendar-years-view</code> - Years selection view
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-medium text-white mb-2">Interactive Elements</h4>
-                  <ul className="text-sm text-gray-300 space-y-1">
-                    <li><code>.calendar-day</code> - Individual day cells</li>
-                    <li><code>.calendar-day--selected</code> - Selected days</li>
-                    <li><code>.calendar-day--today</code> - Today's date</li>
-                    <li><code>.calendar-day--disabled</code> - Disabled days</li>
-                    <li><code>.calendar-nav-button</code> - Navigation buttons</li>
+                  <h4 className='font-medium text-white mb-2'>
+                    Interactive Elements
+                  </h4>
+                  <ul className='text-sm text-gray-300 space-y-1'>
+                    <li>
+                      <code>.calendar-day</code> - Individual day cells
+                    </li>
+                    <li>
+                      <code>.calendar-day--selected</code> - Selected days
+                    </li>
+                    <li>
+                      <code>.calendar-day--today</code> - Today's date
+                    </li>
+                    <li>
+                      <code>.calendar-day--disabled</code> - Disabled days
+                    </li>
+                    <li>
+                      <code>.calendar-nav-button</code> - Navigation buttons
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -351,20 +557,28 @@ export default function Customization() {
         </section>
 
         {/* Icons and Labels */}
-        <section id="icons-labels" className="bg-bg-secondary rounded-lg border border-border p-8">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-white mb-2">Custom Icons and Labels</h2>
-            <p className="text-gray-300">
-              Customize navigation icons and text labels using the <code>customization</code> prop.
+        <section
+          id='icons-labels'
+          className='bg-bg-secondary rounded-lg border border-border p-8'
+        >
+          <div className='mb-6'>
+            <h2 className='text-2xl font-bold text-white mb-2'>
+              Custom Icons and Labels
+            </h2>
+            <p className='text-gray-300'>
+              Customize navigation icons and text labels using the{' '}
+              <code>customization</code> prop.
             </p>
           </div>
 
-          <div className="space-y-6">
+          <div className='space-y-6'>
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Custom Icons</h3>
-              <div className="rounded-lg overflow-hidden border border-border">
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Custom Icons
+              </h3>
+              <div className='rounded-lg overflow-hidden border border-border'>
                 <SyntaxHighlighter
-                  language="tsx"
+                  language='tsx'
                   style={vscDarkPlus}
                   customStyle={{
                     margin: 0,
@@ -404,10 +618,12 @@ function App() {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Custom Labels</h3>
-              <div className="rounded-lg overflow-hidden border border-border">
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Custom Labels
+              </h3>
+              <div className='rounded-lg overflow-hidden border border-border'>
                 <SyntaxHighlighter
-                  language="tsx"
+                  language='tsx'
                   style={vscDarkPlus}
                   customStyle={{
                     margin: 0,
@@ -429,10 +645,12 @@ function App() {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Localized Month and Weekday Names</h3>
-              <div className="rounded-lg overflow-hidden border border-border">
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Localized Month and Weekday Names
+              </h3>
+              <div className='rounded-lg overflow-hidden border border-border'>
                 <SyntaxHighlighter
-                  language="tsx"
+                  language='tsx'
                   style={vscDarkPlus}
                   customStyle={{
                     margin: 0,
@@ -479,7 +697,8 @@ function App() {
             <ExampleRenderer
               config={{
                 title: 'Custom Circle Icons',
-                description: 'Calendar with different style icons - circle arrows',
+                description:
+                  'Calendar with different style icons - circle arrows',
                 component: 'DtCalendar',
                 props: {
                   customization: {
@@ -517,7 +736,15 @@ function App() {
                       'Novembre',
                       'Décembre'
                     ],
-                    weekdayNames: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
+                    weekdayNames: [
+                      'Dim',
+                      'Lun',
+                      'Mar',
+                      'Mer',
+                      'Jeu',
+                      'Ven',
+                      'Sam'
+                    ]
                   },
                   showWeekend: true,
                   todayBtn: true
@@ -548,7 +775,15 @@ function App() {
                       'Noviembre',
                       'Diciembre'
                     ],
-                    weekdayNames: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+                    weekdayNames: [
+                      'Dom',
+                      'Lun',
+                      'Mar',
+                      'Mié',
+                      'Jue',
+                      'Vie',
+                      'Sáb'
+                    ]
                   },
                   showWeekend: true,
                   todayBtn: true
@@ -561,20 +796,28 @@ function App() {
         </section>
 
         {/* Preset Ranges */}
-        <section className="bg-bg-secondary rounded-lg border border-border p-8">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-white mb-2">Preset Date Ranges</h2>
-            <p className="text-gray-300">
-              Add quick selection buttons for common date ranges like "Last 7 days", "This month", etc.
+        <section
+          id='preset-ranges'
+          className='bg-bg-secondary rounded-lg border border-border p-8'
+        >
+          <div className='mb-6'>
+            <h2 className='text-2xl font-bold text-white mb-2'>
+              Preset Date Ranges
+            </h2>
+            <p className='text-gray-300'>
+              Add quick selection buttons for common date ranges like "Last 7
+              days", "This month", etc.
             </p>
           </div>
 
-          <div className="space-y-6">
+          <div className='space-y-6'>
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Built-in Presets</h3>
-              <div className="rounded-lg overflow-hidden border border-border">
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Built-in Presets
+              </h3>
+              <div className='rounded-lg overflow-hidden border border-border'>
                 <SyntaxHighlighter
-                  language="tsx"
+                  language='tsx'
                   style={vscDarkPlus}
                   customStyle={{
                     margin: 0,
@@ -598,10 +841,12 @@ function App() {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Custom Preset Labels</h3>
-              <div className="rounded-lg overflow-hidden border border-border">
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Custom Preset Labels
+              </h3>
+              <div className='rounded-lg overflow-hidden border border-border'>
                 <SyntaxHighlighter
-                  language="tsx"
+                  language='tsx'
                   style={vscDarkPlus}
                   customStyle={{
                     margin: 0,
@@ -623,10 +868,12 @@ function App() {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-white mb-4">Custom Preset Ranges</h3>
-              <div className="rounded-lg overflow-hidden border border-border">
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Custom Preset Ranges
+              </h3>
+              <div className='rounded-lg overflow-hidden border border-border'>
                 <SyntaxHighlighter
-                  language="tsx"
+                  language='tsx'
                   style={vscDarkPlus}
                   customStyle={{
                     margin: 0,
@@ -657,6 +904,166 @@ function App() {
   }}
 />`}
                 </SyntaxHighlighter>
+              </div>
+            </div>
+          </div>
+
+          {/* Preset Ranges Examples */}
+          <div className='mt-8 space-y-6'>
+            <ExampleRenderer
+              config={{
+                title: 'Built-in Preset Ranges',
+                description:
+                  'Calendar with built-in preset range buttons for quick date range selection',
+                component: 'DtCalendar',
+                props: {
+                  type: 'range',
+                  presetRanges: {
+                    yesterday: true,
+                    last7days: true,
+                    last30days: true,
+                    thisMonth: true,
+                    lastMonth: true
+                  },
+                  showWeekend: true,
+                  todayBtn: true
+                },
+                wrapper: 'calendar-container'
+              }}
+              exampleKey='BuiltInPresetRanges'
+            />
+            <ExampleRenderer
+              config={{
+                title: 'Custom Preset Labels',
+                description:
+                  'Preset ranges with custom labels for localization or branding',
+                component: 'DtCalendar',
+                props: {
+                  type: 'range',
+                  presetRanges: {
+                    yesterday: 'Yesterday',
+                    last7days: 'Past Week',
+                    last30days: 'Past Month',
+                    thisMonth: 'Current Month',
+                    lastMonth: 'Previous Month'
+                  },
+                  showWeekend: true,
+                  todayBtn: true
+                },
+                wrapper: 'calendar-container'
+              }}
+              exampleKey='CustomPresetLabels'
+            />
+            <div
+              id='custom-preset-ranges'
+              className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
+            >
+              <div className='mb-6'>
+                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
+                  Custom Preset Ranges
+                </h2>
+                <p className='text-gray-700 dark:text-gray-300'>
+                  Define your own custom date ranges using Day objects
+                </p>
+              </div>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Component
+                  </h3>
+                  <div className='calendar-container'>
+                    <DtCalendar
+                      initValue={presetRangeDate}
+                      onChange={(date) =>
+                        setPresetRangeDate(date as InitValueInput | undefined)
+                      }
+                      type='range'
+                      presetRanges={{
+                        custom: [
+                          {
+                            label: 'Last 14 Days',
+                            range: {
+                              from: subtractDays(getToday('en'), 13),
+                              to: getToday('en')
+                            }
+                          },
+                          {
+                            label: 'Last 30 Days',
+                            range: {
+                              from: subtractDays(getToday('en'), 29),
+                              to: getToday('en')
+                            }
+                          }
+                        ]
+                      }}
+                      showWeekend={true}
+                      todayBtn={true}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Code
+                  </h3>
+                  <div className='rounded-lg overflow-hidden border border-border'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
+import { getToday, subtractDays } from 'react-calendar-datetime-picker/utils'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      type="range"
+      presetRanges={{
+        custom: [
+          {
+            label: 'Last 14 Days',
+            range: {
+              from: subtractDays(getToday('en'), 13),
+              to: getToday('en')
+            }
+          },
+          {
+            label: 'Last 30 Days',
+            range: {
+              from: subtractDays(getToday('en'), 29),
+              to: getToday('en')
+            }
+          }
+        ]
+      }}
+      onChange={setDate}
+    />
+  )
+}`}
+                    </SyntaxHighlighter>
+                  </div>
+                  <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
+                    <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-2'>
+                      Result
+                    </h4>
+                    <p className='text-sm text-gray-700 dark:text-gray-200'>
+                      Selected value:{' '}
+                      <code className='text-xs'>
+                        {presetRangeDate
+                          ? JSON.stringify(presetRangeDate, null, 2)
+                          : 'null'}
+                      </code>
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

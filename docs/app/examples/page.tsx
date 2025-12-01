@@ -24,7 +24,7 @@ export default function Examples() {
       <div className='space-y-16'>
         {Object.entries(examples).map(([groupName, groupExamples]) => (
           <div key={groupName} id={toKebabCase(groupName)}>
-            <h2 className='text-3xl font-bold text-white mb-8 pb-4 border-b border-border'>
+            <h2 className='text-3xl font-bold text-gray-900 dark:text-white mb-8 pb-4 border-b border-border'>
               {groupName}
             </h2>
             <div className='space-y-8'>

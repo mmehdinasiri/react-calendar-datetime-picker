@@ -7,7 +7,10 @@ import { examples } from '../examplesConfig'
 
 // Helper function to convert example key to URL-friendly format
 const toKebabCase = (str: string) =>
-  str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+  str
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
 
 const navigation = [
   {
@@ -36,8 +39,24 @@ const navigation = [
     title: 'CUSTOMIZATION',
     items: [
       { name: 'Themes', href: '/customization#themes' },
+      { name: 'CSS Variables', href: '/customization#css-variables' },
+      { name: 'Custom CSS Classes', href: '/customization#custom-classes' },
       { name: 'Custom Icons & Labels', href: '/customization#icons-labels' },
-      { name: 'CSS Variables', href: '/customization#css-variables' }
+      {
+        name: 'Preset Date Ranges',
+        href: '/customization#preset-ranges',
+        subItems: [
+          { name: 'Built-in Presets', href: '/customization#preset-ranges' },
+          {
+            name: 'Custom Preset Labels',
+            href: '/customization#preset-ranges'
+          },
+          {
+            name: 'Custom Preset Ranges',
+            href: '/customization#custom-preset-ranges'
+          }
+        ]
+      }
     ]
   },
   {
@@ -86,23 +105,13 @@ function CollapsibleItem({
 }) {
   const router = useRouter()
   const hasSubItems = item.subItems && item.subItems.length > 0
-  const isSubItemActive =
-    hasSubItems &&
-    item.subItems!.some(
-      (subItem) =>
-        pathname === subItem.href ||
-        pathname.startsWith(subItem.href.split('#')[0] + '/')
-    )
-  const [isOpen, setIsOpen] = useState(isSubItemActive)
-
-  const isActive =
-    pathname === item.href ||
-    pathname.startsWith(item.href.split('#')[0] + '/')
+  const [isOpen, setIsOpen] = useState(false)
 
   if (hasSubItems) {
     const handleClick = (e: React.MouseEvent) => {
       e.preventDefault()
       setIsOpen(!isOpen)
+
       // Navigate to the section
       if (item.href.includes('#')) {
         const [path, hash] = item.href.split('#')
@@ -128,11 +137,7 @@ function CollapsibleItem({
       <div>
         <button
           onClick={handleClick}
-          className={`w-full flex items-center justify-between px-3 py-1.5 text-sm rounded-md transition-colors ${
-            isActive || isSubItemActive
-              ? 'bg-accent text-white font-medium'
-              : 'text-gray-300 hover:bg-bg-tertiary hover:text-white'
-          }`}
+          className='w-full flex items-center justify-between px-3 py-1.5 text-sm rounded-md transition-colors text-gray-600 dark:text-gray-300 hover:bg-bg-tertiary hover:text-gray-900 dark:hover:text-white'
         >
           <span className='flex-1 text-left'>{item.name}</span>
           <svg
@@ -154,18 +159,12 @@ function CollapsibleItem({
         {isOpen && (
           <ul className='ml-4 mt-1 space-y-1 border-l border-border pl-2'>
             {item.subItems!.map((subItem) => {
-              const isSubActive =
-                pathname === subItem.href ||
-                pathname.startsWith(subItem.href.split('#')[0] + '/')
+              // Don't show active state on sub-items
               return (
                 <li key={subItem.name}>
                   <Link
                     href={subItem.href}
-                    className={`block px-3 py-1.5 text-sm rounded-md transition-colors ${
-                      isSubActive
-                        ? 'bg-accent text-white font-medium'
-                        : 'text-gray-300 hover:bg-bg-tertiary hover:text-white'
-                    }`}
+                    className='block px-3 py-1.5 text-sm rounded-md transition-colors text-gray-600 dark:text-gray-300 hover:bg-bg-tertiary hover:text-gray-900 dark:hover:text-white'
                   >
                     {subItem.name}
                   </Link>
@@ -181,11 +180,7 @@ function CollapsibleItem({
   return (
     <Link
       href={item.href}
-      className={`block px-3 py-1.5 text-sm rounded-md transition-colors ${
-        isActive
-          ? 'bg-accent text-white font-medium'
-          : 'text-gray-300 hover:bg-bg-tertiary hover:text-white'
-      }`}
+      className='block px-3 py-1.5 text-sm rounded-md transition-colors text-gray-600 dark:text-gray-300 hover:bg-bg-tertiary hover:text-gray-900 dark:hover:text-white'
     >
       {item.name}
     </Link>
@@ -195,7 +190,7 @@ function CollapsibleItem({
 function CollapsibleSection({ section, pathname }: CollapsibleSectionProps) {
   return (
     <div>
-      <h3 className='text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3'>
+      <h3 className='text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 px-3'>
         {section.title}
       </h3>
       <ul className='space-y-1'>

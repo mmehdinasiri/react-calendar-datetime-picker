@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     './app/**/*.{js,jsx,ts,tsx}',
     './legacy/**/*.{js,jsx,ts,tsx}',
@@ -18,15 +19,15 @@ module.exports = {
           light: '#666',
           DEFAULT: '#444'
         },
-        // Dark theme colors
+        // Theme-aware colors using CSS variables
         bg: {
-          primary: '#1a1a1a',
-          secondary: '#23272f',
-          tertiary: '#2d333b'
+          primary: 'var(--bg-primary)',
+          secondary: 'var(--bg-secondary)',
+          tertiary: 'var(--bg-tertiary)'
         },
         border: {
-          DEFAULT: '#383e47',
-          color: '#383e47'
+          DEFAULT: 'var(--border-color)',
+          color: 'var(--border-color)'
         },
         accent: {
           DEFAULT: '#009a17',
