@@ -2,8 +2,7 @@ import '../public/fonts/palanquin/palanquin.css'
 import '../public/fonts/IRANSansFa/css/fontiran.css'
 import '../styles/main.scss'
 import { Metadata } from 'next'
-import { Header } from './components/Header'
-import { Sidebar } from './components/Sidebar'
+import { LayoutWrapper } from './components/LayoutWrapper'
 import { ThemeProvider } from './contexts/ThemeContext'
 import './globals.css'
 
@@ -44,13 +43,7 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <body className='bg-bg-primary text-gray-900 dark:text-white antialiased'>
         <ThemeProvider>
-          <div className='flex flex-col min-h-screen'>
-            <Header />
-            <div className='flex flex-1'>
-              <Sidebar />
-              <main className='flex-1 overflow-auto'>{children}</main>
-            </div>
-          </div>
+          <LayoutWrapper>{children}</LayoutWrapper>
         </ThemeProvider>
       </body>
     </html>

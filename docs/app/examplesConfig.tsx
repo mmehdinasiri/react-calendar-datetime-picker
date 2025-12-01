@@ -3,25 +3,10 @@ import React from 'react'
 import {
   isBefore,
   isAfter,
-  isBetween,
-  isSameDay,
   addDays,
   subtractDays,
-  addMonths,
-  subtractMonths,
-  addYears,
-  subtractYears,
-  getDifferenceInDays,
-  getDifferenceInMonths,
-  getDifferenceInYears,
   convertToJalali,
   convertToGregorian,
-  startOfDay,
-  endOfDay,
-  startOfMonth,
-  endOfMonth,
-  startOfYear,
-  endOfYear,
   getToday,
   dayToString
 } from 'react-calendar-datetime-picker'
@@ -118,11 +103,12 @@ export interface ExampleConfig {
   showConsoleLog?: boolean
   utilityCode?: string
   getUtilityResults?: (selectedDate?: Day | null) => Record<string, unknown>
+  constraintsCode?: string // Custom code snippet for constraints prop when it contains functions
 }
 
 export type ExamplesConfig = Record<string, Record<string, ExampleConfig>>
 
-// Examples configuration - Merged Locale, Time, and Types into one group
+// Examples configuration - Time examples are in a separate "Time" group
 export const examples: ExamplesConfig = {
   Basic: {
     SingleDatePicker: {
@@ -160,7 +146,7 @@ export const examples: ExamplesConfig = {
       wrapper: 'calendar-container'
     }
   },
-  'Types, Locale & Time': {
+  'Types & Locale': {
     SingleDateSelection: {
       title: 'Single Date Selection',
       description: 'Select a single date (default)',
@@ -261,7 +247,9 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
-    },
+    }
+  },
+  Time: {
     SingleWithTime24Hour: {
       title: 'Single Date with Time (24-hour)',
       description:
@@ -422,6 +410,145 @@ export const examples: ExamplesConfig = {
         initValue: new Date()
       },
       wrapper: 'picker-container'
+    }
+  },
+  Constraints: {
+    MinDateConstraint: {
+      title: 'Min Date Constraint',
+      description: 'Calendar with minimum date constraint',
+      component: 'DtCalendar',
+      props: {
+        constraints: {
+          minDate: new Date()
+        }
+      },
+      wrapper: 'calendar-container',
+      constraintsCode: `constraints={{
+        minDate: new Date()
+      }}`
+    },
+    MaxDateConstraint: {
+      title: 'Max Date Constraint',
+      description: 'Calendar with maximum date constraint',
+      component: 'DtCalendar',
+      props: {
+        constraints: {
+          maxDate: new Date(2025, 11, 31)
+        }
+      },
+      wrapper: 'calendar-container',
+      constraintsCode: `constraints={{
+        maxDate: new Date(2025, 11, 31)
+      }}`
+    },
+    DisabledDates: {
+      title: 'Disabled Dates',
+      description: 'Calendar with specific disabled dates',
+      component: 'DtCalendar',
+      props: {
+        constraints: {
+          disabledDates: [
+            new Date(2024, 11, 25),
+            new Date(2024, 11, 26),
+            new Date(2024, 11, 27)
+          ]
+        }
+      },
+      wrapper: 'calendar-container',
+      constraintsCode: `constraints={{
+        disabledDates: [
+          new Date(2024, 11, 25),
+          new Date(2024, 11, 26),
+          new Date(2024, 11, 27)
+        ]
+      }}`
+    },
+    IsDateDisabledExample: {
+      title: 'Custom Date Validator (isDateDisabled)',
+      description:
+        'Use isDateDisabled callback to implement custom validation logic. Example: disable weekends',
+      component: 'DtCalendar',
+      props: {
+        constraints: {
+          isDateDisabled: (date: Day) => {
+            const dateObj = new Date(date.year, date.month - 1, date.day)
+            const dayOfWeek = dateObj.getDay()
+            return dayOfWeek === 0 || dayOfWeek === 6
+          }
+        },
+        showWeekend: true
+      },
+      wrapper: 'calendar-container',
+      constraintsCode: `constraints={{
+        isDateDisabled: (date) => {
+          const dateObj = new Date(date.year, date.month - 1, date.day)
+          const dayOfWeek = dateObj.getDay()
+          return dayOfWeek === 0 || dayOfWeek === 6
+        }
+      }}`
+    },
+    BusinessDaysOnly: {
+      title: 'Disable Monday',
+      description:
+        'Calendar with Monday disabled using isDateDisabled callback',
+      component: 'DtCalendar',
+      props: {
+        constraints: {
+          isDateDisabled: (date: Day) => {
+            const dateObj = new Date(date.year, date.month - 1, date.day)
+            const dayOfWeek = dateObj.getDay()
+            return dayOfWeek === 1
+          }
+        },
+        showWeekend: true
+      },
+      wrapper: 'calendar-container',
+      constraintsCode: `constraints={{
+        isDateDisabled: (date) => {
+          const dateObj = new Date(date.year, date.month - 1, date.day)
+          const dayOfWeek = dateObj.getDay()
+          return dayOfWeek === 1
+        }
+      }}`
+    }
+  },
+  Features: {
+    ShowWeekendHighlighting: {
+      title: 'Show Weekend Highlighting',
+      description: 'Calendar with weekend days highlighted',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true
+      },
+      wrapper: 'calendar-container'
+    },
+    TodayButton: {
+      title: 'Today Button',
+      description: 'Calendar with Today button in footer',
+      component: 'DtCalendar',
+      props: {
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    PresetRanges: {
+      title: 'Preset Date Ranges',
+      description:
+        'Calendar with all preset date range buttons (Yesterday, Last 7 days, etc.)',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          last7days: true,
+          last30days: true,
+          thisMonth: true,
+          lastMonth: true
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
     },
     RangeWithPresetRanges: {
       title: 'Date Range with All Preset Buttons',
@@ -513,113 +640,33 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
-    }
-  },
-  Constraints: {
-    MinDateConstraint: {
-      title: 'Min Date Constraint',
-      description: 'Calendar with minimum date constraint',
-      component: 'DtCalendar',
-      props: {
-        constraints: {
-          minDate: new Date()
-        }
-      },
-      wrapper: 'calendar-container'
     },
-    MaxDateConstraint: {
-      title: 'Max Date Constraint',
-      description: 'Calendar with maximum date constraint',
-      component: 'DtCalendar',
-      props: {
-        constraints: {
-          maxDate: new Date(2025, 11, 31)
-        }
-      },
-      wrapper: 'calendar-container'
-    },
-    DisabledDates: {
-      title: 'Disabled Dates',
-      description: 'Calendar with specific disabled dates',
-      component: 'DtCalendar',
-      props: {
-        constraints: {
-          disabledDates: [
-            new Date(2024, 11, 25),
-            new Date(2024, 11, 26),
-            new Date(2024, 11, 27)
-          ]
-        }
-      },
-      wrapper: 'calendar-container'
-    },
-    IsDateDisabledExample: {
-      title: 'Custom Date Validator (isDateDisabled)',
-      description:
-        'Use isDateDisabled callback to implement custom validation logic. Example: disable weekends',
-      component: 'DtCalendar',
-      props: {
-        constraints: {
-          isDateDisabled: (date: Day) => {
-            const dateObj = new Date(date.year, date.month - 1, date.day)
-            const dayOfWeek = dateObj.getDay()
-            return dayOfWeek === 0 || dayOfWeek === 6
-          }
-        },
-        showWeekend: true
-      },
-      wrapper: 'calendar-container'
-    },
-    BusinessDaysOnly: {
-      title: 'Business Days Only',
-      description:
-        'Calendar allowing only weekdays (Monday-Friday) using isDateDisabled callback',
-      component: 'DtCalendar',
-      props: {
-        constraints: {
-          isDateDisabled: (date: Day) => {
-            const dateObj = new Date(date.year, date.month - 1, date.day)
-            const dayOfWeek = dateObj.getDay()
-            return dayOfWeek === 0 || dayOfWeek === 6
-          }
-        },
-        showWeekend: true
-      },
-      wrapper: 'calendar-container'
-    }
-  },
-  Features: {
-    ShowWeekendHighlighting: {
-      title: 'Show Weekend Highlighting',
-      description: 'Calendar with weekend days highlighted',
-      component: 'DtCalendar',
-      props: {
-        showWeekend: true
-      },
-      wrapper: 'calendar-container'
-    },
-    TodayButton: {
-      title: 'Today Button',
-      description: 'Calendar with Today button in footer',
-      component: 'DtCalendar',
-      props: {
-        todayBtn: true
-      },
-      wrapper: 'calendar-container'
-    },
-    PresetRanges: {
-      title: 'Preset Date Ranges',
-      description:
-        'Calendar with all preset date range buttons (Yesterday, Last 7 days, etc.)',
+    CustomPresetRanges: {
+      title: 'Custom Preset Ranges',
+      description: 'Define your own custom date ranges using Day objects',
       component: 'DtCalendar',
       props: {
         type: 'range',
         presetRanges: {
-          yesterday: true,
-          last7days: true,
-          last30days: true,
-          thisMonth: true,
-          lastMonth: true
+          custom: (() => {
+            const today = getToday('en')
+            return [
+              {
+                label: 'Last 14 Days',
+                range: {
+                  from: subtractDays(today, 13, 'en'),
+                  to: today
+                }
+              },
+              {
+                label: 'Last 30 Days',
+                range: {
+                  from: subtractDays(today, 29, 'en'),
+                  to: today
+                }
+              }
+            ]
+          })()
         },
         showWeekend: true,
         todayBtn: true
@@ -925,4 +972,3 @@ const backToGregorian = convertToGregorian(jalaliDate)`,
     }
   }
 }
-

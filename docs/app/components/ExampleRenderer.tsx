@@ -233,6 +233,11 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                 const propsCode = Object.entries(config.props || {})
                   .filter(([key]) => key !== 'initValue')
                   .map(([key, value]) => {
+                    // Use custom constraintsCode if available
+                    if (key === 'constraints' && config.constraintsCode) {
+                      return `      ${config.constraintsCode}`
+                    }
+                    
                     if (typeof value === 'function') {
                       return `      ${key}={/* custom function */}`
                     }
@@ -241,6 +246,7 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                       value !== null &&
                       !Array.isArray(value)
                     ) {
+                      // Regular object without functions
                       const formatted = JSON.stringify(value, null, 2)
                         .split('\n')
                         .map((line, index) =>
@@ -325,14 +331,28 @@ ${darkPropLine}${propsCode ? propsCode + '\n' : ''}      onChange={setDate}
                 ))}
               </div>
             ) : (
-              <p className='text-sm text-gray-700 dark:text-gray-200'>
-                Selected value:{' '}
-                <code className='text-xs'>
-                  {selectedValue
-                    ? JSON.stringify(selectedValue, null, 2)
-                    : 'null'}
-                </code>
-              </p>
+              <div>
+                <p className='text-sm text-gray-700 dark:text-gray-200 mb-2'>
+                  Selected value:
+                </p>
+                <div className='rounded-lg overflow-hidden border border-border'>
+                  <SyntaxHighlighter
+                    language='json'
+                    style={vscDarkPlus}
+                    customStyle={{
+                      margin: 0,
+                      borderRadius: '0.5rem',
+                      fontSize: '0.875rem',
+                      lineHeight: '1.5',
+                      padding: '0.75rem'
+                    }}
+                  >
+                    {selectedValue
+                      ? JSON.stringify(selectedValue, null, 2)
+                      : 'null'}
+                  </SyntaxHighlighter>
+                </div>
+              </div>
             )}
           </div>
 

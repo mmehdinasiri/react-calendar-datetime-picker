@@ -253,7 +253,7 @@ export default function Utilities() {
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-semibold text-white mb-4">Adding Time Periods</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="border border-border rounded-lg p-4 bg-bg-tertiary">
                   <h4 className="font-medium text-white mb-2">addDays</h4>
                   <div className="mb-2 rounded overflow-hidden border border-border">

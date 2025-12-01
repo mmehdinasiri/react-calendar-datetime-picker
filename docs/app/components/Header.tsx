@@ -1,12 +1,40 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { useTheme } from '../contexts/ThemeContext'
 
 export function Header() {
   const [searchQuery, setSearchQuery] = useState('')
+  const [isVersionDropdownOpen, setIsVersionDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
   const { theme, toggleTheme } = useTheme()
+  const router = useRouter()
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsVersionDropdownOpen(false)
+      }
+    }
+
+    if (isVersionDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isVersionDropdownOpen])
+
+  const handleVersionChange = (version: string) => {
+    setIsVersionDropdownOpen(false)
+  }
 
   return (
     <header className='sticky top-0 z-50 bg-bg-secondary border-b border-border'>
@@ -18,17 +46,64 @@ export function Header() {
             className='flex items-center space-x-2 hover:opacity-80 transition-opacity'
           >
             <img
-              src='/favicon/favicon-32x32.png'
+              src='/next-logo.png'
               alt='Logo'
               className='h-6 w-6'
             />
             <span className='font-semibold text-gray-900 dark:text-white text-sm'>
               React Calendar DateTime Picker
             </span>
-            <span className='text-xs bg-accent text-white px-1.5 py-0.5 rounded'>
-              v2.0
-            </span>
           </Link>
+          <div className='relative' ref={dropdownRef}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsVersionDropdownOpen(!isVersionDropdownOpen)
+                }}
+                className='text-xs bg-accent text-white px-1.5 py-0.5 rounded hover:bg-accent-hover transition-colors flex items-center gap-1'
+                aria-label='Select version'
+              >
+                2.0.0
+              <svg
+                className={`h-3 w-3 transition-transform ${
+                  isVersionDropdownOpen ? 'transform rotate-180' : ''
+                }`}
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M19 9l-7 7-7-7'
+                />
+              </svg>
+            </button>
+            {isVersionDropdownOpen && (
+              <div className='absolute top-full left-0 mt-1 bg-bg-primary border border-border rounded-md shadow-lg z-50 min-w-[120px]'>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleVersionChange('2.0.0')
+                  }}
+                  className='w-full text-left px-3 py-2 text-xs text-gray-900 dark:text-white hover:bg-bg-tertiary transition-colors rounded-t-md'
+                >
+                  2.0.0
+                </button>
+                <Link
+                  href='/legacy'
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsVersionDropdownOpen(false)
+                  }}
+                  className='block w-full text-left px-3 py-2 text-xs text-gray-900 dark:text-white hover:bg-bg-tertiary transition-colors rounded-b-md border-t border-border'
+                >
+                  1.7.5
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Search Bar */}

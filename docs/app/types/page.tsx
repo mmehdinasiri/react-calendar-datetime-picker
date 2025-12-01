@@ -436,10 +436,10 @@ const date4: DateInput = 1733097600000`}
 
         <div className='space-y-4'>
           <div className='border border-border rounded-lg p-4 bg-bg-secondary'>
-            <h3 className='text-lg font-semibold text-white mb-2'>
+            <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
               Stored Value (State)
             </h3>
-            <p className='text-gray-300 mb-2'>
+            <p className='text-gray-700 dark:text-gray-300 mb-2'>
               The actual value stored in your state is always a structured
               object:
             </p>
@@ -469,10 +469,10 @@ const date4: DateInput = 1733097600000`}
           </div>
 
           <div className='border border-border rounded-lg p-4 bg-bg-secondary'>
-            <h3 className='text-lg font-semibold text-white mb-2'>
+            <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
               Display Format (Input Field)
             </h3>
-            <p className='text-gray-300 mb-2'>
+            <p className='text-gray-700 dark:text-gray-300 mb-2'>
               The input field shows a formatted string, which is only for
               display:
             </p>

@@ -45,10 +45,10 @@ export default function Accessibility() {
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               Keyboard Navigation
             </h2>
-            <p className='text-gray-300'>
+            <p className='text-gray-700 dark:text-gray-300'>
               Full keyboard support allows users to navigate and interact with
               the calendar without using a mouse.
             </p>
@@ -56,7 +56,7 @@ export default function Accessibility() {
 
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
             <div>
-              <h3 className='text-lg font-semibold text-white mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Try Keyboard Navigation
               </h3>
               <div className='picker-container'>
@@ -80,15 +80,15 @@ export default function Accessibility() {
               </div>
             </div>
             <div>
-              <h3 className='text-lg font-semibold text-white mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Keyboard Shortcuts
               </h3>
               <div className='space-y-4'>
                 <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
-                  <h4 className='font-medium text-white mb-2'>
+                  <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                     Date Picker Input
                   </h4>
-                  <ul className='text-sm text-gray-300 space-y-1'>
+                  <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
                     <li>
                       <kbd className='px-2 py-1 bg-bg-primary border border-border rounded text-xs text-gray-200'>
                         Tab
@@ -115,10 +115,10 @@ export default function Accessibility() {
                 </div>
 
                 <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
-                  <h4 className='font-medium text-white mb-2'>
+                  <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                     Calendar Navigation
                   </h4>
-                  <ul className='text-sm text-gray-300 space-y-1'>
+                  <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
                     <li>
                       <kbd className='px-2 py-1 bg-bg-primary border border-border rounded text-xs text-gray-200'>
                         Arrow Keys
@@ -235,10 +235,10 @@ export default function Accessibility() {
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               ARIA Labels and Roles
             </h2>
-            <p className='text-gray-300'>
+            <p className='text-gray-700 dark:text-gray-300'>
               Comprehensive ARIA attributes ensure screen readers can properly
               announce the calendar state and available actions.
             </p>
@@ -246,110 +246,110 @@ export default function Accessibility() {
 
           <div className='space-y-6'>
             <div>
-              <h3 className='text-lg font-semibold text-white mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 ARIA Attributes
               </h3>
               <div className='overflow-x-auto'>
                 <table className='min-w-full divide-y divide-border border border-border rounded-lg'>
                   <thead className='bg-bg-tertiary'>
                     <tr>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
                         Element
                       </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
                         ARIA Attribute
                       </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider'>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
                         Description
                       </th>
                     </tr>
                   </thead>
                   <tbody className='bg-bg-secondary divide-y divide-border'>
                     <tr>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-white'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
                         Input field
                       </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
                         <code>aria-haspopup</code>
                       </td>
-                      <td className='px-6 py-4 text-sm text-gray-300'>
+                      <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                         Indicates the input opens a popup
                       </td>
                     </tr>
                     <tr className='bg-bg-tertiary'>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-white'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
                         Input field
                       </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
                         <code>aria-expanded</code>
                       </td>
-                      <td className='px-6 py-4 text-sm text-gray-300'>
+                      <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                         Indicates if calendar is open
                       </td>
                     </tr>
                     <tr>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-white'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
                         Calendar modal
                       </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
                         <code>role="dialog"</code>
                       </td>
-                      <td className='px-6 py-4 text-sm text-gray-300'>
+                      <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                         Identifies the calendar as a dialog
                       </td>
                     </tr>
                     <tr className='bg-bg-tertiary'>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-white'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
                         Calendar modal
                       </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
                         <code>aria-modal</code>
                       </td>
-                      <td className='px-6 py-4 text-sm text-gray-300'>
+                      <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                         Indicates modal behavior
                       </td>
                     </tr>
                     <tr>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-white'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
                         Calendar modal
                       </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
                         <code>aria-label</code>
                       </td>
-                      <td className='px-6 py-4 text-sm text-gray-300'>
+                      <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                         Descriptive label for the calendar
                       </td>
                     </tr>
                     <tr className='bg-bg-tertiary'>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-white'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
                         Navigation buttons
                       </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
                         <code>aria-label</code>
                       </td>
-                      <td className='px-6 py-4 text-sm text-gray-300'>
+                      <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                         Descriptive labels for prev/next buttons
                       </td>
                     </tr>
                     <tr>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-white'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
                         Date cells
                       </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
                         <code>aria-selected</code>
                       </td>
-                      <td className='px-6 py-4 text-sm text-gray-300'>
+                      <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                         Indicates selected state
                       </td>
                     </tr>
                     <tr className='bg-bg-tertiary'>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-white'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
                         Disabled dates
                       </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
+                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
                         <code>aria-disabled</code>
                       </td>
-                      <td className='px-6 py-4 text-sm text-gray-300'>
+                      <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                         Indicates disabled state
                       </td>
                     </tr>
@@ -381,10 +381,10 @@ export default function Accessibility() {
         {/* Focus Management */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               Focus Management
             </h2>
-            <p className='text-gray-300'>
+            <p className='text-gray-700 dark:text-gray-300'>
               Proper focus management ensures keyboard users can navigate
               naturally through the interface.
             </p>
@@ -392,10 +392,10 @@ export default function Accessibility() {
 
           <div className='space-y-6'>
             <div>
-              <h3 className='text-lg font-semibold text-white mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Focus Trap
               </h3>
-              <p className='text-gray-300 mb-4'>
+              <p className='text-gray-700 dark:text-gray-300 mb-4'>
                 When the calendar modal is open, focus is trapped within the
                 calendar. Users can tab through interactive elements and use
                 Escape to close.
@@ -422,10 +422,10 @@ export default function Accessibility() {
             </div>
 
             <div>
-              <h3 className='text-lg font-semibold text-white mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Focus Restoration
               </h3>
-              <p className='text-gray-300 mb-4'>
+              <p className='text-gray-700 dark:text-gray-300 mb-4'>
                 When the calendar closes, focus returns to the trigger element
                 (input field).
               </p>
@@ -436,10 +436,10 @@ export default function Accessibility() {
         {/* RTL Support */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               RTL (Right-to-Left) Support
             </h2>
-            <p className='text-gray-300'>
+            <p className='text-gray-700 dark:text-gray-300'>
               Full RTL support for Persian and other right-to-left languages,
               including proper keyboard navigation.
             </p>
@@ -447,7 +447,7 @@ export default function Accessibility() {
 
           <div className='space-y-6'>
             <div>
-              <h3 className='text-lg font-semibold text-white mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Persian Calendar (RTL)
               </h3>
               <div className='rounded-lg overflow-hidden border border-border'>
@@ -485,10 +485,10 @@ export default function Accessibility() {
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               Screen Reader Support
             </h2>
-            <p className='text-gray-300'>
+            <p className='text-gray-700 dark:text-gray-300'>
               Screen readers receive comprehensive information about the
               calendar state, selected dates, and available actions.
             </p>
@@ -496,10 +496,10 @@ export default function Accessibility() {
 
           <div className='space-y-6'>
             <div>
-              <h3 className='text-lg font-semibold text-white mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Announcements
               </h3>
-              <ul className='list-disc list-inside text-gray-300 space-y-2'>
+              <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
                 <li>Calendar opening/closing state</li>
                 <li>Currently focused date</li>
                 <li>Selected date changes</li>
@@ -510,10 +510,10 @@ export default function Accessibility() {
             </div>
 
             <div>
-              <h3 className='text-lg font-semibold text-white mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Live Regions
               </h3>
-              <p className='text-gray-300 mb-4'>
+              <p className='text-gray-700 dark:text-gray-300 mb-4'>
                 Dynamic content changes are announced using ARIA live regions,
                 ensuring screen reader users are informed of updates.
               </p>
@@ -542,10 +542,10 @@ export default function Accessibility() {
         {/* High Contrast Support */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               High Contrast Mode
             </h2>
-            <p className='text-gray-300'>
+            <p className='text-gray-700 dark:text-gray-300'>
               The calendar respects system high contrast settings and works well
               with high contrast themes.
             </p>
@@ -553,10 +553,10 @@ export default function Accessibility() {
 
           <div className='space-y-6'>
             <div>
-              <h3 className='text-lg font-semibold text-white mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 CSS Variables for Customization
               </h3>
-              <p className='text-gray-300 mb-4'>
+              <p className='text-gray-700 dark:text-gray-300 mb-4'>
                 Use CSS variables to ensure proper contrast ratios in different
                 themes:
               </p>
@@ -588,10 +588,10 @@ export default function Accessibility() {
         {/* Testing */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               Testing Accessibility
             </h2>
-            <p className='text-gray-300'>
+            <p className='text-gray-700 dark:text-gray-300'>
               Tools and methods for testing the calendar's accessibility
               features.
             </p>
@@ -599,15 +599,15 @@ export default function Accessibility() {
 
           <div className='space-y-6'>
             <div>
-              <h3 className='text-lg font-semibold text-white mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Recommended Testing Tools
               </h3>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 <div>
-                  <h4 className='font-medium text-white mb-2'>
+                  <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                     Automated Tools
                   </h4>
-                  <ul className='text-sm text-gray-300 space-y-1'>
+                  <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
                     <li>• axe-core (Chrome extension)</li>
                     <li>• WAVE (Web Accessibility Evaluation Tool)</li>
                     <li>• Lighthouse (Chrome DevTools)</li>
@@ -615,10 +615,10 @@ export default function Accessibility() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className='font-medium text-white mb-2'>
+                  <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                     Manual Testing
                   </h4>
-                  <ul className='text-sm text-gray-300 space-y-1'>
+                  <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
                     <li>• Keyboard-only navigation</li>
                     <li>• Screen reader testing (NVDA, JAWS, VoiceOver)</li>
                     <li>• High contrast mode</li>
@@ -629,10 +629,10 @@ export default function Accessibility() {
             </div>
 
             <div>
-              <h3 className='text-lg font-semibold text-white mb-4'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Keyboard Testing Checklist
               </h3>
-              <ul className='list-disc list-inside text-gray-300 space-y-2'>
+              <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
                 <li>Tab order follows logical sequence</li>
                 <li>All interactive elements are keyboard accessible</li>
                 <li>Focus indicators are visible</li>
