@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark theme styles matching React docs */
+:root {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #23272f;
+  --bg-tertiary: #2d333b;
+  --border-color: #383e47;
+  --text-primary: #ffffff;
+  --text-secondary: #e5e7eb;
+  --text-tertiary: #9ca3af;
+  --accent: #009a17;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Custom styles for documentation */
+.prose {
+  @apply text-gray-200;
+}
+
+.prose h1 {
+  @apply text-4xl font-bold text-white mb-6;
+}
+
+.prose h2 {
+  @apply text-2xl font-semibold text-white mb-4 mt-8;
+}
+
+.prose h3 {
+  @apply text-xl font-medium text-white mb-3 mt-6;
+}
+
+.prose h4 {
+  @apply text-lg font-medium text-white mb-2 mt-4;
+}
+
+.prose p {
+  @apply mb-4 leading-relaxed text-gray-200;
+}
+
+.prose ul {
+  @apply list-disc list-inside mb-4 space-y-2 text-gray-200;
+}
+
+.prose ol {
+  @apply list-decimal list-inside mb-4 space-y-2 text-gray-200;
+}
+
+.prose li {
+  @apply leading-relaxed;
+}
+
+.prose code {
+  @apply bg-bg-tertiary px-2 py-1 rounded text-sm font-mono text-accent-light;
+}
+
+.prose pre {
+  @apply bg-bg-primary border border-border text-gray-200 p-4 rounded-lg overflow-x-auto mb-4;
+}
+
+.prose pre code {
+  @apply bg-transparent px-0 py-0 text-gray-200;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-accent pl-4 italic text-gray-300 mb-4;
+}
+
+.prose a {
+  @apply text-accent-light hover:text-accent-light-hover underline;
+}
+
+.prose strong {
+  @apply text-white font-semibold;
+}
+
+.prose table {
+  @apply w-full border-collapse mb-4;
+}
+
+.prose th {
+  @apply bg-bg-tertiary border border-border px-4 py-2 text-left text-sm font-semibold text-white;
+}
+
+.prose td {
+  @apply border border-border px-4 py-2 text-sm text-gray-200;
+}
+
+.prose tr:nth-child(even) {
+  @apply bg-bg-secondary;
+}
+
+/* Scroll offset for fixed header */
+[id] {
+  scroll-margin-top: 4rem; /* 56px header + some padding */
+}
+
+/* Component containers for examples */
+.calendar-container {
+  @apply max-w-md mx-auto;
+}
+
+.picker-container {
+  @apply max-w-md mx-auto;
+}
+
+/* Wider container for multiple months */
+.calendar-multiple-months {
+  @apply max-w-4xl mx-auto;
+}
+
+.picker-container.calendar-multiple-months {
+  @apply max-w-4xl mx-auto;
+}
+
+/* Even wider container for 3+ months */
+.calendar-three-months {
+  @apply max-w-6xl mx-auto;
+}
+
+.picker-container.calendar-three-months {
+  @apply max-w-6xl mx-auto;
+}
+
+/* Dark theme variables for calendar - apply to all calendar instances in docs */
+.calendar-dark-custom-theme,
+.calendar-container,
+.calendar-container .react-calendar-datetime-picker,
+.picker-container,
+.picker-container .calendar-picker-modal,
+.picker-container .calendar-picker-modal .react-calendar-datetime-picker {
+  /* Colors - Dark theme */
+  --calendar-primary: #16a34a;
+  --calendar-primary-hover: #15803d;
+  --calendar-primary-light: #14532d;
+  --calendar-selected-day: #16a34a;
+  --calendar-today: #15803d;
+  --calendar-selected-range: #14532d;
+  --calendar-selected-range-color: #4ade80;
+  --calendar-weekends: #f87171;
+  --calendar-secondary: #6b7280;
+  --calendar-danger: #ef4444;
+  --calendar-warning: #fbbf24;
+  --calendar-info: #60a5fa;
+
+  /* Background colors */
+  --calendar-bg: #1f2937;
+  --calendar-bg-hover: #374151;
+  --calendar-bg-selected: #1f2937;
+  --calendar-bg-disabled: #374151;
+  --calendar-bg-other-month: #111827;
+  --calendar-light-gray: #374151;
+  --calendar-header-bg: #1f2937;
+
+  /* Text colors */
+  --calendar-text: #f3f4f6;
+  --calendar-text-light: #e5e7eb;
+  --calendar-text-lighter: #9ca3af;
+  --calendar-text-disabled: #6b7280;
+  --calendar-text-header: #ffffff;
+  --calendar-text-day-names: #9ca3af;
+  --calendar-text-other-month: #6b7280;
+  --calendar-icon-color: #9ca3af;
+
+  /* Border colors */
+  --calendar-border: #374151;
+  --calendar-border-focus: #16a34a;
+  --calendar-border-selected: #16a34a;
+
+  /* Shadows */
+  --calendar-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --calendar-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --calendar-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Also apply data-theme="dark" attribute via CSS for proper dark theme application */
+.picker-container .calendar-picker-modal .react-calendar-datetime-picker,
+.calendar-container .react-calendar-datetime-picker {
+  /* Force dark theme styles */
+  background: var(--calendar-bg) !important;
+  color: var(--calendar-text) !important;
+}
+
+/* Blue theme variables for calendar */
+.calendar-blue-theme {
+  --calendar-bg: #eff6ff;
+  --calendar-text: #1e40af;
+  --calendar-border: #3b82f6;
+  --calendar-hover: #dbeafe;
+  --calendar-selected: #2563eb;
+  --calendar-today: #1d4ed8;
+  --calendar-disabled: #9ca3af;
+}
