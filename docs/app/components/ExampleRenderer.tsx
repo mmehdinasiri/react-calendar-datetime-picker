@@ -230,6 +230,11 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
               }}
             >
               {(() => {
+                // Use customCode if provided to completely override generated code
+                if (config.customCode) {
+                  return config.customCode
+                }
+
                 const propsCode = Object.entries(config.props || {})
                   .filter(([key]) => key !== 'initValue')
                   .map(([key, value]) => {

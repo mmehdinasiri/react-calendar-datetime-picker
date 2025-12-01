@@ -104,6 +104,7 @@ export interface ExampleConfig {
   utilityCode?: string
   getUtilityResults?: (selectedDate?: Day | null) => Record<string, unknown>
   constraintsCode?: string // Custom code snippet for constraints prop when it contains functions
+  customCode?: string // Custom code snippet to completely override generated code
 }
 
 export type ExamplesConfig = Record<string, Record<string, ExampleConfig>>

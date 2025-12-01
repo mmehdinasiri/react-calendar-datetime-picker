@@ -52,46 +52,6 @@ const ArrowRightIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-const CircleLeftIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    width='20'
-    height='20'
-    viewBox='0 0 20 20'
-    fill='none'
-    xmlns='http://www.w3.org/2000/svg'
-  >
-    <circle cx='10' cy='10' r='9' stroke='currentColor' strokeWidth='1.5' />
-    <path
-      d='M11 7L8 10L11 13'
-      stroke='currentColor'
-      strokeWidth='2'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-    />
-  </svg>
-)
-
-const CircleRightIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    width='20'
-    height='20'
-    viewBox='0 0 20 20'
-    fill='none'
-    xmlns='http://www.w3.org/2000/svg'
-  >
-    <circle cx='10' cy='10' r='9' stroke='currentColor' strokeWidth='1.5' />
-    <path
-      d='M9 7L12 10L9 13'
-      stroke='currentColor'
-      strokeWidth='2'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-    />
-  </svg>
-)
-
 export default function Customization() {
   const [customDate, setCustomDate] = useState<any>(null)
   const [darkDate, setDarkDate] = useState<InitValueInput | undefined>(
@@ -117,7 +77,9 @@ export default function Customization() {
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>Themes</h2>
+            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
+              Themes
+            </h2>
             <p className='text-gray-700 dark:text-gray-300'>
               The calendar supports light and dark themes, as well as custom
               themes using CSS variables.
@@ -175,72 +137,72 @@ export default function Customization() {
 
           <div className='space-y-6'>
             <div>
-                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                    Available CSS Variables
-                  </h3>
-                  <div className='overflow-x-auto'>
-                    <table className='min-w-full divide-y divide-border border border-border rounded-lg'>
-                      <thead className='bg-bg-tertiary'>
-                        <tr>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                            Variable
-                          </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                            Light Theme Default
-                          </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                            Dark Theme Default
-                          </th>
-                          <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                            Description
-                          </th>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                Available CSS Variables
+              </h3>
+              <div className='overflow-x-auto'>
+                <table className='min-w-full divide-y divide-border border border-border rounded-lg'>
+                  <thead className='bg-bg-tertiary'>
+                    <tr>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                        Variable
+                      </th>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                        Light Theme Default
+                      </th>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                        Dark Theme Default
+                      </th>
+                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                        Description
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className='bg-bg-secondary divide-y divide-border'>
+                    {cssVariables.map((variable, index) => {
+                      const lightColor = getColorValue(variable.lightTheme)
+                      const darkColor = getDarkColorValue(variable.darkTheme)
+                      const isEven = index % 2 === 0
+
+                      return (
+                        <tr
+                          key={variable.name}
+                          className={isEven ? '' : 'bg-bg-tertiary'}
+                        >
+                          <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                            <code>{variable.name}</code>
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                            <div className='flex items-center gap-2'>
+                              <code>{variable.lightTheme}</code>
+                              <div
+                                className='w-6 h-6 rounded border border-border'
+                                style={{ backgroundColor: lightColor }}
+                              />
+                            </div>
+                          </td>
+                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                            <div className='flex items-center gap-2'>
+                              <code>{variable.darkTheme}</code>
+                              <div
+                                className='w-6 h-6 rounded border border-border'
+                                style={{ backgroundColor: darkColor }}
+                              />
+                            </div>
+                          </td>
+                          <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                            {variable.description}
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody className='bg-bg-secondary divide-y divide-border'>
-                        {cssVariables.map((variable, index) => {
-                          const lightColor = getColorValue(variable.lightTheme)
-                          const darkColor = getDarkColorValue(variable.darkTheme)
-                          const isEven = index % 2 === 0
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
 
-                          return (
-                            <tr
-                              key={variable.name}
-                              className={isEven ? '' : 'bg-bg-tertiary'}
-                            >
-                              <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
-                                <code>{variable.name}</code>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                                <div className='flex items-center gap-2'>
-                                  <code>{variable.lightTheme}</code>
-                                  <div
-                                    className='w-6 h-6 rounded border border-border'
-                                    style={{ backgroundColor: lightColor }}
-                                  />
-                                </div>
-                              </td>
-                              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                                <div className='flex items-center gap-2'>
-                                  <code>{variable.darkTheme}</code>
-                                  <div
-                                    className='w-6 h-6 rounded border border-border'
-                                    style={{ backgroundColor: darkColor }}
-                                  />
-                                </div>
-                              </td>
-                              <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
-                                {variable.description}
-                              </td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+            <div>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Using calenderModalClass Prop
               </h3>
               <div className='bg-bg-tertiary border-l-4 border-accent p-4'>
@@ -503,10 +465,10 @@ function App() {
               </h3>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                 <div>
-                    <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                      Calendar Structure
-                    </h4>
-                    <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
+                  <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                    Calendar Structure
+                  </h4>
+                  <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
                     <li>
                       <code>.react-calendar-datetime-picker</code> - Root
                       container
@@ -526,10 +488,10 @@ function App() {
                   </ul>
                 </div>
                 <div>
-                    <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                      Interactive Elements
-                    </h4>
-                    <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
+                  <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                    Interactive Elements
+                  </h4>
+                  <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
                     <li>
                       <code>.calendar-day</code> - Individual day cells
                     </li>
@@ -567,23 +529,27 @@ function App() {
             </p>
           </div>
 
-          <div className='space-y-6'>
-            <div>
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                    Custom Icons
-                  </h3>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='tsx'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`import { DtCalendar } from 'react-calendar-datetime-picker'
+          <div className='space-y-6'></div>
+
+          {/* Icons and Labels Examples */}
+          <div className='mt-8 space-y-6'>
+            <ExampleRenderer
+              config={{
+                title: 'Custom Arrow Icons',
+                description: 'Calendar with custom arrow navigation icons',
+                component: 'DtCalendar',
+                props: {
+                  customization: {
+                    icons: {
+                      previous: ArrowLeftIcon,
+                      next: ArrowRightIcon
+                    }
+                  },
+                  showWeekend: true,
+                  todayBtn: true
+                },
+                wrapper: 'calendar-container',
+                customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
 
 const CustomPrevIcon = ({ className }) => (
   <svg className={className} viewBox="0 0 20 20" fill="currentColor">
@@ -608,107 +574,9 @@ function App() {
       }}
     />
   )
-}`}
-                </SyntaxHighlighter>
-              </div>
-            </div>
-
-            <div>
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                    Custom Labels
-                  </h3>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='tsx'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`<DtCalendar
-  customization={{
-    labels: {
-      nextMonth: 'Next',
-      previousMonth: 'Previous'
-    }
-  }}
-/>`}
-                </SyntaxHighlighter>
-              </div>
-            </div>
-
-            <div>
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                    Localized Month and Weekday Names
-                  </h3>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='tsx'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`<DtCalendar
-  customization={{
-    monthNames: [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ],
-    weekdayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-  }}
-/>`}
-                </SyntaxHighlighter>
-              </div>
-            </div>
-          </div>
-
-          {/* Icons and Labels Examples */}
-          <div className='mt-8 space-y-6'>
-            <ExampleRenderer
-              config={{
-                title: 'Custom Arrow Icons',
-                description: 'Calendar with custom arrow navigation icons',
-                component: 'DtCalendar',
-                props: {
-                  customization: {
-                    icons: {
-                      previous: ArrowLeftIcon,
-                      next: ArrowRightIcon
-                    }
-                  },
-                  showWeekend: true,
-                  todayBtn: true
-                },
-                wrapper: 'calendar-container'
+}`
               }}
               exampleKey='CustomArrowIcons'
-            />
-            <ExampleRenderer
-              config={{
-                title: 'Custom Circle Icons',
-                description:
-                  'Calendar with different style icons - circle arrows',
-                component: 'DtCalendar',
-                props: {
-                  customization: {
-                    icons: {
-                      previous: CircleLeftIcon,
-                      next: CircleRightIcon
-                    }
-                  },
-                  showWeekend: true,
-                  todayBtn: true
-                },
-                wrapper: 'calendar-container'
-              }}
-              exampleKey='CustomCircleIcons'
             />
             <ExampleRenderer
               config={{
@@ -831,7 +699,6 @@ function App() {
             />
           </div>
         </section>
-
       </div>
     </div>
   )
