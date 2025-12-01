@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { DtPicker } from '../../../src/components/DtPicker'
-import { DtCalendar } from '../../../src/components/DtCalendar'
 import type { InitValueInput } from '../../../src/types'
 import '../../../src/styles/index.scss'
 import { ExampleRenderer } from '../components/ExampleRenderer'
@@ -169,9 +168,9 @@ export default function Accessibility() {
           <div className='mt-8 space-y-6'>
             <ExampleRenderer
               config={{
-                title: 'Keyboard Navigation - Basic',
+                title: 'Keyboard Navigation - Basic Calendar',
                 description:
-                  'Use arrow keys to navigate dates, Enter/Space to select, Escape to close modal',
+                  'Click on the calendar to focus it, then use arrow keys (↑↓←→) to navigate between dates. Press Enter or Space to select a date. This demonstrates basic keyboard navigation without opening a modal.',
                 component: 'DtCalendar',
                 props: {
                   showWeekend: true,
@@ -183,12 +182,12 @@ export default function Accessibility() {
             />
             <ExampleRenderer
               config={{
-                title: 'Keyboard Navigation - Date Picker',
+                title: 'Keyboard Navigation - Date Picker Input',
                 description:
-                  'Tab to focus input, Enter to open, arrow keys to navigate, Enter/Space to select',
+                  'Tab to focus the input field, then press Enter or Space to open the calendar modal. Once open, use arrow keys to navigate dates, Enter/Space to select, and Escape to close. This demonstrates full keyboard workflow from input to selection.',
                 component: 'DtPicker',
                 props: {
-                  placeholder: 'Try keyboard navigation',
+                  placeholder: 'Tab here, then press Enter to open',
                   showWeekend: true,
                   todayBtn: true
                 },
@@ -198,9 +197,9 @@ export default function Accessibility() {
             />
             <ExampleRenderer
               config={{
-                title: 'Keyboard Shortcuts - Today (T key)',
+                title: 'Keyboard Shortcut - Jump to Today (T key)',
                 description:
-                  'Press "T" key when calendar is focused to jump to today\'s date',
+                  'Click on the calendar to focus it, then press the "T" key to instantly jump to today\'s date. This demonstrates the quick navigation shortcut for returning to the current date.',
                 component: 'DtCalendar',
                 props: {
                   showWeekend: true,
@@ -212,12 +211,12 @@ export default function Accessibility() {
             />
             <ExampleRenderer
               config={{
-                title: 'Focus Trap - Modal Picker',
+                title: 'Focus Trap - Modal Calendar',
                 description:
-                  'Open picker modal - focus stays trapped within calendar. Tab cycles through interactive elements.',
+                  'Click the input to open the calendar modal. Once open, press Tab repeatedly - notice how focus cycles through the calendar elements (navigation buttons, date cells, today button, clear button) and stays trapped within the modal. Press Escape to close and return focus to the input. This demonstrates proper focus management for modal dialogs.',
                 component: 'DtPicker',
                 props: {
-                  placeholder: 'Open to test focus trap',
+                  placeholder: 'Click to open and test focus trap',
                   showWeekend: true,
                   todayBtn: true,
                   clearBtn: true
@@ -229,18 +228,20 @@ export default function Accessibility() {
           </div>
         </section>
 
-        {/* ARIA Support */}
+        {/* ARIA Support and Screen Readers */}
         <section
           id='aria'
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
             <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              ARIA Labels and Roles
+              ARIA Support and Screen Readers
             </h2>
             <p className='text-gray-700 dark:text-gray-300'>
               Comprehensive ARIA attributes ensure screen readers can properly
-              announce the calendar state and available actions.
+              announce the calendar state, selected dates, and available
+              actions. All dynamic content changes are announced in real-time
+              using ARIA live regions.
             </p>
           </div>
 
@@ -358,13 +359,37 @@ export default function Accessibility() {
               </div>
             </div>
 
-            {/* ARIA Example */}
+            <div>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                Screen Reader Announcements
+              </h3>
+              <p className='text-gray-700 dark:text-gray-300 mb-4'>
+                Screen readers receive comprehensive information about the
+                calendar state, selected dates, and available actions. Dynamic
+                content changes are announced using ARIA live regions, ensuring
+                screen reader users are informed of updates in real-time.
+              </p>
+              <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
+                <li>Calendar opening/closing state</li>
+                <li>
+                  Currently focused date with full context (month, day, year,
+                  weekday)
+                </li>
+                <li>Selected date changes</li>
+                <li>Navigation between months/years</li>
+                <li>Disabled date information</li>
+                <li>Available keyboard shortcuts</li>
+              </ul>
+            </div>
+
+            {/* ARIA and Screen Reader Example */}
             <div className='mt-8'>
               <ExampleRenderer
                 config={{
-                  title: 'ARIA Labels and Roles',
+                  title:
+                    'ARIA Labels and Screen Reader Announcements - Interactive Example',
                   description:
-                    'Calendar includes comprehensive ARIA labels, roles, and states for screen reader compatibility',
+                    'This calendar has comprehensive ARIA attributes built-in. To test with a screen reader: 1) Enable your screen reader (NVDA, JAWS, VoiceOver, or Narrator), 2) Navigate to this calendar using Tab, 3) Use arrow keys to move between dates - the screen reader will announce each date with its full context (e.g., "December 15, 2024, Sunday, not selected"), 4) When you select a date, the screen reader announces the selection change, 5) Navigation buttons announce their purpose (e.g., "Previous month button"), 6) The calendar container is identified as a dialog with proper labels. All announcements happen in real-time as you interact with the calendar.',
                   component: 'DtCalendar',
                   props: {
                     showWeekend: true,
@@ -476,66 +501,6 @@ export default function Accessibility() {
                 </p>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Screen Reader Announcements */}
-        <section
-          id='screen-readers'
-          className='bg-bg-secondary rounded-lg border border-border p-8'
-        >
-          <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Screen Reader Support
-            </h2>
-            <p className='text-gray-700 dark:text-gray-300'>
-              Screen readers receive comprehensive information about the
-              calendar state, selected dates, and available actions.
-            </p>
-          </div>
-
-          <div className='space-y-6'>
-            <div>
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Announcements
-              </h3>
-              <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
-                <li>Calendar opening/closing state</li>
-                <li>Currently focused date</li>
-                <li>Selected date changes</li>
-                <li>Navigation between months/years</li>
-                <li>Disabled date information</li>
-                <li>Available keyboard shortcuts</li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Live Regions
-              </h3>
-              <p className='text-gray-700 dark:text-gray-300 mb-4'>
-                Dynamic content changes are announced using ARIA live regions,
-                ensuring screen reader users are informed of updates.
-              </p>
-            </div>
-          </div>
-
-          {/* Screen Reader Example */}
-          <div className='mt-8'>
-            <ExampleRenderer
-              config={{
-                title: 'ARIA Labels for Screen Readers',
-                description:
-                  'Calendar includes comprehensive ARIA labels, roles, and states for screen reader compatibility',
-                component: 'DtCalendar',
-                props: {
-                  showWeekend: true,
-                  todayBtn: true
-                },
-                wrapper: 'calendar-container'
-              }}
-              exampleKey='AriaLabelsScreenReader'
-            />
           </div>
         </section>
 

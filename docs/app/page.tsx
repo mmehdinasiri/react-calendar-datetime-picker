@@ -100,7 +100,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+        </div>
 
       {/* Main Content Section */}
       <div className='max-w-4xl mx-auto px-6 pt-8 pb-16'>

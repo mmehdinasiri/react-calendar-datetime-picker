@@ -65,8 +65,7 @@ const navigation = [
     title: 'ACCESSIBILITY',
     items: [
       { name: 'Keyboard Navigation', href: '/accessibility#keyboard' },
-      { name: 'ARIA Support', href: '/accessibility#aria' },
-      { name: 'Screen Readers', href: '/accessibility#screen-readers' }
+      { name: 'ARIA & Screen Readers', href: '/accessibility#aria' }
     ]
   },
   {
