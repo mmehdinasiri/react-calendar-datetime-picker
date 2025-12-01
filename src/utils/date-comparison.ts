@@ -75,13 +75,11 @@ export function isBetween(
   // If start is after end, swap them
   if (comparison > 0) {
     return (
-      compareDays(day, end, locale) >= 0 &&
-      compareDays(day, start, locale) <= 0
+      compareDays(day, end, locale) >= 0 && compareDays(day, start, locale) <= 0
     )
   }
   return (
-    compareDays(day, start, locale) >= 0 &&
-    compareDays(day, end, locale) <= 0
+    compareDays(day, start, locale) >= 0 && compareDays(day, end, locale) <= 0
   )
 }
 
@@ -131,19 +129,15 @@ export function addMonths(
 ): Day {
   const date = dayToDate(day, locale)
   date.setMonth(date.getMonth() + months)
-  
+
   // Handle edge case where the day doesn't exist in the new month
   // (e.g., Jan 31 + 1 month = Feb 31, which doesn't exist)
-  const maxDay = getDaysInMonth(
-    date.getFullYear(),
-    date.getMonth() + 1,
-    locale
-  )
+  const maxDay = getDaysInMonth(date.getFullYear(), date.getMonth() + 1, locale)
   const originalDay = day.day
   if (originalDay > maxDay) {
     date.setDate(maxDay)
   }
-  
+
   return dateToDay(date, locale)
 }
 
@@ -176,18 +170,14 @@ export function addYears(
 ): Day {
   const date = dayToDate(day, locale)
   date.setFullYear(date.getFullYear() + years)
-  
+
   // Handle leap year edge case (Feb 29 -> Feb 28 in non-leap year)
-  const maxDay = getDaysInMonth(
-    date.getFullYear(),
-    date.getMonth() + 1,
-    locale
-  )
+  const maxDay = getDaysInMonth(date.getFullYear(), date.getMonth() + 1, locale)
   const originalDay = day.day
   if (originalDay > maxDay) {
     date.setDate(maxDay)
   }
-  
+
   return dateToDay(date, locale)
 }
 
@@ -238,10 +228,10 @@ export function getDifferenceInMonths(
 ): number {
   const d1 = locale === 'fa' ? jalaliToGregorian(day1) : day1
   const d2 = locale === 'fa' ? jalaliToGregorian(day2) : day2
-  
+
   const yearDiff = d1.year - d2.year
   const monthDiff = d1.month - d2.month
-  
+
   return yearDiff * 12 + monthDiff
 }
 
@@ -259,14 +249,14 @@ export function getDifferenceInYears(
 ): number {
   const d1 = locale === 'fa' ? jalaliToGregorian(day1) : day1
   const d2 = locale === 'fa' ? jalaliToGregorian(day2) : day2
-  
+
   let yearDiff = d1.year - d2.year
-  
+
   // Adjust if the month/day hasn't been reached yet
   if (d1.month < d2.month || (d1.month === d2.month && d1.day < d2.day)) {
     yearDiff--
   }
-  
+
   return yearDiff
 }
 
@@ -322,10 +312,7 @@ export function endOfDay(day: Day): Day {
  * @param _locale - Calendar locale (unused, kept for API consistency)
  * @returns Day object representing the first day of the month
  */
-export function startOfMonth(
-  day: Day,
-  _locale: CalendarLocale = 'en'
-): Day {
+export function startOfMonth(day: Day, _locale: CalendarLocale = 'en'): Day {
   return {
     ...day,
     day: 1,
@@ -340,10 +327,7 @@ export function startOfMonth(
  * @param locale - Calendar locale
  * @returns Day object representing the last day of the month
  */
-export function endOfMonth(
-  day: Day,
-  locale: CalendarLocale = 'en'
-): Day {
+export function endOfMonth(day: Day, locale: CalendarLocale = 'en'): Day {
   const daysInMonth = getDaysInMonth(day.year, day.month, locale)
   return {
     ...day,
@@ -374,10 +358,7 @@ export function startOfYear(day: Day): Day {
  * @param locale - Calendar locale
  * @returns Day object representing the last day of the year
  */
-export function endOfYear(
-  day: Day,
-  locale: CalendarLocale = 'en'
-): Day {
+export function endOfYear(day: Day, locale: CalendarLocale = 'en'): Day {
   const daysInMonth = getDaysInMonth(day.year, 12, locale)
   return {
     ...day,
@@ -387,4 +368,3 @@ export function endOfYear(
     minute: 59
   }
 }
-
