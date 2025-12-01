@@ -1130,5 +1130,282 @@ export const examples: ExamplesConfig = {
       wrapper: 'picker-container',
       showConsoleLog: true
     }
+  },
+  'Date Formatting': {
+    DefaultFormat: {
+      title: 'Default Date Format (YYYY/MM/DD)',
+      description:
+        'Date picker with default format - displays dates as YYYY/MM/DD',
+      component: 'DtPicker',
+      props: {
+        placeholder: 'Select a date',
+        initValue: new Date(2024, 11, 25)
+      },
+      wrapper: 'picker-container'
+    },
+    DDMMYYYYFormat: {
+      title: 'DD/MM/YYYY Format',
+      description:
+        'Date picker with DD/MM/YYYY format - European date format with day first',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'DD/MM/YYYY',
+        placeholder: 'Select a date (DD/MM/YYYY)',
+        initValue: new Date(2024, 11, 25)
+      },
+      wrapper: 'picker-container'
+    },
+    MMDDYYYYFormat: {
+      title: 'MM-DD-YYYY Format',
+      description:
+        'Date picker with MM-DD-YYYY format - US date format with dashes as separators',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'MM-DD-YYYY',
+        placeholder: 'Select a date (MM-DD-YYYY)',
+        initValue: new Date(2024, 11, 25)
+      },
+      wrapper: 'picker-container'
+    },
+    YYYYMMDDFormat: {
+      title: 'YYYY.MM.DD Format',
+      description:
+        'Date picker with YYYY.MM.DD format - ISO-like format with dots as separators',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'YYYY.MM.DD',
+        placeholder: 'Select a date (YYYY.MM.DD)',
+        initValue: new Date(2024, 11, 25)
+      },
+      wrapper: 'picker-container'
+    },
+    KoreanFormat: {
+      title: 'Korean Format (YYYY년 MM월 DD일)',
+      description:
+        'Date picker with Korean format - includes Korean text labels for year, month, and day',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'YYYY년 MM월 DD일',
+        placeholder: 'Select a date (Korean format)',
+        initValue: new Date(2024, 11, 25)
+      },
+      wrapper: 'picker-container'
+    },
+    CustomSeparator: {
+      title: 'Custom Separator (DD | MM | YYYY)',
+      description:
+        'Date picker with custom separator - uses pipe character as separator',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'DD | MM | YYYY',
+        placeholder: 'Select a date (DD | MM | YYYY)',
+        initValue: new Date(2024, 11, 25)
+      },
+      wrapper: 'picker-container'
+    },
+    RangeWithCustomFormat: {
+      title: 'Date Range with Custom Format',
+      description:
+        'Date range picker with DD/MM/YYYY format - both start and end dates use the custom format',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        dateFormat: 'DD/MM/YYYY',
+        placeholder: 'Select date range (DD/MM/YYYY)',
+        initValue: {
+          from: new Date(2024, 11, 20),
+          to: new Date(2024, 11, 25)
+        }
+      },
+      wrapper: 'picker-container'
+    },
+    RangeWithMMDDYYYY: {
+      title: 'Date Range with MM-DD-YYYY Format',
+      description:
+        'Date range picker with MM-DD-YYYY format - US date format for ranges',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        dateFormat: 'MM-DD-YYYY',
+        placeholder: 'Select date range (MM-DD-YYYY)',
+        initValue: {
+          from: new Date(2024, 11, 20),
+          to: new Date(2024, 11, 25)
+        }
+      },
+      wrapper: 'picker-container'
+    },
+    WithTimeAndFormat: {
+      title: 'Date with Time and Custom Format',
+      description:
+        'Date picker with time selection and DD/MM/YYYY format - combines custom date format with time',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'DD/MM/YYYY',
+        withTime: true,
+        showTimeInput: true,
+        placeholder: 'Select date and time (DD/MM/YYYY)',
+        initValue: new Date(2024, 11, 25, 14, 30)
+      },
+      wrapper: 'picker-container'
+    },
+    PersianWithCustomFormat: {
+      title: 'Persian Calendar with Custom Format',
+      description:
+        'Persian (Jalali) date picker with DD/MM/YYYY format - custom format with Persian locale',
+      component: 'DtPicker',
+      props: {
+        local: 'fa',
+        dateFormat: 'DD/MM/YYYY',
+        placeholder: 'تاریخ را انتخاب کنید (DD/MM/YYYY)',
+        initValue: new Date(2024, 11, 25),
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    WeekWithCustomFormat: {
+      title: 'Week Selection with Custom Format',
+      description:
+        'Week picker with MM-DD-YYYY format - week selection displays dates in custom format',
+      component: 'DtPicker',
+      props: {
+        type: 'week',
+        dateFormat: 'MM-DD-YYYY',
+        placeholder: 'Select week (MM-DD-YYYY)',
+        initValue: new Date(2024, 11, 25),
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    DateTimeWith24HourFormat: {
+      title: 'Date and Time with 24-Hour Format',
+      description:
+        'Date picker with custom format including 24-hour time - uses HH:mm tokens',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'DD/MM/YYYY HH:mm',
+        withTime: true,
+        showTimeInput: true,
+        timeFormat: '24',
+        placeholder: 'Select date and time (DD/MM/YYYY HH:mm)',
+        initValue: new Date(2024, 11, 25, 14, 30)
+      },
+      wrapper: 'picker-container'
+    },
+    DateTimeWith12HourFormat: {
+      title: 'Date and Time with 12-Hour Format',
+      description:
+        'Date picker with custom format including 12-hour time with AM/PM - uses hh:mm A tokens',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'MM/DD/YYYY hh:mm A',
+        withTime: true,
+        showTimeInput: true,
+        timeFormat: '12',
+        placeholder: 'Select date and time (MM/DD/YYYY hh:mm A)',
+        initValue: new Date(2024, 11, 25, 14, 30)
+      },
+      wrapper: 'picker-container'
+    },
+    DateTimeWithLowercaseAMPM: {
+      title: 'Date and Time with Lowercase am/pm',
+      description:
+        'Date picker with custom format using lowercase am/pm - uses hh:mm a tokens',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'YYYY-MM-DD hh:mm a',
+        withTime: true,
+        showTimeInput: true,
+        timeFormat: '12',
+        placeholder: 'Select date and time (YYYY-MM-DD hh:mm a)',
+        initValue: new Date(2024, 11, 25, 9, 15)
+      },
+      wrapper: 'picker-container'
+    },
+    DateTimeWithSeconds: {
+      title: 'Date and Time with Seconds',
+      description:
+        'Date picker with custom format including seconds - uses HH:mm:ss tokens',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'DD/MM/YYYY HH:mm:ss',
+        withTime: true,
+        showTimeInput: true,
+        timeFormat: '24',
+        placeholder: 'Select date and time (DD/MM/YYYY HH:mm:ss)',
+        initValue: new Date(2024, 11, 25, 14, 30, 45)
+      },
+      wrapper: 'picker-container'
+    },
+    DateTimeCustomSeparators: {
+      title: 'Date and Time with Custom Separators',
+      description:
+        'Date picker with custom format using different separators for date and time',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'DD.MM.YYYY at HH:mm',
+        withTime: true,
+        showTimeInput: true,
+        timeFormat: '24',
+        placeholder: 'Select date and time (DD.MM.YYYY at HH:mm)',
+        initValue: new Date(2024, 11, 25, 16, 45)
+      },
+      wrapper: 'picker-container'
+    },
+    DateTimeKoreanStyle: {
+      title: 'Date and Time Korean Style',
+      description:
+        'Date picker with Korean format including time - combines Korean date format with time',
+      component: 'DtPicker',
+      props: {
+        dateFormat: 'YYYY년 MM월 DD일 HH시 mm분',
+        withTime: true,
+        showTimeInput: true,
+        timeFormat: '24',
+        placeholder: 'Select date and time (Korean format)',
+        initValue: new Date(2024, 11, 25, 14, 30)
+      },
+      wrapper: 'picker-container'
+    },
+    RangeWithTimeFormat: {
+      title: 'Date Range with Time Format',
+      description:
+        'Date range picker with custom format including time - both dates show time',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        dateFormat: 'DD/MM/YYYY HH:mm',
+        withTime: true,
+        showTimeInput: true,
+        timeFormat: '24',
+        placeholder: 'Select date range with time',
+        initValue: {
+          from: new Date(2024, 11, 20, 9, 0),
+          to: new Date(2024, 11, 25, 17, 30)
+        }
+      },
+      wrapper: 'picker-container'
+    },
+    RangeWith12HourTime: {
+      title: 'Date Range with 12-Hour Time Format',
+      description:
+        'Date range picker with 12-hour time format - shows AM/PM for both dates',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        dateFormat: 'MM/DD/YYYY hh:mm A',
+        withTime: true,
+        showTimeInput: true,
+        timeFormat: '12',
+        placeholder: 'Select date range with 12-hour time',
+        initValue: {
+          from: new Date(2024, 11, 20, 9, 0),
+          to: new Date(2024, 11, 25, 17, 30)
+        }
+      },
+      wrapper: 'picker-container'
+    }
   }
 }

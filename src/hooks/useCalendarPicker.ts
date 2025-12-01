@@ -24,7 +24,9 @@ export function useCalendarPicker(
   constraintsInput: CalendarConstraintsInput | undefined,
   showTimeInput: boolean,
   autoClose?: boolean,
-  onClose?: () => void
+  onClose?: () => void,
+  dateFormat?: string,
+  timeFormat: '12' | '24' = '24'
 ) {
   // Normalize constraints props
   const constraintsResult = useMemo(
@@ -69,9 +71,21 @@ export function useCalendarPicker(
       state.selectedValue,
       local,
       type,
-      showTimeInput && withTime
+      showTimeInput && withTime,
+      'from',
+      'to',
+      dateFormat,
+      timeFormat
     )
-  }, [state.selectedValue, local, type, showTimeInput, withTime])
+  }, [
+    state.selectedValue,
+    local,
+    type,
+    showTimeInput,
+    withTime,
+    dateFormat,
+    timeFormat
+  ])
 
   return {
     state,
