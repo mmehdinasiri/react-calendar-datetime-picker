@@ -67,6 +67,8 @@ export interface CalendarCoreProps {
   onGoToToday?: () => void
   /** Callback when preset range is selected */
   onPresetRangeSelect?: (range: Range) => void
+  /** Number of months to display side by side */
+  numberOfMonths?: 1 | 2 | 3
 }
 
 export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
@@ -92,7 +94,8 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     onViewChange,
     onMonthNavigate,
     onGoToToday,
-    onPresetRangeSelect
+    onPresetRangeSelect,
+    numberOfMonths = 1
   } = props
 
   // Render appropriate view component
@@ -110,6 +113,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
         enlargeSelectedDay={enlargeSelectedDay}
         constraints={constraints}
         customization={customization}
+        numberOfMonths={numberOfMonths}
         onDateSelect={onDateSelect}
         onTimeChange={onTimeChange}
         onMonthNavigate={onMonthNavigate}

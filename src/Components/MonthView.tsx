@@ -31,11 +31,11 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
     onViewChange
   } = props
 
-  const { classes = {} } = customization
+  const { classes = {}, monthNames: customMonthNames } = customization
   const { months: monthsClass } = classes
 
   const isRTL = locale === 'fa'
-  const monthNames = getMonthNames(locale)
+  const monthNames = getMonthNames(locale, customMonthNames)
 
   return (
     <div className='calendar-core' dir={isRTL ? 'rtl' : 'ltr'}>

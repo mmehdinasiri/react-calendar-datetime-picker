@@ -155,4 +155,8 @@ export interface CalendarCustomization {
   icons?: CalendarIcons
   /** Custom labels */
   labels?: CalendarLabels
+  /** Month names array (12 elements, index 0-11 for months 1-12) - overrides default month names */
+  monthNames?: string[]
+  /** Weekday names array (7 elements, starting from first day of week) - overrides default weekday names */
+  weekdayNames?: string[]
 }

@@ -21,7 +21,8 @@ import {
   generateCalendarGrid,
   getDayNames,
   getMonthNames,
-  getWeekBounds
+  getWeekBounds,
+  getMonthsToDisplay
 } from '../utils/calendar-grid'
 import { isDateSelectable } from '../utils/validation'
 import {
@@ -77,6 +78,8 @@ export interface CalendarGridViewProps {
   onGoToToday?: () => void
   /** Callback when preset range is selected */
   onPresetRangeSelect?: (range: Range) => void
+  /** Number of months to display side by side */
+  numberOfMonths?: 1 | 2 | 3
 }
 
 export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
@@ -98,7 +101,8 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     onMonthNavigate,
     onViewChange,
     onGoToToday,
-    onPresetRangeSelect
+    onPresetRangeSelect,
+    numberOfMonths = 1
   } = props
 
   const { maxDate, minDate, disabledDates, isDateDisabled } = constraints
@@ -111,9 +115,20 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
   } = labels
 
   const isRTL = locale === 'fa'
-  const dayNames = getDayNames(locale)
-  const monthNames = getMonthNames(locale)
-  const calendarGrid = generateCalendarGrid(displayMonth, locale)
+  const { monthNames: customMonthNames, weekdayNames: customWeekdayNames } =
+    customization || {}
+  const dayNames = getDayNames(locale, customWeekdayNames)
+  const monthNames = getMonthNames(locale, customMonthNames)
+
+  // Get all months to display
+  const monthsToDisplay = getMonthsToDisplay(
+    displayMonth,
+    numberOfMonths,
+    locale
+  )
+  const calendarGrids = monthsToDisplay.map((month) =>
+    generateCalendarGrid(month, locale)
+  )
 
   // Refs for keyboard navigation
   const gridRef = useRef<HTMLDivElement>(null)
@@ -206,14 +221,249 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     isDateSelectable: isDateSelectableForNav
   })
 
-  // Get current month/year label for ARIA
-  const currentMonthLabel = monthNames[displayMonth.month - 1]
-  const currentYearLabel =
-    locale === 'fa' ? toPersianNumeral(displayMonth.year) : displayMonth.year
+  // Render a single month grid
+  const renderMonthGrid = (
+    month: Day,
+    grid: ReturnType<typeof generateCalendarGrid>,
+    monthIndex: number
+  ) => {
+    const monthLabel = monthNames[month.month - 1]
+    const yearLabel =
+      locale === 'fa' ? toPersianNumeral(month.year) : month.year
+
+    return (
+      <div
+        key={`month-${month.year}-${month.month}`}
+        className={`calendar-month-container ${numberOfMonths > 1 ? 'calendar-month-multi' : ''}`}
+      >
+        {/* Month header for multiple months */}
+        {numberOfMonths > 1 && (
+          <div className='calendar-month-header'>
+            <span className='calendar-month-title'>
+              {monthLabel} {yearLabel}
+            </span>
+          </div>
+        )}
+
+        {/* Day names - only show for first month or each month in multi-month view */}
+        {(monthIndex === 0 || numberOfMonths > 1) && (
+          <div className='calendar-day-names' role='row'>
+            {dayNames.map((name, index) => {
+              const isWeekendDay =
+                showWeekend &&
+                (locale === 'fa'
+                  ? index === 6 || index === 5
+                  : index === 0 || index === 6)
+
+              const dayNameClassNames = [
+                'calendar-day-name',
+                isWeekendDay && 'calendar-weekend'
+              ]
+                .filter(Boolean)
+                .join(' ')
+
+              return (
+                <div
+                  key={`day-name-${monthIndex}-${index}-${name}`}
+                  className={dayNameClassNames}
+                  role='columnheader'
+                  aria-label={name}
+                >
+                  {name}
+                </div>
+              )
+            })}
+          </div>
+        )}
+
+        {/* Calendar grid */}
+        <div
+          ref={monthIndex === 0 ? gridRef : undefined}
+          className={`calendar-grid ${daysClass || ''}`}
+          role='grid'
+          aria-label={`${monthLabel} ${yearLabel}`}
+          aria-activedescendant={
+            monthIndex === 0
+              ? `day-${focusedDate.year}-${focusedDate.month}-${focusedDate.day}`
+              : undefined
+          }
+          tabIndex={monthIndex === 0 ? 0 : -1}
+        >
+          {grid
+            .filter((week) => {
+              // Filter out weeks where all days are from other months
+              const hasCurrentMonthDay = week.some((day) => day.isCurrentMonth)
+              return hasCurrentMonthDay
+            })
+            .map((week, weekIndex) => {
+              const hasOtherMonth = week.some((day) => !day.isCurrentMonth)
+              const weekClassNames = [
+                'calendar-week',
+                hasOtherMonth && 'calendar-week-other-month'
+              ]
+                .filter(Boolean)
+                .join(' ')
+
+              return (
+                <div key={weekIndex} className={weekClassNames} role='row'>
+                  {week.map((calendarDay, dayIndex) => {
+                    const day: Day = calendarDay.dayObject
+
+                    // Hide days from other months when displaying multiple months
+                    const isOtherMonth = !calendarDay.isCurrentMonth
+                    if (numberOfMonths > 1 && isOtherMonth) {
+                      // Render empty cell to maintain grid structure
+                      return (
+                        <div
+                          key={`${weekIndex}-${dayIndex}-empty`}
+                          className='calendar-day calendar-day-empty'
+                          role='gridcell'
+                          aria-hidden='true'
+                        />
+                      )
+                    }
+
+                    const isSelected = isDaySelected(
+                      day,
+                      selectedValue,
+                      type,
+                      locale
+                    )
+                    const isInRange = isDayInRange(
+                      day,
+                      selectedValue,
+                      type,
+                      locale
+                    )
+                    const isStart = isRangeStart(day, selectedValue, type)
+                    const isEnd = isRangeEnd(day, selectedValue, type)
+                    const isSelectable = isDateSelectable(day, {
+                      minDate,
+                      maxDate,
+                      disabledDates,
+                      isDateDisabled,
+                      locale
+                    })
+                    const isWeekend =
+                      showWeekend &&
+                      (locale === 'fa'
+                        ? dayIndex === 6 || dayIndex === 5
+                        : dayIndex === 0 || dayIndex === 6)
+
+                    // Determine if this is from previous month or next month
+                    const isPrevMonth =
+                      isOtherMonth &&
+                      (calendarDay.year < month.year ||
+                        (calendarDay.year === month.year &&
+                          calendarDay.month < month.month))
+                    const isNextMonth =
+                      isOtherMonth &&
+                      (calendarDay.year > month.year ||
+                        (calendarDay.year === month.year &&
+                          calendarDay.month > month.month))
+
+                    // Last day of previous month: previous month day where next day is current month
+                    const isLastDayOfPrevMonth =
+                      isPrevMonth &&
+                      dayIndex < 6 &&
+                      week[dayIndex + 1].isCurrentMonth
+
+                    // First day of next month: next month day where previous day is current month
+                    const isFirstDayOfNextMonth =
+                      isNextMonth &&
+                      dayIndex > 0 &&
+                      week[dayIndex - 1].isCurrentMonth
+
+                    const classNames = [
+                      'calendar-day',
+                      isOtherMonth && 'calendar-day-other-month',
+                      isFirstDayOfNextMonth && 'calendar-day-other-month-first',
+                      isLastDayOfPrevMonth && 'calendar-day-other-month-last',
+                      calendarDay.isToday && 'calendar-day-today',
+                      isSelected && 'calendar-day-selected',
+                      isSelected &&
+                        enlargeSelectedDay &&
+                        'calendar-day-selected-enlarged',
+                      isInRange && 'calendar-day-in-range',
+                      isStart && 'calendar-day-range-start',
+                      isEnd && 'calendar-day-range-end',
+                      !isSelectable && 'calendar-day-disabled',
+                      isWeekend && 'calendar-day-weekend'
+                    ]
+                      .filter(Boolean)
+                      .join(' ')
+
+                    const handleClick = () => {
+                      if (isSelectable) {
+                        // For week type, select the entire week containing this day
+                        if (type === 'week') {
+                          const weekBounds = getWeekBounds(day, locale)
+                          // Select the first day of the week (the week selection logic will handle the rest)
+                          onDateSelect(weekBounds.from)
+                        } else {
+                          onDateSelect(day)
+                        }
+                      }
+                    }
+
+                    // Check if this date is focused
+                    const isFocused =
+                      focusedDate.year === day.year &&
+                      focusedDate.month === day.month &&
+                      focusedDate.day === day.day
+
+                    // Create accessible label
+                    const dayLabel =
+                      locale === 'fa'
+                        ? toPersianNumeral(calendarDay.day)
+                        : calendarDay.day
+
+                    const monthLabel = monthNames[day.month - 1]
+                    const yearLabel =
+                      locale === 'fa' ? toPersianNumeral(day.year) : day.year
+
+                    const ariaLabel = `${dayLabel} ${monthLabel} ${yearLabel}`
+                    const todayLabel = locale === 'fa' ? 'امروز' : 'Today'
+                    const fullAriaLabel = calendarDay.isToday
+                      ? `${ariaLabel}, ${todayLabel}`
+                      : ariaLabel
+
+                    return (
+                      <button
+                        key={`${weekIndex}-${dayIndex}-${day.year}-${day.month}-${day.day}`}
+                        ref={getCellRef(day)}
+                        id={`day-${day.year}-${day.month}-${day.day}`}
+                        type='button'
+                        role='gridcell'
+                        onClick={handleClick}
+                        disabled={!isSelectable}
+                        className={classNames}
+                        aria-label={fullAriaLabel}
+                        aria-selected={isSelected}
+                        aria-disabled={!isSelectable}
+                        aria-current={calendarDay.isToday ? 'date' : undefined}
+                        tabIndex={isFocused ? 0 : -1}
+                      >
+                        {locale === 'fa'
+                          ? toPersianNumeral(calendarDay.day)
+                          : calendarDay.day}
+                      </button>
+                    )
+                  })}
+                </div>
+              )
+            })}
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className='calendar-core' dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Header */}
+    <div
+      className={`calendar-core ${numberOfMonths > 1 ? 'calendar-core-multi-months' : ''}`}
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
+      {/* Header - only show for single month or show range for multiple months */}
       <CalendarHeader
         displayMonth={displayMonth}
         locale={locale}
@@ -226,196 +476,13 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
         nextTitle={nextMonthBtnTitle}
       />
 
-      {/* Day names */}
-      <div className='calendar-day-names' role='row'>
-        {dayNames.map((name, index) => {
-          const isWeekendDay =
-            showWeekend &&
-            (locale === 'fa'
-              ? index === 6 || index === 5
-              : index === 0 || index === 6)
-
-          const dayNameClassNames = [
-            'calendar-day-name',
-            isWeekendDay && 'calendar-weekend'
-          ]
-            .filter(Boolean)
-            .join(' ')
-
-          return (
-            <div
-              key={`day-name-${index}-${name}`}
-              className={dayNameClassNames}
-              role='columnheader'
-              aria-label={name}
-            >
-              {name}
-            </div>
-          )
-        })}
-      </div>
-
-      {/* Calendar grid */}
+      {/* Multiple months container */}
       <div
-        ref={gridRef}
-        className={`calendar-grid ${daysClass || ''}`}
-        role='grid'
-        aria-label={`${currentMonthLabel} ${currentYearLabel}`}
-        aria-activedescendant={`day-${focusedDate.year}-${focusedDate.month}-${focusedDate.day}`}
-        tabIndex={0}
+        className={`calendar-months-wrapper ${numberOfMonths > 1 ? 'calendar-months-multi' : ''}`}
       >
-        {calendarGrid
-          .filter((week) => {
-            // Filter out weeks where all days are from other months
-            const hasCurrentMonthDay = week.some((day) => day.isCurrentMonth)
-            return hasCurrentMonthDay
-          })
-          .map((week, weekIndex) => {
-            const hasOtherMonth = week.some((day) => !day.isCurrentMonth)
-            const weekClassNames = [
-              'calendar-week',
-              hasOtherMonth && 'calendar-week-other-month'
-            ]
-              .filter(Boolean)
-              .join(' ')
-
-            return (
-              <div key={weekIndex} className={weekClassNames} role='row'>
-                {week.map((calendarDay, dayIndex) => {
-                  const day: Day = calendarDay.dayObject
-                  const isSelected = isDaySelected(
-                    day,
-                    selectedValue,
-                    type,
-                    locale
-                  )
-                  const isInRange = isDayInRange(
-                    day,
-                    selectedValue,
-                    type,
-                    locale
-                  )
-                  const isStart = isRangeStart(day, selectedValue, type)
-                  const isEnd = isRangeEnd(day, selectedValue, type)
-                  const isSelectable = isDateSelectable(day, {
-                    minDate,
-                    maxDate,
-                    disabledDates,
-                    isDateDisabled,
-                    locale
-                  })
-                  const isWeekend =
-                    showWeekend &&
-                    (locale === 'fa'
-                      ? dayIndex === 6 || dayIndex === 5
-                      : dayIndex === 0 || dayIndex === 6)
-
-                  // Identify first day of next month and last day of previous month
-                  const isOtherMonth = !calendarDay.isCurrentMonth
-
-                  // Determine if this is from previous month or next month
-                  const isPrevMonth =
-                    isOtherMonth &&
-                    (calendarDay.year < displayMonth.year ||
-                      (calendarDay.year === displayMonth.year &&
-                        calendarDay.month < displayMonth.month))
-                  const isNextMonth =
-                    isOtherMonth &&
-                    (calendarDay.year > displayMonth.year ||
-                      (calendarDay.year === displayMonth.year &&
-                        calendarDay.month > displayMonth.month))
-
-                  // Last day of previous month: previous month day where next day is current month
-                  const isLastDayOfPrevMonth =
-                    isPrevMonth &&
-                    dayIndex < 6 &&
-                    week[dayIndex + 1].isCurrentMonth
-
-                  // First day of next month: next month day where previous day is current month
-                  const isFirstDayOfNextMonth =
-                    isNextMonth &&
-                    dayIndex > 0 &&
-                    week[dayIndex - 1].isCurrentMonth
-
-                  const classNames = [
-                    'calendar-day',
-                    isOtherMonth && 'calendar-day-other-month',
-                    isFirstDayOfNextMonth && 'calendar-day-other-month-first',
-                    isLastDayOfPrevMonth && 'calendar-day-other-month-last',
-                    calendarDay.isToday && 'calendar-day-today',
-                    isSelected && 'calendar-day-selected',
-                    isSelected &&
-                      enlargeSelectedDay &&
-                      'calendar-day-selected-enlarged',
-                    isInRange && 'calendar-day-in-range',
-                    isStart && 'calendar-day-range-start',
-                    isEnd && 'calendar-day-range-end',
-                    !isSelectable && 'calendar-day-disabled',
-                    isWeekend && 'calendar-day-weekend'
-                  ]
-                    .filter(Boolean)
-                    .join(' ')
-
-                  const handleClick = () => {
-                    if (isSelectable) {
-                      // For week type, select the entire week containing this day
-                      if (type === 'week') {
-                        const weekBounds = getWeekBounds(day, locale)
-                        // Select the first day of the week (the week selection logic will handle the rest)
-                        onDateSelect(weekBounds.from)
-                      } else {
-                        onDateSelect(day)
-                      }
-                    }
-                  }
-
-                  // Check if this date is focused
-                  const isFocused =
-                    focusedDate.year === day.year &&
-                    focusedDate.month === day.month &&
-                    focusedDate.day === day.day
-
-                  // Create accessible label
-                  const dayLabel =
-                    locale === 'fa'
-                      ? toPersianNumeral(calendarDay.day)
-                      : calendarDay.day
-
-                  const monthLabel = monthNames[day.month - 1]
-                  const yearLabel =
-                    locale === 'fa' ? toPersianNumeral(day.year) : day.year
-
-                  const ariaLabel = `${dayLabel} ${monthLabel} ${yearLabel}`
-                  const todayLabel = locale === 'fa' ? 'امروز' : 'Today'
-                  const fullAriaLabel = calendarDay.isToday
-                    ? `${ariaLabel}, ${todayLabel}`
-                    : ariaLabel
-
-                  return (
-                    <button
-                      key={`${weekIndex}-${dayIndex}-${day.year}-${day.month}-${day.day}`}
-                      ref={getCellRef(day)}
-                      id={`day-${day.year}-${day.month}-${day.day}`}
-                      type='button'
-                      role='gridcell'
-                      onClick={handleClick}
-                      disabled={!isSelectable}
-                      className={classNames}
-                      aria-label={fullAriaLabel}
-                      aria-selected={isSelected}
-                      aria-disabled={!isSelectable}
-                      aria-current={calendarDay.isToday ? 'date' : undefined}
-                      tabIndex={isFocused ? 0 : -1}
-                    >
-                      {locale === 'fa'
-                        ? toPersianNumeral(calendarDay.day)
-                        : calendarDay.day}
-                    </button>
-                  )
-                })}
-              </div>
-            )
-          })}
+        {monthsToDisplay.map((month, index) =>
+          renderMonthGrid(month, calendarGrids[index], index)
+        )}
       </div>
 
       {/* Footer */}

@@ -41,8 +41,16 @@ function getFirstDayOfWeek(_locale: CalendarLocale): number {
 
 /**
  * Get day names for a given locale
+ * @param locale - Calendar locale ('en' or 'fa')
+ * @param customNames - Optional custom weekday names array (7 elements)
  */
-export function getDayNames(locale: CalendarLocale): string[] {
+export function getDayNames(
+  locale: CalendarLocale,
+  customNames?: string[]
+): string[] {
+  if (customNames && customNames.length === 7) {
+    return customNames
+  }
   if (locale === 'fa') {
     // Jalali: Saturday to Friday
     return ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'] // ش = Saturday, ج = Friday
@@ -54,8 +62,16 @@ export function getDayNames(locale: CalendarLocale): string[] {
 
 /**
  * Get month names for a given locale
+ * @param locale - Calendar locale ('en' or 'fa')
+ * @param customNames - Optional custom month names array (12 elements)
  */
-export function getMonthNames(locale: CalendarLocale): string[] {
+export function getMonthNames(
+  locale: CalendarLocale,
+  customNames?: string[]
+): string[] {
+  if (customNames && customNames.length === 12) {
+    return customNames
+  }
   if (locale === 'fa') {
     return [
       'فروردین',

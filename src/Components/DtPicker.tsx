@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import type { CalendarLocale, CalendarType, InitValueInput } from '../types'
 import type {
   CalendarConstraintsInput,
+  CalendarCustomization,
   PresetRangesConfig
 } from '../types/calendar'
 import type { Range } from '../types'
@@ -121,6 +122,16 @@ export interface DtPickerProps {
    * @default '24'
    */
   timeFormat?: '12' | '24'
+  /**
+   * Number of months to display side by side
+   * Particularly useful for range selection
+   * @default 1
+   */
+  numberOfMonths?: 1 | 2 | 3
+  /**
+   * Customization options (classes, icons, labels, custom month/weekday names)
+   */
+  customization?: CalendarCustomization
 }
 
 /**
@@ -159,7 +170,9 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     autoClose = true,
     inputId,
     dateFormat,
-    timeFormat = '24'
+    timeFormat = '24',
+    numberOfMonths = 1,
+    customization
   } = props
 
   const [isOpen, setIsOpen] = useState(false)
@@ -179,7 +192,8 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     autoClose,
     () => setIsOpen(false),
     dateFormat,
-    timeFormat
+    timeFormat,
+    numberOfMonths
   )
 
   // Use modal position hook
@@ -305,6 +319,8 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
             todayBtn={todayBtn}
             enlargeSelectedDay={true}
             constraints={constraints}
+            customization={customization}
+            numberOfMonths={numberOfMonths}
             onDateSelect={actions.selectDate}
             onTimeChange={actions.updateTime}
             onMonthSelect={actions.selectMonth}

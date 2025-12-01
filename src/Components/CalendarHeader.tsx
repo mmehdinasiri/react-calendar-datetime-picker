@@ -85,11 +85,15 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
     showYear = true
   } = props
 
-  const { classes = {}, icons = {} } = customization
+  const {
+    classes = {},
+    icons = {},
+    monthNames: customMonthNames
+  } = customization
   const { header: headerClass } = classes
   const { next: NextBtnIcon, previous: PreviousBtnIcon } = icons
 
-  const monthNames = getMonthNames(locale)
+  const monthNames = getMonthNames(locale, customMonthNames)
 
   return (
     <div className={`calendar-header ${headerClass || ''}`}>
@@ -164,4 +168,3 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
 }
 
 CalendarHeader.displayName = 'CalendarHeader'
-

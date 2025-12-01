@@ -104,6 +104,12 @@ export interface DtCalendarProps {
    * Note: This prop is primarily for DtPicker input display. DtCalendar doesn't display formatted dates in an input field.
    */
   dateFormat?: string
+  /**
+   * Number of months to display side by side
+   * Particularly useful for range selection
+   * @default 1
+   */
+  numberOfMonths?: 1 | 2 | 3
 }
 
 /**
@@ -138,7 +144,8 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     constraints: constraintsInput,
     calenderModalClass,
     customization,
-    onError
+    onError,
+    numberOfMonths = 1
   } = props
 
   // Normalize constraints props with error tracking
@@ -193,7 +200,8 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     type,
     onChange,
     onCalenderChange,
-    withTime
+    withTime,
+    numberOfMonths
   })
 
   return (
@@ -214,6 +222,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         enlargeSelectedDay={enlargeSelectedDay}
         constraints={constraints}
         customization={customization}
+        numberOfMonths={numberOfMonths}
         onDateSelect={actions.selectDate}
         onTimeChange={actions.updateTime}
         onMonthSelect={actions.selectMonth}

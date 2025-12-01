@@ -169,6 +169,204 @@ export const examples: ExamplesConfig = {
     }
   },
   Customization: {
+    CustomMonthAndWeekdayNames: {
+      title: 'Custom Month and Weekday Names',
+      description:
+        'Calendar with both custom month and weekday names - fully customize the calendar labels',
+      component: 'DtCalendar',
+      props: {
+        customization: {
+          monthNames: [
+            'Janvier',
+            'Février',
+            'Mars',
+            'Avril',
+            'Mai',
+            'Juin',
+            'Juillet',
+            'Août',
+            'Septembre',
+            'Octobre',
+            'Novembre',
+            'Décembre'
+          ],
+          weekdayNames: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    CustomNamesSpanish: {
+      title: 'Spanish Month and Weekday Names',
+      description:
+        'Calendar with Spanish month and weekday names - example of localization using customization prop',
+      component: 'DtCalendar',
+      props: {
+        customization: {
+          monthNames: [
+            'Enero',
+            'Febrero',
+            'Marzo',
+            'Abril',
+            'Mayo',
+            'Junio',
+            'Julio',
+            'Agosto',
+            'Septiembre',
+            'Octubre',
+            'Noviembre',
+            'Diciembre'
+          ],
+          weekdayNames: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    CustomNamesRangeSelection: {
+      title: 'Range Selection with Custom Names',
+      description:
+        'Date range selection with custom month and weekday names - custom labels for range picker',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        customization: {
+          monthNames: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec'
+          ],
+          weekdayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    CustomNamesGerman: {
+      title: 'German Month and Weekday Names',
+      description:
+        'Calendar with German month and weekday names - example of localization',
+      component: 'DtCalendar',
+      props: {
+        customization: {
+          monthNames: [
+            'Januar',
+            'Februar',
+            'März',
+            'April',
+            'Mai',
+            'Juni',
+            'Juli',
+            'August',
+            'September',
+            'Oktober',
+            'November',
+            'Dezember'
+          ],
+          weekdayNames: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    CustomNamesBranded: {
+      title: 'Branded Calendar Names',
+      description:
+        'Calendar with branded month names - example of using custom names for branding',
+      component: 'DtCalendar',
+      props: {
+        customization: {
+          monthNames: [
+            'Q1-M1',
+            'Q1-M2',
+            'Q1-M3',
+            'Q2-M1',
+            'Q2-M2',
+            'Q2-M3',
+            'Q3-M1',
+            'Q3-M2',
+            'Q3-M3',
+            'Q4-M1',
+            'Q4-M2',
+            'Q4-M3'
+          ],
+          weekdayNames: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    CustomNamesPersianLocale: {
+      title: 'Custom Names with Persian Locale',
+      description:
+        'Persian (Jalali) calendar with custom Persian month names - override default Persian names with custom Persian words',
+      component: 'DtCalendar',
+      props: {
+        local: 'fa',
+        customization: {
+          monthNames: [
+            'ماه اول',
+            'ماه دوم',
+            'ماه سوم',
+            'ماه چهارم',
+            'ماه پنجم',
+            'ماه ششم',
+            'ماه هفتم',
+            'ماه هشتم',
+            'ماه نهم',
+            'ماه دهم',
+            'ماه یازدهم',
+            'ماه دوازدهم'
+          ],
+          weekdayNames: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    CustomNamesShortened: {
+      title: 'Shortened Custom Names',
+      description:
+        'Calendar with shortened month and weekday names - useful for compact displays',
+      component: 'DtCalendar',
+      props: {
+        customization: {
+          monthNames: [
+            'J',
+            'F',
+            'M',
+            'A',
+            'M',
+            'J',
+            'J',
+            'A',
+            'S',
+            'O',
+            'N',
+            'D'
+          ],
+          weekdayNames: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
     DefaultIcons: {
       title: 'Default Icons',
       description: 'Calendar with default chevron icons (no customization)',
