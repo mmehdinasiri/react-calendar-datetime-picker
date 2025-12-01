@@ -1,5 +1,30 @@
 import type { Day } from 'react-calendar-datetime-picker'
 import React from 'react'
+import {
+  isBefore,
+  isAfter,
+  isBetween,
+  isSameDay,
+  addDays,
+  subtractDays,
+  addMonths,
+  subtractMonths,
+  addYears,
+  subtractYears,
+  getDifferenceInDays,
+  getDifferenceInMonths,
+  getDifferenceInYears,
+  convertToJalali,
+  convertToGregorian,
+  startOfDay,
+  endOfDay,
+  startOfMonth,
+  endOfMonth,
+  startOfYear,
+  endOfYear,
+  getToday,
+  dayToString
+} from 'react-calendar-datetime-picker'
 
 // Custom Icons
 const ArrowLeftIcon = ({ className }: { className?: string }) => (
@@ -91,6 +116,8 @@ export interface ExampleConfig {
   wrapper?: string
   renderExtra?: (value: Day | null) => React.ReactNode
   showConsoleLog?: boolean
+  utilityCode?: string
+  getUtilityResults?: (selectedDate?: Day | null) => Record<string, unknown>
 }
 
 // Helper function to create example config with renderExtra
@@ -1730,6 +1757,454 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
+    }
+  },
+  'Date Utilities': {
+    IsBeforeExample: {
+      title: 'isBefore - Check if date is before another',
+      description:
+        "Select a date in the calendar, then see if it's before today. The utility functions use the selected date.",
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      utilityCode: `import { isBefore, getToday } from 'react-calendar-datetime-picker'
+
+const today = getToday('en')
+const selectedDate = // Select a date in the calendar
+
+isBefore(selectedDate, today, 'en')
+isBefore(today, selectedDate, 'en')`,
+      getUtilityResults: (selectedDate?: Day | null) => {
+        if (!selectedDate) {
+          return {
+            'Select a date in the calendar to see results': null
+          }
+        }
+        const today = getToday('en')
+        return {
+          'isBefore(selectedDate, today, "en")': isBefore(
+            selectedDate,
+            today,
+            'en'
+          ),
+          'isBefore(today, selectedDate, "en")': isBefore(
+            today,
+            selectedDate,
+            'en'
+          ),
+          selectedDate: dayToString(selectedDate, '/'),
+          today: dayToString(today, '/')
+        }
+      }
+    },
+    IsAfterExample: {
+      title: 'isAfter - Check if date is after another',
+      description:
+        "Select a date in the calendar to see if it's after today. The utility functions use the selected date.",
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      utilityCode: `import { isAfter, getToday } from 'react-calendar-datetime-picker'
+
+const today = getToday('en')
+const selectedDate = // Select a date in the calendar
+
+isAfter(selectedDate, today, 'en')
+isAfter(today, selectedDate, 'en')`,
+      getUtilityResults: (selectedDate?: Day | null) => {
+        if (!selectedDate) {
+          return {
+            'Select a date in the calendar to see results': null
+          }
+        }
+        const today = getToday('en')
+        return {
+          'isAfter(selectedDate, today, "en")': isAfter(
+            selectedDate,
+            today,
+            'en'
+          ),
+          'isAfter(today, selectedDate, "en")': isAfter(
+            today,
+            selectedDate,
+            'en'
+          ),
+          selectedDate: dayToString(selectedDate, '/'),
+          today: dayToString(today, '/')
+        }
+      }
+    },
+    IsSameDayExample: {
+      title: 'isSameDay - Check if two dates are the same',
+      description:
+        'Check if two dates represent the same day (ignores time). Works with both calendars.',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      utilityCode: `import { isSameDay, getToday } from 'react-calendar-datetime-picker'
+
+const today = getToday('en')
+const todayWithTime = { ...today, hour: 14, minute: 30 }
+const tomorrow = { ...today, day: today.day + 1 }
+
+isSameDay(today, todayWithTime, 'en') // ignores time
+isSameDay(today, tomorrow, 'en')`,
+      getUtilityResults: () => {
+        const today = getToday('en')
+        const todayWithTime = { ...today, hour: 14, minute: 30 }
+        const tomorrow = { ...today, day: today.day + 1 }
+        return {
+          'isSameDay(today, todayWithTime, "en")': isSameDay(
+            today,
+            todayWithTime,
+            'en'
+          ),
+          'isSameDay(today, tomorrow, "en")': isSameDay(today, tomorrow, 'en')
+        }
+      }
+    },
+    IsBetweenExample: {
+      title: 'isBetween - Check if date is between two dates',
+      description:
+        'Check if a date falls between two other dates (inclusive). Works with both calendars.',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      utilityCode: `import { isBetween, getToday, addDays } from 'react-calendar-datetime-picker'
+
+const today = getToday('en')
+const start = addDays(today, -5, 'en')
+const end = addDays(today, 5, 'en')
+const selectedDate = // Select a date in the calendar
+
+isBetween(selectedDate, start, end, 'en')`,
+      getUtilityResults: (selectedDate?: Day | null) => {
+        if (!selectedDate) {
+          return {
+            'Select a date in the calendar to see results': null
+          }
+        }
+        const today = getToday('en')
+        const start = addDays(today, -5, 'en')
+        const end = addDays(today, 5, 'en')
+        return {
+          'isBetween(selectedDate, start, end, "en")': isBetween(
+            selectedDate,
+            start,
+            end,
+            'en'
+          ),
+          selectedDate: dayToString(selectedDate, '/'),
+          'start (5 days ago)': dayToString(start, '/'),
+          'end (5 days from now)': dayToString(end, '/')
+        }
+      }
+    },
+    AddDaysExample: {
+      title: 'addDays - Add days to a date',
+      description:
+        'Select a date in the calendar, then see calculations: tomorrow, next week, and yesterday from the selected date.',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      utilityCode: `import { addDays, subtractDays, dayToString } from 'react-calendar-datetime-picker'
+
+const selectedDate = // Select a date in the calendar
+const tomorrow = addDays(selectedDate, 1, 'en')
+const nextWeek = addDays(selectedDate, 7, 'en')
+const yesterday = subtractDays(selectedDate, 1, 'en')
+
+dayToString(selectedDate, '/')
+dayToString(tomorrow, '/')
+dayToString(nextWeek, '/')
+dayToString(yesterday, '/')`,
+      getUtilityResults: (selectedDate?: Day | null) => {
+        if (!selectedDate) {
+          return {
+            'Select a date in the calendar to see results': null
+          }
+        }
+        const tomorrow = addDays(selectedDate, 1, 'en')
+        const nextWeek = addDays(selectedDate, 7, 'en')
+        const yesterday = subtractDays(selectedDate, 1, 'en')
+        return {
+          selectedDate: dayToString(selectedDate, '/'),
+          'addDays(selectedDate, 1, "en")': dayToString(tomorrow, '/'),
+          'addDays(selectedDate, 7, "en")': dayToString(nextWeek, '/'),
+          'subtractDays(selectedDate, 1, "en")': dayToString(yesterday, '/')
+        }
+      }
+    },
+    AddMonthsExample: {
+      title: 'addMonths - Add months to a date',
+      description:
+        'Select a date in the calendar, then see next month, next year, and last month calculations.',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      utilityCode: `import { addMonths, subtractMonths, dayToString } from 'react-calendar-datetime-picker'
+
+const selectedDate = // Select a date in the calendar
+const nextMonth = addMonths(selectedDate, 1, 'en')
+const nextYear = addMonths(selectedDate, 12, 'en')
+const lastMonth = subtractMonths(selectedDate, 1, 'en')
+
+dayToString(selectedDate, '/')
+dayToString(nextMonth, '/')
+dayToString(nextYear, '/')
+dayToString(lastMonth, '/')`,
+      getUtilityResults: (selectedDate?: Day | null) => {
+        if (!selectedDate) {
+          return {
+            'Select a date in the calendar to see results': null
+          }
+        }
+        const nextMonth = addMonths(selectedDate, 1, 'en')
+        const nextYear = addMonths(selectedDate, 12, 'en')
+        const lastMonth = subtractMonths(selectedDate, 1, 'en')
+        return {
+          selectedDate: dayToString(selectedDate, '/'),
+          'addMonths(selectedDate, 1, "en")': dayToString(nextMonth, '/'),
+          'addMonths(selectedDate, 12, "en")': dayToString(nextYear, '/'),
+          'subtractMonths(selectedDate, 1, "en")': dayToString(lastMonth, '/')
+        }
+      }
+    },
+    AddYearsExample: {
+      title: 'addYears - Add years to a date',
+      description:
+        'Select a date in the calendar, then see next year, 5 years later, and last year calculations.',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      utilityCode: `import { addYears, subtractYears, dayToString } from 'react-calendar-datetime-picker'
+
+const selectedDate = // Select a date in the calendar
+const nextYear = addYears(selectedDate, 1, 'en')
+const fiveYearsLater = addYears(selectedDate, 5, 'en')
+const lastYear = subtractYears(selectedDate, 1, 'en')
+
+dayToString(selectedDate, '/')
+dayToString(nextYear, '/')
+dayToString(fiveYearsLater, '/')
+dayToString(lastYear, '/')`,
+      getUtilityResults: (selectedDate?: Day | null) => {
+        if (!selectedDate) {
+          return {
+            'Select a date in the calendar to see results': null
+          }
+        }
+        const nextYear = addYears(selectedDate, 1, 'en')
+        const fiveYearsLater = addYears(selectedDate, 5, 'en')
+        const lastYear = subtractYears(selectedDate, 1, 'en')
+        return {
+          selectedDate: dayToString(selectedDate, '/'),
+          'addYears(selectedDate, 1, "en")': dayToString(nextYear, '/'),
+          'addYears(selectedDate, 5, "en")': dayToString(fiveYearsLater, '/'),
+          'subtractYears(selectedDate, 1, "en")': dayToString(lastYear, '/')
+        }
+      }
+    },
+    GetDifferenceExample: {
+      title: 'getDifference - Calculate differences between dates',
+      description:
+        'Select a date in the calendar to see the difference in days, months, and years from today.',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      utilityCode: `import { 
+  getDifferenceInDays, 
+  getDifferenceInMonths, 
+  getDifferenceInYears,
+  getToday 
+} from 'react-calendar-datetime-picker'
+
+const today = getToday('en')
+const selectedDate = // Select a date in the calendar
+
+getDifferenceInDays(selectedDate, today, 'en')
+getDifferenceInMonths(selectedDate, today, 'en')
+getDifferenceInYears(selectedDate, today, 'en')`,
+      getUtilityResults: (selectedDate?: Day | null) => {
+        if (!selectedDate) {
+          return {
+            'Select a date in the calendar to see results': null
+          }
+        }
+        const today = getToday('en')
+        return {
+          'getDifferenceInDays(selectedDate, today, "en")': getDifferenceInDays(
+            selectedDate,
+            today,
+            'en'
+          ),
+          'getDifferenceInMonths(selectedDate, today, "en")':
+            getDifferenceInMonths(selectedDate, today, 'en'),
+          'getDifferenceInYears(selectedDate, today, "en")':
+            getDifferenceInYears(selectedDate, today, 'en'),
+          selectedDate: dayToString(selectedDate, '/'),
+          today: dayToString(today, '/')
+        }
+      }
+    },
+    ConvertCalendarsExample: {
+      title: 'convertToJalali / convertToGregorian - Convert between calendars',
+      description:
+        'Select a date in the Gregorian calendar to see its Jalali equivalent and back conversion.',
+      component: 'DtCalendar',
+      props: {
+        local: 'en',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      utilityCode: `import { 
+  convertToJalali, 
+  convertToGregorian, 
+  dayToString 
+} from 'react-calendar-datetime-picker'
+
+const selectedDate = // Select a date in the calendar (Gregorian)
+const jalaliDate = convertToJalali(selectedDate)
+const backToGregorian = convertToGregorian(jalaliDate)
+
+dayToString(selectedDate, '/')    // Gregorian
+dayToString(jalaliDate, '/')        // Jalali
+dayToString(backToGregorian, '/')   // Back to Gregorian`,
+      getUtilityResults: (selectedDate?: Day | null) => {
+        if (!selectedDate) {
+          return {
+            'Select a date in the calendar to see results': null
+          }
+        }
+        const jalaliDate = convertToJalali(selectedDate)
+        const backToGregorian = convertToGregorian(jalaliDate)
+        return {
+          'selectedDate (Gregorian)': dayToString(selectedDate, '/'),
+          'convertToJalali(selectedDate)': dayToString(jalaliDate, '/'),
+          'convertToGregorian(jalaliDate)': dayToString(backToGregorian, '/')
+        }
+      }
+    },
+    StartEndOfPeriodExample: {
+      title: 'startOf/endOf - Get start or end of day/month/year',
+      description:
+        'Select a date in the calendar to see the start and end of that day, month, and year.',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      utilityCode: `import { 
+  startOfDay, endOfDay,
+  startOfMonth, endOfMonth,
+  startOfYear, endOfYear,
+  dayToString 
+} from 'react-calendar-datetime-picker'
+
+const selectedDate = // Select a date in the calendar
+const selectedWithTime = { ...selectedDate, hour: 14, minute: 30 }
+
+startOfDay(selectedWithTime)
+endOfDay(selectedWithTime)
+startOfMonth(selectedDate, 'en')
+endOfMonth(selectedDate, 'en')
+startOfYear(selectedDate)
+endOfYear(selectedDate, 'en')`,
+      getUtilityResults: (selectedDate?: Day | null) => {
+        if (!selectedDate) {
+          return {
+            'Select a date in the calendar to see results': null
+          }
+        }
+        const selectedWithTime = { ...selectedDate, hour: 14, minute: 30 }
+        const startDay = startOfDay(selectedWithTime)
+        const endDay = endOfDay(selectedWithTime)
+        const startMonth = startOfMonth(selectedDate, 'en')
+        const endMonth = endOfMonth(selectedDate, 'en')
+        const startYear = startOfYear(selectedDate)
+        const endYear = endOfYear(selectedDate, 'en')
+        return {
+          selectedDate: dayToString(selectedDate, '/'),
+          'startOfDay(selectedWithTime)': `${dayToString(startDay, '/')} ${startDay.hour}:${String(startDay.minute).padStart(2, '0')}`,
+          'endOfDay(selectedWithTime)': `${dayToString(endDay, '/')} ${endDay.hour}:${String(endDay.minute).padStart(2, '0')}`,
+          'startOfMonth(selectedDate, "en")': dayToString(startMonth, '/'),
+          'endOfMonth(selectedDate, "en")': dayToString(endMonth, '/'),
+          'startOfYear(selectedDate)': dayToString(startYear, '/'),
+          'endOfYear(selectedDate, "en")': dayToString(endYear, '/')
+        }
+      }
+    },
+    PersianCalendarExample: {
+      title: 'Utilities with Persian (Jalali) Calendar',
+      description:
+        'Select a date in the Persian calendar to see utility functions working with Jalali dates.',
+      component: 'DtCalendar',
+      props: {
+        local: 'fa',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      utilityCode: `import { 
+  isBefore, addDays, addMonths, getToday, dayToString 
+} from 'react-calendar-datetime-picker'
+
+const today = getToday('fa')  // Persian calendar
+const selectedDate = // Select a date in the calendar
+const tomorrow = addDays(selectedDate, 1, 'fa')
+const nextMonth = addMonths(selectedDate, 1, 'fa')
+
+dayToString(selectedDate, '/')
+dayToString(tomorrow, '/')
+dayToString(nextMonth, '/')
+isBefore(selectedDate, today, 'fa')`,
+      getUtilityResults: (selectedDate?: Day | null) => {
+        if (!selectedDate) {
+          return {
+            'Select a date in the calendar to see results': null
+          }
+        }
+        const today = getToday('fa')
+        const tomorrow = addDays(selectedDate, 1, 'fa')
+        const nextMonth = addMonths(selectedDate, 1, 'fa')
+        return {
+          selectedDate: dayToString(selectedDate, '/'),
+          'addDays(selectedDate, 1, "fa")': dayToString(tomorrow, '/'),
+          'addMonths(selectedDate, 1, "fa")': dayToString(nextMonth, '/'),
+          'isBefore(selectedDate, today, "fa")': isBefore(
+            selectedDate,
+            today,
+            'fa'
+          ),
+          today: dayToString(today, '/')
+        }
+      }
     }
   }
 }

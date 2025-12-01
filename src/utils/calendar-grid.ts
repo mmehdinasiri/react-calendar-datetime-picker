@@ -275,7 +275,7 @@ export function generateCalendarGrid(
 export function getMonthsToDisplay(
   baseMonth: Day,
   numberOfMonths: number,
-  locale: CalendarLocale
+  _locale: CalendarLocale
 ): Day[] {
   const months: Day[] = []
 

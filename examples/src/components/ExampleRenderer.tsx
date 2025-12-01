@@ -5,6 +5,7 @@ import { useExampleValue } from '../hooks/useExampleValue'
 import { PropsEditor } from './PropsEditor'
 import { ThemeDisplay } from './ThemeDisplay'
 import { ResultDisplay } from './ResultDisplay'
+import { UtilityExamplesDisplay } from './UtilityExamplesDisplay'
 
 interface ExampleRendererProps {
   config: ExampleConfig
@@ -89,27 +90,30 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
       <div className='example-content'>
         <div className='example-sidebar'>
           <ThemeDisplay config={config} />
-          <PropsEditor
-            value={propsString}
-            onChange={setPropsString}
-            onReset={resetProps}
-            error={propsError}
-          />
+          {config.utilityCode ? (
+            <UtilityExamplesDisplay code={config.utilityCode} />
+          ) : (
+            <PropsEditor
+              value={propsString}
+              onChange={setPropsString}
+              onReset={resetProps}
+              error={propsError}
+            />
+          )}
           <ResultDisplay
             value={selectedValue}
             showConsoleLog={config.showConsoleLog}
-          />
-        </div>
-        <div className='example-calendar'>
-          <div className={wrapperClass}>{content}</div>
-          {config.renderExtra &&
-            config.renderExtra(
+            utilityResults={config.getUtilityResults?.(
               selectedValue &&
                 !Array.isArray(selectedValue) &&
                 !('from' in selectedValue)
                 ? selectedValue
                 : null
             )}
+          />
+        </div>
+        <div className='example-calendar'>
+          <div className={wrapperClass}>{content}</div>
         </div>
       </div>
     </section>

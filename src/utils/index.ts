@@ -54,6 +54,31 @@ export {
   isRangeEnd
 } from './calendar-selection'
 
+// Date comparison and manipulation
+export {
+  isBefore,
+  isAfter,
+  isBetween,
+  isSameDay,
+  addDays,
+  subtractDays,
+  addMonths,
+  subtractMonths,
+  addYears,
+  subtractYears,
+  getDifferenceInDays,
+  getDifferenceInMonths,
+  getDifferenceInYears,
+  convertToJalali,
+  convertToGregorian,
+  startOfDay,
+  endOfDay,
+  startOfMonth,
+  endOfMonth,
+  startOfYear,
+  endOfYear
+} from './date-comparison'
+
 // Utility functions for backward compatibility (convertToFa, convertToEn)
 import { gregorianToJalali, jalaliToGregorian } from './date-conversion'
 import { dayToString } from './formatting'
