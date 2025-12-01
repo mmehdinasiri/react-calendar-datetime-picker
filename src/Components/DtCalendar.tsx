@@ -95,6 +95,15 @@ export interface DtCalendarProps {
    * @param errors - Array of error objects describing what failed
    */
   onError?: (errors: CalendarError[]) => void
+  /**
+   * Custom date format string
+   * Supports tokens: YYYY (year), MM (month), DD (day)
+   * Supports custom separators and order
+   * Examples: "DD/MM/YYYY", "MM-DD-YYYY", "YYYY년 MM월 DD일"
+   * @default undefined (uses default format: YYYY/MM/DD)
+   * Note: This prop is primarily for DtPicker input display. DtCalendar doesn't display formatted dates in an input field.
+   */
+  dateFormat?: string
 }
 
 /**

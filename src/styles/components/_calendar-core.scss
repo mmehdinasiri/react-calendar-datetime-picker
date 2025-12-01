@@ -15,5 +15,12 @@
   &.is-calender {
     position: relative;
   }
+
+  // Adjust width for multiple months
+  &.calendar-core-multi-months {
+    width: auto;
+    min-width: var(--calendar-modal-width);
+    max-width: calc(var(--calendar-modal-width) * 3 + 80px); // 3 months + gaps + padding
+  }
 }
 

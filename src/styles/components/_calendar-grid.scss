@@ -265,3 +265,49 @@
   }
 }
 
+// Multiple Months Layout
+.calendar-months-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  &.calendar-months-multi {
+    flex-direction: row;
+    gap: var(--calendar-spacing-lg, 24px);
+    padding: var(--calendar-spacing-md, 16px);
+    width: 100%;
+  }
+}
+
+.calendar-month-container {
+  flex: 1;
+  min-width: 0;
+
+  &.calendar-month-multi {
+    display: flex;
+    flex-direction: column;
+    min-width: var(--calendar-modal-width);
+    flex-shrink: 0;
+  }
+}
+
+.calendar-month-header {
+  text-align: center;
+  padding: var(--calendar-spacing-md, 16px) 0 var(--calendar-spacing-sm, 8px);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--calendar-text-primary);
+  border-bottom: 1px solid var(--calendar-border);
+  margin-bottom: var(--calendar-spacing-xs, 4px);
+}
+
+.calendar-month-title {
+  display: inline-block;
+}
+
+// Empty cells for hidden other-month days in multi-month view
+.calendar-day-empty {
+  visibility: hidden;
+  pointer-events: none;
+}
+

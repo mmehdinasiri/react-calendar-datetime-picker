@@ -253,6 +253,37 @@ export function generateCalendarGrid(
 }
 
 /**
+ * Calculate the months to display based on the base month and number of months
+ * Returns an array of Day objects representing the months to display
+ */
+export function getMonthsToDisplay(
+  baseMonth: Day,
+  numberOfMonths: number,
+  locale: CalendarLocale
+): Day[] {
+  const months: Day[] = []
+
+  for (let i = 0; i < numberOfMonths; i++) {
+    let year = baseMonth.year
+    let month = baseMonth.month + i
+
+    // Handle month overflow
+    while (month > 12) {
+      month -= 12
+      year += 1
+    }
+
+    months.push({
+      year,
+      month,
+      day: 1 // Use first day of month for month representation
+    })
+  }
+
+  return months
+}
+
+/**
  * Get a list of years for year selection view
  * Returns appropriate years based on locale
  * Gregorian: 1900 to current year + 30

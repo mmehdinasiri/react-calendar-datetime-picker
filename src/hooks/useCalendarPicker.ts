@@ -26,7 +26,8 @@ export function useCalendarPicker(
   autoClose?: boolean,
   onClose?: () => void,
   dateFormat?: string,
-  timeFormat: '12' | '24' = '24'
+  timeFormat: '12' | '24' = '24',
+  numberOfMonths: 1 | 2 | 3 = 1
 ) {
   // Normalize constraints props
   const constraintsResult = useMemo(
@@ -62,7 +63,8 @@ export function useCalendarPicker(
         }
       }
     },
-    withTime
+    withTime,
+    numberOfMonths
   })
 
   // Format display value for input (use state.selectedValue from calendar)

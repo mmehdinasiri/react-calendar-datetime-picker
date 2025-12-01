@@ -1407,5 +1407,131 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'picker-container'
     }
+  },
+  'Multiple Months': {
+    TwoMonths: {
+      title: 'Two Months Side by Side',
+      description:
+        'Calendar displaying two months side by side - useful for selecting date ranges',
+      component: 'DtCalendar',
+      props: {
+        numberOfMonths: 2,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    ThreeMonths: {
+      title: 'Three Months Side by Side',
+      description:
+        'Calendar displaying three months side by side - great for long-range planning',
+      component: 'DtCalendar',
+      props: {
+        numberOfMonths: 3,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    TwoMonthsRangeSelection: {
+      title: 'Two Months for Range Selection',
+      description:
+        'Range selection with two months displayed - makes it easier to select start and end dates',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        numberOfMonths: 2,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    TwoMonthsPicker: {
+      title: 'Date Picker with Two Months',
+      description:
+        'Date picker displaying two months in the calendar modal - helpful for range selection',
+      component: 'DtPicker',
+      props: {
+        numberOfMonths: 2,
+        placeholder: 'Select a date (two months view)',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    TwoMonthsRangePicker: {
+      title: 'Range Picker with Two Months',
+      description:
+        'Date range picker with two months displayed - ideal for selecting date ranges',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        numberOfMonths: 2,
+        placeholder: 'Select date range (two months view)',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    ThreeMonthsRangeSelection: {
+      title: 'Three Months for Range Selection',
+      description:
+        'Range selection with three months displayed - perfect for selecting longer date ranges',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        numberOfMonths: 3,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    TwoMonthsWithPresets: {
+      title: 'Two Months with Preset Ranges',
+      description:
+        'Two months display with preset range buttons - combines multiple months with quick selection',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        numberOfMonths: 2,
+        presetRanges: {
+          yesterday: true,
+          last7days: true,
+          last30days: true,
+          thisMonth: true
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    TwoMonthsPersian: {
+      title: 'Two Months Persian Calendar',
+      description:
+        'Two months side by side with Persian (Jalali) calendar - RTL layout',
+      component: 'DtCalendar',
+      props: {
+        local: 'fa',
+        numberOfMonths: 2,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    TwoMonthsWithTime: {
+      title: 'Two Months with Time Selection',
+      description:
+        'Two months display with time selection enabled - useful for datetime range selection',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        numberOfMonths: 2,
+        withTime: true,
+        timeFormat: '24',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    }
   }
 }

@@ -105,6 +105,22 @@ export interface DtPickerProps {
    * Input element ID
    */
   inputId?: string
+  /**
+   * Custom date format string
+   * Supports tokens:
+   * - Date: YYYY (year), MM (month), DD (day)
+   * - Time: HH (24-hour), hh (12-hour), mm (minutes), ss (seconds), A (AM/PM), a (am/pm)
+   * Supports custom separators and order
+   * Examples: "DD/MM/YYYY", "MM-DD-YYYY HH:mm", "YYYY년 MM월 DD일 hh:mm A"
+   * @default undefined (uses default format: YYYY/MM/DD)
+   */
+  dateFormat?: string
+  /**
+   * Time format: '12' for 12-hour format, '24' for 24-hour format
+   * Only applies when withTime is true
+   * @default '24'
+   */
+  timeFormat?: '12' | '24'
 }
 
 /**
@@ -141,7 +157,9 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     inputClass,
     calenderModalClass,
     autoClose = true,
-    inputId
+    inputId,
+    dateFormat,
+    timeFormat = '24'
   } = props
 
   const [isOpen, setIsOpen] = useState(false)
@@ -159,7 +177,9 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     constraintsInput,
     showTimeInput,
     autoClose,
-    () => setIsOpen(false)
+    () => setIsOpen(false),
+    dateFormat,
+    timeFormat
   )
 
   // Use modal position hook
@@ -205,7 +225,6 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
   const inputWrapperClass = `calendar-picker-input-wrapper ${inputClass || ''}`
   const modalClass = `calendar-picker-modal ${calenderModalClass || ''}`
   const isRTL = local === 'fa'
-  const timeFormat = '24' // DtPicker uses 24-hour format by default
 
   return (
     <div
@@ -261,10 +280,10 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
             type === 'range'
               ? 'Select date range'
               : type === 'multi'
-              ? 'Select multiple dates'
-              : type === 'week'
-              ? 'Select week'
-              : 'Select date'
+                ? 'Select multiple dates'
+                : type === 'week'
+                  ? 'Select week'
+                  : 'Select date'
           }
           style={{
             position: 'fixed',

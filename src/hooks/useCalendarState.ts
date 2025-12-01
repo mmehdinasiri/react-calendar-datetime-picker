@@ -14,7 +14,7 @@ import type {
 } from '../types'
 import { extractMonthFromValue } from '../utils/normalize'
 import { getToday } from '../utils/date-conversion'
-import { getWeekBounds } from '../utils/calendar-grid'
+import { getWeekBounds, getMonthsToDisplay } from '../utils/calendar-grid'
 
 /**
  * Calendar state
@@ -170,7 +170,8 @@ function calendarReducer(
   action: CalendarAction,
   type: CalendarType,
   locale: CalendarLocale,
-  withTime: boolean = false
+  withTime: boolean = false,
+  numberOfMonths: number = 1
 ): CalendarState {
   switch (action.type) {
     case 'SELECT_DATE': {
@@ -201,19 +202,47 @@ function calendarReducer(
       }
 
       // Only update displayMonth when starting a new selection, not when completing a range
+      // Also, don't navigate if the selected month is already visible in multi-month view
       let newDisplayMonth = state.displayMonth
       if (type === 'range') {
         const currentRange = state.selectedValue as Range | null
         // Only navigate if starting a new range (no range exists or range is complete)
         if (!currentRange || !currentRange.from || currentRange.to) {
           const monthFromValue = extractMonthFromValue(finalValue)
-          newDisplayMonth = monthFromValue || state.displayMonth
+          // Check if the month is already visible in multi-month view
+          if (monthFromValue && numberOfMonths > 1) {
+            const visibleMonths = getMonthsToDisplay(state.displayMonth, numberOfMonths, locale)
+            const isMonthVisible = visibleMonths.some(
+              m => m.year === monthFromValue.year && m.month === monthFromValue.month
+            )
+            if (isMonthVisible) {
+              // Keep current displayMonth if the selected month is already visible
+              newDisplayMonth = state.displayMonth
+            } else {
+              newDisplayMonth = monthFromValue
+            }
+          } else {
+            newDisplayMonth = monthFromValue || state.displayMonth
+          }
         }
         // Otherwise, keep the current displayMonth when selecting end date
       } else {
-        // For single and multi, always update displayMonth to selected date
+        // For single and multi, check if month is already visible before navigating
         const monthFromValue = extractMonthFromValue(finalValue)
-        newDisplayMonth = monthFromValue || state.displayMonth
+        if (monthFromValue && numberOfMonths > 1) {
+          const visibleMonths = getMonthsToDisplay(state.displayMonth, numberOfMonths, locale)
+          const isMonthVisible = visibleMonths.some(
+            m => m.year === monthFromValue.year && m.month === monthFromValue.month
+          )
+          if (isMonthVisible) {
+            // Keep current displayMonth if the selected month is already visible
+            newDisplayMonth = state.displayMonth
+          } else {
+            newDisplayMonth = monthFromValue
+          }
+        } else {
+          newDisplayMonth = monthFromValue || state.displayMonth
+        }
       }
 
       return {
@@ -489,6 +518,8 @@ export interface UseCalendarStateOptions {
   type: CalendarType
   /** Enable time selection */
   withTime?: boolean
+  /** Number of months displayed */
+  numberOfMonths?: 1 | 2 | 3
   /** Callback when value changes */
   onChange: (value: Day | Range | Multi | null) => void
   /** Callback when calendar value changes (requires initValue) */
@@ -504,6 +535,7 @@ export function useCalendarState(options: UseCalendarStateOptions) {
     locale,
     type,
     withTime = false,
+    numberOfMonths = 1,
     onChange,
     onCalenderChange
   } = options
@@ -518,9 +550,9 @@ export function useCalendarState(options: UseCalendarStateOptions) {
     currentView: 'calendar'
   }
 
-  // Reducer with type, locale, and withTime
+  // Reducer with type, locale, withTime, and numberOfMonths
   const reducer = (state: CalendarState, action: CalendarAction) =>
-    calendarReducer(state, action, type, locale, withTime)
+    calendarReducer(state, action, type, locale, withTime, numberOfMonths)
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
