@@ -184,7 +184,7 @@ function CollapsibleItem({
 function CollapsibleSection({ section, pathname }: CollapsibleSectionProps) {
   return (
     <div>
-      <h3 className='text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 px-3'>
+      <h3 className='text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wider mb-2 px-3'>
         {section.title}
       </h3>
       <ul className='space-y-1'>

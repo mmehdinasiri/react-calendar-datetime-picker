@@ -5,8 +5,8 @@
 /* Light theme (default) */
 :root {
   --bg-primary: #ffffff;
-  --bg-secondary: #f7f7f7;
-  --bg-tertiary: #f0f0f0;
+  --bg-secondary: #f3f4f6;
+  --bg-tertiary: #e5e7eb;
   --border-color: #e5e7eb;
   --text-primary: #1f2937;
   --text-secondary: #4b5563;
@@ -32,6 +32,25 @@ body {
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
+}
+
+/* Header styling - white background for light mode, theme-aware for dark mode */
+:root header {
+  background-color: #ffffff;
+}
+
+.dark header {
+  background-color: var(--bg-secondary);
+}
+
+/* Sidebar styling - distinct gray background */
+aside {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Main content area - white background */
+main {
+  background-color: var(--bg-primary) !important;
 }
 
 /* Custom styles for documentation */
