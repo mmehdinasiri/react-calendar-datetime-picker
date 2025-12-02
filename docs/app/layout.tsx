@@ -1,7 +1,9 @@
 import '../public/fonts/palanquin/palanquin.css'
 import '../public/fonts/IRANSansFa/css/fontiran.css'
 import '../styles/main.scss'
+import 'react-calendar-datetime-picker/style.css'
 import { Metadata } from 'next'
+import NextTopLoader from 'nextjs-toploader'
 import { LayoutWrapper } from './components/LayoutWrapper'
 import { ThemeProvider } from './contexts/ThemeContext'
 import './globals.css'
@@ -42,6 +44,14 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body className='bg-bg-primary text-gray-900 dark:text-white antialiased'>
+        <NextTopLoader
+          color='#009a17'
+          height={3}
+          showSpinner={false}
+          easing='ease'
+          speed={200}
+          shadow='0 0 10px rgba(0, 154, 23, 0.5)'
+        />
         <ThemeProvider>
           <LayoutWrapper>{children}</LayoutWrapper>
         </ThemeProvider>

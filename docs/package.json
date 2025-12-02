@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react-calendar-datetime-picker": "workspace:*",
-    "react-calendar-datetime-picker-legacy": "npm:react-calendar-datetime-picker@1.7.5",
     "next": "^15.0.0",
+    "nextjs-toploader": "^3.9.17",
     "react": "^19.2.0",
+    "react-calendar-datetime-picker": "file:../",
+    "react-calendar-datetime-picker-legacy": "npm:react-calendar-datetime-picker@1.7.5",
     "react-dom": "^19.2.0",
     "react-syntax-highlighter": "^15.5.0",
     "sass": "^1.94.0"
