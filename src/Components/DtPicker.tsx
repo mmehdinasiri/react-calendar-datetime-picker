@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react'
-import type { CalendarLocale, CalendarType, InitValueInput } from '../types'
+import type { Day, Range, Multi } from '../types'
 import type {
-  CalendarConstraintsInput,
-  CalendarCustomization,
-  PresetRangesConfig
+  CalendarSelectionSingle,
+  CalendarSelectionRange,
+  CalendarSelectionMulti,
+  CalendarSelectionWeek,
+  SharedCalendarProps
 } from '../types/calendar'
-import type { Range } from '../types'
 import { CalendarCore } from './CalendarCore'
 import {
   useCalendarPicker,
@@ -15,45 +16,12 @@ import {
   useFocusTrap
 } from '../hooks'
 
-export interface DtPickerProps {
-  /**
-   * Initial value for the date picker
-   * Accepts Day objects, Date objects, date strings, timestamps, or range/multi formats
-   * Examples:
-   * - Single: { year: 2024, month: 12, day: 25 } | new Date() | "2024-12-25" | 1735084800000
-   * - Range: { from: DateInput, to: DateInput }
-   * - Multi: DateInput[]
-   */
-  initValue?: InitValueInput
-  /**
-   * Callback function called when date changes
-   */
-  onChange: (date: unknown) => void
-  /**
-   * Calendar type: 'single', 'range', or 'multi'
-   * @default 'single'
-   */
-  type?: CalendarType
-  /**
-   * Enable time selection
-   * @default false
-   */
-  withTime?: boolean
+interface DtPickerPropsBase extends SharedCalendarProps {
   /**
    * Show time in input field
    * @default false
    */
   showTimeInput?: boolean
-  /**
-   * Calendar locale: 'en' (Gregorian) or 'fa' (Jalali)
-   * @default 'en'
-   */
-  local?: CalendarLocale
-  /**
-   * Show weekend highlighting
-   * @default false
-   */
-  showWeekend?: boolean
   /**
    * Show clear button
    * @default false
@@ -65,25 +33,10 @@ export interface DtPickerProps {
    */
   isRequired?: boolean
   /**
-   * Show today button
-   * @default false
-   */
-  todayBtn?: boolean
-  /**
-   * Preset range buttons configuration
-   * Only works with type='range' or type='week'
-   */
-  presetRanges?: PresetRangesConfig
-  /**
    * Disable the picker
    * @default false
    */
   isDisabled?: boolean
-  /**
-   * Date constraints (maxDate, minDate, disabledDates)
-   * Accepts Day objects, Date objects, date strings, or timestamps
-   */
-  constraints?: CalendarConstraintsInput
   /**
    * Placeholder text
    * @default 'Select date'
@@ -94,10 +47,6 @@ export interface DtPickerProps {
    */
   inputClass?: string
   /**
-   * Custom CSS class for calendar modal
-   */
-  calenderModalClass?: string
-  /**
    * Auto-close calendar after selection
    * @default true
    */
@@ -106,33 +55,25 @@ export interface DtPickerProps {
    * Input element ID
    */
   inputId?: string
-  /**
-   * Custom date format string
-   * Supports tokens:
-   * - Date: YYYY (year), MM (month), DD (day)
-   * - Time: HH (24-hour), hh (12-hour), mm (minutes), ss (seconds), A (AM/PM), a (am/pm)
-   * Supports custom separators and order
-   * Examples: "DD/MM/YYYY", "MM-DD-YYYY HH:mm", "YYYY년 MM월 DD일 hh:mm A"
-   * @default undefined (uses default format: YYYY/MM/DD)
-   */
-  dateFormat?: string
-  /**
-   * Time format: '12' for 12-hour format, '24' for 24-hour format
-   * Only applies when withTime is true
-   * @default '24'
-   */
-  timeFormat?: '12' | '24'
-  /**
-   * Number of months to display side by side
-   * Particularly useful for range selection
-   * @default 1
-   */
-  numberOfMonths?: 1 | 2 | 3
-  /**
-   * Customization options (classes, icons, labels, custom month/weekday names)
-   */
-  customization?: CalendarCustomization
 }
+
+export interface DtPickerPropsSingle
+  extends DtPickerPropsBase, CalendarSelectionSingle {}
+
+export interface DtPickerPropsRange
+  extends DtPickerPropsBase, CalendarSelectionRange {}
+
+export interface DtPickerPropsMulti
+  extends DtPickerPropsBase, CalendarSelectionMulti {}
+
+export interface DtPickerPropsWeek
+  extends DtPickerPropsBase, CalendarSelectionWeek {}
+
+export type DtPickerProps =
+  | DtPickerPropsSingle
+  | DtPickerPropsRange
+  | DtPickerPropsMulti
+  | DtPickerPropsWeek
 
 /**
  * DtPicker Component
@@ -183,7 +124,8 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
   // Use calendar picker hook for shared calendar logic
   const { state, actions, constraints, displayValue } = useCalendarPicker(
     initValue,
-    onChange,
+    // Cast onChange to broader type for internal compatibility
+    onChange as (date: Day | Range | Multi | null) => void,
     type,
     local,
     withTime,

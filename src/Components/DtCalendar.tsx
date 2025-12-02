@@ -1,72 +1,24 @@
 import React, { useEffect, useRef, useMemo } from 'react'
-import type { CalendarLocale, CalendarType, InitValueInput } from '../types'
+import type { Day, Range, Multi } from '../types'
 import type {
-  CalendarConstraintsInput,
-  CalendarCustomization,
   CalendarError,
-  PresetRangesConfig
+  CalendarSelectionSingle,
+  CalendarSelectionRange,
+  CalendarSelectionMulti,
+  CalendarSelectionWeek,
+  SharedCalendarProps
 } from '../types/calendar'
 import { CalendarCore } from './CalendarCore'
 import { useCalendarState } from '../hooks/useCalendarState'
 import { normalizeInitValueWithErrors } from '../utils/normalize'
 import { normalizeConstraintsProps } from '../utils/constraints'
-import type { Range } from '../types'
 
-export interface DtCalendarProps {
-  /**
-   * Initial value for the calendar
-   * Accepts Day objects, Date objects, date strings, timestamps, or range/multi formats
-   * Examples:
-   * - Single: { year: 2024, month: 12, day: 25 } | new Date() | "2024-12-25" | 1735084800000
-   * - Range: { from: DateInput, to: DateInput }
-   * - Multi: DateInput[]
-   */
-  initValue?: InitValueInput
-  /**
-   * Callback function called when date changes
-   */
-  onChange: (date: unknown) => void
+interface DtCalendarPropsBase extends SharedCalendarProps {
   /**
    * Callback that runs when the calendar value is changed
    * Note: requires initValue to be provided
    */
-  onCalenderChange?: (date: unknown) => void
-  /**
-   * Calendar type: 'single', 'range', or 'multi'
-   * @default 'single'
-   */
-  type?: CalendarType
-  /**
-   * Enable time selection
-   * @default false
-   */
-  withTime?: boolean
-  /**
-   * Time format: '12' for 12-hour format, '24' for 24-hour format
-   * Only applies when withTime is true
-   * @default '24'
-   */
-  timeFormat?: '12' | '24'
-  /**
-   * Calendar locale: 'en' (Gregorian) or 'fa' (Jalali)
-   * @default 'en'
-   */
-  local?: CalendarLocale
-  /**
-   * Show weekend highlighting
-   * @default false
-   */
-  showWeekend?: boolean
-  /**
-   * Show today button
-   * @default false
-   */
-  todayBtn?: boolean
-  /**
-   * Preset range buttons configuration
-   * Only works with type='range' or type='week'
-   */
-  presetRanges?: PresetRangesConfig
+  onCalenderChange?: (date: Day | Range | Multi | null) => void
   /**
    * Enlarge selected day text
    * @default true
@@ -78,39 +30,29 @@ export interface DtCalendarProps {
    */
   dark?: boolean
   /**
-   * Date constraints (maxDate, minDate, disabledDates)
-   * Accepts Day objects, Date objects, date strings, or timestamps
-   */
-  constraints?: CalendarConstraintsInput
-  /**
-   * Custom CSS class for calendar modal
-   */
-  calenderModalClass?: string
-  /**
-   * Customization options (classes, icons, labels)
-   */
-  customization?: CalendarCustomization
-  /**
    * Callback function called when normalization or constraint errors occur
    * @param errors - Array of error objects describing what failed
    */
   onError?: (errors: CalendarError[]) => void
-  /**
-   * Custom date format string
-   * Supports tokens: YYYY (year), MM (month), DD (day)
-   * Supports custom separators and order
-   * Examples: "DD/MM/YYYY", "MM-DD-YYYY", "YYYY년 MM월 DD일"
-   * @default undefined (uses default format: YYYY/MM/DD)
-   * Note: This prop is primarily for DtPicker input display. DtCalendar doesn't display formatted dates in an input field.
-   */
-  dateFormat?: string
-  /**
-   * Number of months to display side by side
-   * Particularly useful for range selection
-   * @default 1
-   */
-  numberOfMonths?: 1 | 2 | 3
 }
+
+export interface DtCalendarPropsSingle
+  extends DtCalendarPropsBase, CalendarSelectionSingle {}
+
+export interface DtCalendarPropsRange
+  extends DtCalendarPropsBase, CalendarSelectionRange {}
+
+export interface DtCalendarPropsMulti
+  extends DtCalendarPropsBase, CalendarSelectionMulti {}
+
+export interface DtCalendarPropsWeek
+  extends DtCalendarPropsBase, CalendarSelectionWeek {}
+
+export type DtCalendarProps =
+  | DtCalendarPropsSingle
+  | DtCalendarPropsRange
+  | DtCalendarPropsMulti
+  | DtCalendarPropsWeek
 
 /**
  * DtCalendar Component
@@ -198,7 +140,8 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     initValue: normalizedInitValue,
     locale: local,
     type,
-    onChange,
+    // Cast onChange to broader type for internal compatibility
+    onChange: onChange as (date: Day | Range | Multi | null) => void,
     onCalenderChange,
     withTime,
     numberOfMonths

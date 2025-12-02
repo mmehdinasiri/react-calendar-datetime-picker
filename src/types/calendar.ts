@@ -3,7 +3,7 @@
  */
 
 import type React from 'react'
-import type { Day, Range } from './index'
+import type { Day, Range, Multi } from './index'
 
 /**
  * Acceptable date input formats that can be normalized
@@ -21,6 +21,22 @@ export type InitValueInput =
   | { from: DateInput; to: DateInput }
   | DateInput[]
   | null
+
+/**
+ * Calendar locale
+ * - 'en': Gregorian calendar
+ * - 'fa': Jalali (Persian) calendar
+ */
+export type CalendarLocale = 'en' | 'fa'
+
+/**
+ * Calendar selection type
+ * - 'single': Select a single date
+ * - 'range': Select a date range
+ * - 'multi': Select multiple dates
+ * - 'week': Select an entire week
+ */
+export type CalendarType = 'single' | 'range' | 'multi' | 'week'
 
 /**
  * Date constraints for selection (internal, normalized)
@@ -159,4 +175,114 @@ export interface CalendarCustomization {
   monthNames?: string[]
   /** Weekday names array (7 elements, starting from first day of week) - overrides default weekday names */
   weekdayNames?: string[]
+}
+
+/**
+ * Shared properties for both DtPicker and DtCalendar
+ */
+export interface SharedCalendarProps {
+  /**
+   * Initial value for the calendar
+   * Accepts Day objects, Date objects, date strings, timestamps, or range/multi formats
+   */
+  initValue?: InitValueInput
+  /**
+   * Enable time selection
+   * @default false
+   */
+  withTime?: boolean
+  /**
+   * Time format: '12' for 12-hour format, '24' for 24-hour format
+   * Only applies when withTime is true
+   * @default '24'
+   */
+  timeFormat?: '12' | '24'
+  /**
+   * Calendar locale: 'en' (Gregorian) or 'fa' (Jalali)
+   * @default 'en'
+   */
+  local?: CalendarLocale
+  /**
+   * Show weekend highlighting
+   * @default false
+   */
+  showWeekend?: boolean
+  /**
+   * Show today button
+   * @default false
+   */
+  todayBtn?: boolean
+  /**
+   * Preset range buttons configuration
+   * Only works with type='range' or type='week'
+   */
+  presetRanges?: PresetRangesConfig
+  /**
+   * Date constraints (maxDate, minDate, disabledDates)
+   * Accepts Day objects, Date objects, date strings, or timestamps
+   */
+  constraints?: CalendarConstraintsInput
+  /**
+   * Custom CSS class for calendar modal
+   */
+  calenderModalClass?: string
+  /**
+   * Customization options (classes, icons, labels)
+   */
+  customization?: CalendarCustomization
+  /**
+   * Custom date format string
+   * Supports tokens: YYYY (year), MM (month), DD (day)
+   * Supports custom separators and order
+   * Examples: "DD/MM/YYYY", "MM-DD-YYYY", "YYYY년 MM월 DD일"
+   * @default undefined (uses default format: YYYY/MM/DD)
+   */
+  dateFormat?: string
+  /**
+   * Number of months to display side by side
+   * Particularly useful for range selection
+   * @default 1
+   */
+  numberOfMonths?: 1 | 2 | 3
+}
+
+/**
+ * Shared prop interfaces for calendar type selection logic
+ * These define strict typings for onChange based on the 'type' prop
+ */
+
+export interface CalendarSelectionSingle {
+  type?: 'single'
+  /**
+   * Callback function called when date changes
+   * Receives Day | null for single date selection
+   */
+  onChange: (date: Day | null) => void
+}
+
+export interface CalendarSelectionRange {
+  type: 'range'
+  /**
+   * Callback function called when date changes
+   * Receives Range | null for range selection
+   */
+  onChange: (date: Range | null) => void
+}
+
+export interface CalendarSelectionMulti {
+  type: 'multi'
+  /**
+   * Callback function called when date changes
+   * Receives Multi | null for multi selection
+   */
+  onChange: (date: Multi | null) => void
+}
+
+export interface CalendarSelectionWeek {
+  type: 'week'
+  /**
+   * Callback function called when date changes
+   * Receives Range | null for week selection (week is represented as Range)
+   */
+  onChange: (date: Range | null) => void
 }

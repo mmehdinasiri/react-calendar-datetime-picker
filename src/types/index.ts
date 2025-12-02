@@ -66,22 +66,6 @@ export interface Week {
 }
 
 /**
- * Calendar locale
- * - 'en': Gregorian calendar
- * - 'fa': Jalali (Persian) calendar
- */
-export type CalendarLocale = 'en' | 'fa'
-
-/**
- * Calendar selection type
- * - 'single': Select a single date
- * - 'range': Select a date range
- * - 'multi': Select multiple dates
- * - 'week': Select an entire week
- */
-export type CalendarType = 'single' | 'range' | 'multi' | 'week'
-
-/**
  * Calendar list style for year/month views
  * - 'grid': Display as grid
  * - 'list': Display as list
@@ -92,6 +76,8 @@ export type CalendarListStyle = 'grid' | 'list'
 export type {
   DateInput,
   InitValueInput,
+  CalendarLocale,
+  CalendarType,
   CalendarConstraints,
   CalendarConstraintsInput,
   CalendarError,
@@ -99,5 +85,10 @@ export type {
   CalendarClasses,
   CalendarIcons,
   CalendarLabels,
-  CalendarCustomization
+  CalendarCustomization,
+  SharedCalendarProps,
+  CalendarSelectionSingle,
+  CalendarSelectionRange,
+  CalendarSelectionMulti,
+  CalendarSelectionWeek
 } from './calendar'

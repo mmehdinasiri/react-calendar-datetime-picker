@@ -11,7 +11,7 @@ import {
   getColorValue,
   getDarkColorValue
 } from '../data/cssVariables'
-import type { InitValueInput } from '../../../src/types'
+import { Day } from 'react-calendar-datetime-picker'
 
 // Custom Icons
 const ArrowLeftIcon = ({ className }: { className?: string }) => (
@@ -54,9 +54,7 @@ const ArrowRightIcon = ({ className }: { className?: string }) => (
 
 export default function Customization() {
   const [customDate, setCustomDate] = useState<any>(null)
-  const [darkDate, setDarkDate] = useState<InitValueInput | undefined>(
-    undefined
-  )
+  const [darkDate, setDarkDate] = useState<Day | null>(null)
 
   return (
     <div className='max-w-6xl mx-auto px-6 py-12'>
@@ -338,9 +336,7 @@ function App() {
                   <div className='calendar-container'>
                     <DtCalendar
                       initValue={darkDate}
-                      onChange={(date) =>
-                        setDarkDate(date as InitValueInput | undefined)
-                      }
+                      onChange={(date) => setDarkDate(date)}
                       dark={true}
                       showWeekend={true}
                       todayBtn={true}

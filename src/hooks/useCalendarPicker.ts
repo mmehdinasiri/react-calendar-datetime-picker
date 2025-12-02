@@ -3,7 +3,9 @@ import type {
   CalendarLocale,
   CalendarType,
   InitValueInput,
-  Range
+  Day,
+  Range,
+  Multi
 } from '../types'
 import type { CalendarConstraintsInput } from '../types/calendar'
 import { normalizeInitValueWithErrors } from '../utils/normalize'
@@ -17,7 +19,7 @@ import { useCalendarState } from './useCalendarState'
  */
 export function useCalendarPicker(
   initValue: InitValueInput | undefined,
-  onChange: (date: unknown) => void,
+  onChange: (date: Day | Range | Multi | null) => void,
   type: CalendarType,
   local: CalendarLocale,
   withTime: boolean,
@@ -48,7 +50,8 @@ export function useCalendarPicker(
     initValue: normalizedInitValue,
     locale: local,
     type,
-    onChange: (date: unknown) => {
+    onChange: (date) => {
+      // Pass the normalized value directly
       onChange(date)
       // Auto-close modal after selection if enabled
       if (autoClose && onClose) {

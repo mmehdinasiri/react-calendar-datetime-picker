@@ -520,7 +520,7 @@ export interface UseCalendarStateOptions {
   withTime?: boolean
   /** Number of months displayed */
   numberOfMonths?: 1 | 2 | 3
-  /** Callback when value changes */
+  /** Callback when value changes - accepts InitValueInput for compatibility with React's setState */
   onChange: (value: Day | Range | Multi | null) => void
   /** Callback when calendar value changes (requires initValue) */
   onCalenderChange?: (value: Day | Range | Multi | null) => void

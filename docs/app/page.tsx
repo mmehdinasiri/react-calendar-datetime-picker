@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { DtCalendar } from 'react-calendar-datetime-picker'
-import type { InitValueInput } from '../src/types'
+import type { InitValueInput } from 'react-calendar-datetime-picker'
 
 export default function Home() {
   const [lightDate, setLightDate] = useState<InitValueInput | undefined>(

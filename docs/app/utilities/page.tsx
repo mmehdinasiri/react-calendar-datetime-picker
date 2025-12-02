@@ -83,7 +83,7 @@ export default function Utilities() {
             <DtCalendar
               dark={true}
               initValue={selectedDate}
-              onChange={(date) => setSelectedDate(date as Day | null)}
+              onChange={(date) => setSelectedDate(date)}
               showWeekend={true}
               todayBtn={true}
             />
