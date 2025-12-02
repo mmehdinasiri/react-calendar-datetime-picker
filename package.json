@@ -47,6 +47,7 @@
     "dev:examples:only": "cd examples && vite",
     "build:examples": "cd examples && vite build",
     "dev:docs": "pnpm run build && cd docs && pnpm dev",
+    "dev:docs:fresh": "pnpm run clean && pnpm run build && cd docs && rm -rf node_modules/react-calendar-datetime-picker && pnpm install && pnpm dev",
     "dev:docs:watch": "concurrently -n build,docs -c yellow,green \"pnpm run build:watch\" \"cd docs && pnpm dev\"",
     "build:docs": "cd docs && pnpm build",
     "start:docs": "cd docs && pnpm start",
@@ -59,6 +60,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist",
+    "clean:all": "pnpm run clean && rimraf docs/.next && rimraf examples/dist && find . -name '*.tsbuildinfo' -delete",
+    "rebuild": "pnpm run clean:all && pnpm run build && cd docs && rm -rf node_modules/react-calendar-datetime-picker && pnpm install && cd ..",
     "prepublishOnly": "pnpm run clean && pnpm run build"
   },
   "peerDependencies": {

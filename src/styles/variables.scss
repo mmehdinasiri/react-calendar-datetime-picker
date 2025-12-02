@@ -63,6 +63,7 @@
 }
 
 // Dark theme support
+.calendar-picker-modal[data-theme='dark'],
 .react-calendar-datetime-picker[data-theme='dark'] {
   // Colors - Dark theme (darker green for primary)
   --calendar-primary: #16a34a;

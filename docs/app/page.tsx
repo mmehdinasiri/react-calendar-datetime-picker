@@ -37,7 +37,8 @@ export default function Home() {
             support
           </p>
           <p className='text-lg text-gray-600 dark:text-gray-300 mb-8'>
-            The calendar supports both <strong>Jalali (Persian)</strong> and <strong>Gregorian</strong> calendar systems.
+            The calendar supports both <strong>Jalali (Persian)</strong> and{' '}
+            <strong>Gregorian</strong> calendar systems.
           </p>
 
           {/* CTA Buttons */}
@@ -59,7 +60,7 @@ export default function Home() {
       </div>
 
       {/* Examples Section */}
-      <div className='max-w-6xl mx-auto px-6 pt-8 pb-8'>
+      <div className='max-w-6xl mx-auto px-6 pt-8 pb-8 home-page-calendar-container'>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
           {/* Example 1: Basic Light Calendar with EN locale */}
           <div className='bg-bg-secondary rounded-lg border border-border p-6'>
@@ -100,7 +101,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        </div>
+      </div>
 
       {/* Main Content Section */}
       <div className='max-w-4xl mx-auto px-6 pt-8 pb-16'>

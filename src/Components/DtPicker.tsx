@@ -55,6 +55,11 @@ interface DtPickerPropsBase extends SharedCalendarProps {
    * Input element ID
    */
   inputId?: string
+  /**
+   * Enable dark theme
+   * @default false
+   */
+  dark?: boolean
 }
 
 export interface DtPickerPropsSingle
@@ -113,7 +118,8 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     dateFormat,
     timeFormat = '24',
     numberOfMonths = 1,
-    customization
+    customization,
+    dark = false
   } = props
 
   const [isOpen, setIsOpen] = useState(false)
@@ -241,6 +247,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
                   ? 'Select week'
                   : 'Select date'
           }
+          data-theme={dark ? 'dark' : undefined}
           style={{
             position: 'fixed',
             top: modalPosition ? `${modalPosition.top}px` : '-9999px',

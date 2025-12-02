@@ -121,6 +121,12 @@ body {
   @apply max-w-md mx-auto;
 }
 
+/* Prevent legacy CSS from affecting version 2 calendars */
+/* This ensures calendars don't get white background when navigating from legacy */
+.react-calendar-datetime-picker {
+  background-color: transparent !important;
+}
+
 .picker-container {
   @apply max-w-md mx-auto;
 }
@@ -144,6 +150,48 @@ body {
 }
 
 /* No CSS variable overrides - the library handles theming via data-theme attribute */
+
+/* Dark theme styling for DtPicker input in docs */
+.dark .calendar-picker-input {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: var(--text-primary);
+}
+
+.dark .calendar-picker-input:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.dark .calendar-picker-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 154, 23, 0.2);
+}
+
+.dark .calendar-picker-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.dark .calendar-picker-input:disabled {
+  background-color: var(--bg-tertiary);
+  opacity: 0.6;
+}
+
+.dark .calendar-picker-toggle {
+  color: var(--text-secondary);
+}
+
+.dark .calendar-picker-toggle:hover:not(:disabled) {
+  color: var(--accent);
+}
+
+.dark .calendar-picker-clear {
+  color: var(--text-secondary);
+}
+
+.dark .calendar-picker-clear:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+}
 
 /* Custom dark theme with CSS variables - applied via calenderModalClass */
 .react-calendar-datetime-picker.calendar-dark-custom-theme[data-theme='dark'],

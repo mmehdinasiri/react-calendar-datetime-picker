@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { DtPicker, DtCalendar } from 'react-calendar-datetime-picker'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -77,94 +77,24 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
     }
   })
 
-  // Add dark prop for DtCalendar based on theme (unless it's a theme example or explicitly set)
+  // Add dark prop for both DtPicker and DtCalendar based on theme
+  // (unless it's a theme example or explicitly set)
   if (
-    Component === DtCalendar &&
     !isThemeExample &&
-    !('dark' in componentProps)
+    !('dark' in componentProps) &&
+    (Component === DtPicker || Component === DtCalendar)
   ) {
     componentProps.dark = theme === 'dark'
-  }
-
-  // For DtPicker, add data-theme="dark" to the calendar element when in dark mode
-  // (DtPicker doesn't have a dark prop, so we need to set it via DOM)
-  // DtPicker renders CalendarCore directly, which doesn't create the react-calendar-datetime-picker wrapper
-  // So we need to wrap the CalendarCore's rendered DOM nodes
-  useEffect(() => {
-    if (Component === DtPicker && !isThemeExample && theme === 'dark') {
-      const addDarkTheme = () => {
-        // Search from document root since modal might be rendered outside wrapper
-        const modal = document.querySelector(
-          '.picker-container .calendar-picker-modal, .calendar-picker-modal'
-        ) as HTMLElement
-
-        if (
-          modal &&
-          wrapperRef.current?.contains(
-            modal.closest('.picker-container') || modal
-          )
-        ) {
-          // Check if react-calendar-datetime-picker wrapper already exists
-          let calendarWrapper = modal.querySelector(
-            '.react-calendar-datetime-picker'
-          ) as HTMLElement
-
-          // If no wrapper exists and modal has content, create one
-          if (!calendarWrapper && modal.children.length > 0) {
-            // Find the first actual DOM element (not text nodes)
-            let firstElement: Element | null = null
-            for (let i = 0; i < modal.children.length; i++) {
-              if (modal.children[i].nodeType === Node.ELEMENT_NODE) {
-                firstElement = modal.children[i]
-                break
-              }
-            }
-
-            // If we found an element and it's not already our wrapper, wrap it
-            if (
-              firstElement &&
-              !firstElement.classList.contains('react-calendar-datetime-picker')
-            ) {
-              calendarWrapper = document.createElement('div')
-              calendarWrapper.className = 'react-calendar-datetime-picker'
-              calendarWrapper.setAttribute('data-theme', 'dark')
-
-              // Insert wrapper before the first element
-              modal.insertBefore(calendarWrapper, firstElement)
-              // Move the first element into the wrapper
-              calendarWrapper.appendChild(firstElement)
-            }
-          } else if (calendarWrapper) {
-            // Wrapper exists, ensure data-theme is set
-            calendarWrapper.setAttribute('data-theme', 'dark')
-          }
-        }
-      }
-
-      // Try immediately (in case modal is already open)
-      addDarkTheme()
-
-      // Also try after a short delay to catch modals that open after render
-      const timeoutId = setTimeout(addDarkTheme, 100)
-
-      // Watch for when modal appears (when picker opens)
-      const observer = new MutationObserver(() => {
-        // Use a small delay to ensure React has finished rendering
-        setTimeout(addDarkTheme, 10)
-      })
-
-      // Observe the document body to catch modals rendered anywhere
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      })
-
-      return () => {
-        clearTimeout(timeoutId)
-        observer.disconnect()
-      }
+    // Debug: log to verify dark prop is being set
+    if (Component === DtPicker) {
+      console.log(
+        '[ExampleRenderer] Setting dark prop for DtPicker:',
+        theme === 'dark',
+        'theme:',
+        theme
+      )
     }
-  }, [Component, theme, isThemeExample])
+  }
 
   // Get utility results if available
   const utilityResults = config.getUtilityResults?.(
@@ -242,7 +172,7 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                     if (key === 'constraints' && config.constraintsCode) {
                       return `      ${config.constraintsCode}`
                     }
-                    
+
                     if (typeof value === 'function') {
                       return `      ${key}={/* custom function */}`
                     }
@@ -267,7 +197,7 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                 // Add dark prop to code if it was added programmatically
                 let darkPropLine = ''
                 if (
-                  Component === DtCalendar &&
+                  (Component === DtCalendar || Component === DtPicker) &&
                   !isThemeExample &&
                   !('dark' in (config.props || {})) &&
                   'dark' in componentProps &&
