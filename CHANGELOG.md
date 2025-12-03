@@ -6,35 +6,51 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.7.5] - 2/23/2025|
-* update packages
+
+- update packages
+
 ## [1.7.4] - 9/25/2023|
-* fix versioning
+
+- fix versioning
+
 ## [1.7.3] - 9/25/2023|
-* fix development environment
+
+- fix development environment
+
 ## [1.7.2] - 9/25/2023|
-* update README file
+
+- update README file
+
 ## [1.7.1] - 9/21/2023|
-* chore: fix type import
-* chore: remove enter from trigger list
-* fix: build issue
+
+- chore: fix type import
+- chore: remove enter from trigger list
+- fix: build issue
 
 ## [1.7.0] - 9/19/2023|
+
 - use vite
 - remove website from the repo
 - refactor first step
 - add some rules to the eslint
-- remove rem 
-- move example to vite 
+- remove rem
+- move example to vite
 - support cjs and es
 - add focus style and callback
 - update packages
+
 ## [1.6.3] - 5/16/2022|
-- add inputId prop 
+
+- add inputId prop
+
 ## [1.6.2] - 2/15/2022|
+
 - fix readme and npm version
+
 ## [1.6.1] - 2/15/2022|
 
 - fix week day order in Persian
+
 ## [1.6.0] - 1/31/2022|
 
 - fix init value issue (there is no need extra state to handle init or update value from outside of calendar)
@@ -42,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add closing icon if autoClose is false
 - fix onchange twice running
 - fix onCalenderHide running by close icon
+
 ## [1.5.7] - 11/19/2021|
 
 - fix persian month title

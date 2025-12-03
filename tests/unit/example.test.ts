@@ -14,4 +14,3 @@ describe('Example Test Suite', () => {
     expect(str.length).toBeGreaterThan(0)
   })
 })
-

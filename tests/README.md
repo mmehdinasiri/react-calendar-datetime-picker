@@ -33,12 +33,14 @@ pnpm run test:coverage
 ### Writing Unit Tests
 
 Unit tests should:
+
 - Test individual components, hooks, and utilities in isolation
 - Use React Testing Library for component testing
 - Mock external dependencies when necessary
 - Follow the naming convention: `*.test.ts` or `*.test.tsx`
 
 Example:
+
 ```typescript
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
@@ -75,12 +77,14 @@ pnpm run test:e2e:debug
 ### Writing E2E Tests
 
 E2E tests should:
+
 - Test user interactions and workflows
 - Test the library as it would be used in a real application
 - Use the examples app as the test environment
 - Follow the naming convention: `*.spec.ts`
 
 Example:
+
 ```typescript
 import { test, expect } from '@playwright/test'
 
@@ -110,6 +114,7 @@ pnpm run test:coverage
 ```
 
 Coverage reports will be available in:
+
 - Terminal output
 - `coverage/` directory (HTML report)
 
@@ -127,4 +132,3 @@ Coverage reports will be available in:
 - `vitest.config.ts` - Vitest configuration
 - `playwright.config.ts` - Playwright configuration
 - `tests/setup.ts` - Shared test setup (cleanup, mocks, etc.)
-

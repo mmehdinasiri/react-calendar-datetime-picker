@@ -6,7 +6,10 @@ import { ExampleRenderer } from '../components/ExampleRenderer'
 
 // Helper function to convert string to kebab case for IDs
 const toKebabCase = (str: string) =>
-  str.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+  str
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
 
 export default function Examples() {
   return (
@@ -16,8 +19,8 @@ export default function Examples() {
 
         <p>
           Interactive examples demonstrating the features and capabilities of
-          React Calendar DateTime Picker. All examples are live and interactive -
-          you can interact with them to see how they work.
+          React Calendar DateTime Picker. All examples are live and interactive
+          - you can interact with them to see how they work.
         </p>
       </div>
 

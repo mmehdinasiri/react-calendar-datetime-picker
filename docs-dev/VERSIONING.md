@@ -3,6 +3,7 @@
 ## How Versioning Works
 
 ### Current Version
+
 The current version in `package.json` is **2.0.0** (for the modern rewrite).
 
 The last published version on npm is **1.7.5** (from the old codebase).
@@ -59,6 +60,7 @@ git push origin main
 ### Step 4: Automatic Publishing
 
 The workflow will:
+
 1. Extract version from the release tag (`v2.0.0` → `2.0.0`)
 2. Update `package.json` to match (if different)
 3. Run tests
@@ -68,6 +70,7 @@ The workflow will:
 ## Version Sync
 
 The workflow ensures:
+
 - ✅ GitHub Release tag version matches package.json
 - ✅ Published npm version matches the release tag
 - ✅ Version consistency across all sources
@@ -75,6 +78,7 @@ The workflow ensures:
 ## Important Notes
 
 ⚠️ **Version Conflict**: If you merge `modern-rewrite` (v2.0.0) to `main` before publishing:
+
 - The `main` branch will have v2.0.0 in package.json
 - But npm still has v1.7.5 published
 - You should publish v2.0.0 as a new major version
@@ -113,4 +117,3 @@ pnpm view react-calendar-datetime-picker version
 # Check all npm versions
 pnpm view react-calendar-datetime-picker versions
 ```
-

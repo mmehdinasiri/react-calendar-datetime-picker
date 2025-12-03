@@ -18,7 +18,9 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({
       <pre className='result-code'>{formatValue(value)}</pre>
       {utilityResults && Object.keys(utilityResults).length > 0 && (
         <div style={{ marginTop: '20px' }}>
-          <h4 style={{ marginTop: 0, marginBottom: '10px' }}>Utility Function Results:</h4>
+          <h4 style={{ marginTop: 0, marginBottom: '10px' }}>
+            Utility Function Results:
+          </h4>
           <pre className='result-code'>{formatValue(utilityResults)}</pre>
         </div>
       )}

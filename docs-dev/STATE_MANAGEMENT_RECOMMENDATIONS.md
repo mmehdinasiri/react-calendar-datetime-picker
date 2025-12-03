@@ -9,6 +9,7 @@ Based on the review of the old implementation and the challenges faced (especial
 ### ❌ Problems with Context-Based Approach (Old Version)
 
 From the CHANGELOG (v1.6.0), we can see:
+
 - Initial value handling was problematic
 - Extra state was needed to manage init/update values
 - `onChange` was running twice
@@ -22,12 +23,16 @@ From the CHANGELOG (v1.6.0), we can see:
 // Recommended pattern
 const DtPicker: React.FC<DtPickerProps> = (props) => {
   const { initValue, onChange, type = 'single' } = props
-  
+
   // Internal state - always in sync with calendar locale
-  const [selectedValue, setSelectedValue] = useState<Day | Range | Multi | null>(null)
-  const [currentView, setCurrentView] = useState<'calendar' | 'months' | 'years'>('calendar')
+  const [selectedValue, setSelectedValue] = useState<
+    Day | Range | Multi | null
+  >(null)
+  const [currentView, setCurrentView] = useState<
+    'calendar' | 'months' | 'years'
+  >('calendar')
   const [displayMonth, setDisplayMonth] = useState<Day>(getToday(props.local))
-  
+
   // Sync initValue when it changes externally
   useEffect(() => {
     if (initValue !== undefined) {
@@ -39,13 +44,13 @@ const DtPicker: React.FC<DtPickerProps> = (props) => {
       }
     }
   }, [initValue, props.local])
-  
+
   // Handle value changes
   const handleChange = (newValue: Day | Range | Multi | null) => {
     setSelectedValue(newValue)
     onChange(newValue) // Single call, no double-firing
   }
-  
+
   // ... rest of component
 }
 ```
@@ -71,16 +76,19 @@ type CalendarState = {
   // ... other state
 }
 
-type CalendarAction = 
+type CalendarAction =
   | { type: 'SELECT_DATE'; payload: Day }
   | { type: 'SELECT_RANGE_START'; payload: Day }
   | { type: 'SELECT_RANGE_END'; payload: Day }
   | { type: 'SET_DISPLAY_MONTH'; payload: Day }
   | { type: 'SET_VIEW'; payload: 'calendar' | 'months' | 'years' }
   | { type: 'SYNC_INIT_VALUE'; payload: Day | Range | Multi | null }
-  // ... other actions
+// ... other actions
 
-const calendarReducer = (state: CalendarState, action: CalendarAction): CalendarState => {
+const calendarReducer = (
+  state: CalendarState,
+  action: CalendarAction
+): CalendarState => {
   switch (action.type) {
     case 'SELECT_DATE':
       // Handle single date selection
@@ -90,10 +98,10 @@ const calendarReducer = (state: CalendarState, action: CalendarAction): Calendar
       return { ...state, selectedValue: { from: action.payload, to: null } }
     // ... other cases
     case 'SYNC_INIT_VALUE':
-      return { 
-        ...state, 
+      return {
+        ...state,
         selectedValue: action.payload,
-        displayMonth: extractMonthFromValue(action.payload) 
+        displayMonth: extractMonthFromValue(action.payload)
       }
     default:
       return state
@@ -120,28 +128,28 @@ export function normalizeInitValue(
   type: CalendarType
 ): Day | Range | Multi | null {
   if (!value) return null
-  
+
   // Handle different input formats
   if (isDayObject(value)) {
     return normalizeDay(value, locale)
   }
-  
+
   if (isRangeObject(value)) {
     return {
       from: normalizeDay(value.from, locale),
       to: normalizeDay(value.to, locale)
     }
   }
-  
+
   if (Array.isArray(value)) {
-    return value.map(day => normalizeDay(day, locale))
+    return value.map((day) => normalizeDay(day, locale))
   }
-  
+
   // Handle Date objects, strings, etc.
   if (value instanceof Date) {
     return dateToDay(value, locale)
   }
-  
+
   // ... handle other formats
   return null
 }
@@ -254,9 +262,9 @@ export function generateCalendarGrid(
 // Component
 const DtPicker: React.FC<DtPickerProps> = (props) => {
   const isRTL = props.local === 'fa'
-  
+
   return (
-    <div 
+    <div
       className={cn('react-calendar-datetime-picker', {
         'rtl': isRTL
       })}
@@ -274,7 +282,7 @@ const DtPicker: React.FC<DtPickerProps> = (props) => {
 // styles/variables.scss
 :root {
   --calendar-spacing-start: 0; // margin-inline-start
-  --calendar-spacing-end: 0;   // margin-inline-end
+  --calendar-spacing-end: 0; // margin-inline-end
 }
 
 [dir='rtl'] {
@@ -374,13 +382,13 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
 // hooks/useModal.ts
 export function useModal(autoClose: boolean, onClose?: () => void) {
   const [isOpen, setIsOpen] = useState(false)
-  
+
   const open = () => setIsOpen(true)
   const close = () => {
     setIsOpen(false)
     onClose?.()
   }
-  
+
   // Handle auto-close logic
   const handleDateSelect = (callback: () => void) => {
     callback()
@@ -388,7 +396,7 @@ export function useModal(autoClose: boolean, onClose?: () => void) {
       close()
     }
   }
-  
+
   return { isOpen, open, close, handleDateSelect }
 }
 ```
@@ -400,14 +408,14 @@ export function useModal(autoClose: boolean, onClose?: () => void) {
 export function useCalendarState(props: {
   initValue?: unknown
   onChange: (date: unknown) => void
-  onCalenderChange?: (date: unknown) => void  // Note: requires initValue
+  onCalenderChange?: (date: unknown) => void // Note: requires initValue
   type: CalendarType
   local: CalendarLocale
 }) {
   const { initValue, onChange, onCalenderChange, type, local } = props
-  
+
   const [state, dispatch] = useReducer(calendarReducer, initialState)
-  
+
   // Sync initValue
   useEffect(() => {
     if (initValue !== undefined) {
@@ -415,27 +423,27 @@ export function useCalendarState(props: {
       dispatch({ type: 'SYNC_INIT_VALUE', payload: normalized })
     }
   }, [initValue, local, type])
-  
+
   // Handle changes
   const handleDateSelect = (day: Day) => {
     const newValue = calculateNewValue(state.selectedValue, day, type)
     dispatch({ type: 'SELECT_DATE', payload: newValue })
-    
+
     // Call onChange (always called)
     onChange(newValue)
-    
+
     // Call onCalenderChange if provided (only works with initValue)
     // This is for watching changes when you have initValue set
     if (onCalenderChange && initValue !== undefined) {
       onCalenderChange(newValue)
     }
   }
-  
+
   return {
     state,
     actions: {
       selectDate: handleDateSelect,
-      setView: (view) => dispatch({ type: 'SET_VIEW', payload: view }),
+      setView: (view) => dispatch({ type: 'SET_VIEW', payload: view })
       // ... other actions
     }
   }
@@ -448,13 +456,13 @@ export function useCalendarState(props: {
 // components/DtPicker.tsx
 export const DtPicker: React.FC<DtPickerProps> = (props) => {
   const { autoClose = true, onCalenderShow, onCalenderHide } = props
-  
+
   // Modal state
   const { isOpen, open, close, handleDateSelect } = useModal(
     autoClose,
     onCalenderHide
   )
-  
+
   // Calendar state (shared logic)
   const { state, actions } = useCalendarState({
     initValue: props.initValue,
@@ -463,13 +471,13 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     type: props.type || 'single',
     local: props.local || 'en'
   })
-  
+
   // Handle modal open
   const handleOpen = () => {
     open()
     onCalenderShow?.()
   }
-  
+
   // Format display value for input
   const displayValue = formatDateForInput(
     state.selectedValue,
@@ -477,7 +485,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     props.type || 'single',
     props.showTimeInput
   )
-  
+
   return (
     <div className="react-calendar-datetime-picker">
       <DateInput
@@ -491,7 +499,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
         }}
         // ... other props
       />
-      
+
       {isOpen && (
         <CalendarModal
           onClose={close}
@@ -520,7 +528,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     type: props.type || 'single',
     local: props.local || 'en'
   })
-  
+
   return (
     <div className="react-calendar-datetime-picker">
       <CalendarCore
@@ -575,7 +583,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
 
 ### Important Behaviors:
 
-1. **`onCalenderChange` requires `initValue`**: 
+1. **`onCalenderChange` requires `initValue`**:
    - This callback only works when `initValue` is provided
    - It's meant to watch changes when you have an initial value set
    - Alternative: Use `useEffect` to watch your date state
@@ -616,10 +624,10 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
 ## Conclusion
 
 The recommended approach avoids the pitfalls of the old Context-based implementation while providing:
+
 - ✅ Cleaner state management
 - ✅ Better `initValue` handling
 - ✅ No double-firing of `onChange`
 - ✅ Proper Jalali calendar support
 - ✅ Built-in RTL support
 - ✅ More maintainable code structure
-

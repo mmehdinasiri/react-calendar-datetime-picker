@@ -45,25 +45,21 @@ export function Header() {
             href='/'
             className='flex items-center space-x-2 hover:opacity-80 transition-opacity'
           >
-            <img
-              src='/next-logo.png'
-              alt='Logo'
-              className='h-6 w-6'
-            />
+            <img src='/next-logo.png' alt='Logo' className='h-6 w-6' />
             <span className='font-semibold text-gray-900 dark:text-white text-sm'>
               React Calendar DateTime Picker
             </span>
           </Link>
           <div className='relative' ref={dropdownRef}>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setIsVersionDropdownOpen(!isVersionDropdownOpen)
-                }}
-                className='text-xs bg-accent text-white px-1.5 py-0.5 rounded hover:bg-accent-hover transition-colors flex items-center gap-1'
-                aria-label='Select version'
-              >
-                2.0.0
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsVersionDropdownOpen(!isVersionDropdownOpen)
+              }}
+              className='text-xs bg-accent text-white px-1.5 py-0.5 rounded hover:bg-accent-hover transition-colors flex items-center gap-1'
+              aria-label='Select version'
+            >
+              2.0.0
               <svg
                 className={`h-3 w-3 transition-transform ${
                   isVersionDropdownOpen ? 'transform rotate-180' : ''

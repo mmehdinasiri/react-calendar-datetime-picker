@@ -33,4 +33,3 @@ describe('useEscapeKey', () => {
     expect(onClose).not.toHaveBeenCalled()
   })
 })
-

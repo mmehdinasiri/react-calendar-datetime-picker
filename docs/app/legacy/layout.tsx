@@ -15,7 +15,7 @@ export default function LegacyLayout({
   useEffect(() => {
     // Remove dark class immediately for legacy pages
     document.documentElement.classList.remove('dark')
-    
+
     // Watch for any attempts to add dark class and remove it
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
@@ -28,13 +28,13 @@ export default function LegacyLayout({
         }
       })
     })
-    
+
     // Observe the html element for class changes
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ['class']
     })
-    
+
     return () => {
       observer.disconnect()
       // When leaving legacy pages, restore theme based on system preference or stored preference
@@ -45,18 +45,21 @@ export default function LegacyLayout({
           '(prefers-color-scheme: dark)'
         ).matches
         // Get stored preference or use system preference
-        const storedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
-        const shouldBeDark = storedTheme 
-          ? storedTheme === 'dark' 
+        const storedTheme = localStorage.getItem('theme') as
+          | 'light'
+          | 'dark'
+          | null
+        const shouldBeDark = storedTheme
+          ? storedTheme === 'dark'
           : systemPrefersDark
-        
+
         // Restore theme
         if (shouldBeDark) {
           document.documentElement.classList.add('dark')
         } else {
           document.documentElement.classList.remove('dark')
         }
-        
+
         // Force a reflow to ensure styles are applied
         void document.documentElement.offsetHeight
       })

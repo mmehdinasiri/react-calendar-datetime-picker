@@ -15,7 +15,7 @@ export function gregorianToJalali(day: Day): Day {
     month: jDate.jm,
     day: jDate.jd,
     hour: day.hour,
-    minute: day.minute,
+    minute: day.minute
   }
 }
 
@@ -29,7 +29,7 @@ export function jalaliToGregorian(day: Day): Day {
     month: gDate.gm,
     day: gDate.gd,
     hour: day.hour,
-    minute: day.minute,
+    minute: day.minute
   }
 }
 
@@ -46,13 +46,14 @@ export function convertToLocale(
   sourceLocale?: CalendarLocale
 ): Day {
   // If source locale is not provided, assume it's the opposite of target
-  const actualSourceLocale = sourceLocale || (targetLocale === 'fa' ? 'en' : 'fa')
-  
+  const actualSourceLocale =
+    sourceLocale || (targetLocale === 'fa' ? 'en' : 'fa')
+
   // If already in target locale, return as-is
   if (actualSourceLocale === targetLocale) {
     return day
   }
-  
+
   // Convert between calendars
   if (targetLocale === 'fa') {
     // Convert from Gregorian to Jalali
@@ -71,7 +72,7 @@ export function getToday(locale: CalendarLocale): Day {
   const gregorianDay: Day = {
     year: today.getFullYear(),
     month: today.getMonth() + 1, // JavaScript months are 0-indexed
-    day: today.getDate(),
+    day: today.getDate()
   }
 
   if (locale === 'fa') {
@@ -90,7 +91,7 @@ export function dateToDay(date: Date, locale: CalendarLocale): Day {
     month: date.getMonth() + 1,
     day: date.getDate(),
     hour: date.getHours(),
-    minute: date.getMinutes(),
+    minute: date.getMinutes()
   }
 
   if (locale === 'fa') {
@@ -107,7 +108,7 @@ export function dateToDay(date: Date, locale: CalendarLocale): Day {
 export function dayToDate(day: Day, locale: CalendarLocale = 'en'): Date {
   // If day is in Jalali, convert to Gregorian first
   const gregorianDay = locale === 'fa' ? jalaliToGregorian(day) : day
-  
+
   return new Date(
     gregorianDay.year,
     gregorianDay.month - 1, // JavaScript months are 0-indexed
@@ -116,4 +117,3 @@ export function dayToDate(day: Day, locale: CalendarLocale = 'en'): Date {
     gregorianDay.minute ?? 0
   )
 }
-

@@ -152,8 +152,8 @@ const dateOnly: Day = {
 
         <p>
           The <code>Multi</code> type represents multiple selected dates. It's
-          an array of <code>Day</code> objects. Used for multiple date
-          selection type.
+          an array of <code>Day</code> objects. Used for multiple date selection
+          type.
         </p>
 
         <div className='rounded-lg overflow-hidden border border-border mb-4'>
@@ -356,8 +356,8 @@ const dateOnly: Day = {
         <h2>CalendarType</h2>
 
         <p>
-          The <code>CalendarType</code> type specifies the selection mode of
-          the calendar.
+          The <code>CalendarType</code> type specifies the selection mode of the
+          calendar.
         </p>
 
         <div className='rounded-lg overflow-hidden border border-border mb-4'>
@@ -516,8 +516,8 @@ const date4: DateInput = 1733097600000`}
         <h2>Type Safety</h2>
 
         <p>
-          The library is fully typed with TypeScript, so you'll get type checking
-          and autocomplete support:
+          The library is fully typed with TypeScript, so you'll get type
+          checking and autocomplete support:
         </p>
 
         <div className='rounded-lg overflow-hidden border border-border mb-4'>
@@ -582,4 +582,3 @@ function App() {
     </div>
   )
 }
-

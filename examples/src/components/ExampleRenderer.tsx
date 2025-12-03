@@ -12,21 +12,12 @@ interface ExampleRendererProps {
   exampleKey: string
 }
 
-export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
-  config
-}) => {
-  const {
-    propsString,
-    setPropsString,
-    props,
-    propsError,
-    resetProps
-  } = useParsedProps(config)
+export const ExampleRenderer: React.FC<ExampleRendererProps> = ({ config }) => {
+  const { propsString, setPropsString, props, propsError, resetProps } =
+    useParsedProps(config)
 
   const locale =
-    (props.local as 'en' | 'fa') ||
-    (config.props?.local as 'en' | 'fa') ||
-    'en'
+    (props.local as 'en' | 'fa') || (config.props?.local as 'en' | 'fa') || 'en'
   const type =
     (props.type as 'single' | 'range' | 'multi' | 'week') ||
     (config.props?.type as 'single' | 'range' | 'multi' | 'week') ||
@@ -119,4 +110,3 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
     </section>
   )
 }
-

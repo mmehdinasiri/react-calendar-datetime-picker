@@ -49,7 +49,7 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
         onYearClick={() => onViewChange('years')}
       />
 
-      <div 
+      <div
         className={`calendar-months ${monthsClass || ''}`}
         role='grid'
         aria-label={locale === 'fa' ? 'انتخاب ماه' : 'Select month'}

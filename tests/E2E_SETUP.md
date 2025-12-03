@@ -5,6 +5,7 @@
 Playwright E2E tests **automatically start the dev server** for you. You don't need to run it manually!
 
 The Playwright config (`playwright.config.ts`) includes a `webServer` configuration that:
+
 1. Automatically installs examples dependencies
 2. Starts the examples dev server
 3. Waits for it to be ready
@@ -14,6 +15,7 @@ The Playwright config (`playwright.config.ts`) includes a `webServer` configurat
 ## Running E2E Tests
 
 Simply run:
+
 ```bash
 pnpm run test:e2e
 ```
@@ -25,14 +27,17 @@ Playwright will handle everything automatically.
 If you want to run the dev server manually (e.g., for debugging), you can:
 
 1. **Start the dev server manually:**
+
    ```bash
    cd examples
    pnpm install
    pnpm dev
    ```
+
    The server will start on `http://localhost:3000` (or whatever port is configured)
 
 2. **Update Playwright config** to reuse the existing server:
+
    ```typescript
    webServer: {
      command: 'cd examples && pnpm dev',
@@ -52,6 +57,7 @@ If you want to run the dev server manually (e.g., for debugging), you can:
 The examples app runs on port **3000** by default (configured in `examples/vite.config.ts`).
 
 If you change the port, make sure to update:
+
 1. `examples/vite.config.ts` - server port
 2. `playwright.config.ts` - baseURL and webServer.url
 
@@ -66,6 +72,7 @@ If you see "Timed out waiting 120000ms from config.webServer":
    - Playwright config should match this port
 
 2. **Check if dependencies are installed:**
+
    ```bash
    cd examples
    pnpm install
@@ -89,6 +96,7 @@ If port 3000 is already in use:
 ### Server Won't Start
 
 Make sure:
+
 - Node.js and pnpm are installed
 - Examples dependencies are installed: `cd examples && pnpm install`
 - No syntax errors in examples code
@@ -96,4 +104,3 @@ Make sure:
 ## CI/CD
 
 In CI (GitHub Actions), the webServer automatically starts and stops. No manual intervention needed!
-

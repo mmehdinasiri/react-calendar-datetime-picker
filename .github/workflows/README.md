@@ -7,10 +7,12 @@ This directory contains GitHub Actions workflows for CI/CD automation.
 ### `ci.yml` - Continuous Integration
 
 **Triggers:**
+
 - Pull requests targeting `main` branch
 - Pushes to `main` branch
 
 **What it does:**
+
 1. **Quality Checks:**
    - TypeScript type checking
    - ESLint linting
@@ -34,20 +36,24 @@ This directory contains GitHub Actions workflows for CI/CD automation.
    - Uploads to Codecov (if configured)
 
 **Status Checks:**
+
 - `test / Run Tests` - Main test job (required for merge)
 - `test / Test Coverage` - Coverage job (optional, PRs only)
 
 **Artifacts:**
+
 - Playwright HTML report (30 days retention)
 - Test results (30 days retention)
 
 ### `npm-publish.yml` - NPM Publishing
 
 **Triggers:**
+
 - GitHub releases
 - Manual workflow dispatch
 
 **What it does:**
+
 - Runs tests
 - Builds library
 - Publishes to NPM
@@ -55,9 +61,11 @@ This directory contains GitHub Actions workflows for CI/CD automation.
 ### `deploy-docs.yml` - Documentation Deployment
 
 **Triggers:**
+
 - Pushes to `main` branch
 
 **What it does:**
+
 - Builds and deploys documentation site
 
 ## Setting Up Branch Protection
@@ -100,4 +108,3 @@ You can test workflows locally using:
 - Codecov action is optional (`fail_ci_if_error: false`)
 - Requires Codecov account setup (optional)
 - Coverage files are still generated locally
-

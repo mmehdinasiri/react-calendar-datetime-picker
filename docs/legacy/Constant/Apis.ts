@@ -1,134 +1,134 @@
 export const APIS = [
-	{
-		property: 'onChange',
-		type: 'func',
-		default: '-',
-		required: 'true',
-		description: 'A function that returns an object of selected date/dates.'
-	},
-	{
-		property: 'initValue',
-		type: 'Day | null',
-		default: 'null',
-		description:
-			'You can set a default value for your date using this property.'
-	},
-	{
-		property: 'type',
-		type: 'string',
-		default: 'single',
-		description:
-			'You can choose the selection type that you need to use. There exist 3 types: "single", "range", "multi"'
-	},
-	{
-		property: 'local',
-		type: 'string',
-		default: 'en',
-		description:
-			'This date picker supports both Gregorian and Jalali calenders.To select Gregorian calendar you have to set "local" to "en" and to "fa" for Jalali.'
-	},
-	{
-		property: 'autoClose',
-		type: 'boolean',
-		default: 'true',
-		description:
-			'Calendar modal close automatically, by set autoClose to false you can keep calender modal open even after selecting date(auto closing just works on single and range type)'
-	},
-	{
-		property: 'withTime',
-		type: 'boolean',
-		default: 'false',
-		description:
-			'Should you need to use time in your date picker you can set this prop to true.This prop works only in single and range types.'
-	},
-	{
-		property: 'showTimeInput',
-		type: 'boolean',
-		default: 'false',
-		description: 'Helps you to show time in input date picker'
-	},
-	{
-		property: 'showWeekend',
-		type: 'boolean',
-		default: 'false',
-		description: 'Marks weekends by changing the color.'
-	},
-	{
-		property: 'clearBtn',
-		type: 'boolean',
-		default: 'false',
-		description:
-			'Add a button to your input to clear you calendar initial date/dates.'
-	},
-	{
-		property: 'isRequired',
-		type: 'boolean',
-		default: 'false',
-		description:
-			'This prop makes your input as a required field in the form validation'
-	},
-	{
-		property: 'todayBtn',
-		type: 'boolean',
-		default: 'false',
-		description: 'A button to move fast to the date of today in the calendar.'
-	},
-	{
-		property: 'onCalenderChange',
-		type: 'func',
-		default: '',
-		description:
-			'A callback that runs when the calendar value is changed, to use this feature you should pass initValue '
-	},
-	{
-		property: 'onCalenderShow',
-		type: 'func',
-		default: '',
-		description: 'A callback that runs when the calendar opens'
-	},
-	{
-		property: 'onCalenderHide',
-		type: 'func',
-		default: '',
-		description: 'A callback that runs when the calendar closes'
-	},
-	{
-		property: 'maxDate',
-		type: 'Day',
-		default: '',
-		description:
-			'You can set this prop to limit the maximum date that the user can select.Periods partially overlapped by maxDate will also be selectable, although React-calendar-dateTime-picker will ensure that no later date is selected.'
-	},
-	{
-		property: 'minDate',
-		type: 'Day',
-		default: '',
-		description:
-			'You can set this prop to limit the minimum date that the user can select. Periods partially overlapped by minDate will also be selectable, although React-calendar-dateTime-picker will ensure that no earlier date is selected.	'
-	},
-	{
-		property: 'disabledDates',
-		type: 'Day[]',
-		default: '',
-		description: 'A list of dates that you want the user not to select.'
-	},
-	{
-		property: 'isDisabled',
-		type: 'boolean',
-		default: 'false',
-		description: 'Use to disable the calendar input'
-	},
-	{
-		property: 'inputId',
-		type: 'string',
-		default: '',
-		description: 'Assign an id to calendar input'
-	},
-	{
-		property: 'yearListStyle',
-		type: 'string',
-		default: 'grid',
-		description:
-			'Use to change year item list style(accepted value: grid, list)'
-	}
+  {
+    property: 'onChange',
+    type: 'func',
+    default: '-',
+    required: 'true',
+    description: 'A function that returns an object of selected date/dates.'
+  },
+  {
+    property: 'initValue',
+    type: 'Day | null',
+    default: 'null',
+    description:
+      'You can set a default value for your date using this property.'
+  },
+  {
+    property: 'type',
+    type: 'string',
+    default: 'single',
+    description:
+      'You can choose the selection type that you need to use. There exist 3 types: "single", "range", "multi"'
+  },
+  {
+    property: 'local',
+    type: 'string',
+    default: 'en',
+    description:
+      'This date picker supports both Gregorian and Jalali calenders.To select Gregorian calendar you have to set "local" to "en" and to "fa" for Jalali.'
+  },
+  {
+    property: 'autoClose',
+    type: 'boolean',
+    default: 'true',
+    description:
+      'Calendar modal close automatically, by set autoClose to false you can keep calender modal open even after selecting date(auto closing just works on single and range type)'
+  },
+  {
+    property: 'withTime',
+    type: 'boolean',
+    default: 'false',
+    description:
+      'Should you need to use time in your date picker you can set this prop to true.This prop works only in single and range types.'
+  },
+  {
+    property: 'showTimeInput',
+    type: 'boolean',
+    default: 'false',
+    description: 'Helps you to show time in input date picker'
+  },
+  {
+    property: 'showWeekend',
+    type: 'boolean',
+    default: 'false',
+    description: 'Marks weekends by changing the color.'
+  },
+  {
+    property: 'clearBtn',
+    type: 'boolean',
+    default: 'false',
+    description:
+      'Add a button to your input to clear you calendar initial date/dates.'
+  },
+  {
+    property: 'isRequired',
+    type: 'boolean',
+    default: 'false',
+    description:
+      'This prop makes your input as a required field in the form validation'
+  },
+  {
+    property: 'todayBtn',
+    type: 'boolean',
+    default: 'false',
+    description: 'A button to move fast to the date of today in the calendar.'
+  },
+  {
+    property: 'onCalenderChange',
+    type: 'func',
+    default: '',
+    description:
+      'A callback that runs when the calendar value is changed, to use this feature you should pass initValue '
+  },
+  {
+    property: 'onCalenderShow',
+    type: 'func',
+    default: '',
+    description: 'A callback that runs when the calendar opens'
+  },
+  {
+    property: 'onCalenderHide',
+    type: 'func',
+    default: '',
+    description: 'A callback that runs when the calendar closes'
+  },
+  {
+    property: 'maxDate',
+    type: 'Day',
+    default: '',
+    description:
+      'You can set this prop to limit the maximum date that the user can select.Periods partially overlapped by maxDate will also be selectable, although React-calendar-dateTime-picker will ensure that no later date is selected.'
+  },
+  {
+    property: 'minDate',
+    type: 'Day',
+    default: '',
+    description:
+      'You can set this prop to limit the minimum date that the user can select. Periods partially overlapped by minDate will also be selectable, although React-calendar-dateTime-picker will ensure that no earlier date is selected.	'
+  },
+  {
+    property: 'disabledDates',
+    type: 'Day[]',
+    default: '',
+    description: 'A list of dates that you want the user not to select.'
+  },
+  {
+    property: 'isDisabled',
+    type: 'boolean',
+    default: 'false',
+    description: 'Use to disable the calendar input'
+  },
+  {
+    property: 'inputId',
+    type: 'string',
+    default: '',
+    description: 'Assign an id to calendar input'
+  },
+  {
+    property: 'yearListStyle',
+    type: 'string',
+    default: 'grid',
+    description:
+      'Use to change year item list style(accepted value: grid, list)'
+  }
 ]

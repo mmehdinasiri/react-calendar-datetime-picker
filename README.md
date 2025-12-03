@@ -52,6 +52,7 @@ pnpm run lint
 ## Documentation
 
 ### User Documentation
+
 - **[Website](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)** - Full documentation website with examples
 - **[Changelog](./CHANGELOG.md)** - Version history and changes
 

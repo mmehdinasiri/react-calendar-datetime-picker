@@ -3,6 +3,7 @@
 ## What's Been Done
 
 ### ✅ Website Migration
+
 - Migrated all website files from separate repository to `docs/` directory
 - Updated dependencies to latest versions (Next.js 15, React 19)
 - Fixed TypeScript issues (JSX.Element → React.ReactElement)
@@ -10,11 +11,13 @@
 - Set up pnpm workspace for monorepo structure
 
 ### ✅ CI/CD Workflows
+
 - Created GitHub Actions workflow for npm publishing (`.github/workflows/npm-publish.yml`)
 - Created GitHub Actions workflow for docs deployment (`.github/workflows/deploy-docs.yml`)
 - Both workflows are ready to use
 
 ### ✅ Documentation
+
 - Created comprehensive guides in `docs-dev/`:
   - [ARCHITECTURE.md](./ARCHITECTURE.md) - Project architecture
   - [DEVELOPMENT.md](./DEVELOPMENT.md) - Development guide
@@ -28,12 +31,14 @@
 ## 🚀 Next Steps
 
 ### 1. Set Up GitHub Pages
+
 1. Go to your repository: https://github.com/mmehdinasiri/react-calendar-datetime-picker
 2. Navigate to **Settings** → **Pages**
 3. Under **Source**, select **"GitHub Actions"**
 4. Save the settings
 
 ### 2. Set Up NPM Publishing
+
 1. Go to repository **Settings** → **Secrets and variables** → **Actions**
 2. Click **"New repository secret"**
 3. Name: `NPM_TOKEN`
@@ -41,9 +46,11 @@
 5. Click **"Add secret"**
 
 ### 3. Fix Remaining TypeScript Issues
+
 Some `onChange` handlers need to be wrapped. See `../docs/FIXES.md` for details.
 
 **Quick fix pattern:**
+
 ```typescript
 // Change this:
 <DtPicker onChange={setState} />
@@ -53,6 +60,7 @@ Some `onChange` handlers need to be wrapped. See `../docs/FIXES.md` for details.
 ```
 
 Files that may need fixes:
+
 - `docs/pages/docs/examples.tsx`
 - `docs/pages/docs/typescript.tsx`
 - `docs/pages/docs/utilities.tsx`
@@ -60,6 +68,7 @@ Files that may need fixes:
 - `docs/pages/index.tsx`
 
 ### 4. Test Locally
+
 ```bash
 # Build library first
 pnpm run build
@@ -69,11 +78,13 @@ pnpm run dev:docs
 ```
 
 ### 5. Deploy
+
 Once GitHub Pages is configured, push to `main` branch and the website will auto-deploy!
 
 ## 📦 Publishing to NPM
 
 ### Automatic (Recommended)
+
 1. Create a GitHub Release with a version tag (e.g., `v2.0.0`)
 2. The workflow will automatically:
    - Run tests
@@ -81,6 +92,7 @@ Once GitHub Pages is configured, push to `main` branch and the website will auto
    - Publish to npm
 
 ### Manual
+
 ```bash
 # Update version in package.json
 # Then:
@@ -120,4 +132,3 @@ pnpm run test:watch    # Watch mode
 ## 🎉 You're All Set!
 
 The monorepo is ready. Just complete the GitHub setup steps above and you're good to go!
-

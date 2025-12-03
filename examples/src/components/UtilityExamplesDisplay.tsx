@@ -52,4 +52,3 @@ export const UtilityExamplesDisplay: React.FC<UtilityExamplesDisplayProps> = ({
     </div>
   )
 }
-

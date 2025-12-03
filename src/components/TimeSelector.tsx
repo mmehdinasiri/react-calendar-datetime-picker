@@ -23,7 +23,14 @@ export interface TimeSelectorProps {
 }
 
 export const TimeSelector: React.FC<TimeSelectorProps> = (props) => {
-  const { day, timeFormat, locale, label, disabled = false, onTimeChange } = props
+  const {
+    day,
+    timeFormat,
+    locale,
+    label,
+    disabled = false,
+    onTimeChange
+  } = props
 
   // Get current hour and minute, default to 0 if not set
   const currentHour = day?.hour ?? 0
@@ -96,7 +103,9 @@ export const TimeSelector: React.FC<TimeSelectorProps> = (props) => {
   }
 
   return (
-    <div className={`time-selector ${disabled ? 'time-selector-disabled' : ''}`}>
+    <div
+      className={`time-selector ${disabled ? 'time-selector-disabled' : ''}`}
+    >
       {label && <label className='time-selector-label'>{label}</label>}
       <div className='time-selector-inputs'>
         {/* Hour selector */}
@@ -150,4 +159,3 @@ export const TimeSelector: React.FC<TimeSelectorProps> = (props) => {
 }
 
 TimeSelector.displayName = 'TimeSelector'
-

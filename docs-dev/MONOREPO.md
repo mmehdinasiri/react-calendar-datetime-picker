@@ -36,11 +36,13 @@ react-calendar-datetime-picker/
 ## Deployment
 
 ### Library (NPM)
+
 - **Trigger**: GitHub Release creation
 - **Workflow**: `.github/workflows/npm-publish.yml`
 - **Output**: Published to npm registry
 
 ### Documentation (GitHub Pages)
+
 - **Trigger**: Push to `main` branch only (when docs/ changes)
 - **Workflow**: `.github/workflows/deploy-docs.yml`
 - **Output**: Deployed to GitHub Pages
@@ -85,10 +87,12 @@ pnpm publish
 ## Workflows
 
 ### NPM Publish Workflow
+
 - Runs on GitHub Release creation
 - Tests → Builds → Publishes to npm
 
 ### Docs Deployment Workflow
+
 - Runs on push to `main` branch only
 - Builds library → Builds docs → Deploys to GitHub Pages
 
@@ -99,4 +103,3 @@ pnpm publish
 - `.github/workflows/deploy-docs.yml` - GitHub Pages deployment
 - `docs/next.config.js` - Next.js config for GitHub Pages
 - `docs/package.json` - Website dependencies
-

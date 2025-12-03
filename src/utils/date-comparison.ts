@@ -298,7 +298,10 @@ export function getDifferenceInYears(
   let yearDiff = day1.year - day2.year
 
   // Adjust if the month/day hasn't been reached yet
-  if (day1.month < day2.month || (day1.month === day2.month && day1.day < day2.day)) {
+  if (
+    day1.month < day2.month ||
+    (day1.month === day2.month && day1.day < day2.day)
+  ) {
     yearDiff--
   }
 

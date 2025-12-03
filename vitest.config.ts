@@ -8,7 +8,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
-    include: ['tests/unit/**/*.{test,spec}.{ts,tsx}', 'src/**/*.{test,spec}.{ts,tsx}'],
+    include: [
+      'tests/unit/**/*.{test,spec}.{ts,tsx}',
+      'src/**/*.{test,spec}.{ts,tsx}'
+    ],
     exclude: ['node_modules', 'dist', 'examples', 'docs', 'tests/e2e'],
     coverage: {
       provider: 'v8',
@@ -19,14 +22,13 @@ export default defineConfig({
         'examples/',
         '**/*.d.ts',
         '**/*.config.*',
-        '**/dist/**',
-      ],
-    },
+        '**/dist/**'
+      ]
+    }
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
+      '@': path.resolve(__dirname, './src')
+    }
+  }
 })
-

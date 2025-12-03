@@ -30,9 +30,13 @@ export type {
   CalendarConstraintsInput,
   CalendarError,
   NormalizationResult,
-  CalendarCustomization,
+  CalendarCustomization
 } from './types'
-export type { PresetRangeType, PresetRangesConfig, CustomPresetRange } from './types/calendar'
+export type {
+  PresetRangeType,
+  PresetRangesConfig,
+  CustomPresetRange
+} from './types/calendar'
 
 // Export utilities
 export {
@@ -69,5 +73,5 @@ export {
   startOfMonth,
   endOfMonth,
   startOfYear,
-  endOfYear,
+  endOfYear
 } from './utils'

@@ -186,7 +186,9 @@ function App() {
 
         <h3>Date Range Format</h3>
 
-        <p>For range selection, the value is a <code>Range</code> object:</p>
+        <p>
+          For range selection, the value is a <code>Range</code> object:
+        </p>
 
         <div className='rounded-lg overflow-hidden border border-border mb-4'>
           <SyntaxHighlighter
@@ -214,7 +216,10 @@ function App() {
 
         <h3>Multiple Dates Format</h3>
 
-        <p>For multiple date selection, the value is an array of <code>Day</code> objects:</p>
+        <p>
+          For multiple date selection, the value is an array of <code>Day</code>{' '}
+          objects:
+        </p>
 
         <div className='rounded-lg overflow-hidden border border-border mb-4'>
           <SyntaxHighlighter
@@ -320,4 +325,3 @@ function App() {
     </div>
   )
 }
-

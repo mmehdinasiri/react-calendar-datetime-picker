@@ -51,10 +51,10 @@ describe('useModalPosition', () => {
   })
 
   it('calculates position correctly (default: below)', () => {
-    const { result } = renderHook(() => 
+    const { result } = renderHook(() =>
       useModalPosition(inputRef, modalRef, true, 'en')
     )
-    
+
     act(() => {
       vi.advanceTimersByTime(20) // Wait for setTimeout
     })
@@ -80,10 +80,10 @@ describe('useModalPosition', () => {
       toJSON: () => {}
     })) as any
 
-    const { result } = renderHook(() => 
+    const { result } = renderHook(() =>
       useModalPosition(inputRef, modalRef, true, 'en')
     )
-    
+
     act(() => {
       vi.advanceTimersByTime(20)
     })
@@ -96,10 +96,10 @@ describe('useModalPosition', () => {
   })
 
   it('handles RTL positioning', () => {
-    const { result } = renderHook(() => 
+    const { result } = renderHook(() =>
       useModalPosition(inputRef, modalRef, true, 'fa')
     )
-    
+
     act(() => {
       vi.advanceTimersByTime(20)
     })
@@ -125,10 +125,10 @@ describe('useModalPosition', () => {
       toJSON: () => {}
     })) as any
 
-    const { result } = renderHook(() => 
+    const { result } = renderHook(() =>
       useModalPosition(inputRef, modalRef, true, 'en')
     )
-    
+
     act(() => {
       vi.advanceTimersByTime(20)
     })
@@ -143,18 +143,18 @@ describe('useModalPosition', () => {
       ({ isOpen }) => useModalPosition(inputRef, modalRef, isOpen, 'en'),
       { initialProps: { isOpen: true } }
     )
-    
+
     act(() => {
       vi.advanceTimersByTime(20)
     })
     expect(result.current.modalPosition).not.toBeNull()
-    
+
     rerender({ isOpen: false })
-    
+
     // Changing prop triggers effect directly?
     // The effect dependency includes isOpen.
     // Effect: if (!isOpen) setModalPosition(null)
-    
+
     expect(result.current.modalPosition).toBeNull()
   })
 })

@@ -63,4 +63,3 @@ export const ThemeDisplay: React.FC<ThemeDisplayProps> = ({ config }) => {
     </div>
   )
 }
-

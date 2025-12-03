@@ -13,13 +13,13 @@ const toKebabCase = (str: string) =>
     .replace(/[^a-z0-9-]/g, '')
 
 const navigation = [
-      {
-        title: 'GET STARTED',
-        items: [
-          { name: 'Installation', href: '/installation' },
-          { name: 'Quick Start', href: '/getting-started' }
-        ]
-      },
+  {
+    title: 'GET STARTED',
+    items: [
+      { name: 'Installation', href: '/installation' },
+      { name: 'Quick Start', href: '/getting-started' }
+    ]
+  },
   {
     title: 'TYPES',
     items: [{ name: 'Data Types', href: '/types' }]
@@ -201,8 +201,8 @@ function CollapsibleSection({ section, pathname }: CollapsibleSectionProps) {
 export function Sidebar() {
   const pathname = usePathname()
 
-      return (
-        <aside className='w-80 bg-bg-secondary border-r border-border overflow-y-auto h-[calc(100vh-3.5rem)] sticky top-14 sidebar-scrollbar'>
+  return (
+    <aside className='w-80 bg-bg-secondary border-r border-border overflow-y-auto h-[calc(100vh-3.5rem)] sticky top-14 sidebar-scrollbar'>
       <nav className='p-4 space-y-6'>
         {navigation.map((section) => (
           <CollapsibleSection

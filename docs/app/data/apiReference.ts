@@ -461,4 +461,3 @@ export const utilityCategories: UtilityCategory[] = [
     ]
   }
 ]
-

@@ -22,6 +22,7 @@ react-calendar-datetime-picker/
 ### Automatic Deployment
 
 The library is automatically published to npm when:
+
 - **A new GitHub Release is created** (recommended)
   - Go to: https://github.com/mmehdinasiri/react-calendar-datetime-picker/releases/new
   - Create a new release with a tag (e.g., `v2.0.0`)
@@ -31,6 +32,7 @@ The library is automatically published to npm when:
   - Useful for testing or manual publishes
 
 ### Workflow Steps
+
 1. Runs tests
 2. Builds the library
 3. Publishes to npm
@@ -56,11 +58,13 @@ The library is automatically published to npm when:
 ### Version Management
 
 The workflow automatically:
+
 1. Extracts version from GitHub Release tag (e.g., `v2.0.0` → `2.0.0`)
 2. Updates `package.json` to match the release tag version
 3. Publishes to npm with that version
 
 **Important**: Before creating a GitHub Release:
+
 - Update version in `package.json` to match your intended release version
 - Commit and push the changes
 - Create GitHub Release with matching tag (e.g., `v2.0.0`)
@@ -72,6 +76,7 @@ See [VERSIONING.md](./VERSIONING.md) for detailed version management guide.
 ### Automatic Deployment
 
 The website is automatically deployed when:
+
 - **Push to `main` branch** AND changes are in:
   - `docs/**` (any file in docs directory)
   - `package.json` (dependency changes)
@@ -80,6 +85,7 @@ The website is automatically deployed when:
   - Go to: Actions tab → "Deploy Documentation" → "Run workflow"
 
 ### Workflow Steps
+
 1. Builds the library (for docs to use)
 2. Builds the documentation website
 3. Deploys to GitHub Pages
@@ -101,6 +107,7 @@ The website is automatically deployed when:
 ### Website URL
 
 The website will be available at:
+
 - **Production**: https://mmehdinasiri.github.io/react-calendar-datetime-picker/
 
 ## Workflows
@@ -108,10 +115,12 @@ The website will be available at:
 ### `.github/workflows/npm-publish.yml`
 
 **Trigger Conditions:**
+
 - `release` event with type `created` (when GitHub Release is created)
 - `workflow_dispatch` (manual trigger from Actions UI)
 
 **What it does:**
+
 1. Checks out code
 2. Sets up pnpm and Node.js
 3. Installs dependencies
@@ -120,6 +129,7 @@ The website will be available at:
 6. Publishes to npm
 
 **Example:**
+
 ```bash
 # 1. Update version in package.json
 # 2. Commit and push
@@ -138,6 +148,7 @@ git push
 ### `.github/workflows/deploy-docs.yml`
 
 **Trigger Conditions:**
+
 - `push` to branch: `main` only
 - AND changes in paths:
   - `docs/**`
@@ -146,6 +157,7 @@ git push
 - `workflow_dispatch` (manual trigger from Actions UI)
 
 **What it does:**
+
 1. Checks out code
 2. Sets up pnpm and Node.js
 3. Installs dependencies
@@ -154,6 +166,7 @@ git push
 6. Deploys to GitHub Pages
 
 **Example:**
+
 ```bash
 # Any push to main branch that changes docs/
 git add docs/
@@ -164,22 +177,24 @@ git push origin main
 
 ## Workflow Trigger Summary
 
-| Workflow | Trigger | Frequency |
-|----------|---------|-----------|
-| **NPM Publish** | GitHub Release created | When you publish a new version |
-| **Deploy Docs** | Push to main branch (docs changes) | Every time you update docs |
+| Workflow        | Trigger                            | Frequency                      |
+| --------------- | ---------------------------------- | ------------------------------ |
+| **NPM Publish** | GitHub Release created             | When you publish a new version |
+| **Deploy Docs** | Push to main branch (docs changes) | Every time you update docs     |
 
 Both workflows can also be manually triggered from the Actions tab if needed.
 
 ## Local Development
 
 ### Library
+
 ```bash
 pnpm run dev:examples  # Run examples app
 pnpm run build:watch   # Watch mode build
 ```
 
 ### Documentation
+
 ```bash
 pnpm run dev:docs      # Start docs dev server
 pnpm run build:docs    # Build docs for production
@@ -188,12 +203,13 @@ pnpm run build:docs    # Build docs for production
 ## Troubleshooting
 
 ### NPM Publish Fails
+
 - Check NPM_TOKEN secret is set correctly
 - Verify package.json version is updated
 - Ensure you have publish permissions on npm
 
 ### GitHub Pages Not Updating
+
 - Check GitHub Actions workflow runs successfully
 - Verify Pages source is set to "GitHub Actions"
 - Check workflow has correct permissions
-

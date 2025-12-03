@@ -24,15 +24,12 @@ This guide explains how to set up branch protection rules to ensure all tests pa
    - ✅ Check **Require a pull request before merging**
      - ✅ Require approvals: `1` (or your preferred number)
      - ✅ Dismiss stale pull request approvals when new commits are pushed
-   
    - ✅ Check **Require status checks to pass before merging**
      - ✅ Check **Require branches to be up to date before merging**
      - In the search box, search for and select:
        - `test / Run Tests` (or `CI Tests / Run Tests`)
        - `test / Test Coverage` (optional, but recommended)
-   
    - ✅ Check **Require conversation resolution before merging** (optional but recommended)
-   
    - ✅ Check **Do not allow bypassing the above settings** (recommended for security)
 
    **Optional but Recommended:**
@@ -64,6 +61,7 @@ Both checks must pass for a PR to be mergeable.
 ## Testing the Setup
 
 1. Create a test branch:
+
    ```bash
    git checkout -b test-branch-protection
    ```
@@ -102,4 +100,3 @@ Both checks must pass for a PR to be mergeable.
 - [GitHub Branch Protection Documentation](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [Playwright CI Documentation](https://playwright.dev/docs/ci)
-

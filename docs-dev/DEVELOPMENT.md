@@ -3,6 +3,7 @@
 ## 🚀 Quick Start
 
 ### Install Dependencies
+
 ```bash
 pnpm install
 ```
@@ -35,13 +36,16 @@ pnpm run test:coverage
 ## 📦 Build System
 
 ### Library Build
+
 The library builds to:
+
 - `dist/index.mjs` - ESM format
-- `dist/index.cjs` - CommonJS format  
+- `dist/index.cjs` - CommonJS format
 - `dist/style.css` - Extracted CSS
 - `dist/index.d.ts` - TypeScript definitions
 
 ### Build Process
+
 1. TypeScript compilation (`tsc`)
 2. Vite library build
 3. CSS extraction
@@ -50,11 +54,14 @@ The library builds to:
 ## 🎨 Styling
 
 ### SCSS Structure
+
 - `src/styles/variables.scss` - CSS variables for theming
 - `src/styles/index.scss` - Main styles entry point
 
 ### CSS Variables
+
 All styling uses CSS custom properties for easy theming:
+
 ```scss
 --calendar-primary
 --calendar-bg
@@ -63,6 +70,7 @@ All styling uses CSS custom properties for easy theming:
 ```
 
 ### Adding Component Styles
+
 1. Create component-specific SCSS file in `src/styles/components/`
 2. Import in `src/styles/index.scss`
 3. Use CSS variables for consistent theming
@@ -70,17 +78,21 @@ All styling uses CSS custom properties for easy theming:
 ## 📝 TypeScript
 
 ### Type Exports
+
 All public types are exported from `src/index.ts`:
+
 ```typescript
 export type { Day, Range, Multi, CalendarLocale, CalendarType }
 ```
 
 ### Component Props
+
 - Fully typed with TypeScript interfaces
 - JSDoc comments for IntelliSense
 - Default values documented
 
 ### Type Checking
+
 ```bash
 pnpm run typecheck  # Check types without emitting
 ```
@@ -88,11 +100,13 @@ pnpm run typecheck  # Check types without emitting
 ## 🧪 Testing
 
 ### Writing Tests
+
 - Place test files next to source files: `Component.test.tsx`
 - Use Vitest and Testing Library
 - Test setup in `tests/setup.ts`
 
 ### Example Test
+
 ```typescript
 import { render, screen } from '@testing-library/react'
 import { DtPicker } from '../DtPicker'
@@ -106,7 +120,8 @@ test('renders picker', () => {
 ## 🏗️ Component Development
 
 ### Component Structure
-```typescript
+
+````typescript
 import React from 'react'
 import type { ComponentProps } from '../types'
 
@@ -127,9 +142,10 @@ export const MyComponent: React.FC<MyComponentProps> = ({ prop }) => {
 }
 
 MyComponent.displayName = 'MyComponent'
-```
+````
 
 ### Best Practices
+
 1. ✅ Use TypeScript for all components
 2. ✅ Add JSDoc comments
 3. ✅ Export prop types
@@ -140,6 +156,7 @@ MyComponent.displayName = 'MyComponent'
 ## 📚 Examples/Playground
 
 The `examples/` directory contains a playground app:
+
 - Fast HMR with Vite
 - Aliases library source for live development
 - Perfect for testing components
@@ -160,6 +177,7 @@ pnpm run dev:examples  # Start playground
 ## 📦 Publishing
 
 ### Pre-publish Checklist
+
 1. ✅ Run `pnpm run typecheck`
 2. ✅ Run `pnpm run lint`
 3. ✅ Run `pnpm test`
@@ -169,6 +187,7 @@ pnpm run dev:examples  # Start playground
 7. ✅ Update `CHANGELOG.md`
 
 ### Publish Command
+
 ```bash
 pnpm publish --access public
 ```
@@ -176,6 +195,6 @@ pnpm publish --access public
 See [DEPLOYMENT.md](./DEPLOYMENT.md) and [VERSIONING.md](./VERSIONING.md) for detailed publishing guide.
 
 The `prepublishOnly` script automatically:
+
 - Cleans `dist/`
 - Builds the library
-

@@ -44,7 +44,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   // Always provide the context, but use default theme until mounted
   return (
-    <ThemeContext.Provider value={{ theme: mounted ? theme : 'dark', toggleTheme }}>
+    <ThemeContext.Provider
+      value={{ theme: mounted ? theme : 'dark', toggleTheme }}
+    >
       {children}
     </ThemeContext.Provider>
   )
@@ -57,4 +59,3 @@ export function useTheme() {
   }
   return context
 }
-
