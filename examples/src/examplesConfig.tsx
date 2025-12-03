@@ -744,8 +744,8 @@ export const examples: ExamplesConfig = {
       wrapper: 'calendar-container'
     },
     RangeWithCustomPresets: {
-      title: 'Date Range with Custom Presets',
-      description: 'Range selection with only selected preset buttons',
+      title: 'Date Range with Custom Preset Labels',
+      description: 'Range selection with custom preset button labels',
       component: 'DtCalendar',
       props: {
         type: 'range',
