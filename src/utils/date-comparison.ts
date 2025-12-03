@@ -127,16 +127,40 @@ export function addMonths(
   months: number,
   locale: CalendarLocale = 'en'
 ): Day {
+  if (locale === 'fa') {
+    let { year, month, day: d } = day
+
+    // Calculate new total months
+    const totalMonths = year * 12 + (month - 1) + months
+    const newYear = Math.floor(totalMonths / 12)
+    const newMonth = (totalMonths % 12) + 1
+
+    // Handle days in month
+    const maxDay = getDaysInMonth(newYear, newMonth, locale)
+    const newDay = Math.min(d, maxDay)
+
+    return {
+      year: newYear,
+      month: newMonth,
+      day: newDay,
+      hour: day.hour || 0,
+      minute: day.minute || 0
+    }
+  }
+
   const date = dayToDate(day, locale)
+  const originalDay = day.day
+
+  // Set day to 1 to avoid overflow when changing month
+  date.setDate(1)
   date.setMonth(date.getMonth() + months)
 
-  // Handle edge case where the day doesn't exist in the new month
-  // (e.g., Jan 31 + 1 month = Feb 31, which doesn't exist)
+  // Get max days in the new month
+  // Note: For Gregorian, we use the standard Date behavior for month/year
   const maxDay = getDaysInMonth(date.getFullYear(), date.getMonth() + 1, locale)
-  const originalDay = day.day
-  if (originalDay > maxDay) {
-    date.setDate(maxDay)
-  }
+
+  // Restore day, capped at maxDay
+  date.setDate(Math.min(originalDay, maxDay))
 
   return dateToDay(date, locale)
 }
@@ -168,15 +192,32 @@ export function addYears(
   years: number,
   locale: CalendarLocale = 'en'
 ): Day {
+  if (locale === 'fa') {
+    const newYear = day.year + years
+    const maxDay = getDaysInMonth(newYear, day.month, locale)
+    const newDay = Math.min(day.day, maxDay)
+
+    return {
+      ...day,
+      year: newYear,
+      day: newDay,
+      hour: day.hour || 0,
+      minute: day.minute || 0
+    }
+  }
+
   const date = dayToDate(day, locale)
+  const originalDay = day.day
+
+  // Set day to 1 to avoid overflow when changing year (e.g. Feb 29)
+  date.setDate(1)
   date.setFullYear(date.getFullYear() + years)
 
-  // Handle leap year edge case (Feb 29 -> Feb 28 in non-leap year)
+  // Get max days in the new month/year
   const maxDay = getDaysInMonth(date.getFullYear(), date.getMonth() + 1, locale)
-  const originalDay = day.day
-  if (originalDay > maxDay) {
-    date.setDate(maxDay)
-  }
+
+  // Restore day, capped at maxDay
+  date.setDate(Math.min(originalDay, maxDay))
 
   return dateToDay(date, locale)
 }
@@ -208,9 +249,14 @@ export function getDifferenceInDays(
   day2: Day,
   locale: CalendarLocale = 'en'
 ): number {
-  const date1 = dayToDate(day1, locale)
-  const date2 = dayToDate(day2, locale)
-  const diffTime = date1.getTime() - date2.getTime()
+  const d1 = locale === 'fa' ? jalaliToGregorian(day1) : day1
+  const d2 = locale === 'fa' ? jalaliToGregorian(day2) : day2
+
+  // Use UTC to avoid DST issues and ignore time components for pure day difference
+  const date1 = Date.UTC(d1.year, d1.month - 1, d1.day)
+  const date2 = Date.UTC(d2.year, d2.month - 1, d2.day)
+
+  const diffTime = date1 - date2
   return Math.floor(diffTime / (1000 * 60 * 60 * 24))
 }
 
@@ -226,8 +272,11 @@ export function getDifferenceInMonths(
   day2: Day,
   locale: CalendarLocale = 'en'
 ): number {
-  const d1 = locale === 'fa' ? jalaliToGregorian(day1) : day1
-  const d2 = locale === 'fa' ? jalaliToGregorian(day2) : day2
+  // If locale is 'fa', we don't need to convert to Gregorian
+  // We can calculate the difference directly using Jalali dates
+  // This avoids issues with leap year mismatches during conversion
+  const d1 = day1
+  const d2 = day2
 
   const yearDiff = d1.year - d2.year
   const monthDiff = d1.month - d2.month
@@ -247,8 +296,10 @@ export function getDifferenceInYears(
   day2: Day,
   locale: CalendarLocale = 'en'
 ): number {
-  const d1 = locale === 'fa' ? jalaliToGregorian(day1) : day1
-  const d2 = locale === 'fa' ? jalaliToGregorian(day2) : day2
+  // If locale is 'fa', we don't need to convert to Gregorian
+  // We can calculate the difference directly using Jalali dates
+  const d1 = day1
+  const d2 = day2
 
   let yearDiff = d1.year - d2.year
 

@@ -16,9 +16,11 @@ function isGregorianLeapYear(year: number): boolean {
  * Check if a year is a leap year in Jalali calendar
  */
 function isJalaliLeapYear(year: number): boolean {
-  // Jalali leap year calculation
-  const a = (year + 2346) % 128
-  return a < 30 && a % 4 === 3
+  // Jalali leap year calculation using the 33-year cycle
+  // The remainders of dividing the year in the cycle by 33 should be in [1, 5, 9, 13, 17, 22, 26, 30]
+  const remainders = [1, 5, 9, 13, 17, 22, 26, 30]
+  const cycleYear = year % 33
+  return remainders.includes(cycleYear)
 }
 
 /**

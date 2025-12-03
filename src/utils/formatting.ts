@@ -143,16 +143,16 @@ function formatDay(
     const dayStr = day.day.toString().padStart(2, '0')
     formatted = `${year}/${month}/${dayStr}`
 
-    // Convert to Persian numerals if locale is 'fa'
-    if (locale === 'fa') {
-      formatted = toPersianNumeral(formatted)
-    }
-
     // Append time if showTime is true and time is available
     if (showTime && day.hour !== undefined && day.minute !== undefined) {
       const hour = day.hour.toString().padStart(2, '0')
       const minute = day.minute.toString().padStart(2, '0')
       formatted += ` ${hour}:${minute}`
+    }
+
+    // Convert to Persian numerals if locale is 'fa'
+    if (locale === 'fa') {
+      formatted = toPersianNumeral(formatted)
     }
   }
 

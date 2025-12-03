@@ -4,8 +4,13 @@
  */
 
 import type { Range, CalendarLocale } from '../types'
-import { getToday, dateToDay, dayToDate } from './date-conversion'
-import { getDaysInMonth } from './validation'
+import { getToday } from './date-conversion'
+import {
+  startOfMonth,
+  endOfMonth,
+  subtractMonths,
+  subtractDays
+} from './date-comparison'
 
 export type PresetRangeType =
   | 'yesterday'
@@ -28,15 +33,12 @@ export function getPresetRange(
   locale: CalendarLocale
 ): Range {
   const today = getToday(locale)
-  const todayDate = dayToDate(today, locale)
-  // Use dateToDay to preserve time from current date
-  const todayWithTime = dateToDay(todayDate, locale)
+  // Ensure time is preserved or set to current time
+  // getToday already returns current time in local day
 
   switch (preset) {
     case 'yesterday': {
-      const yesterdayDate = new Date(todayDate)
-      yesterdayDate.setDate(yesterdayDate.getDate() - 1)
-      const yesterday = dateToDay(yesterdayDate, locale)
+      const yesterday = subtractDays(today, 1, locale)
       return {
         from: yesterday,
         to: yesterday
@@ -44,86 +46,57 @@ export function getPresetRange(
     }
 
     case 'last7days': {
-      const sevenDaysAgoDate = new Date(todayDate)
-      sevenDaysAgoDate.setDate(sevenDaysAgoDate.getDate() - 6) // 6 days ago + today = 7 days
-      const sevenDaysAgo = dateToDay(sevenDaysAgoDate, locale)
-      // Use todayWithTime to preserve time
+      const sevenDaysAgo = subtractDays(today, 6, locale)
       return {
         from: sevenDaysAgo,
-        to: todayWithTime
+        to: today
       }
     }
 
     case 'last30days': {
-      const thirtyDaysAgoDate = new Date(todayDate)
-      thirtyDaysAgoDate.setDate(thirtyDaysAgoDate.getDate() - 29) // 29 days ago + today = 30 days
-      const thirtyDaysAgo = dateToDay(thirtyDaysAgoDate, locale)
-      // Use todayWithTime to preserve time
+      const thirtyDaysAgo = subtractDays(today, 29, locale)
       return {
         from: thirtyDaysAgo,
-        to: todayWithTime
+        to: today
       }
     }
 
     case 'thisMonth': {
-      // Create first day of month with time from today
-      const firstDayOfMonthDate = new Date(
-        todayDate.getFullYear(),
-        todayDate.getMonth(),
-        1
-      )
-      const firstDayOfMonth = dateToDay(firstDayOfMonthDate, locale)
+      const firstDay = startOfMonth(today, locale)
+      const lastDay = endOfMonth(today, locale)
 
-      // Get the last day of the current month with time from today
-      const daysInMonth = getDaysInMonth(today.year, today.month, locale)
-      const lastDayOfMonthDate = new Date(
-        todayDate.getFullYear(),
-        todayDate.getMonth(),
-        daysInMonth
-      )
-      const lastDayOfMonth = dateToDay(lastDayOfMonthDate, locale)
+      // Preserve time from today if needed, or default to start/end of day
+      // Currently getPresetRange implementation returned today's time for end dates
+      // But startOfMonth sets time to 00:00.
+      // Let's match previous behavior: from has 00:00 (via startOfMonth logic? No, prev impl used dateToDay(new Date(y, m, 1)))
+      // Wait, dateToDay(new Date(y, m, 1)) sets time to 00:00 implicitly if not provided.
+      // The previous implementation used `todayDate` time for end dates in 'last7days' etc.
+      // For 'thisMonth', it used `new Date(y, m, 1)` -> 00:00.
+
+      // Let's check startOfMonth implementation in date-comparison.ts
+      // It sets hour: 0, minute: 0.
 
       return {
-        from: firstDayOfMonth,
-        to: lastDayOfMonth
+        from: firstDay,
+        to: lastDay
       }
     }
 
     case 'lastMonth': {
-      // Get first day of last month with time
-      const lastMonthFirstDate = new Date(
-        todayDate.getFullYear(),
-        todayDate.getMonth() - 1,
-        1
-      )
-      if (
-        lastMonthFirstDate.getMonth() !== todayDate.getMonth() - 1 &&
-        todayDate.getMonth() === 0
-      ) {
-        // Handle year boundary
-        lastMonthFirstDate.setFullYear(todayDate.getFullYear() - 1)
-        lastMonthFirstDate.setMonth(11)
-      }
-      const lastMonthFirstDay = dateToDay(lastMonthFirstDate, locale)
-
-      // Calculate last day of last month with time
-      const lastDayOfLastMonthDate = new Date(
-        lastMonthFirstDate.getFullYear(),
-        lastMonthFirstDate.getMonth() + 1,
-        0
-      )
-      const lastDayOfLastMonth = dateToDay(lastDayOfLastMonthDate, locale)
+      const lastMonthToday = subtractMonths(today, 1, locale)
+      const firstDay = startOfMonth(lastMonthToday, locale)
+      const lastDay = endOfMonth(lastMonthToday, locale)
 
       return {
-        from: lastMonthFirstDay,
-        to: lastDayOfLastMonth
+        from: firstDay,
+        to: lastDay
       }
     }
 
     default:
       return {
-        from: todayWithTime,
-        to: todayWithTime
+        from: today,
+        to: today
       }
   }
 }

@@ -1,0 +1,141 @@
+import { describe, it, expect } from 'vitest'
+import {
+  getDaysInMonth,
+  isValidDay,
+  isDateInRange,
+  isDateInDisabledList
+} from '@/utils/validation'
+import type { Day } from '@/types'
+
+describe('validation utils', () => {
+  describe('getDaysInMonth', () => {
+    it('returns correct days for Gregorian months', () => {
+      expect(getDaysInMonth(2023, 1, 'en')).toBe(31)
+      expect(getDaysInMonth(2023, 2, 'en')).toBe(28) // Non-leap
+      expect(getDaysInMonth(2024, 2, 'en')).toBe(29) // Leap
+      expect(getDaysInMonth(2023, 4, 'en')).toBe(30)
+    })
+
+    it('returns correct days for Jalali months', () => {
+      // First 6 months: 31 days
+      expect(getDaysInMonth(1402, 1, 'fa')).toBe(31)
+      expect(getDaysInMonth(1402, 6, 'fa')).toBe(31)
+
+      // Next 5 months: 30 days
+      expect(getDaysInMonth(1402, 7, 'fa')).toBe(30)
+      expect(getDaysInMonth(1402, 11, 'fa')).toBe(30)
+
+      // Esfand: 29 or 30 days
+      expect(getDaysInMonth(1402, 12, 'fa')).toBe(29) // Non-leap
+      expect(getDaysInMonth(1403, 12, 'fa')).toBe(30) // Leap
+    })
+  })
+
+  describe('isValidDay', () => {
+    it('validates Gregorian dates', () => {
+      expect(isValidDay({ year: 2023, month: 1, day: 31 }, 'en')).toBe(true)
+      expect(isValidDay({ year: 2023, month: 2, day: 29 }, 'en')).toBe(false)
+      expect(isValidDay({ year: 2024, month: 2, day: 29 }, 'en')).toBe(true)
+      expect(isValidDay({ year: 2023, month: 13, day: 1 }, 'en')).toBe(false)
+    })
+
+    it('validates Jalali dates', () => {
+      expect(isValidDay({ year: 1402, month: 1, day: 31 }, 'fa')).toBe(true)
+      expect(isValidDay({ year: 1402, month: 12, day: 30 }, 'fa')).toBe(false) // Non-leap
+      expect(isValidDay({ year: 1403, month: 12, day: 30 }, 'fa')).toBe(true) // Leap
+      expect(isValidDay({ year: 1402, month: 7, day: 31 }, 'fa')).toBe(false) // Mehr has 30 days
+    })
+  })
+
+  describe('isDateInRange', () => {
+    describe('Jalali locale (fa)', () => {
+      const minDate: Day = { year: 1402, month: 1, day: 10 }
+      const maxDate: Day = { year: 1402, month: 1, day: 20 }
+
+      it('validates Jalali range', () => {
+        const inRange: Day = { year: 1402, month: 1, day: 15 }
+        const before: Day = { year: 1402, month: 1, day: 5 }
+        const after: Day = { year: 1402, month: 1, day: 25 }
+
+        expect(isDateInRange(inRange, minDate, maxDate, 'fa')).toBe(true)
+        expect(isDateInRange(before, minDate, maxDate, 'fa')).toBe(false)
+        expect(isDateInRange(after, minDate, maxDate, 'fa')).toBe(false)
+      })
+
+      it('handles inclusive boundaries for Jalali', () => {
+        expect(isDateInRange(minDate, minDate, maxDate, 'fa')).toBe(true)
+        expect(isDateInRange(maxDate, minDate, maxDate, 'fa')).toBe(true)
+      })
+    })
+
+    describe('Gregorian locale (en)', () => {
+      const minDate: Day = { year: 2023, month: 1, day: 10 }
+      const maxDate: Day = { year: 2023, month: 1, day: 20 }
+
+      it('validates Gregorian range', () => {
+        const inRange: Day = { year: 2023, month: 1, day: 15 }
+        const before: Day = { year: 2023, month: 1, day: 5 }
+        const after: Day = { year: 2023, month: 1, day: 25 }
+
+        expect(isDateInRange(inRange, minDate, maxDate, 'en')).toBe(true)
+        expect(isDateInRange(before, minDate, maxDate, 'en')).toBe(false)
+        expect(isDateInRange(after, minDate, maxDate, 'en')).toBe(false)
+      })
+
+      it('handles inclusive boundaries for Gregorian', () => {
+        expect(isDateInRange(minDate, minDate, maxDate, 'en')).toBe(true)
+        expect(isDateInRange(maxDate, minDate, maxDate, 'en')).toBe(true)
+      })
+    })
+  })
+
+  describe('isDateInDisabledList', () => {
+    describe('Jalali locale (fa)', () => {
+      const disabledDates: Day[] = [
+        { year: 1402, month: 1, day: 15 },
+        { year: 1402, month: 12, day: 29 }
+      ]
+
+      it('checks disabled dates for Jalali', () => {
+        expect(
+          isDateInDisabledList(
+            { year: 1402, month: 1, day: 15 },
+            disabledDates,
+            'fa'
+          )
+        ).toBe(true)
+        expect(
+          isDateInDisabledList(
+            { year: 1402, month: 1, day: 14 },
+            disabledDates,
+            'fa'
+          )
+        ).toBe(false)
+      })
+    })
+
+    describe('Gregorian locale (en)', () => {
+      const disabledDates: Day[] = [
+        { year: 2023, month: 1, day: 15 },
+        { year: 2023, month: 12, day: 31 }
+      ]
+
+      it('checks disabled dates for Gregorian', () => {
+        expect(
+          isDateInDisabledList(
+            { year: 2023, month: 1, day: 15 },
+            disabledDates,
+            'en'
+          )
+        ).toBe(true)
+        expect(
+          isDateInDisabledList(
+            { year: 2023, month: 1, day: 14 },
+            disabledDates,
+            'en'
+          )
+        ).toBe(false)
+      })
+    })
+  })
+})

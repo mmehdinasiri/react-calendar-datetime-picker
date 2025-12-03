@@ -15,6 +15,7 @@ import type { CalendarError } from '../types/calendar'
 import { dateToDay } from './date-conversion'
 import { parseDateString } from './formatting'
 import { getWeekBounds } from './calendar-grid'
+import { isValidDay } from './validation'
 
 /**
  * Check if we're in development mode
@@ -91,13 +92,7 @@ function normalizeDayWithErrors(
   // Handle Day objects (already in the correct format)
   if (isDayObject(day)) {
     // Validate day object
-    if (
-      day.year > 0 &&
-      day.month >= 1 &&
-      day.month <= 12 &&
-      day.day >= 1 &&
-      day.day <= 31
-    ) {
+    if (isValidDay(day, locale)) {
       return {
         value: {
           year: day.year,
@@ -113,7 +108,7 @@ function normalizeDayWithErrors(
         type: 'normalization',
         field: fieldName,
         value: day,
-        message: `Invalid day object: month must be 1-12, day must be 1-31, year must be > 0`
+        message: `Invalid day object: date is invalid for the given locale`
       }
       if (isDevelopment) {
         console.warn(`[react-calendar-datetime-picker] ${error.message}`, day)
