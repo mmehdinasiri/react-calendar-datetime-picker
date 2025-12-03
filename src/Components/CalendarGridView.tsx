@@ -486,7 +486,9 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
       </div>
 
       {/* Footer */}
-      {(todayBtn || (withTime && type !== 'multi' && onTimeChange)) && (
+      {(todayBtn ||
+        (withTime && type !== 'multi' && onTimeChange) ||
+        (presetRanges && type === 'range')) && (
         <div className='calendar-footer'>
           {/* Time Selector - Only for single, range, and week modes, not multi */}
           {withTime && type !== 'multi' && onTimeChange && (
