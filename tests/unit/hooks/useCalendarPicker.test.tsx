@@ -168,4 +168,26 @@ describe('useCalendarPicker', () => {
     
     expect(result.current.constraints).toEqual({})
   })
+
+  it('formats displayValue with time when withTime is true', () => {
+    const initDate = new Date(2023, 0, 1, 14, 30) // Jan 1 2023, 14:30
+    const { result } = renderHook(() => 
+      useCalendarPicker(
+        initDate,
+        onChange,
+        'single',
+        'en',
+        true, // withTime
+        undefined,
+        true, // showTimeInput
+        false,
+        onClose,
+        undefined,
+        '24',
+        1
+      )
+    )
+    
+    expect(result.current.displayValue).toBe('2023/01/01 14:30')
+  })
 })
