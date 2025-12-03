@@ -29,6 +29,7 @@ const isDevelopment = (() => {
       return (
         window.location?.hostname === 'localhost' ||
         window.location?.hostname === '127.0.0.1' ||
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).__DEV__ === true
       )
     }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect } from 'react'
 import { normalizeInitValue } from 'react-calendar-datetime-picker'
 import type { Day, Range, Multi } from 'react-calendar-datetime-picker'

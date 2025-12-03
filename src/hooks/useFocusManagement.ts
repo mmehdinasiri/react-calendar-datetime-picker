@@ -92,6 +92,7 @@ export const useFocusManagement = (
    */
   useEffect(() => {
     if (selectedDate) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFocusedDate(selectedDate)
     }
   }, [selectedDate])

@@ -76,14 +76,15 @@ export function useModalPosition(
 
   // Calculate position when modal opens
   useEffect(() => {
-    if (isOpen && modalRef.current && inputRef.current) {
-      // Small delay to ensure DOM is ready
-      setTimeout(() => {
-        calculateModalPosition()
-      }, 10)
-    } else if (!isOpen) {
-      // Reset position when closing
-      setModalPosition(null)
+    if (!isOpen || !modalRef.current || !inputRef.current) return
+
+    // Small delay to ensure DOM is ready
+    const timeoutId = window.setTimeout(() => {
+      calculateModalPosition()
+    }, 10)
+
+    return () => {
+      window.clearTimeout(timeoutId)
     }
   }, [isOpen, calculateModalPosition, modalRef, inputRef])
 
@@ -112,5 +113,9 @@ export function useModalPosition(
     }
   }, [isOpen])
 
-  return { modalPosition, calculateModalPosition }
+  // Expose null position when modal is closed to simplify consumers & tests
+  return {
+    modalPosition: isOpen ? modalPosition : null,
+    calculateModalPosition
+  }
 }

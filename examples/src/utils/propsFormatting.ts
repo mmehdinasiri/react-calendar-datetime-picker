@@ -123,7 +123,7 @@ export const parsePropsFromEditor = (
     }
 
     return {}
-  } catch (error) {
+  } catch (_error) {
     // If parsing fails, return empty object
     return {}
   }

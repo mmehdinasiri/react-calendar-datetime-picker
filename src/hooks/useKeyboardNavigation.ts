@@ -81,7 +81,11 @@ export const useKeyboardNavigation = (
    * If not selectable, try to find the next selectable date in the same direction
    */
   const navigateToDate = useCallback(
-    (newDate: Day, direction: number = 0, attempts: number = 0) => {
+    function navigateRecursive(
+      newDate: Day,
+      direction: number = 0,
+      attempts: number = 0
+    ): boolean {
       // Prevent infinite loops
       if (attempts > 31) {
         return false
@@ -92,7 +96,7 @@ export const useKeyboardNavigation = (
         // If we have a direction, try the next date in that direction
         if (direction !== 0) {
           const nextDate = addDays(newDate, direction, locale)
-          return navigateToDate(nextDate, direction, attempts + 1)
+          return navigateRecursive(nextDate, direction, attempts + 1)
         }
         return false
       }
@@ -129,9 +133,8 @@ export const useKeyboardNavigation = (
       const newDate = addDays(current, daysToAdd, locale)
 
       // Check if we've moved to a different month (including year boundaries)
-      const monthChanged = 
-        newDate.month !== current.month || 
-        newDate.year !== current.year
+      const monthChanged =
+        newDate.month !== current.month || newDate.year !== current.year
 
       if (monthChanged && onMonthNavigate) {
         // Determine navigation direction
@@ -145,7 +148,7 @@ export const useKeyboardNavigation = (
         } else {
           navDirection = 'prev'
         }
-        
+
         onMonthNavigate(navDirection)
         // Use setTimeout to ensure month navigation completes before focusing
         setTimeout(() => {

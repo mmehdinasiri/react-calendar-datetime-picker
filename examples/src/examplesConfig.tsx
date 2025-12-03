@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import type { Day } from 'react-calendar-datetime-picker'
 import React from 'react'
 import {
@@ -118,14 +119,6 @@ export interface ExampleConfig {
   showConsoleLog?: boolean
   utilityCode?: string
   getUtilityResults?: (selectedDate?: Day | null) => Record<string, unknown>
-}
-
-// Helper function to create example config with renderExtra
-const createExampleConfig = (
-  config: Omit<ExampleConfig, 'renderExtra'>,
-  renderExtra?: (value: Day | null) => React.ReactNode
-): ExampleConfig => {
-  return { ...config, renderExtra }
 }
 
 export type ExamplesConfig = Record<string, Record<string, ExampleConfig>>

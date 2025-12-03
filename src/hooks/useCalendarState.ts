@@ -71,6 +71,7 @@ function calculateNewValue(
 
     // If no range exists or range is complete, start new range
     if (!currentRange || !currentRange.from || currentRange.to) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return { from: selectedDay, to: null as any }
     }
 
@@ -92,6 +93,7 @@ function calculateNewValue(
       return { from: currentRange.from, to: selectedDay }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return { from: selectedDay, to: null as any }
   }
 
@@ -211,9 +213,15 @@ function calendarReducer(
           const monthFromValue = extractMonthFromValue(finalValue)
           // Check if the month is already visible in multi-month view
           if (monthFromValue && numberOfMonths > 1) {
-            const visibleMonths = getMonthsToDisplay(state.displayMonth, numberOfMonths, locale)
+            const visibleMonths = getMonthsToDisplay(
+              state.displayMonth,
+              numberOfMonths,
+              locale
+            )
             const isMonthVisible = visibleMonths.some(
-              m => m.year === monthFromValue.year && m.month === monthFromValue.month
+              (m) =>
+                m.year === monthFromValue.year &&
+                m.month === monthFromValue.month
             )
             if (isMonthVisible) {
               // Keep current displayMonth if the selected month is already visible
@@ -230,9 +238,14 @@ function calendarReducer(
         // For single and multi, check if month is already visible before navigating
         const monthFromValue = extractMonthFromValue(finalValue)
         if (monthFromValue && numberOfMonths > 1) {
-          const visibleMonths = getMonthsToDisplay(state.displayMonth, numberOfMonths, locale)
+          const visibleMonths = getMonthsToDisplay(
+            state.displayMonth,
+            numberOfMonths,
+            locale
+          )
           const isMonthVisible = visibleMonths.some(
-            m => m.year === monthFromValue.year && m.month === monthFromValue.month
+            (m) =>
+              m.year === monthFromValue.year && m.month === monthFromValue.month
           )
           if (isMonthVisible) {
             // Keep current displayMonth if the selected month is already visible
@@ -257,6 +270,7 @@ function calendarReducer(
       const fromWithTime = addSystemTimeIfNeeded(action.payload, withTime)
       return {
         ...state,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         selectedValue: { from: fromWithTime, to: null as any },
         displayMonth: {
           year: action.payload.year,

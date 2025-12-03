@@ -175,7 +175,8 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     ) {
       // Keep the same day if possible, otherwise use first day of month
       const newFocusedDate: Day = {
-        ...displayMonth,
+        year: displayMonth.year,
+        month: displayMonth.month,
         day: Math.min(focusedDate.day, 31) // Will be validated by isDateSelectable
       }
       // Only update if the date is selectable
@@ -183,7 +184,11 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
         setFocusedDate(newFocusedDate)
       } else {
         // Try first day of month
-        const firstDay: Day = { ...displayMonth, day: 1 }
+        const firstDay: Day = {
+          year: displayMonth.year,
+          month: displayMonth.month,
+          day: 1
+        }
         if (isDateSelectableForNav(firstDay)) {
           setFocusedDate(firstDay)
         }
