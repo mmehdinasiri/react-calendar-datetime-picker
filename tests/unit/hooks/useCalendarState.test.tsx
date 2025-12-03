@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { useCalendarState } from '@/hooks/useCalendarState'
-import type { Day } from '@/types'
+import type { Day, Range } from '@/types'
 
 describe('useCalendarState', () => {
   const onChange = vi.fn()
@@ -9,6 +9,7 @@ describe('useCalendarState', () => {
 
   beforeEach(() => {
     vi.useFakeTimers()
+    // JS Date uses 0-indexed months (4 = May). Our Day type uses 1-indexed (5 = May).
     vi.setSystemTime(new Date(2023, 4, 15, 12, 0, 0)) // May 15, 2023
     onChange.mockClear()
     onCalenderChange.mockClear()
@@ -117,6 +118,29 @@ describe('useCalendarState', () => {
     expect(result.current.state.selectedValue).toEqual([day2])
   })
 
+  it('selects week', () => {
+    const { result } = renderHook(() =>
+      useCalendarState({ locale: 'en', type: 'week', onChange })
+    )
+
+    // Select a Wednesday (June 7, 2023)
+    const day: Day = { year: 2023, month: 6, day: 7 }
+
+    act(() => {
+      result.current.actions.selectDate(day)
+    })
+
+    // Expect start of week (Sunday Jun 4) to end of week (Saturday Jun 10)
+    // using objectContaining to ignore potential time fields
+    const expectedValue = {
+      from: expect.objectContaining({ year: 2023, month: 6, day: 4 }),
+      to: expect.objectContaining({ year: 2023, month: 6, day: 10 })
+    }
+
+    expect(result.current.state.selectedValue).toEqual(expectedValue)
+    expect(onChange).toHaveBeenCalledWith(expectedValue)
+  })
+
   it('navigates months', () => {
     const { result } = renderHook(() =>
       useCalendarState({ locale: 'en', type: 'single', onChange })
@@ -219,8 +243,8 @@ describe('useCalendarState', () => {
       (props) => useCalendarState(props),
       {
         initialProps: {
-          locale: 'en',
-          type: 'single',
+          locale: 'en' as const,
+          type: 'single' as const,
           onChange,
           initValue: null as Day | null
         }
@@ -236,6 +260,78 @@ describe('useCalendarState', () => {
     )
   })
 
+  it('selects preset range', () => {
+    const { result } = renderHook(() =>
+      useCalendarState({ locale: 'en', type: 'range', onChange })
+    )
+
+    const range: Range = {
+      from: { year: 2023, month: 6, day: 1 },
+      to: { year: 2023, month: 6, day: 10 }
+    }
+
+    act(() => {
+      result.current.actions.selectPresetRange(range)
+    })
+
+    expect(result.current.state.selectedValue).toEqual(range)
+    expect(onChange).toHaveBeenCalledWith(range)
+    // Should update display month to range start
+    expect(result.current.state.displayMonth).toEqual(
+      expect.objectContaining({ year: 2023, month: 6 })
+    )
+  })
+
+  it('selects month', () => {
+    const { result } = renderHook(() =>
+      useCalendarState({ locale: 'en', type: 'single', onChange })
+    )
+
+    act(() => {
+      // Select February (2)
+      result.current.actions.selectMonth(2)
+    })
+
+    expect(result.current.state.displayMonth.month).toBe(2)
+    expect(result.current.state.currentView).toBe('calendar')
+  })
+
+  it('selects year', () => {
+    const { result } = renderHook(() =>
+      useCalendarState({ locale: 'en', type: 'single', onChange })
+    )
+
+    act(() => {
+      result.current.actions.selectYear(2025)
+    })
+
+    expect(result.current.state.displayMonth.year).toBe(2025)
+    expect(result.current.state.currentView).toBe('months')
+  })
+
+  it('goes to today', () => {
+    const { result } = renderHook(() =>
+      useCalendarState({ locale: 'en', type: 'single', onChange })
+    )
+
+    // Navigate away first
+    act(() => {
+      result.current.actions.selectYear(2025)
+      result.current.actions.selectMonth(1)
+    })
+    expect(result.current.state.displayMonth.year).toBe(2025)
+
+    act(() => {
+      result.current.actions.goToToday()
+    })
+
+    // Mocked today is May 15, 2023
+    expect(result.current.state.displayMonth).toEqual(
+      expect.objectContaining({ year: 2023, month: 5 })
+    )
+    expect(result.current.state.currentView).toBe('calendar')
+  })
+
   // FA Locale Tests
   describe('fa locale', () => {
     it('initializes with Jalali date', () => {
@@ -246,6 +342,19 @@ describe('useCalendarState', () => {
 
       expect(result.current.state.displayMonth).toEqual(
         expect.objectContaining({ year: 1402, month: 2, day: 25 })
+      )
+    })
+
+    it('initializes with initValue', () => {
+      // 1402/01/01 (Farvardin 1st)
+      const initValue: Day = { year: 1402, month: 1, day: 1 }
+      const { result } = renderHook(() =>
+        useCalendarState({ locale: 'fa', type: 'single', onChange, initValue })
+      )
+
+      expect(result.current.state.selectedValue).toEqual(initValue)
+      expect(result.current.state.displayMonth).toEqual(
+        expect.objectContaining({ year: 1402, month: 1, day: 1 })
       )
     })
 

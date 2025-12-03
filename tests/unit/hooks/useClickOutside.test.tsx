@@ -35,7 +35,7 @@ describe('useClickOutside', () => {
   it('calls onClose when clicking outside calendar core', () => {
     const onClose = vi.fn()
     
-    renderHook(() => useClickOutside(true, pickerRef, modalRef, onClose))
+    renderHook(() => useClickOutside(true, pickerRef as React.RefObject<HTMLDivElement>, modalRef as React.RefObject<HTMLDivElement>, onClose))
     
     // Fast-forward past the setTimeout in hook
     vi.advanceTimersByTime(200)
@@ -49,7 +49,7 @@ describe('useClickOutside', () => {
   it('does not call onClose when clicking inside calendar core', () => {
     const onClose = vi.fn()
     
-    renderHook(() => useClickOutside(true, pickerRef, modalRef, onClose))
+    renderHook(() => useClickOutside(true, pickerRef as React.RefObject<HTMLDivElement>, modalRef as React.RefObject<HTMLDivElement>, onClose))
     
     vi.advanceTimersByTime(200)
 
@@ -62,7 +62,7 @@ describe('useClickOutside', () => {
   it('does not call onClose when clicking input/buttons', () => {
     const onClose = vi.fn()
     
-    renderHook(() => useClickOutside(true, pickerRef, modalRef, onClose))
+    renderHook(() => useClickOutside(true, pickerRef as React.RefObject<HTMLDivElement>, modalRef as React.RefObject<HTMLDivElement>, onClose))
     
     vi.advanceTimersByTime(200)
 

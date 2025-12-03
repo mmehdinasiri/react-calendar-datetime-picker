@@ -48,7 +48,7 @@ describe('calendar-selection utils', () => {
       })
 
       it('returns false if range is incomplete', () => {
-        const incompleteRange: Range = { from: day, to: null }
+        const incompleteRange: Range = { from: day, to: null as any }
         expect(isDaySelected(day, incompleteRange, 'range')).toBe(false)
       })
 

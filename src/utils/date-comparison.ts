@@ -275,11 +275,8 @@ export function getDifferenceInMonths(
   // If locale is 'fa', we don't need to convert to Gregorian
   // We can calculate the difference directly using Jalali dates
   // This avoids issues with leap year mismatches during conversion
-  const d1 = day1
-  const d2 = day2
-
-  const yearDiff = d1.year - d2.year
-  const monthDiff = d1.month - d2.month
+  const yearDiff = day1.year - day2.year
+  const monthDiff = day1.month - day2.month
 
   return yearDiff * 12 + monthDiff
 }
@@ -298,13 +295,10 @@ export function getDifferenceInYears(
 ): number {
   // If locale is 'fa', we don't need to convert to Gregorian
   // We can calculate the difference directly using Jalali dates
-  const d1 = day1
-  const d2 = day2
-
-  let yearDiff = d1.year - d2.year
+  let yearDiff = day1.year - day2.year
 
   // Adjust if the month/day hasn't been reached yet
-  if (d1.month < d2.month || (d1.month === d2.month && d1.day < d2.day)) {
+  if (day1.month < day2.month || (day1.month === day2.month && day1.day < day2.day)) {
     yearDiff--
   }
 

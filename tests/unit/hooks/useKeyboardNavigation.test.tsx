@@ -30,7 +30,7 @@ describe('useKeyboardNavigation', () => {
     focusedDate,
     locale: 'en' as const,
     type: 'single' as const,
-    containerRef,
+    containerRef: containerRef as React.RefObject<HTMLDivElement>,
     enabled: true,
     onFocusedDateChange,
     onDateSelect,

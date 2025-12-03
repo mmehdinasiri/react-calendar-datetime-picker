@@ -36,7 +36,7 @@ describe('useFocusTrap', () => {
   })
 
   it('auto-focuses first element on mount', () => {
-    renderHook(() => useFocusTrap({ containerRef, enabled: true, autoFocus: true }))
+    renderHook(() => useFocusTrap({ containerRef: containerRef as React.RefObject<HTMLDivElement>, enabled: true, autoFocus: true }))
     
     vi.advanceTimersByTime(20)
     expect(document.activeElement).toBe(firstButton)
@@ -44,7 +44,7 @@ describe('useFocusTrap', () => {
 
   it('restores focus on unmount', () => {
     triggerButton.focus()
-    const { unmount } = renderHook(() => useFocusTrap({ containerRef, enabled: true, restoreFocus: true }))
+    const { unmount } = renderHook(() => useFocusTrap({ containerRef: containerRef as React.RefObject<HTMLDivElement>, enabled: true, restoreFocus: true }))
     
     // Initial focus move
     vi.advanceTimersByTime(20)
@@ -55,7 +55,7 @@ describe('useFocusTrap', () => {
   })
 
   it('traps focus (Tab: last -> first)', () => {
-    renderHook(() => useFocusTrap({ containerRef, enabled: true }))
+    renderHook(() => useFocusTrap({ containerRef: containerRef as React.RefObject<HTMLDivElement>, enabled: true }))
     vi.advanceTimersByTime(20)
     
     lastButton.focus()
@@ -66,7 +66,7 @@ describe('useFocusTrap', () => {
   })
 
   it('traps focus (Shift+Tab: first -> last)', () => {
-    renderHook(() => useFocusTrap({ containerRef, enabled: true }))
+    renderHook(() => useFocusTrap({ containerRef: containerRef as React.RefObject<HTMLDivElement>, enabled: true }))
     vi.advanceTimersByTime(20)
     
     firstButton.focus()
@@ -77,7 +77,7 @@ describe('useFocusTrap', () => {
   })
 
   it('does nothing if disabled', () => {
-    renderHook(() => useFocusTrap({ containerRef, enabled: false }))
+    renderHook(() => useFocusTrap({ containerRef: containerRef as React.RefObject<HTMLDivElement>, enabled: false }))
     
     vi.advanceTimersByTime(20)
     // Focus should remain on trigger
