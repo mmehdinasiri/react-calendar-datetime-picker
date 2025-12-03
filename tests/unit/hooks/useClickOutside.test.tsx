@@ -1,7 +1,6 @@
 import { renderHook } from '@testing-library/react'
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import { useClickOutside } from '@/hooks/useClickOutside'
-import { useRef } from 'react'
 
 describe('useClickOutside', () => {
   let modalRef: { current: HTMLDivElement | null }

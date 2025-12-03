@@ -294,11 +294,11 @@ function App() {
           <div className='flex'>
             <div className='ml-3'>
               <p className='text-sm text-gray-200'>
-                <strong>Important:</strong> When using JavaScript's <code>Date</code>{' '}
-                object (e.g., in constraints), remember that months are 0-indexed
-                (January is 0, December is 11). However, the library's{' '}
-                <code>Day</code> object uses 1-indexed months (January is 1,
-                December is 12).
+                <strong>Important:</strong> When using JavaScript's{' '}
+                <code>Date</code> object (e.g., in constraints), remember that
+                months are 0-indexed (January is 0, December is 11). However,
+                the library's <code>Day</code> object uses 1-indexed months
+                (January is 1, December is 12).
               </p>
             </div>
           </div>

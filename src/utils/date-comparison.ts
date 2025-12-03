@@ -270,7 +270,7 @@ export function getDifferenceInDays(
 export function getDifferenceInMonths(
   day1: Day,
   day2: Day,
-  locale: CalendarLocale = 'en'
+  _locale: CalendarLocale = 'en'
 ): number {
   // If locale is 'fa', we don't need to convert to Gregorian
   // We can calculate the difference directly using Jalali dates
@@ -291,7 +291,7 @@ export function getDifferenceInMonths(
 export function getDifferenceInYears(
   day1: Day,
   day2: Day,
-  locale: CalendarLocale = 'en'
+  _locale: CalendarLocale = 'en'
 ): number {
   // If locale is 'fa', we don't need to convert to Gregorian
   // We can calculate the difference directly using Jalali dates
