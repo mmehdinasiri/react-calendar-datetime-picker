@@ -164,6 +164,12 @@ export const components: Component[] = [
         type: 'CalendarCustomization',
         default: 'undefined',
         description: 'Customization options'
+      },
+      {
+        name: 'yearListStyle',
+        type: "'grid' | 'list'",
+        default: "'grid'",
+        description: 'Year list style for year selection view'
       }
     ]
   },
@@ -267,6 +273,12 @@ export const components: Component[] = [
         type: '1 | 2 | 3',
         default: '1',
         description: 'Number of months to display'
+      },
+      {
+        name: 'yearListStyle',
+        type: "'grid' | 'list'",
+        default: "'grid'",
+        description: 'Year list style for year selection view'
       }
     ]
   }
@@ -329,6 +341,10 @@ export const types: Type[] = [
   monthNames?: string[]
   weekdayNames?: string[]
 }`
+  },
+  {
+    name: 'CalendarListStyle',
+    definition: "type CalendarListStyle = 'grid' | 'list'"
   }
 ]
 

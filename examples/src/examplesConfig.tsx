@@ -988,6 +988,56 @@ export const examples: ExamplesConfig = {
         local: 'en'
       },
       wrapper: 'calendar-container'
+    },
+    YearListStyleGrid: {
+      title: 'Year List Style - Grid',
+      description:
+        'Year selection view displayed as a grid layout (default). Click on the year in the header to see the year view.',
+      component: 'DtCalendar',
+      props: {
+        yearListStyle: 'grid',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    YearListStyleList: {
+      title: 'Year List Style - List',
+      description:
+        'Year selection view displayed as a vertical list. Click on the year in the header to see the year view.',
+      component: 'DtCalendar',
+      props: {
+        yearListStyle: 'list',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    YearListStylePickerGrid: {
+      title: 'Date Picker with Grid Year List',
+      description:
+        'Date picker with year selection displayed as grid. Click the year in the calendar header to see the year view.',
+      component: 'DtPicker',
+      props: {
+        yearListStyle: 'grid',
+        placeholder: 'Select a date',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    YearListStylePickerList: {
+      title: 'Date Picker with List Year List',
+      description:
+        'Date picker with year selection displayed as vertical list. Click the year in the calendar header to see the year view.',
+      component: 'DtPicker',
+      props: {
+        yearListStyle: 'list',
+        placeholder: 'Select a date',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
     }
   },
   Time: {

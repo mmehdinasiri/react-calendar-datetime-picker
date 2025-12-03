@@ -11,6 +11,13 @@ import type { Day, Range, Multi } from './index'
 export type DateInput = Day | Date | string | number
 
 /**
+ * Calendar list style for year/month views
+ * - 'grid': Display as grid
+ * - 'list': Display as list
+ */
+export type CalendarListStyle = 'grid' | 'list'
+
+/**
  * Initial value input types - accepts various formats that will be normalized
  * For 'single': accepts a single date in any format
  * For 'range': accepts a range object or a single date
@@ -244,6 +251,16 @@ export interface SharedCalendarProps {
    * @default 1
    */
   numberOfMonths?: 1 | 2 | 3
+  /**
+   * Year list style
+   * @default 'grid'
+   */
+  yearListStyle?: CalendarListStyle
+  /**
+   * Enable dark theme
+   * @default false
+   */
+  dark?: boolean
 }
 
 /**

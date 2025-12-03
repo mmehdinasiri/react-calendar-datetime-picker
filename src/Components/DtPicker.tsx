@@ -59,7 +59,6 @@ interface DtPickerPropsBase extends SharedCalendarProps {
    * Enable dark theme
    * @default false
    */
-  dark?: boolean
 }
 
 export interface DtPickerPropsSingle
@@ -119,7 +118,8 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     timeFormat = '24',
     numberOfMonths = 1,
     customization,
-    dark = false
+    dark = false,
+    yearListStyle = 'grid'
   } = props
 
   const [isOpen, setIsOpen] = useState(false)
@@ -270,6 +270,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
             constraints={constraints}
             customization={customization}
             numberOfMonths={numberOfMonths}
+            yearListStyle={yearListStyle}
             onDateSelect={actions.selectDate}
             onTimeChange={actions.updateTime}
             onMonthSelect={actions.selectMonth}

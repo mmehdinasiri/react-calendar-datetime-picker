@@ -87,7 +87,8 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     calenderModalClass,
     customization,
     onError,
-    numberOfMonths = 1
+    numberOfMonths = 1,
+    yearListStyle = 'grid'
   } = props
 
   // Normalize constraints props with error tracking
@@ -166,6 +167,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         constraints={constraints}
         customization={customization}
         numberOfMonths={numberOfMonths}
+        yearListStyle={yearListStyle}
         onDateSelect={actions.selectDate}
         onTimeChange={actions.updateTime}
         onMonthSelect={actions.selectMonth}
