@@ -51,6 +51,9 @@ jobs:
     name: Test Coverage
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -76,11 +79,10 @@ jobs:
       - name: Run tests with coverage
         run: pnpm run test:coverage
 
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v4
+      - name: Report Coverage
+        uses: davelosert/vitest-coverage-report-action@v2
         if: always()
         with:
-          files: ./coverage/coverage-final.json
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
+          json-summary-path: './coverage/coverage-summary.json'
+          json-final-path: './coverage/coverage-final.json'
+          vite-config-path: './vitest.config.ts'
