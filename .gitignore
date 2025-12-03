@@ -40,6 +40,11 @@ pnpm-lock.yaml
 coverage
 react-calendar-datetime-picker-*
 
+# test reports
+playwright-report/
+test-results/
+playwright/.cache/
+
 # html files
 bundle-analysis.html
 
