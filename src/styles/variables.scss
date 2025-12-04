@@ -9,18 +9,13 @@
   --calendar-selected-range: #a0f5ad;
   --calendar-selected-range-color: #008213;
   --calendar-weekends: #990000;
-  --calendar-secondary: #6c757d;
   --calendar-danger: #dc3545;
-  --calendar-warning: #ffc107;
-  --calendar-info: #17a2b8;
 
   // Background colors
   --calendar-bg: #ffffff;
   --calendar-bg-hover: #f8f9fa;
-  --calendar-bg-selected: #ffffff;
   --calendar-bg-disabled: #e4ebe5;
   --calendar-bg-other-month: #e4ebe5;
-  --calendar-light-gray: #efefef;
   --calendar-header-bg: var(--calendar-primary); // Default: use primary color
 
   // Text colors
@@ -36,14 +31,12 @@
   // Border colors
   --calendar-border: #dee2e6;
   --calendar-border-focus: #009a17;
-  --calendar-border-selected: #03bf1f;
 
   // Spacing
   --calendar-spacing-xs: 0.25rem;
   --calendar-spacing-sm: 0.5rem;
   --calendar-spacing-md: 1rem;
   --calendar-spacing-lg: 1.5rem;
-  --calendar-spacing-xl: 2rem;
 
   // Border radius
   --calendar-radius-sm: 4px;
@@ -74,18 +67,13 @@
   --calendar-selected-range: #14532d;
   --calendar-selected-range-color: #4ade80;
   --calendar-weekends: #f87171;
-  --calendar-secondary: #6b7280;
   --calendar-danger: #ef4444;
-  --calendar-warning: #fbbf24;
-  --calendar-info: #60a5fa;
 
   // Background colors
   --calendar-bg: #1f2937;
   --calendar-bg-hover: #374151;
-  --calendar-bg-selected: #1f2937;
   --calendar-bg-disabled: #374151;
   --calendar-bg-other-month: #111827;
-  --calendar-light-gray: #374151;
   --calendar-header-bg: #1f2937; // Dark gray header matching grid
 
   // Text colors
@@ -101,7 +89,6 @@
   // Border colors
   --calendar-border: #374151;
   --calendar-border-focus: #16a34a;
-  --calendar-border-selected: #16a34a;
 
   // Shadows
   --calendar-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);

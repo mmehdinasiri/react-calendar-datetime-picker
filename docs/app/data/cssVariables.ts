@@ -3,7 +3,16 @@ export interface CSSVariable {
   lightTheme: string
   darkTheme: string
   description: string
-  category: 'primary' | 'background' | 'text' | 'border'
+  category:
+    | 'primary'
+    | 'background'
+    | 'text'
+    | 'border'
+    | 'spacing'
+    | 'border-radius'
+    | 'modal-width'
+    | 'shadows'
+    | 'transitions'
 }
 
 export const cssVariables: CSSVariable[] = [
@@ -64,6 +73,13 @@ export const cssVariables: CSSVariable[] = [
     description: 'Weekend day text color',
     category: 'primary'
   },
+  {
+    name: '--calendar-danger',
+    lightTheme: '#dc3545',
+    darkTheme: '#ef4444',
+    description: 'Danger color',
+    category: 'primary'
+  },
   // Background Colors
   {
     name: '--calendar-bg',
@@ -80,13 +96,6 @@ export const cssVariables: CSSVariable[] = [
     category: 'background'
   },
   {
-    name: '--calendar-bg-selected',
-    lightTheme: '#ffffff',
-    darkTheme: '#1f2937',
-    description: 'Selected date background',
-    category: 'background'
-  },
-  {
     name: '--calendar-bg-disabled',
     lightTheme: '#e4ebe5',
     darkTheme: '#374151',
@@ -98,13 +107,6 @@ export const cssVariables: CSSVariable[] = [
     lightTheme: '#e4ebe5',
     darkTheme: '#111827',
     description: 'Other month days background',
-    category: 'background'
-  },
-  {
-    name: '--calendar-light-gray',
-    lightTheme: '#efefef',
-    darkTheme: '#374151',
-    description: 'Light gray background',
     category: 'background'
   },
   {
@@ -186,12 +188,94 @@ export const cssVariables: CSSVariable[] = [
     description: 'Focus border color',
     category: 'border'
   },
+  // Spacing
   {
-    name: '--calendar-border-selected',
-    lightTheme: '#03bf1f',
-    darkTheme: '#16a34a',
-    description: 'Selected border color',
-    category: 'border'
+    name: '--calendar-spacing-xs',
+    lightTheme: '0.25rem',
+    darkTheme: '0.25rem',
+    description: 'Extra small spacing',
+    category: 'spacing'
+  },
+  {
+    name: '--calendar-spacing-sm',
+    lightTheme: '0.5rem',
+    darkTheme: '0.5rem',
+    description: 'Small spacing',
+    category: 'spacing'
+  },
+  {
+    name: '--calendar-spacing-md',
+    lightTheme: '1rem',
+    darkTheme: '1rem',
+    description: 'Medium spacing',
+    category: 'spacing'
+  },
+  {
+    name: '--calendar-spacing-lg',
+    lightTheme: '1.5rem',
+    darkTheme: '1.5rem',
+    description: 'Large spacing',
+    category: 'spacing'
+  },
+  // Border radius
+  {
+    name: '--calendar-radius-sm',
+    lightTheme: '4px',
+    darkTheme: '4px',
+    description: 'Small border radius',
+    category: 'border-radius'
+  },
+  {
+    name: '--calendar-radius-md',
+    lightTheme: '8px',
+    darkTheme: '8px',
+    description: 'Medium border radius',
+    category: 'border-radius'
+  },
+  {
+    name: '--calendar-radius-lg',
+    lightTheme: '16px',
+    darkTheme: '16px',
+    description: 'Large border radius',
+    category: 'border-radius'
+  },
+  // Modal width
+  {
+    name: '--calendar-modal-width',
+    lightTheme: '310px',
+    darkTheme: '310px',
+    description: 'Calendar modal width',
+    category: 'modal-width'
+  },
+  // Shadows
+  {
+    name: '--calendar-shadow-sm',
+    lightTheme: '0 1px 2px rgba(0, 0, 0, 0.05)',
+    darkTheme: '0 1px 2px rgba(0, 0, 0, 0.3)',
+    description: 'Small shadow',
+    category: 'shadows'
+  },
+  {
+    name: '--calendar-shadow-md',
+    lightTheme: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    darkTheme: '0 4px 6px rgba(0, 0, 0, 0.4)',
+    description: 'Medium shadow',
+    category: 'shadows'
+  },
+  {
+    name: '--calendar-shadow-lg',
+    lightTheme: '0 10px 15px rgba(0, 0, 0, 0.1)',
+    darkTheme: '0 10px 15px rgba(0, 0, 0, 0.5)',
+    description: 'Large shadow',
+    category: 'shadows'
+  },
+  // Transitions
+  {
+    name: '--calendar-transition',
+    lightTheme: 'all 0.2s ease-in-out',
+    darkTheme: 'all 0.2s ease-in-out',
+    description: 'Transition timing and easing',
+    category: 'transitions'
   }
 ]
 
@@ -217,4 +301,17 @@ export const getDarkColorValue = (value: string): string => {
     return value
   }
   return value
+}
+
+// Helper function to check if a value is a color (hex, rgb, rgba, hsl, etc.)
+export const isColorValue = (value: string): boolean => {
+  if (!value || value.startsWith('var(')) return false
+  // Check for hex colors (#rgb, #rrggbb)
+  if (/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(value)) return true
+  // Check for rgb/rgba/hsl/hsla
+  if (/^(rgb|rgba|hsl|hsla)\(/.test(value)) return true
+  // Check for named colors (basic check - could be expanded)
+  const namedColors = ['transparent', 'currentColor']
+  if (namedColors.includes(value.toLowerCase())) return true
+  return false
 }

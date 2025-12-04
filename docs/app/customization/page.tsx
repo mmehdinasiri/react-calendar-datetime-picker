@@ -12,7 +12,8 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import {
   cssVariables,
   getColorValue,
-  getDarkColorValue
+  getDarkColorValue,
+  isColorValue
 } from '../data/cssVariables'
 
 // Custom Icons
@@ -777,36 +778,92 @@ import { Controller } from 'react-hook-form'
                       const darkColor = getDarkColorValue(variable.darkTheme)
                       const isEven = index % 2 === 0
 
+                      // Check if we need a separator row (category change)
+                      const prevVariable =
+                        index > 0 ? cssVariables[index - 1] : null
+                      const needsSeparator =
+                        prevVariable &&
+                        prevVariable.category !== variable.category
+
+                      // Category labels matching variables.scss comments
+                      const categoryLabels: Record<string, string> = {
+                        primary: 'Colors',
+                        background: 'Background colors',
+                        text: 'Text colors',
+                        border: 'Border colors',
+                        spacing: 'Spacing',
+                        'border-radius': 'Border radius',
+                        'modal-width': 'Modal width',
+                        shadows: 'Shadows',
+                        transitions: 'Transitions'
+                      }
+
                       return (
-                        <tr
-                          key={variable.name}
-                          className={isEven ? '' : 'bg-bg-tertiary'}
-                        >
-                          <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
-                            <code>{variable.name}</code>
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                            <div className='flex items-center gap-2'>
-                              <code>{variable.lightTheme}</code>
-                              <div
-                                className='w-6 h-6 rounded border border-border'
-                                style={{ backgroundColor: lightColor }}
-                              />
-                            </div>
-                          </td>
-                          <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                            <div className='flex items-center gap-2'>
-                              <code>{variable.darkTheme}</code>
-                              <div
-                                className='w-6 h-6 rounded border border-border'
-                                style={{ backgroundColor: darkColor }}
-                              />
-                            </div>
-                          </td>
-                          <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
-                            {variable.description}
-                          </td>
-                        </tr>
+                        <>
+                          {needsSeparator && (
+                            <tr
+                              key={`separator-${variable.category}`}
+                              className='bg-gray-100 dark:bg-gray-800'
+                            >
+                              <td
+                                colSpan={4}
+                                className='px-6 py-3 text-base font-semibold text-gray-900 dark:text-white uppercase tracking-wider border-t border-b border-gray-300 dark:border-gray-600 text-center'
+                              >
+                                {categoryLabels[variable.category]}
+                              </td>
+                            </tr>
+                          )}
+                          {index === 0 && (
+                            <tr
+                              key={`separator-${variable.category}-first`}
+                              className='bg-gray-100 dark:bg-gray-800'
+                            >
+                              <td
+                                colSpan={4}
+                                className='px-6 py-3 text-base font-semibold text-gray-900 dark:text-white uppercase tracking-wider border-t border-b border-gray-300 dark:border-gray-600 text-center'
+                              >
+                                {categoryLabels[variable.category]}
+                              </td>
+                            </tr>
+                          )}
+                          <tr
+                            key={variable.name}
+                            className={isEven ? '' : 'bg-bg-tertiary'}
+                          >
+                            <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                              <code>{variable.name}</code>
+                            </td>
+                            <td
+                              className={`px-6 py-4 whitespace-nowrap ${variable.category === 'shadows' ? 'text-xs' : 'text-sm'} text-gray-700 dark:text-gray-300`}
+                            >
+                              <div className='flex items-center gap-2'>
+                                <code>{variable.lightTheme}</code>
+                                {isColorValue(lightColor) && (
+                                  <div
+                                    className='w-6 h-6 rounded border border-border'
+                                    style={{ backgroundColor: lightColor }}
+                                  />
+                                )}
+                              </div>
+                            </td>
+                            <td
+                              className={`px-6 py-4 whitespace-nowrap ${variable.category === 'shadows' ? 'text-xs' : 'text-sm'} text-gray-700 dark:text-gray-300`}
+                            >
+                              <div className='flex items-center gap-2'>
+                                <code>{variable.darkTheme}</code>
+                                {isColorValue(darkColor) && (
+                                  <div
+                                    className='w-6 h-6 rounded border border-border'
+                                    style={{ backgroundColor: darkColor }}
+                                  />
+                                )}
+                              </div>
+                            </td>
+                            <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                              {variable.description}
+                            </td>
+                          </tr>
+                        </>
                       )
                     })}
                   </tbody>
