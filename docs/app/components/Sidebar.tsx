@@ -60,10 +60,61 @@ const navigation = [
           }
         ]
       },
-      { name: 'Themes', href: '/customization#themes' },
-      { name: 'CSS Variables', href: '/customization#css-variables' },
+      {
+        name: 'Themes',
+        href: '/customization#themes',
+        subItems: [
+          {
+            name: 'Light Theme',
+            href: '/customization#lighttheme'
+          },
+          {
+            name: 'Dark Theme',
+            href: '/customization#darktheme'
+          }
+        ]
+      },
+      {
+        name: 'CSS Variables',
+        href: '/customization#css-variables',
+        subItems: [
+          {
+            name: 'Blue Example',
+            href: '/customization#blue-example'
+          },
+          {
+            name: 'Brown Example',
+            href: '/customization#brown-example'
+          },
+          {
+            name: 'Smaller Calendar Example',
+            href: '/customization#smaller-calendar-example'
+          },
+          {
+            name: 'Larger Calendar Example',
+            href: '/customization#larger-calendar-example'
+          }
+        ]
+      },
       { name: 'Custom CSS Classes', href: '/customization#custom-classes' },
-      { name: 'Custom Icons & Labels', href: '/customization#icons-labels' },
+      {
+        name: 'Custom Icons & Labels',
+        href: '/customization#icons-labels',
+        subItems: [
+          {
+            name: 'Custom Arrow Icons',
+            href: '/customization#customarrowicons'
+          },
+          {
+            name: 'French Month and Weekday Names',
+            href: '/customization#custommonthandweekdaynames'
+          },
+          {
+            name: 'Spanish Month and Weekday Names',
+            href: '/customization#customnamesspanish'
+          }
+        ]
+      },
       {
         name: 'Preset Date Ranges',
         href: '/customization#preset-ranges',

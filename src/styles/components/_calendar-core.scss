@@ -9,7 +9,7 @@
   font-family: inherit;
   border-radius: var(--calendar-radius-sm);
   overflow: hidden;
-  width: var(--calendar-modal-width);
+  width: calc(var(--calendar-cell-size) * 7);
   margin: 0 auto;
 
   &.is-calender {
@@ -18,9 +18,9 @@
 
   // Adjust width for multiple months
   &.calendar-core-multi-months {
-    width: auto;
-    min-width: var(--calendar-modal-width);
-    max-width: calc(var(--calendar-modal-width) * 3 + 80px); // 3 months + gaps + padding
+    width: fit-content;
+    min-width: calc(var(--calendar-cell-size) * 7);
+    max-width: calc(var(--calendar-cell-size) * 7 * 3 + 80px); // 3 months + gaps + padding
   }
 }
 

@@ -163,6 +163,8 @@ export default function Customization() {
   const [customDate, setCustomDate] = useState<any>(null)
   const [darkDate, setDarkDate] = useState<Day | null>(null)
   const [styledInputDate, setStyledInputDate] = useState<Day | null>(null)
+  const [smallCalendarDate, setSmallCalendarDate] = useState<Day | null>(null)
+  const [largeCalendarDate, setLargeCalendarDate] = useState<Day | null>(null)
 
   return (
     <div className='max-w-6xl mx-auto px-6 py-12'>
@@ -754,120 +756,229 @@ import { Controller } from 'react-hook-form'
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Available CSS Variables
               </h3>
-              <div className='overflow-x-auto'>
-                <table className='min-w-full divide-y divide-border border border-border rounded-lg'>
-                  <thead className='bg-bg-tertiary'>
-                    <tr>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                        Variable
-                      </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                        Light Theme Default
-                      </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                        Dark Theme Default
-                      </th>
-                      <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                        Description
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className='bg-bg-secondary divide-y divide-border'>
-                    {cssVariables.map((variable, index) => {
-                      const lightColor = getColorValue(variable.lightTheme)
-                      const darkColor = getDarkColorValue(variable.darkTheme)
-                      const isEven = index % 2 === 0
 
-                      // Check if we need a separator row (category change)
-                      const prevVariable =
-                        index > 0 ? cssVariables[index - 1] : null
-                      const needsSeparator =
-                        prevVariable &&
-                        prevVariable.category !== variable.category
+              {/* Color Variables Table */}
+              <div className='mb-8'>
+                <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-3'>
+                  Color Variables
+                </h4>
+                <div className='overflow-x-auto'>
+                  <table className='min-w-full divide-y divide-border border border-border rounded-lg'>
+                    <thead className='bg-bg-tertiary'>
+                      <tr>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                          Variable
+                        </th>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                          Light Theme Default
+                        </th>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                          Dark Theme Default
+                        </th>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                          Description
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className='bg-bg-secondary divide-y divide-border'>
+                      {cssVariables
+                        .filter(
+                          (v) =>
+                            v.category === 'primary' ||
+                            v.category === 'background' ||
+                            v.category === 'text' ||
+                            v.category === 'border'
+                        )
+                        .map((variable, index, filteredArray) => {
+                          const lightColor = getColorValue(variable.lightTheme)
+                          const darkColor = getDarkColorValue(
+                            variable.darkTheme
+                          )
+                          const isEven = index % 2 === 0
 
-                      // Category labels matching variables.scss comments
-                      const categoryLabels: Record<string, string> = {
-                        primary: 'Colors',
-                        background: 'Background colors',
-                        text: 'Text colors',
-                        border: 'Border colors',
-                        spacing: 'Spacing',
-                        'border-radius': 'Border radius',
-                        'modal-width': 'Modal width',
-                        shadows: 'Shadows',
-                        transitions: 'Transitions'
-                      }
+                          // Check if we need a separator row (category change)
+                          const prevVariable =
+                            index > 0 ? filteredArray[index - 1] : null
+                          const needsSeparator =
+                            prevVariable &&
+                            prevVariable.category !== variable.category
 
-                      return (
-                        <>
-                          {needsSeparator && (
-                            <tr
-                              key={`separator-${variable.category}`}
-                              className='bg-gray-100 dark:bg-gray-800'
-                            >
-                              <td
-                                colSpan={4}
-                                className='px-6 py-3 text-base font-semibold text-gray-900 dark:text-white uppercase tracking-wider border-t border-b border-gray-300 dark:border-gray-600 text-center'
+                          // Category labels matching variables.scss comments
+                          const categoryLabels: Record<string, string> = {
+                            primary: 'Colors',
+                            background: 'Background colors',
+                            text: 'Text colors',
+                            border: 'Border colors'
+                          }
+
+                          return (
+                            <>
+                              {needsSeparator && (
+                                <tr
+                                  key={`separator-${variable.category}`}
+                                  className='bg-gray-100 dark:bg-gray-800'
+                                >
+                                  <td
+                                    colSpan={4}
+                                    className='px-6 py-3 text-base font-semibold text-gray-900 dark:text-white uppercase tracking-wider border-t border-b border-gray-300 dark:border-gray-600 text-center'
+                                  >
+                                    {categoryLabels[variable.category]}
+                                  </td>
+                                </tr>
+                              )}
+                              {index === 0 && (
+                                <tr
+                                  key={`separator-${variable.category}-first`}
+                                  className='bg-gray-100 dark:bg-gray-800'
+                                >
+                                  <td
+                                    colSpan={4}
+                                    className='px-6 py-3 text-base font-semibold text-gray-900 dark:text-white uppercase tracking-wider border-t border-b border-gray-300 dark:border-gray-600 text-center'
+                                  >
+                                    {categoryLabels[variable.category]}
+                                  </td>
+                                </tr>
+                              )}
+                              <tr
+                                key={variable.name}
+                                className={isEven ? '' : 'bg-bg-tertiary'}
                               >
-                                {categoryLabels[variable.category]}
-                              </td>
-                            </tr>
-                          )}
-                          {index === 0 && (
-                            <tr
-                              key={`separator-${variable.category}-first`}
-                              className='bg-gray-100 dark:bg-gray-800'
-                            >
-                              <td
-                                colSpan={4}
-                                className='px-6 py-3 text-base font-semibold text-gray-900 dark:text-white uppercase tracking-wider border-t border-b border-gray-300 dark:border-gray-600 text-center'
+                                <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                                  <code>{variable.name}</code>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                                  <div className='flex items-center gap-2'>
+                                    <code>{variable.lightTheme}</code>
+                                    {isColorValue(lightColor) && (
+                                      <div
+                                        className='w-6 h-6 rounded border border-border'
+                                        style={{ backgroundColor: lightColor }}
+                                      />
+                                    )}
+                                  </div>
+                                </td>
+                                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                                  <div className='flex items-center gap-2'>
+                                    <code>{variable.darkTheme}</code>
+                                    {isColorValue(darkColor) && (
+                                      <div
+                                        className='w-6 h-6 rounded border border-border'
+                                        style={{ backgroundColor: darkColor }}
+                                      />
+                                    )}
+                                  </div>
+                                </td>
+                                <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                                  {variable.description}
+                                </td>
+                              </tr>
+                            </>
+                          )
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Other Variables Table */}
+              <div>
+                <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-3'>
+                  Other Variables
+                </h4>
+                <div className='overflow-x-auto'>
+                  <table className='min-w-full divide-y divide-border border border-border rounded-lg'>
+                    <thead className='bg-bg-tertiary'>
+                      <tr>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                          Variable
+                        </th>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                          Default Value
+                        </th>
+                        <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                          Description
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className='bg-bg-secondary divide-y divide-border'>
+                      {cssVariables
+                        .filter(
+                          (v) =>
+                            v.category !== 'primary' &&
+                            v.category !== 'background' &&
+                            v.category !== 'text' &&
+                            v.category !== 'border'
+                        )
+                        .map((variable, index, filteredArray) => {
+                          const isEven = index % 2 === 0
+
+                          // Check if we need a separator row (category change)
+                          const prevVariable =
+                            index > 0 ? filteredArray[index - 1] : null
+                          const needsSeparator =
+                            prevVariable &&
+                            prevVariable.category !== variable.category
+
+                          // Category labels matching variables.scss comments
+                          const categoryLabels: Record<string, string> = {
+                            spacing: 'Spacing',
+                            'border-radius': 'Border radius',
+                            'modal-width': 'Grid cell size',
+                            'font-size': 'Font sizes',
+                            shadows: 'Shadows',
+                            transitions: 'Transitions'
+                          }
+
+                          return (
+                            <>
+                              {needsSeparator && (
+                                <tr
+                                  key={`separator-${variable.category}`}
+                                  className='bg-gray-100 dark:bg-gray-800'
+                                >
+                                  <td
+                                    colSpan={3}
+                                    className='px-6 py-3 text-base font-semibold text-gray-900 dark:text-white uppercase tracking-wider border-t border-b border-gray-300 dark:border-gray-600 text-center'
+                                  >
+                                    {categoryLabels[variable.category]}
+                                  </td>
+                                </tr>
+                              )}
+                              {index === 0 && (
+                                <tr
+                                  key={`separator-${variable.category}-first`}
+                                  className='bg-gray-100 dark:bg-gray-800'
+                                >
+                                  <td
+                                    colSpan={3}
+                                    className='px-6 py-3 text-base font-semibold text-gray-900 dark:text-white uppercase tracking-wider border-t border-b border-gray-300 dark:border-gray-600 text-center'
+                                  >
+                                    {categoryLabels[variable.category]}
+                                  </td>
+                                </tr>
+                              )}
+                              <tr
+                                key={variable.name}
+                                className={isEven ? '' : 'bg-bg-tertiary'}
                               >
-                                {categoryLabels[variable.category]}
-                              </td>
-                            </tr>
-                          )}
-                          <tr
-                            key={variable.name}
-                            className={isEven ? '' : 'bg-bg-tertiary'}
-                          >
-                            <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
-                              <code>{variable.name}</code>
-                            </td>
-                            <td
-                              className={`px-6 py-4 whitespace-nowrap ${variable.category === 'shadows' ? 'text-xs' : 'text-sm'} text-gray-700 dark:text-gray-300`}
-                            >
-                              <div className='flex items-center gap-2'>
-                                <code>{variable.lightTheme}</code>
-                                {isColorValue(lightColor) && (
-                                  <div
-                                    className='w-6 h-6 rounded border border-border'
-                                    style={{ backgroundColor: lightColor }}
-                                  />
-                                )}
-                              </div>
-                            </td>
-                            <td
-                              className={`px-6 py-4 whitespace-nowrap ${variable.category === 'shadows' ? 'text-xs' : 'text-sm'} text-gray-700 dark:text-gray-300`}
-                            >
-                              <div className='flex items-center gap-2'>
-                                <code>{variable.darkTheme}</code>
-                                {isColorValue(darkColor) && (
-                                  <div
-                                    className='w-6 h-6 rounded border border-border'
-                                    style={{ backgroundColor: darkColor }}
-                                  />
-                                )}
-                              </div>
-                            </td>
-                            <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
-                              {variable.description}
-                            </td>
-                          </tr>
-                        </>
-                      )
-                    })}
-                  </tbody>
-                </table>
+                                <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                                  <code>{variable.name}</code>
+                                </td>
+                                <td
+                                  className={`px-6 py-4 whitespace-nowrap ${variable.category === 'shadows' ? 'text-xs' : 'text-sm'} text-gray-700 dark:text-gray-300`}
+                                >
+                                  <code>{variable.lightTheme}</code>
+                                </td>
+                                <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                                  {variable.description}
+                                </td>
+                              </tr>
+                            </>
+                          )
+                        })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
@@ -886,10 +997,14 @@ import { Controller } from 'react-hook-form'
 
           {/* CSS Variables Examples */}
           <div className='mt-8 space-y-6'>
-            <div className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'>
+            {/* Blue Example */}
+            <div
+              id='blue-example'
+              className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
+            >
               <div className='mb-6'>
                 <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-                  Blue Theme Example
+                  Blue Example
                 </h2>
                 <p className='text-gray-700 dark:text-gray-300'>
                   Custom blue theme using CSS variables with calenderModalClass
@@ -990,10 +1105,15 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'>
+
+            {/* Brown Example */}
+            <div
+              id='brown-example'
+              className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
+            >
               <div className='mb-6'>
                 <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-                  Brown Theme Example
+                  Brown Example
                 </h2>
                 <p className='text-gray-700 dark:text-gray-300'>
                   Custom brown dark theme using CSS variables with
@@ -1084,6 +1204,210 @@ function App() {
                       Selected value:{' '}
                       <code className='text-xs'>
                         {darkDate ? JSON.stringify(darkDate, null, 2) : 'null'}
+                      </code>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Smaller Calendar Example */}
+            <div
+              id='smaller-calendar-example'
+              className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
+            >
+              <div className='mb-6'>
+                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
+                  Smaller Calendar Example
+                </h2>
+                <p className='text-gray-700 dark:text-gray-300'>
+                  Make the calendar grid smaller by reducing the cell size.
+                  Header and footer remain unchanged.
+                </p>
+              </div>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Component
+                  </h3>
+                  <div className='calendar-container'>
+                    <DtCalendar
+                      initValue={smallCalendarDate}
+                      onChange={setSmallCalendarDate}
+                      showWeekend={true}
+                      todayBtn={true}
+                      calenderModalClass='calendar-small-size'
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    CSS Styles
+                  </h3>
+                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                    <SyntaxHighlighter
+                      language='css'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`/* styles.css */
+.calendar-small-size {
+  /* Smaller grid cells - calendar width = 35px * 7 = 245px */
+  --calendar-cell-size: 35px;
+  --calendar-month-view-font-size: 12px;
+  --calendar-month-view-font-size-selected: 16px;
+  --calendar-year-view-font-size: 12px;
+  --calendar-year-view-font-size-selected: 16px;
+}`}
+                    </SyntaxHighlighter>
+                  </div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Code
+                  </h3>
+                  <div className='rounded-lg overflow-hidden border border-border'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      showWeekend={true}
+      todayBtn={true}
+      calenderModalClass="calendar-small-size"
+      onChange={setDate}
+    />
+  )
+}`}
+                    </SyntaxHighlighter>
+                  </div>
+                  <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
+                    <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-2'>
+                      Result
+                    </h4>
+                    <p className='text-sm text-gray-700 dark:text-gray-200'>
+                      Selected value:{' '}
+                      <code className='text-xs'>
+                        {smallCalendarDate
+                          ? JSON.stringify(smallCalendarDate, null, 2)
+                          : 'null'}
+                      </code>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Larger Calendar Example */}
+            <div
+              id='larger-calendar-example'
+              className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
+            >
+              <div className='mb-6'>
+                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
+                  Larger Calendar Example
+                </h2>
+                <p className='text-gray-700 dark:text-gray-300'>
+                  Make the calendar grid larger by increasing the cell size.
+                  Header and footer remain unchanged.
+                </p>
+              </div>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Component
+                  </h3>
+                  <div className='calendar-container'>
+                    <DtCalendar
+                      initValue={largeCalendarDate}
+                      onChange={setLargeCalendarDate}
+                      showWeekend={true}
+                      todayBtn={true}
+                      calenderModalClass='calendar-large-size'
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    CSS Styles
+                  </h3>
+                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                    <SyntaxHighlighter
+                      language='css'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`/* styles.css */
+.calendar-large-size {
+  /* Larger grid cells - calendar width = 50px * 7 = 350px */
+  --calendar-cell-size: 50px;
+  --calendar-cell-font-size: 16px;
+  --calendar-cell-font-size-selected: 20px;
+}`}
+                    </SyntaxHighlighter>
+                  </div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Code
+                  </h3>
+                  <div className='rounded-lg overflow-hidden border border-border'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      showWeekend={true}
+      todayBtn={true}
+      calenderModalClass="calendar-large-size"
+      onChange={setDate}
+    />
+  )
+}`}
+                    </SyntaxHighlighter>
+                  </div>
+                  <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
+                    <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-2'>
+                      Result
+                    </h4>
+                    <p className='text-sm text-gray-700 dark:text-gray-200'>
+                      Selected value:{' '}
+                      <code className='text-xs'>
+                        {largeCalendarDate
+                          ? JSON.stringify(largeCalendarDate, null, 2)
+                          : 'null'}
                       </code>
                     </p>
                   </div>
@@ -1248,9 +1572,9 @@ function App() {
             />
             <ExampleRenderer
               config={{
-                title: 'Custom Month and Weekday Names',
+                title: 'French Month and Weekday Names',
                 description:
-                  'Calendar with both custom month and weekday names - fully customize the calendar labels',
+                  'Calendar with French month and weekday names - example of localization using customization prop',
                 component: 'DtCalendar',
                 props: {
                   customization: {

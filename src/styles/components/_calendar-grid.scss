@@ -68,10 +68,10 @@
 .calendar-day {
   background: transparent;
   border: none;
-  color: var(--calendar-text-light);
+  color: var(--calendar-text);
   cursor: pointer;
   padding: 0;
-  font-size: 14px;
+  font-size: var(--calendar-cell-font-size);
   // Only transition background and color, not border-radius
   transition-property: background-color, color !important;
   transition-duration: 0.2s;
@@ -84,7 +84,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(var(--calendar-modal-width) / 7);
+  aspect-ratio: 1;
+  min-height: var(--calendar-cell-size);
   min-width: 0; // Allow grid to control width
 
   &:hover:not(.calendar-day-disabled):not(.calendar-day-selected):not(.calendar-day-other-month):not(.calendar-day-range-start):not(.calendar-day-range-end) {
@@ -119,7 +120,7 @@
     transition-timing-function: ease-in-out;
 
     &.calendar-day-selected-enlarged {
-    font-size: 22px;
+      font-size: var(--calendar-cell-font-size-selected);
     }
 
     &.calendar-day-other-month {
@@ -275,7 +276,7 @@
     flex-direction: row;
     gap: var(--calendar-spacing-lg, 24px);
     padding: var(--calendar-spacing-md, 16px);
-    width: 100%;
+    width: fit-content;
   }
 }
 
@@ -286,7 +287,9 @@
   &.calendar-month-multi {
     display: flex;
     flex-direction: column;
-    min-width: var(--calendar-modal-width);
+    width: calc(var(--calendar-cell-size) * 7);
+    min-width: calc(var(--calendar-cell-size) * 7);
+    max-width: calc(var(--calendar-cell-size) * 7);
     flex-shrink: 0;
   }
 }

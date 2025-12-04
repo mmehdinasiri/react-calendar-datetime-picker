@@ -136,7 +136,7 @@
 
   // Adjust modal width for multiple months
   &:has(.calendar-core-multi-months) {
-    max-width: calc(var(--calendar-modal-width) * 3 + 100px); // 3 months + gaps + padding
+    max-width: calc(var(--calendar-cell-size) * 7 * 3 + 100px); // 3 months + gaps + padding
     width: auto;
   }
 }

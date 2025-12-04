@@ -21,7 +21,7 @@
   color: var(--calendar-text-light);
   cursor: pointer;
   padding: 0;
-  font-size: 14px;
+  font-size: var(--calendar-month-view-font-size);
   transition: color 200ms ease-in-out;
   height: 72px;
   line-height: 72px;
@@ -39,7 +39,7 @@
   &.calendar-month-current {
     color: var(--calendar-selected-day);
     font-weight: 700;
-    font-size: 22px;
+    font-size: var(--calendar-month-view-font-size-selected);
   }
 
   &.is-disabled {

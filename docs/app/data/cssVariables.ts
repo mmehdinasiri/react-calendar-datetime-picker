@@ -11,6 +11,7 @@ export interface CSSVariable {
     | 'spacing'
     | 'border-radius'
     | 'modal-width'
+    | 'font-size'
     | 'shadows'
     | 'transitions'
 }
@@ -173,6 +174,65 @@ export const cssVariables: CSSVariable[] = [
     description: 'Icon color',
     category: 'text'
   },
+  // Font sizes
+  {
+    name: '--calendar-header-text-font-size',
+    lightTheme: '18px',
+    darkTheme: '18px',
+    description: 'Header text font size (month/year buttons and titles)',
+    category: 'font-size'
+  },
+  {
+    name: '--calendar-cell-font-size',
+    lightTheme: '16px',
+    darkTheme: '16px',
+    description: 'Default grid cell font size',
+    category: 'font-size'
+  },
+  {
+    name: '--calendar-cell-font-size-selected',
+    lightTheme: '18px',
+    darkTheme: '18px',
+    description: 'Selected cell font size (when enlarged)',
+    category: 'font-size'
+  },
+  {
+    name: '--calendar-month-view-font-size',
+    lightTheme: '14px',
+    darkTheme: '14px',
+    description: 'Month view default font size',
+    category: 'font-size'
+  },
+  {
+    name: '--calendar-month-view-font-size-selected',
+    lightTheme: '22px',
+    darkTheme: '22px',
+    description: 'Month view selected font size',
+    category: 'font-size'
+  },
+  {
+    name: '--calendar-year-view-font-size',
+    lightTheme: '14px',
+    darkTheme: '14px',
+    description: 'Year view default font size',
+    category: 'font-size'
+  },
+  {
+    name: '--calendar-year-view-font-size-selected',
+    lightTheme: '22px',
+    darkTheme: '22px',
+    description: 'Year view selected font size',
+    category: 'font-size'
+  },
+  {
+    name: '--calendar-footer-btn-font-size',
+    lightTheme: '16px',
+    darkTheme: '16px',
+    description:
+      'Footer buttons font size (Today button and preset range buttons)',
+    category: 'font-size'
+  },
+
   // Border Colors
   {
     name: '--calendar-border',
@@ -239,35 +299,14 @@ export const cssVariables: CSSVariable[] = [
     description: 'Large border radius',
     category: 'border-radius'
   },
-  // Modal width
+  // Grid cell size
   {
-    name: '--calendar-modal-width',
-    lightTheme: '310px',
-    darkTheme: '310px',
-    description: 'Calendar modal width',
+    name: '--calendar-cell-size',
+    lightTheme: '44px',
+    darkTheme: '44px',
+    description:
+      'Grid cell size - controls calendar grid scaling (calendar width = cell-size × 7). Header and footer remain unchanged.',
     category: 'modal-width'
-  },
-  // Shadows
-  {
-    name: '--calendar-shadow-sm',
-    lightTheme: '0 1px 2px rgba(0, 0, 0, 0.05)',
-    darkTheme: '0 1px 2px rgba(0, 0, 0, 0.3)',
-    description: 'Small shadow',
-    category: 'shadows'
-  },
-  {
-    name: '--calendar-shadow-md',
-    lightTheme: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    darkTheme: '0 4px 6px rgba(0, 0, 0, 0.4)',
-    description: 'Medium shadow',
-    category: 'shadows'
-  },
-  {
-    name: '--calendar-shadow-lg',
-    lightTheme: '0 10px 15px rgba(0, 0, 0, 0.1)',
-    darkTheme: '0 10px 15px rgba(0, 0, 0, 0.5)',
-    description: 'Large shadow',
-    category: 'shadows'
   },
   // Transitions
   {

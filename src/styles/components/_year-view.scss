@@ -44,7 +44,7 @@
   color: var(--calendar-text);
   cursor: pointer;
   padding: 0;
-  font-size: 14px;
+  font-size: var(--calendar-year-view-font-size);
   transition: var(--calendar-transition);
   width: 20%;
   height: 55px;
@@ -62,7 +62,7 @@
   &.calendar-year-current {
     color: var(--calendar-selected-day);
     font-weight: 700;
-    font-size: 22px;
+    font-size: var(--calendar-year-view-font-size-selected);
   }
 }
 

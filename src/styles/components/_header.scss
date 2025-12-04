@@ -2,12 +2,12 @@
 @use '../variables' as *;
 
 .calendar-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   background-color: var(--calendar-header-bg);
   color: var(--calendar-text-header);
-  padding: 24px 16px;
+  padding: 24px 6px;
   min-height: 48px;
   position: relative;
   border-top-left-radius: var(--calendar-radius-sm);
@@ -30,6 +30,11 @@
   min-height: 32px;
   width: 32px;
   height: 32px;
+  justify-self: start;
+
+  &.calendar-nav-next {
+    justify-self: end;
+  }
 
   &:hover {
     background: rgba(255, 255, 255, 0.15);
@@ -64,6 +69,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  justify-self: center;
 }
 
 .calendar-month-btn,
@@ -72,7 +78,7 @@
   border: none;
   color: var(--calendar-text-header);
   font-weight: 500;
-  font-size: 18px;
+  font-size: var(--calendar-header-text-font-size);
   cursor: pointer;
   padding: var(--calendar-spacing-xs) var(--calendar-spacing-sm);
   transition: var(--calendar-transition);
@@ -93,7 +99,7 @@
   display: flex;
   color: var(--calendar-text-header);
   font-weight: 500;
-  font-size: 18px;
+  font-size: var(--calendar-header-text-font-size);
   cursor: pointer;
   background: transparent;
   border: none;
@@ -114,7 +120,7 @@
   color: var(--calendar-text-header);
   cursor: pointer;
   padding: var(--calendar-spacing-xs) var(--calendar-spacing-sm);
-  font-size: 14px;
+  font-size: var(--calendar-header-text-font-size);
   transition: var(--calendar-transition);
   border-radius: var(--calendar-radius-sm);
 

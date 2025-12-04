@@ -243,6 +243,22 @@ main {
   --calendar-header-bg: #2563eb;
 }
 
+/* Smaller calendar size - applied via calenderModalClass prop */
+.calendar-small-size {
+  --calendar-cell-size: 35px;
+  --calendar-month-view-font-size: 12px;
+  --calendar-month-view-font-size-selected: 16px;
+  --calendar-year-view-font-size: 12px;
+  --calendar-year-view-font-size-selected: 16px;
+}
+
+/* Larger calendar size - applied via calenderModalClass prop */
+.calendar-large-size {
+  --calendar-cell-size: 50px;
+  --calendar-cell-font-size: 16px;
+  --calendar-cell-font-size-selected: 20px;
+}
+
 /* Custom scrollbar styling for sidebar */
 .sidebar-scrollbar {
   scrollbar-width: thin;
