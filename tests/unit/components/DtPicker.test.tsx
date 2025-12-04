@@ -212,4 +212,198 @@ describe('DtPicker', () => {
     fireEvent.click(screen.getByTestId('core-go-today'))
     expect(onGoToToday).toHaveBeenCalled()
   })
+
+  describe('triggerElement prop', () => {
+    it('renders custom trigger element instead of default input', () => {
+      const customButton = (
+        <button data-testid='custom-trigger'>Pick Date</button>
+      )
+      render(<DtPicker {...defaultProps} triggerElement={customButton} />)
+
+      expect(screen.getByTestId('custom-trigger')).toBeInTheDocument()
+      expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+    })
+
+    it('opens calendar modal when custom trigger is clicked', () => {
+      const customButton = (
+        <button data-testid='custom-trigger'>Pick Date</button>
+      )
+      render(<DtPicker {...defaultProps} triggerElement={customButton} />)
+
+      const trigger = screen.getByTestId('custom-trigger')
+      fireEvent.click(trigger)
+
+      expect(screen.getByTestId('calendar-core')).toBeInTheDocument()
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+
+    it('does not open calendar when custom trigger is clicked and disabled', () => {
+      const customButton = (
+        <button data-testid='custom-trigger'>Pick Date</button>
+      )
+      render(
+        <DtPicker
+          {...defaultProps}
+          triggerElement={customButton}
+          isDisabled={true}
+        />
+      )
+
+      const trigger = screen.getByTestId('custom-trigger')
+      fireEvent.click(trigger)
+
+      expect(screen.queryByTestId('calendar-core')).not.toBeInTheDocument()
+    })
+
+    it('applies custom triggerClass to wrapper div', () => {
+      const customButton = (
+        <button data-testid='custom-trigger'>Pick Date</button>
+      )
+      render(
+        <DtPicker
+          {...defaultProps}
+          triggerElement={customButton}
+          triggerClass='my-custom-trigger-class'
+        />
+      )
+
+      const wrapper = screen.getByTestId('custom-trigger').parentElement
+      expect(wrapper).toHaveClass('my-custom-trigger-class')
+    })
+
+    it('wraps custom trigger in accessible container with proper ARIA attributes', () => {
+      const customButton = (
+        <button data-testid='custom-trigger'>Pick Date</button>
+      )
+      render(<DtPicker {...defaultProps} triggerElement={customButton} />)
+
+      const wrapper = screen.getByTestId('custom-trigger').parentElement
+      expect(wrapper).toHaveAttribute('aria-haspopup', 'dialog')
+      expect(wrapper).toHaveAttribute('aria-expanded', 'false')
+      expect(wrapper).toHaveAttribute('tabIndex', '0')
+    })
+
+    it('updates aria-expanded when modal opens', () => {
+      const customButton = (
+        <button data-testid='custom-trigger'>Pick Date</button>
+      )
+      render(<DtPicker {...defaultProps} triggerElement={customButton} />)
+
+      const wrapper = screen.getByTestId('custom-trigger').parentElement
+      expect(wrapper).toHaveAttribute('aria-expanded', 'false')
+
+      fireEvent.click(screen.getByTestId('custom-trigger'))
+      expect(wrapper).toHaveAttribute('aria-expanded', 'true')
+    })
+
+    it('works with custom div element as trigger', () => {
+      const customDiv = (
+        <div data-testid='custom-div-trigger'>
+          <span>Select Date</span>
+        </div>
+      )
+      render(<DtPicker {...defaultProps} triggerElement={customDiv} />)
+
+      expect(screen.getByTestId('custom-div-trigger')).toBeInTheDocument()
+      expect(screen.getByText('Select Date')).toBeInTheDocument()
+
+      fireEvent.click(screen.getByTestId('custom-div-trigger'))
+      expect(screen.getByTestId('calendar-core')).toBeInTheDocument()
+    })
+
+    it('works with custom input element as trigger', () => {
+      const customInput = (
+        <input
+          data-testid='custom-input-trigger'
+          type='text'
+          placeholder='Custom input'
+        />
+      )
+      render(<DtPicker {...defaultProps} triggerElement={customInput} />)
+
+      expect(screen.getByTestId('custom-input-trigger')).toBeInTheDocument()
+      expect(screen.getByPlaceholderText('Custom input')).toBeInTheDocument()
+
+      fireEvent.click(screen.getByTestId('custom-input-trigger'))
+      expect(screen.getByTestId('calendar-core')).toBeInTheDocument()
+    })
+
+    it('does not render default input wrapper when triggerElement is provided', () => {
+      const customButton = (
+        <button data-testid='custom-trigger'>Pick Date</button>
+      )
+      render(<DtPicker {...defaultProps} triggerElement={customButton} />)
+
+      expect(screen.queryByLabelText('Open calendar')).not.toBeInTheDocument()
+      expect(screen.queryByLabelText('Clear selection')).not.toBeInTheDocument()
+    })
+
+    it('handles click events on custom trigger correctly', () => {
+      const handleCustomClick = vi.fn()
+      const customButton = (
+        <button data-testid='custom-trigger' onClick={handleCustomClick}>
+          Pick Date
+        </button>
+      )
+      render(<DtPicker {...defaultProps} triggerElement={customButton} />)
+
+      const trigger = screen.getByTestId('custom-trigger')
+      fireEvent.click(trigger)
+
+      // Custom click handler should be called
+      expect(handleCustomClick).toHaveBeenCalled()
+      // Calendar should also open
+      expect(screen.getByTestId('calendar-core')).toBeInTheDocument()
+    })
+
+    it('applies disabled cursor style when isDisabled is true', () => {
+      const customButton = (
+        <button data-testid='custom-trigger'>Pick Date</button>
+      )
+      render(
+        <DtPicker
+          {...defaultProps}
+          triggerElement={customButton}
+          isDisabled={true}
+        />
+      )
+
+      const wrapper = screen.getByTestId('custom-trigger').parentElement
+      expect(wrapper).toHaveStyle({ cursor: 'not-allowed' })
+    })
+
+    it('applies pointer cursor style when not disabled', () => {
+      const customButton = (
+        <button data-testid='custom-trigger'>Pick Date</button>
+      )
+      render(<DtPicker {...defaultProps} triggerElement={customButton} />)
+
+      const wrapper = screen.getByTestId('custom-trigger').parentElement
+      expect(wrapper).toHaveStyle({ cursor: 'pointer' })
+    })
+
+    it('renders default input when triggerElement is not provided', () => {
+      render(<DtPicker {...defaultProps} />)
+
+      expect(screen.getByRole('textbox')).toBeInTheDocument()
+      expect(screen.getByLabelText('Open calendar')).toBeInTheDocument()
+    })
+
+    it('maintains modal positioning with custom trigger element', () => {
+      const customButton = (
+        <button data-testid='custom-trigger'>Pick Date</button>
+      )
+      render(<DtPicker {...defaultProps} triggerElement={customButton} />)
+
+      fireEvent.click(screen.getByTestId('custom-trigger'))
+
+      const modal = screen.getByRole('dialog')
+      expect(modal).toBeInTheDocument()
+      // Modal should have positioning styles
+      expect(modal).toHaveStyle({
+        position: 'fixed',
+        zIndex: '1000'
+      })
+    })
+  })
 })

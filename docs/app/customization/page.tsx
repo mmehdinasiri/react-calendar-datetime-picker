@@ -1,7 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { DtCalendar } from '../../../src/components/DtCalendar'
+import { useForm, Controller } from 'react-hook-form'
+import { DtCalendar, DtPicker } from '../../../src/components'
+import { dayToString } from 'react-calendar-datetime-picker'
+import type { Day } from 'react-calendar-datetime-picker'
 import '../../../src/styles/index.scss'
 import { ExampleRenderer } from '../components/ExampleRenderer'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -11,7 +14,6 @@ import {
   getColorValue,
   getDarkColorValue
 } from '../data/cssVariables'
-import { Day } from 'react-calendar-datetime-picker'
 
 // Custom Icons
 const ArrowLeftIcon = ({ className }: { className?: string }) => (
@@ -52,9 +54,114 @@ const ArrowRightIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
+// Custom component that displays the selected date in the input
+function DatePickerWithValueDisplay({ onChange, ...props }: any) {
+  const [selectedDate, setSelectedDate] = useState<Day | null>(null)
+
+  return (
+    <DtPicker
+      {...props}
+      onChange={(date) => {
+        setSelectedDate(date)
+        onChange?.(date)
+      }}
+      triggerElement={
+        <input
+          type='text'
+          placeholder='Select a date...'
+          value={selectedDate ? dayToString(selectedDate, '/') : ''}
+          readOnly
+          style={{
+            padding: '12px 16px',
+            border: '2px solid #28a745',
+            borderRadius: '20px',
+            fontSize: '16px',
+            width: '280px',
+            outline: 'none',
+            backgroundColor: '#f8fff9',
+            color: '#155724',
+            fontWeight: '500',
+            transition: 'all 0.2s ease'
+          }}
+        />
+      }
+    />
+  )
+}
+
+// React Hook Form integration example component
+function ReactHookFormExample() {
+  const { control, handleSubmit, watch } = useForm<{
+    birthDate: Day | null
+  }>({
+    defaultValues: {
+      birthDate: null
+    }
+  })
+
+  const birthDate = watch('birthDate')
+
+  const onSubmit = (data: { birthDate: Day | null }) => {
+    console.log('Form submitted:', data)
+    alert(
+      `Form submitted with date: ${data.birthDate ? dayToString(data.birthDate, '/') : 'No date selected'}`
+    )
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+      <div>
+        <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+          Birth Date
+        </label>
+        <Controller
+          name='birthDate'
+          control={control}
+          render={({ field }) => (
+            <DtPicker
+              local='en'
+              initValue={field.value}
+              onChange={(date) => {
+                field.onChange(date)
+                field.onBlur() // Trigger validation on change
+              }}
+              triggerElement={
+                <input
+                  type='text'
+                  placeholder='Select your birth date...'
+                  value={field.value ? dayToString(field.value, '/') : ''}
+                  readOnly
+                  style={{
+                    padding: '12px 16px',
+                    border: '2px solid #6366f1',
+                    borderRadius: '8px',
+                    fontSize: '16px',
+                    width: '100%',
+                    outline: 'none',
+                    backgroundColor: '#f8f9ff',
+                    color: '#1e1b4b',
+                    fontWeight: '500'
+                  }}
+                />
+              }
+            />
+          )}
+        />
+      </div>
+      <button
+        type='submit'
+        className='px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors'
+      >
+        Submit Form
+      </button>
+    </form>
+  )
+}
+
 export default function Customization() {
   const [customDate, setCustomDate] = useState<any>(null)
   const [darkDate, setDarkDate] = useState<Day | null>(null)
+  const [styledInputDate, setStyledInputDate] = useState<Day | null>(null)
 
   return (
     <div className='max-w-6xl mx-auto px-6 py-12'>
@@ -69,6 +176,514 @@ export default function Customization() {
       </div>
 
       <div className='space-y-12'>
+        {/* Custom Trigger Elements */}
+        <section
+          id='custom-trigger-elements'
+          className='bg-bg-secondary rounded-lg border border-border p-8'
+        >
+          <div className='mb-6'>
+            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
+              Custom Trigger Elements
+            </h2>
+            <p className='text-gray-700 dark:text-gray-300'>
+              Bind the calendar modal to any HTML element instead of just input
+              fields. Use the <code>triggerElement</code> prop to create
+              custom-styled triggers like buttons, divs, or any interactive
+              element.
+            </p>
+          </div>
+
+          {/* Custom Trigger Examples */}
+          <div className='space-y-6'>
+            <ExampleRenderer
+              config={{
+                title: 'Custom Button Trigger',
+                description:
+                  'Calendar modal triggered by a custom styled button',
+                component: 'DtPicker',
+                props: {
+                  triggerElement: (
+                    <button
+                      style={{
+                        padding: '10px 20px',
+                        backgroundColor: '#007bff',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        fontSize: '16px'
+                      }}
+                    >
+                      📅 Pick Date
+                    </button>
+                  ),
+                  placeholder: 'Select a date...'
+                },
+                wrapper: 'calendar-container',
+                customCode: `import { DtPicker } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtPicker
+      triggerElement={
+        <button
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#007bff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '16px'
+          }}
+        >
+          📅 Pick Date
+        </button>
+      }
+      placeholder="Select a date..."
+      onChange={setDate}
+    />
+  )
+}`
+              }}
+              exampleKey='CustomButtonTrigger'
+            />
+
+            <ExampleRenderer
+              config={{
+                title: 'Custom Div with Icon',
+                description:
+                  'Calendar triggered by a beautifully styled div element with icon and gradient',
+                component: 'DtPicker',
+                props: {
+                  triggerElement: (
+                    <div
+                      style={{
+                        padding: '14px 20px',
+                        background:
+                          'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        borderRadius: '12px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        minWidth: '240px',
+                        boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+                        transition: 'all 0.3s ease',
+                        color: 'white',
+                        fontWeight: '500'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-2px)'
+                        e.currentTarget.style.boxShadow =
+                          '0 6px 20px rgba(102, 126, 234, 0.5)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(0)'
+                        e.currentTarget.style.boxShadow =
+                          '0 4px 15px rgba(102, 126, 234, 0.4)'
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: '20px',
+                          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
+                        }}
+                      >
+                        📅
+                      </span>
+                      <span style={{ flex: 1 }}>Select Date</span>
+                      <span style={{ fontSize: '12px', opacity: 0.9 }}>▼</span>
+                    </div>
+                  )
+                },
+                wrapper: 'calendar-container',
+                customCode: `import { DtPicker } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtPicker
+      triggerElement={
+        <div
+          style={{
+            padding: '14px 20px',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            borderRadius: '12px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            minWidth: '240px',
+            boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+            transition: 'all 0.3s ease',
+            color: 'white',
+            fontWeight: '500'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)'
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.5)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)'
+            e.currentTarget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)'
+          }}
+        >
+          <span style={{ fontSize: '20px' }}>📅</span>
+          <span style={{ flex: 1 }}>Select Date</span>
+          <span style={{ fontSize: '12px', opacity: 0.9 }}>▼</span>
+        </div>
+      }
+      onChange={setDate}
+    />
+  )
+}`
+              }}
+              exampleKey='CustomDivTrigger'
+            />
+
+            <section
+              id='custom-styled-input'
+              className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
+            >
+              <div className='mb-6'>
+                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
+                  Custom Styled Input
+                </h2>
+                <p className='text-gray-700 dark:text-gray-300'>
+                  Calendar triggered by a custom styled input field that
+                  displays the selected date
+                </p>
+              </div>
+
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Component
+                  </h3>
+                  <div className='calendar-container'>
+                    <DatePickerWithValueDisplay
+                      onChange={setStyledInputDate}
+                      local='en'
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Code
+                  </h3>
+                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`import { DtPicker, dayToString } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtPicker
+      local="en"
+      onChange={setDate}
+      triggerElement={
+        <input
+          type="text"
+          placeholder="Select a date..."
+          value={date ? dayToString(date, '/') : ''}
+          readOnly
+          style={{
+            padding: '12px 16px',
+            border: '2px solid #28a745',
+            borderRadius: '20px',
+            fontSize: '16px',
+            width: '280px',
+            outline: 'none',
+            backgroundColor: '#f8fff9',
+            color: '#155724',
+            fontWeight: '500'
+          }}
+        />
+      }
+    />
+  )
+}`}
+                    </SyntaxHighlighter>
+                  </div>
+                  <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
+                    <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-2'>
+                      Result
+                    </h4>
+                    <p className='text-sm text-gray-700 dark:text-gray-200'>
+                      Selected value:{' '}
+                      <code className='text-xs'>
+                        {styledInputDate
+                          ? JSON.stringify(styledInputDate, null, 2)
+                          : 'null'}
+                      </code>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section
+              id='react-hook-form-integration'
+              className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
+            >
+              <div className='mb-6'>
+                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
+                  React Hook Form Integration
+                </h2>
+                <p className='text-gray-700 dark:text-gray-300'>
+                  Integrate DtPicker with React Hook Form using the Controller
+                  component. The custom trigger element displays the selected
+                  date value.
+                </p>
+              </div>
+
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Component
+                  </h3>
+                  <div className='calendar-container'>
+                    <ReactHookFormExample />
+                  </div>
+                </div>
+                <div>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+                    Code
+                  </h3>
+                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`import { DtPicker, dayToString } from 'react-calendar-datetime-picker'
+import { useForm, Controller } from 'react-hook-form'
+import React from 'react'
+
+function App() {
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      birthDate: null
+    }
+  })
+
+  const onSubmit = (data) => {
+    console.log('Form data:', data)
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        name="birthDate"
+        control={control}
+        render={({ field }) => (
+          <DtPicker
+            local="en"
+            initValue={field.value}
+            onChange={(date) => {
+              field.onChange(date)
+              field.onBlur() // Trigger validation on change
+            }}
+            triggerElement={
+              <input
+                type="text"
+                placeholder="Select your birth date..."
+                value={field.value ? dayToString(field.value, '/') : ''}
+                readOnly
+                style={{
+                  padding: '12px 16px',
+                  border: '2px solid #6366f1',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  width: '100%',
+                  outline: 'none',
+                  backgroundColor: '#f8f9ff',
+                  color: '#1e1b4b',
+                  fontWeight: '500'
+                }}
+              />
+            }
+          />
+        )}
+      />
+      <button type="submit">Submit</button>
+    </form>
+  )
+}`}
+                    </SyntaxHighlighter>
+                  </div>
+                  <div className='bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4'>
+                    <h4 className='text-md font-semibold text-blue-900 dark:text-blue-100 mb-2'>
+                      Key Points
+                    </h4>
+                    <ul className='text-sm text-blue-800 dark:text-blue-200 space-y-1'>
+                      <li>
+                        • Use <code>Controller</code> to integrate with React
+                        Hook Form
+                      </li>
+                      <li>
+                        • Use <code>field.value</code> to get the current form
+                        value (no need for <code>watch</code>)
+                      </li>
+                      <li>
+                        • Pass <code>initValue=&#123;field.value&#125;</code> to
+                        make DtPicker a controlled component
+                      </li>
+                      <li>
+                        • Call <code>field.onChange</code> and{' '}
+                        <code>field.onBlur</code> for proper form validation
+                      </li>
+                      <li>
+                        • Format the date using <code>dayToString</code> in the
+                        input value
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div className='mt-8'>
+            <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+              Usage Examples
+            </h3>
+
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+              <div>
+                <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                  Basic Button Trigger
+                </h4>
+                <div className='rounded-lg overflow-hidden border border-border'>
+                  <SyntaxHighlighter
+                    language='tsx'
+                    style={vscDarkPlus}
+                    customStyle={{
+                      margin: 0,
+                      borderRadius: '0.5rem',
+                      fontSize: '0.875rem',
+                      lineHeight: '1.5'
+                    }}
+                  >
+                    {`import { DtPicker } from 'react-calendar-datetime-picker'
+
+function App() {
+  return (
+    <DtPicker
+      triggerElement={
+        <button
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#007bff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          📅 Select Date
+        </button>
+      }
+      onChange={setDate}
+    />
+  )
+}`}
+                  </SyntaxHighlighter>
+                </div>
+              </div>
+
+              <div>
+                <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                  Form Integration
+                </h4>
+                <div className='rounded-lg overflow-hidden border border-border'>
+                  <SyntaxHighlighter
+                    language='tsx'
+                    style={vscDarkPlus}
+                    customStyle={{
+                      margin: 0,
+                      borderRadius: '0.5rem',
+                      fontSize: '0.875rem',
+                      lineHeight: '1.5'
+                    }}
+                  >
+                    {`// React Hook Form Integration
+import { Controller } from 'react-hook-form'
+
+<Controller
+  name="birthDate"
+  control={control}
+  render={({ field }) => (
+    <DtPicker
+      {...field}
+      triggerElement={
+        <input
+          placeholder="Birth date"
+          style={{
+            padding: '8px',
+            border: '1px solid #ccc',
+            borderRadius: '4px'
+          }}
+        />
+      }
+    />
+  )}
+/>`}
+                  </SyntaxHighlighter>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className='mt-6'>
+            <div className='bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4'>
+              <h4 className='text-md font-semibold text-blue-900 dark:text-blue-100 mb-2'>
+                Key Benefits
+              </h4>
+              <ul className='text-sm text-blue-800 dark:text-blue-200 space-y-1'>
+                <li>
+                  • <strong>Flexible Design:</strong> Use any HTML element as a
+                  trigger
+                </li>
+                <li>
+                  • <strong>Backward Compatible:</strong> Default input behavior
+                  unchanged
+                </li>
+                <li>
+                  • <strong>Accessible:</strong> Proper ARIA attributes and
+                  keyboard navigation
+                </li>
+                <li>
+                  • <strong>Framework Integration:</strong> Works with React
+                  Hook Form, Formik, etc.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* Themes */}
         <section
           id='themes'

@@ -38,6 +38,28 @@ const navigation = [
   {
     title: 'CUSTOMIZATION',
     items: [
+      {
+        name: 'Custom Trigger Elements',
+        href: '/customization#custom-trigger-elements',
+        subItems: [
+          {
+            name: 'Custom Button Trigger',
+            href: '/customization#custom-button-trigger'
+          },
+          {
+            name: 'Custom Div with Icon',
+            href: '/customization#custom-div-trigger'
+          },
+          {
+            name: 'Custom Styled Input',
+            href: '/customization#custom-styled-input'
+          },
+          {
+            name: 'React Hook Form Integration',
+            href: '/customization#react-hook-form-integration'
+          }
+        ]
+      },
       { name: 'Themes', href: '/customization#themes' },
       { name: 'CSS Variables', href: '/customization#css-variables' },
       { name: 'Custom CSS Classes', href: '/customization#custom-classes' },

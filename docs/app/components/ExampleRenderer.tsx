@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { DtPicker, DtCalendar } from 'react-calendar-datetime-picker'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -180,6 +180,72 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                   return config.customCode
                 }
 
+                // Helper function to safely stringify values
+                const safeStringify = (val: unknown, key: string): string => {
+                  // Check if it's a React element
+                  if (React.isValidElement(val)) {
+                    // For triggerElement, provide a helpful placeholder
+                    if (key === 'triggerElement') {
+                      return `      ${key}={\n        <button style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white' }}>\n          📅 Pick Date\n        </button>\n      }`
+                    }
+                    return `      ${key}={/* React element */}`
+                  }
+
+                  // Check if it's a function
+                  if (typeof val === 'function') {
+                    return `      ${key}={/* custom function */}`
+                  }
+
+                  // Check if it's an object (but not null or array)
+                  if (
+                    typeof val === 'object' &&
+                    val !== null &&
+                    !Array.isArray(val)
+                  ) {
+                    try {
+                      // Try to stringify, but handle circular references
+                      const seen = new WeakSet()
+                      const formatted = JSON.stringify(
+                        val,
+                        (k, v) => {
+                          // Skip React elements and functions
+                          if (React.isValidElement(v)) {
+                            return '[React Element]'
+                          }
+                          if (typeof v === 'function') {
+                            return '[Function]'
+                          }
+                          // Handle circular references
+                          if (typeof v === 'object' && v !== null) {
+                            if (seen.has(v)) {
+                              return '[Circular]'
+                            }
+                            seen.add(v)
+                          }
+                          return v
+                        },
+                        2
+                      )
+                        .split('\n')
+                        .map((line, index) =>
+                          index === 0 ? line : '        ' + line
+                        )
+                        .join('\n')
+                      return `      ${key}={${formatted}}`
+                    } catch (error) {
+                      // If stringification fails, provide a placeholder
+                      return `      ${key}={/* object with circular reference or unsupported types */}`
+                    }
+                  }
+
+                  // For arrays and primitives
+                  try {
+                    return `      ${key}={${JSON.stringify(val)}}`
+                  } catch (error) {
+                    return `      ${key}={/* cannot stringify */}`
+                  }
+                }
+
                 const propsCode = Object.entries(config.props || {})
                   .filter(([key]) => key !== 'initValue')
                   .map(([key, value]) => {
@@ -188,24 +254,7 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                       return `      ${config.constraintsCode}`
                     }
 
-                    if (typeof value === 'function') {
-                      return `      ${key}={/* custom function */}`
-                    }
-                    if (
-                      typeof value === 'object' &&
-                      value !== null &&
-                      !Array.isArray(value)
-                    ) {
-                      // Regular object without functions
-                      const formatted = JSON.stringify(value, null, 2)
-                        .split('\n')
-                        .map((line, index) =>
-                          index === 0 ? line : '        ' + line
-                        )
-                        .join('\n')
-                      return `      ${key}={${formatted}}`
-                    }
-                    return `      ${key}={${JSON.stringify(value)}}`
+                    return safeStringify(value, key)
                   })
                   .join('\n')
 

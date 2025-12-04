@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, ReactNode } from 'react'
 import type { Day, Range, Multi } from '../types'
 import type {
   CalendarSelectionSingle,
@@ -55,6 +55,15 @@ interface DtPickerPropsBase extends SharedCalendarProps {
    * Input element ID
    */
   inputId?: string
+  /**
+   * Custom trigger element to replace the default input field
+   * When provided, the input field will not be rendered
+   */
+  triggerElement?: ReactNode
+  /**
+   * Custom CSS class for trigger wrapper when using custom trigger
+   */
+  triggerClass?: string
 }
 
 export interface DtPickerPropsSingle
@@ -107,6 +116,8 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     constraints: constraintsInput,
     placeholder = 'Select date',
     inputClass,
+    triggerElement,
+    triggerClass,
     calenderModalClass,
     autoClose = true,
     inputId,
@@ -127,6 +138,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
   const [isOpen, setIsOpen] = useState(false)
   const pickerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const triggerRef = useRef<HTMLElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
 
   // Use calendar picker hook for shared calendar logic
@@ -147,7 +159,12 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
   )
 
   // Use modal position hook
-  const { modalPosition } = useModalPosition(inputRef, modalRef, isOpen, local)
+  const { modalPosition } = useModalPosition(
+    triggerRef,
+    modalRef,
+    isOpen,
+    local
+  )
 
   // Use click outside hook
   useClickOutside(isOpen, pickerRef, modalRef, () => setIsOpen(false))
@@ -163,8 +180,8 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     restoreFocus: true
   })
 
-  // Handle input click
-  const handleInputClick = (e: React.MouseEvent) => {
+  // Handle trigger click (works for both input and custom trigger)
+  const handleTriggerClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     if (!isDisabled) {
       setIsOpen((prev) => !prev)
@@ -190,15 +207,36 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
   const modalClass = `calendar-picker-modal ${calenderModalClass || ''}`
   const isRTL = local === 'fa'
 
-  return (
-    <div
-      ref={pickerRef}
-      className='calendar-picker'
-      dir={isRTL ? 'rtl' : 'ltr'}
-    >
+  // Render trigger element (either custom or default input)
+  const renderTrigger = () => {
+    if (triggerElement) {
+      // Custom trigger element - wrap it with a div that has the ref and handles clicks
+      return (
+        <div
+          ref={triggerRef as React.RefObject<HTMLDivElement>}
+          className={triggerClass || ''}
+          onClick={handleTriggerClick}
+          style={{
+            display: 'inline-block',
+            cursor: isDisabled ? 'not-allowed' : 'pointer'
+          }}
+          aria-haspopup='dialog'
+          aria-expanded={isOpen}
+          tabIndex={0} // Make focusable
+        >
+          {triggerElement}
+        </div>
+      )
+    }
+
+    // Default input trigger
+    return (
       <div className={inputWrapperClass}>
         <input
-          ref={inputRef}
+          ref={(el) => {
+            inputRef.current = el
+            if (el) triggerRef.current = el
+          }}
           id={inputId}
           type='text'
           readOnly
@@ -206,7 +244,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
           placeholder={placeholder}
           disabled={isDisabled}
           required={isRequired}
-          onClick={handleInputClick}
+          onClick={handleTriggerClick}
           onKeyDown={handleInputKeyDown}
           className='calendar-picker-input'
           aria-label={placeholder || 'Select date'}
@@ -225,7 +263,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
         )}
         <button
           type='button'
-          onClick={handleInputClick}
+          onClick={handleTriggerClick}
           disabled={isDisabled}
           className='calendar-picker-toggle'
           aria-label='Open calendar'
@@ -233,6 +271,16 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
           📅
         </button>
       </div>
+    )
+  }
+
+  return (
+    <div
+      ref={pickerRef}
+      className='calendar-picker'
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
+      {renderTrigger()}
 
       {isOpen && (
         <div
