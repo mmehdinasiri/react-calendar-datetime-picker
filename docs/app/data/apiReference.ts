@@ -27,347 +27,221 @@ export interface UtilityCategory {
   utilities: Utility[]
 }
 
-export const components: Component[] = [
+// Shared props between DtCalendar and DtPicker
+export const sharedProps: Prop[] = [
   {
-    name: 'DtPicker',
-    description:
-      'A date picker component with an input field that opens a calendar modal. Supports all calendar types, locales, and customization options.',
-    props: [
-      {
-        name: 'initValue',
-        type: 'InitValueInput',
-        default: 'undefined',
-        description: 'Initial value for the date picker'
-      },
-      {
-        name: 'onChange',
-        type: '(date: unknown) => void',
-        default: 'Required',
-        description:
-          'Callback function called when the final date value changes. Receives the calculated value based on type: Day for single, Range for range/week, or Multi (Day[]) for multi. Fires AFTER onDateSelect. Use this to update your application state with the final selected value.'
-      },
-      {
-        name: 'type',
-        type: 'CalendarType',
-        default: "'single'",
-        description: 'Calendar selection type'
-      },
-      {
-        name: 'withTime',
-        type: 'boolean',
-        default: 'false',
-        description: 'Enable time selection'
-      },
-      {
-        name: 'showTimeInput',
-        type: 'boolean',
-        default: 'false',
-        description: 'Show time in input field'
-      },
-      {
-        name: 'local',
-        type: 'CalendarLocale',
-        default: "'en'",
-        description: 'Calendar locale'
-      },
-      {
-        name: 'showWeekend',
-        type: 'boolean',
-        default: 'false',
-        description: 'Show weekend highlighting'
-      },
-      {
-        name: 'clearBtn',
-        type: 'boolean',
-        default: 'false',
-        description: 'Show clear button'
-      },
-      {
-        name: 'isRequired',
-        type: 'boolean',
-        default: 'false',
-        description: 'Make input required'
-      },
-      {
-        name: 'todayBtn',
-        type: 'boolean',
-        default: 'false',
-        description: 'Show today button'
-      },
-      {
-        name: 'presetRanges',
-        type: 'PresetRangesConfig',
-        default: 'undefined',
-        description: 'Preset range buttons configuration'
-      },
-      {
-        name: 'isDisabled',
-        type: 'boolean',
-        default: 'false',
-        description: 'Disable the picker'
-      },
-      {
-        name: 'constraints',
-        type: 'CalendarConstraintsInput',
-        default: 'undefined',
-        description: 'Date constraints'
-      },
-      {
-        name: 'placeholder',
-        type: 'string',
-        default: "'Select date'",
-        description: 'Placeholder text'
-      },
-      {
-        name: 'inputClass',
-        type: 'string',
-        default: 'undefined',
-        description: 'Custom CSS class for input'
-      },
-      {
-        name: 'calenderModalClass',
-        type: 'string',
-        default: 'undefined',
-        description: 'Custom CSS class for calendar modal'
-      },
-      {
-        name: 'autoClose',
-        type: 'boolean',
-        default: 'true',
-        description: 'Auto-close calendar after selection'
-      },
-      {
-        name: 'inputId',
-        type: 'string',
-        default: 'undefined',
-        description: 'Input element ID'
-      },
-      {
-        name: 'dateFormat',
-        type: 'string',
-        default: 'undefined',
-        description: 'Custom date format string'
-      },
-      {
-        name: 'timeFormat',
-        type: "'12' | '24'",
-        default: "'24'",
-        description: 'Time format'
-      },
-      {
-        name: 'numberOfMonths',
-        type: '1 | 2 | 3',
-        default: '1',
-        description: 'Number of months to display'
-      },
-      {
-        name: 'customization',
-        type: 'CalendarCustomization',
-        default: 'undefined',
-        description: 'Customization options'
-      },
-      {
-        name: 'yearListStyle',
-        type: "'grid' | 'list'",
-        default: "'grid'",
-        description: 'Year list style for year selection view'
-      },
-      {
-        name: 'onDateSelect',
-        type: '(day: Day) => void',
-        default: 'undefined',
-        description:
-          'Callback fired immediately when a date is clicked. Receives the raw Day object that was clicked. Fires BEFORE onChange. Use this to track individual date clicks or intercept before the final value is calculated. Note: For range/multi types, this fires for each individual date click, while onChange receives the final calculated range/array.'
-      },
-      {
-        name: 'onMonthSelect',
-        type: '(month: number) => void',
-        default: 'undefined',
-        description: 'Callback when a month is selected in month view'
-      },
-      {
-        name: 'onYearSelect',
-        type: '(year: number) => void',
-        default: 'undefined',
-        description: 'Callback when a year is selected in year view'
-      },
-      {
-        name: 'onViewChange',
-        type: "(view: 'calendar' | 'months' | 'years') => void",
-        default: 'undefined',
-        description:
-          'Callback when the view changes (calendar, months, or years)'
-      },
-      {
-        name: 'onMonthNavigate',
-        type: "(direction: 'prev' | 'next') => void",
-        default: 'undefined',
-        description: 'Callback when navigating between months'
-      },
-      {
-        name: 'onGoToToday',
-        type: '() => void',
-        default: 'undefined',
-        description: 'Callback when the "Today" button is clicked'
-      }
-    ]
+    name: 'initValue',
+    type: 'InitValueInput',
+    default: 'undefined',
+    description: 'Initial value for the calendar/picker'
   },
   {
-    name: 'DtCalendar',
+    name: 'onChange',
+    type: '(date: unknown) => void',
+    default: 'Required',
     description:
-      'A standalone calendar component without an input field. Provides direct calendar interaction and supports all the same features as DtPicker.',
-    props: [
-      {
-        name: 'initValue',
-        type: 'InitValueInput',
-        default: 'undefined',
-        description: 'Initial value for the calendar'
-      },
-      {
-        name: 'onChange',
-        type: '(date: unknown) => void',
-        default: 'Required',
-        description:
-          'Callback function called when the final date value changes. Receives the calculated value based on type: Day for single, Range for range/week, or Multi (Day[]) for multi. Fires AFTER onDateSelect. Use this to update your application state with the final selected value.'
-      },
-      {
-        name: 'type',
-        type: 'CalendarType',
-        default: "'single'",
-        description: 'Calendar selection type'
-      },
-      {
-        name: 'withTime',
-        type: 'boolean',
-        default: 'false',
-        description: 'Enable time selection'
-      },
-      {
-        name: 'timeFormat',
-        type: "'12' | '24'",
-        default: "'24'",
-        description: 'Time format'
-      },
-      {
-        name: 'local',
-        type: 'CalendarLocale',
-        default: "'en'",
-        description: 'Calendar locale'
-      },
-      {
-        name: 'showWeekend',
-        type: 'boolean',
-        default: 'false',
-        description: 'Show weekend highlighting'
-      },
-      {
-        name: 'todayBtn',
-        type: 'boolean',
-        default: 'false',
-        description: 'Show today button'
-      },
-      {
-        name: 'presetRanges',
-        type: 'PresetRangesConfig',
-        default: 'undefined',
-        description: 'Preset range buttons configuration'
-      },
-      {
-        name: 'enlargeSelectedDay',
-        type: 'boolean',
-        default: 'true',
-        description: 'Enlarge selected day text'
-      },
-      {
-        name: 'dark',
-        type: 'boolean',
-        default: 'false',
-        description: 'Enable dark theme'
-      },
-      {
-        name: 'constraints',
-        type: 'CalendarConstraintsInput',
-        default: 'undefined',
-        description: 'Date constraints'
-      },
-      {
-        name: 'calenderModalClass',
-        type: 'string',
-        default: 'undefined',
-        description: 'Custom CSS class for calendar'
-      },
-      {
-        name: 'customization',
-        type: 'CalendarCustomization',
-        default: 'undefined',
-        description: 'Customization options'
-      },
-      {
-        name: 'onError',
-        type: '(errors: CalendarError[]) => void',
-        default: 'undefined',
-        description: 'Error callback function'
-      },
-      {
-        name: 'numberOfMonths',
-        type: '1 | 2 | 3',
-        default: '1',
-        description: 'Number of months to display'
-      },
-      {
-        name: 'yearListStyle',
-        type: "'grid' | 'list'",
-        default: "'grid'",
-        description: 'Year list style for year selection view'
-      },
-      {
-        name: 'onCalenderChange',
-        type: '(date: Day | Range | Multi | null) => void',
-        default: 'undefined',
-        description:
-          'Callback that runs when calendar value changes (requires initValue)'
-      },
-      {
-        name: 'onDateSelect',
-        type: '(day: Day) => void',
-        default: 'undefined',
-        description:
-          'Callback fired immediately when a date is clicked. Receives the raw Day object that was clicked. Fires BEFORE onChange. Use this to track individual date clicks or intercept before the final value is calculated. Note: For range/multi types, this fires for each individual date click, while onChange receives the final calculated range/array.'
-      },
-      {
-        name: 'onMonthSelect',
-        type: '(month: number) => void',
-        default: 'undefined',
-        description: 'Callback when a month is selected in month view'
-      },
-      {
-        name: 'onYearSelect',
-        type: '(year: number) => void',
-        default: 'undefined',
-        description: 'Callback when a year is selected in year view'
-      },
-      {
-        name: 'onViewChange',
-        type: "(view: 'calendar' | 'months' | 'years') => void",
-        default: 'undefined',
-        description:
-          'Callback when the view changes (calendar, months, or years)'
-      },
-      {
-        name: 'onMonthNavigate',
-        type: "(direction: 'prev' | 'next') => void",
-        default: 'undefined',
-        description: 'Callback when navigating between months'
-      },
-      {
-        name: 'onGoToToday',
-        type: '() => void',
-        default: 'undefined',
-        description: 'Callback when the "Today" button is clicked'
-      }
-    ]
+      'Callback function called when the final date value changes. Receives the calculated value based on type: Day for single, Range for range/week, or Multi (Day[]) for multi. Fires AFTER onDateSelect. Use this to update your application state with the final selected value.'
+  },
+  {
+    name: 'type',
+    type: 'CalendarType',
+    default: "'single'",
+    description: 'Calendar selection type'
+  },
+  {
+    name: 'withTime',
+    type: 'boolean',
+    default: 'false',
+    description: 'Enable time selection'
+  },
+  {
+    name: 'timeFormat',
+    type: "'12' | '24'",
+    default: "'24'",
+    description: 'Time format'
+  },
+  {
+    name: 'local',
+    type: 'CalendarLocale',
+    default: "'en'",
+    description: 'Calendar locale'
+  },
+  {
+    name: 'showWeekend',
+    type: 'boolean',
+    default: 'false',
+    description: 'Show weekend highlighting'
+  },
+  {
+    name: 'todayBtn',
+    type: 'boolean',
+    default: 'false',
+    description: 'Show today button'
+  },
+  {
+    name: 'presetRanges',
+    type: 'PresetRangesConfig',
+    default: 'undefined',
+    description: 'Preset range buttons configuration'
+  },
+  {
+    name: 'constraints',
+    type: 'CalendarConstraintsInput',
+    default: 'undefined',
+    description: 'Date constraints'
+  },
+  {
+    name: 'calenderModalClass',
+    type: 'string',
+    default: 'undefined',
+    description: 'Custom CSS class for calendar modal'
+  },
+  {
+    name: 'customization',
+    type: 'CalendarCustomization',
+    default: 'undefined',
+    description: 'Customization options'
+  },
+  {
+    name: 'numberOfMonths',
+    type: '1 | 2 | 3',
+    default: '1',
+    description: 'Number of months to display'
+  },
+  {
+    name: 'yearListStyle',
+    type: "'grid' | 'list'",
+    default: "'grid'",
+    description: 'Year list style for year selection view'
+  },
+  {
+    name: 'dark',
+    type: 'boolean',
+    default: 'false',
+    description: 'Enable dark theme'
+  },
+  {
+    name: 'onDateSelect',
+    type: '(day: Day) => void',
+    default: 'undefined',
+    description:
+      'Callback fired immediately when a date is clicked. Receives the raw Day object that was clicked. Fires BEFORE onChange. Use this to track individual date clicks or intercept before the final value is calculated. Note: For range/multi types, this fires for each individual date click, while onChange receives the final calculated range/array.'
+  },
+  {
+    name: 'onMonthSelect',
+    type: '(month: number) => void',
+    default: 'undefined',
+    description: 'Callback when a month is selected in month view'
+  },
+  {
+    name: 'onYearSelect',
+    type: '(year: number) => void',
+    default: 'undefined',
+    description: 'Callback when a year is selected in year view'
+  },
+  {
+    name: 'onViewChange',
+    type: "(view: 'calendar' | 'months' | 'years') => void",
+    default: 'undefined',
+    description: 'Callback when the view changes (calendar, months, or years)'
+  },
+  {
+    name: 'onMonthNavigate',
+    type: "(direction: 'prev' | 'next') => void",
+    default: 'undefined',
+    description: 'Callback when navigating between months'
+  },
+  {
+    name: 'onGoToToday',
+    type: '() => void',
+    default: 'undefined',
+    description: 'Callback when the "Today" button is clicked'
   }
 ]
+
+// Props only available in DtPicker
+export const dtPickerOnlyProps: Prop[] = [
+  {
+    name: 'showTimeInput',
+    type: 'boolean',
+    default: 'false',
+    description: 'Show time in input field'
+  },
+  {
+    name: 'clearBtn',
+    type: 'boolean',
+    default: 'false',
+    description: 'Show clear button'
+  },
+  {
+    name: 'isRequired',
+    type: 'boolean',
+    default: 'false',
+    description: 'Make input required'
+  },
+  {
+    name: 'isDisabled',
+    type: 'boolean',
+    default: 'false',
+    description: 'Disable the picker'
+  },
+  {
+    name: 'placeholder',
+    type: 'string',
+    default: "'Select date'",
+    description: 'Placeholder text'
+  },
+  {
+    name: 'inputClass',
+    type: 'string',
+    default: 'undefined',
+    description: 'Custom CSS class for input'
+  },
+  {
+    name: 'autoClose',
+    type: 'boolean',
+    default: 'true',
+    description: 'Auto-close calendar after selection'
+  },
+  {
+    name: 'inputId',
+    type: 'string',
+    default: 'undefined',
+    description: 'Input element ID'
+  },
+  {
+    name: 'dateFormat',
+    type: 'string',
+    default: 'undefined',
+    description: 'Custom date format string'
+  }
+]
+
+// Props only available in DtCalendar
+export const dtCalendarOnlyProps: Prop[] = [
+  {
+    name: 'enlargeSelectedDay',
+    type: 'boolean',
+    default: 'true',
+    description: 'Enlarge selected day text'
+  },
+  {
+    name: 'onError',
+    type: '(errors: CalendarError[]) => void',
+    default: 'undefined',
+    description: 'Error callback function'
+  },
+  {
+    name: 'onCalenderChange',
+    type: '(date: Day | Range | Multi | null) => void',
+    default: 'undefined',
+    description:
+      'Callback that runs when calendar value changes (requires initValue)'
+  }
+]
+
+// Keep components array for backward compatibility (not used in new structure)
+export const components: Component[] = []
 
 export const types: Type[] = [
   {

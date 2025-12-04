@@ -11,14 +11,17 @@ function CustomTriggersExample() {
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h1>Custom Trigger Elements Example</h1>
-      <p>The DtPicker now supports custom trigger elements instead of just input fields!</p>
+      <p>
+        The DtPicker now supports custom trigger elements instead of just input
+        fields!
+      </p>
 
       <div style={{ marginBottom: '30px' }}>
         <h2>1. Default Input (unchanged behavior)</h2>
         <DtPicker
           onChange={setDate1}
-          placeholder="Select a date..."
-          local="en"
+          placeholder='Select a date...'
+          local='en'
         />
         <p>Selected: {date1 ? date1.toString() : 'None'}</p>
       </div>
@@ -42,7 +45,7 @@ function CustomTriggersExample() {
               📅 Pick Date
             </button>
           }
-          local="en"
+          local='en'
         />
         <p>Selected: {date2 ? date2.toString() : 'None'}</p>
       </div>
@@ -70,7 +73,7 @@ function CustomTriggersExample() {
               <span style={{ marginLeft: 'auto' }}>▼</span>
             </div>
           }
-          local="en"
+          local='en'
         />
         <p>Selected: {date3 ? date3.toString() : 'None'}</p>
       </div>
@@ -81,8 +84,8 @@ function CustomTriggersExample() {
           onChange={setDate4}
           triggerElement={
             <input
-              type="text"
-              placeholder="Custom styled input..."
+              type='text'
+              placeholder='Custom styled input...'
               style={{
                 padding: '10px',
                 border: '2px solid #28a745',
@@ -94,16 +97,24 @@ function CustomTriggersExample() {
               readOnly
             />
           }
-          local="en"
+          local='en'
         />
         <p>Selected: {date4 ? date4.toString() : 'None'}</p>
       </div>
 
       <div style={{ marginBottom: '30px' }}>
         <h2>5. Integration with Form Libraries</h2>
-        <p>You can now easily integrate with form libraries like React Hook Form:</p>
-        <pre style={{ backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '4px' }}>
-{`// Example with React Hook Form
+        <p>
+          You can now easily integrate with form libraries like React Hook Form:
+        </p>
+        <pre
+          style={{
+            backgroundColor: '#f4f4f4',
+            padding: '10px',
+            borderRadius: '4px'
+          }}
+        >
+          {`// Example with React Hook Form
 const { control, setValue } = useForm()
 
 <DtPicker
@@ -130,16 +141,13 @@ const { control, setValue } = useForm()
         <DtPicker
           onChange={setDate1}
           triggerElement={<CustomTriggerButton selectedDate={date1} />}
-          local="en"
+          local='en'
         />
       </div>
 
       <div style={{ marginBottom: '30px' }}>
         <h2>7. Still works with DtCalendar (unchanged)</h2>
-        <DtCalendar
-          onChange={setDate2}
-          local="en"
-        />
+        <DtCalendar onChange={setDate2} local='en' />
       </div>
     </div>
   )
@@ -148,18 +156,20 @@ const { control, setValue } = useForm()
 // Custom component example
 function CustomTriggerButton({ selectedDate }: { selectedDate: Day | null }) {
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px',
-      padding: '12px 16px',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      color: 'white',
-      borderRadius: '8px',
-      cursor: 'pointer',
-      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-      transition: 'transform 0.2s'
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '12px 16px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+        transition: 'transform 0.2s'
+      }}
+    >
       <span style={{ fontSize: '20px' }}>📅</span>
       <div>
         <div style={{ fontWeight: 'bold' }}>Select Date</div>

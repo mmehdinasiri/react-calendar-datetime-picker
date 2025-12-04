@@ -1,6 +1,62 @@
-import { components, types, utilityCategories } from '../data/apiReference'
+import {
+  sharedProps,
+  dtPickerOnlyProps,
+  dtCalendarOnlyProps,
+  types,
+  utilityCategories
+} from '../data/apiReference'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+
+function PropsTable({ props }: { props: typeof sharedProps }) {
+  return (
+    <div className='overflow-x-auto'>
+      <table className='min-w-full divide-y divide-border border border-border rounded-lg'>
+        <thead className='bg-bg-tertiary'>
+          <tr>
+            <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+              Prop
+            </th>
+            <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+              Type
+            </th>
+            <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+              Default
+            </th>
+            <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+              Description
+            </th>
+          </tr>
+        </thead>
+        <tbody className='bg-bg-secondary divide-y divide-border'>
+          {props.map((prop, index) => (
+            <tr
+              key={prop.name}
+              className={index % 2 === 0 ? '' : 'bg-bg-tertiary'}
+            >
+              <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                {prop.name}
+              </td>
+              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                <code>{prop.type}</code>
+              </td>
+              <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                {prop.default === 'Required' ? (
+                  <em>Required</em>
+                ) : (
+                  <code>{prop.default}</code>
+                )}
+              </td>
+              <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                {prop.description}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
 
 export default function APIReference() {
   return (
@@ -15,61 +71,34 @@ export default function APIReference() {
 
         <h2>Components</h2>
 
-        {components.map((component) => (
-          <div key={component.name}>
-            <h3>{component.name}</h3>
+        <p>
+          Both <code>DtCalendar</code> and <code>DtPicker</code> share most of
+          their API. The props are organized into shared props (available in
+          both components) and component-specific props.
+        </p>
 
-            <p>{component.description}</p>
+        <h3>Shared Props</h3>
+        <p>
+          These props are available in both <code>DtCalendar</code> and{' '}
+          <code>DtPicker</code>:
+        </p>
+        <PropsTable props={sharedProps} />
 
-            <h4>Props</h4>
+        <h3>DtPicker Only</h3>
+        <p>
+          These props are only available in <code>DtPicker</code>:
+        </p>
+        <PropsTable props={dtPickerOnlyProps} />
 
-            <div className='overflow-x-auto'>
-              <table className='min-w-full divide-y divide-border border border-border rounded-lg'>
-                <thead className='bg-bg-tertiary'>
-                  <tr>
-                    <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                      Prop
-                    </th>
-                    <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                      Type
-                    </th>
-                    <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                      Default
-                    </th>
-                    <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
-                      Description
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className='bg-bg-secondary divide-y divide-border'>
-                  {component.props.map((prop, index) => (
-                    <tr
-                      key={prop.name}
-                      className={index % 2 === 0 ? '' : 'bg-bg-tertiary'}
-                    >
-                      <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
-                        {prop.name}
-                      </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                        <code>{prop.type}</code>
-                      </td>
-                      <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                        {prop.default === 'Required' ? (
-                          <em>Required</em>
-                        ) : (
-                          <code>{prop.default}</code>
-                        )}
-                      </td>
-                      <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
-                        {prop.description}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        ))}
+        {dtCalendarOnlyProps.length > 0 && (
+          <>
+            <h3>DtCalendar Only</h3>
+            <p>
+              These props are only available in <code>DtCalendar</code>:
+            </p>
+            <PropsTable props={dtCalendarOnlyProps} />
+          </>
+        )}
 
         <h2>Types</h2>
 

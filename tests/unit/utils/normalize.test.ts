@@ -79,5 +79,3 @@ describe('areValuesEqual', () => {
     expect(areValuesEqual(multi1, multi3)).toBe(false)
   })
 })
-
-

@@ -4,12 +4,12 @@
  */
 
 import type {
-    Day,
-    Range,
-    Multi,
-    Week,
-    CalendarLocale,
-    CalendarType
+  Day,
+  Range,
+  Multi,
+  Week,
+  CalendarLocale,
+  CalendarType
 } from '../types'
 import type { CalendarError } from '../types/calendar'
 import { dateToDay } from './date-conversion'
@@ -79,10 +79,7 @@ export function isMultiArray(value: unknown): value is Multi {
  * Check if two values are structurally equal
  * Handles Day, Range, and Multi types
  */
-export function areValuesEqual(
-  v1: unknown,
-  v2: unknown
-): boolean {
+export function areValuesEqual(v1: unknown, v2: unknown): boolean {
   if (v1 === v2) return true
 
   // Treat null and undefined as equal (both mean "no value")
@@ -105,10 +102,7 @@ export function areValuesEqual(
 
   // Check Range equality
   if (isRangeObject(v1) && isRangeObject(v2)) {
-    return (
-      areValuesEqual(v1.from, v2.from) &&
-      areValuesEqual(v1.to, v2.to)
-    )
+    return areValuesEqual(v1.from, v2.from) && areValuesEqual(v1.to, v2.to)
   }
 
   // Check Multi equality
