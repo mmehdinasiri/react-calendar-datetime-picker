@@ -26,7 +26,11 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
   const handleChange = (date: unknown) => {
     setSelectedValue(date as InitValueInput | undefined)
     if (config.showConsoleLog) {
-      console.log('onChange:', date)
+      if (config.title === 'onDateSelect Callback') {
+        console.log('onChange - Final value:', date)
+      } else {
+        console.log('onChange:', date)
+      }
     }
   }
 
@@ -77,22 +81,33 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
     }
   })
 
-  // Add dark prop for both DtPicker and DtCalendar based on theme
-  // (unless it's a theme example or explicitly set)
-  if (
-    !isThemeExample &&
-    !('dark' in componentProps) &&
-    (Component === DtPicker || Component === DtCalendar)
-  ) {
-    componentProps.dark = theme === 'dark'
-    // Debug: log to verify dark prop is being set
-    if (Component === DtPicker) {
-      console.log(
-        '[ExampleRenderer] Setting dark prop for DtPicker:',
-        theme === 'dark',
-        'theme:',
-        theme
-      )
+  // Inject callbacks for examples that need them
+  if (config.showConsoleLog) {
+    if (config.title === 'View & Navigation Callbacks') {
+      componentProps.onViewChange = (view: string) =>
+        console.log('View changed:', view)
+      componentProps.onMonthNavigate = (dir: string) =>
+        console.log('Month navigated:', dir)
+      componentProps.onMonthSelect = (month: number) =>
+        console.log('Month selected:', month)
+      componentProps.onYearSelect = (year: number) =>
+        console.log('Year selected:', year)
+    } else if (config.title === 'onDateSelect Callback') {
+      componentProps.onDateSelect = (day: any) =>
+        console.log('onDateSelect - Raw day clicked:', day)
+      // Also show onChange to demonstrate the difference
+      const originalOnChange = componentProps.onChange as
+        | ((value: any) => void)
+        | undefined
+      componentProps.onChange = (finalValue: any) => {
+        console.log('onChange - Final value:', finalValue)
+        if (originalOnChange) {
+          originalOnChange(finalValue)
+        }
+      }
+    } else if (config.title === 'onGoToToday Callback') {
+      componentProps.onGoToToday = () =>
+        console.log('Go to today button clicked')
     }
   }
 
@@ -194,18 +209,6 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                   })
                   .join('\n')
 
-                // Add dark prop to code if it was added programmatically
-                let darkPropLine = ''
-                if (
-                  (Component === DtCalendar || Component === DtPicker) &&
-                  !isThemeExample &&
-                  !('dark' in (config.props || {})) &&
-                  'dark' in componentProps &&
-                  componentProps.dark === true
-                ) {
-                  darkPropLine = '      dark={true}\n'
-                }
-
                 return `import { ${config.component} } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
@@ -216,7 +219,7 @@ function App() {
 
   return (
     <${config.component}
-${darkPropLine}${propsCode ? propsCode + '\n' : ''}      onChange={setDate}
+${propsCode ? propsCode + '\n' : ''}      onChange={setDate}
     />
   )
 }`

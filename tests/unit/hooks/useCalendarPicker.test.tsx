@@ -232,4 +232,73 @@ describe('useCalendarPicker', () => {
     expect(onChange).toHaveBeenCalledWith(expectedDay)
     expect(result.current.displayValue).toBe('2023/01/20 12:00')
   })
+
+  it('calls onChange with normalized value when initValue format differs', () => {
+    const initDate = '2023-01-01'
+    renderHook(() =>
+      useCalendarPicker(
+        initDate,
+        onChange,
+        'single',
+        'en',
+        false,
+        undefined,
+        false,
+        false,
+        onClose,
+        undefined,
+        '24',
+        1
+      )
+    )
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        year: 2023,
+        month: 1,
+        day: 1
+      })
+    )
+  })
+
+  it('does not call onChange when initValue is undefined', () => {
+    renderHook(() =>
+      useCalendarPicker(
+        undefined,
+        onChange,
+        'single',
+        'en',
+        false,
+        undefined,
+        false,
+        false,
+        onClose,
+        undefined,
+        '24',
+        1
+      )
+    )
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
+  it('does not call onChange when initValue is already normalized', () => {
+    const initDate = { year: 2023, month: 1, day: 1 }
+    renderHook(() =>
+      useCalendarPicker(
+        initDate,
+        onChange,
+        'single',
+        'en',
+        false,
+        undefined,
+        false,
+        false,
+        onClose,
+        undefined,
+        '24',
+        1
+      )
+    )
+    expect(onChange).not.toHaveBeenCalled()
+  })
 })

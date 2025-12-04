@@ -4,15 +4,51 @@ import { DtPicker } from '@/components/DtPicker'
 
 // Mock dependencies
 vi.mock('@/components/CalendarCore', () => ({
-  CalendarCore: ({ selectedValue, locale, onDateSelect }: any) => (
+  CalendarCore: ({
+    selectedValue,
+    locale,
+    onDateSelect,
+    onViewChange,
+    onMonthNavigate,
+    onMonthSelect,
+    onYearSelect,
+    onGoToToday
+  }: any) => (
     <div data-testid='calendar-core'>
       <span data-testid='core-locale'>{locale}</span>
       <span data-testid='core-value'>{JSON.stringify(selectedValue)}</span>
       <button
         data-testid='core-select-date'
-        onClick={() => onDateSelect({ year: 2023, month: 1, day: 15 })}
+        onClick={() => onDateSelect?.({ year: 2023, month: 1, day: 15 })}
       >
         Select Jan 15
+      </button>
+      <button
+        data-testid='core-view-change'
+        onClick={() => onViewChange?.('months')}
+      >
+        Change View
+      </button>
+      <button
+        data-testid='core-month-nav'
+        onClick={() => onMonthNavigate?.('next')}
+      >
+        Next Month
+      </button>
+      <button
+        data-testid='core-month-select'
+        onClick={() => onMonthSelect?.(5)}
+      >
+        Select Month 5
+      </button>
+      <button
+        data-testid='core-year-select'
+        onClick={() => onYearSelect?.(2025)}
+      >
+        Select Year 2025
+      </button>
+      <button data-testid='core-go-today' onClick={() => onGoToToday?.()}>
+        Go To Today
       </button>
     </div>
   )
@@ -129,5 +165,51 @@ describe('DtPicker', () => {
 
     const modal = screen.getByRole('dialog')
     expect(modal).toHaveAttribute('data-theme', 'dark')
+  })
+
+  it('passes all callback props to CalendarCore', () => {
+    const onDateSelect = vi.fn()
+    const onViewChange = vi.fn()
+    const onMonthNavigate = vi.fn()
+    const onMonthSelect = vi.fn()
+    const onYearSelect = vi.fn()
+    const onGoToToday = vi.fn()
+
+    render(
+      <DtPicker
+        {...defaultProps}
+        onDateSelect={onDateSelect}
+        onViewChange={onViewChange}
+        onMonthNavigate={onMonthNavigate}
+        onMonthSelect={onMonthSelect}
+        onYearSelect={onYearSelect}
+        onGoToToday={onGoToToday}
+      />
+    )
+
+    const input = screen.getByRole('textbox')
+    fireEvent.click(input)
+
+    fireEvent.click(screen.getByTestId('core-select-date'))
+    expect(onDateSelect).toHaveBeenCalledWith({
+      year: 2023,
+      month: 1,
+      day: 15
+    })
+
+    fireEvent.click(screen.getByTestId('core-view-change'))
+    expect(onViewChange).toHaveBeenCalledWith('months')
+
+    fireEvent.click(screen.getByTestId('core-month-nav'))
+    expect(onMonthNavigate).toHaveBeenCalledWith('next')
+
+    fireEvent.click(screen.getByTestId('core-month-select'))
+    expect(onMonthSelect).toHaveBeenCalledWith(5)
+
+    fireEvent.click(screen.getByTestId('core-year-select'))
+    expect(onYearSelect).toHaveBeenCalledWith(2025)
+
+    fireEvent.click(screen.getByTestId('core-go-today'))
+    expect(onGoToToday).toHaveBeenCalled()
   })
 })

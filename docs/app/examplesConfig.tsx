@@ -686,7 +686,26 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container',
-      showConsoleLog: true
+      showConsoleLog: true,
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  const handleDateChange = (newDate) => {
+    setDate(newDate)
+    console.log('onChange:', newDate)
+  }
+
+  return (
+    <DtCalendar
+      showWeekend={true}
+      todayBtn={true}
+      onChange={handleDateChange}
+    />
+  )
+}`
     },
     RangeOnChange: {
       title: 'Range onChange Callback',
@@ -699,7 +718,27 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container',
-      showConsoleLog: true
+      showConsoleLog: true,
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [range, setRange] = useState(null)
+
+  const handleRangeChange = (newRange) => {
+    setRange(newRange)
+    console.log('onChange:', newRange)
+  }
+
+  return (
+    <DtCalendar
+      type='range'
+      showWeekend={true}
+      todayBtn={true}
+      onChange={handleRangeChange}
+    />
+  )
+}`
     },
     MultiOnChange: {
       title: 'Multi onChange Callback',
@@ -712,7 +751,120 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container',
-      showConsoleLog: true
+      showConsoleLog: true,
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [dates, setDates] = useState(null)
+
+  const handleMultiChange = (newDates) => {
+    setDates(newDates)
+    console.log('onChange:', newDates)
+  }
+
+  return (
+    <DtCalendar
+      type='multi'
+      showWeekend={true}
+      todayBtn={true}
+      onChange={handleMultiChange}
+    />
+  )
+}`
+    },
+    ViewAndNavCallbacks: {
+      title: 'View & Navigation Callbacks',
+      description:
+        'Callbacks for view changes, month navigation, and year/month selection',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      showConsoleLog: true,
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      onChange={setDate}
+      onViewChange={(view) => console.log('View changed:', view)}
+      onMonthNavigate={(dir) => console.log('Month navigated:', dir)}
+      onMonthSelect={(month) => console.log('Month selected:', month)}
+      onYearSelect={(year) => console.log('Year selected:', year)}
+    />
+  )
+}`
+    },
+    OnDateSelect: {
+      title: 'onDateSelect Callback',
+      description:
+        'onDateSelect fires immediately when a date is clicked, receiving the raw Day object. It fires BEFORE onChange. Perfect for tracking individual date clicks. In range mode, it fires for each date selection (start then end), while onChange only fires once the complete range is calculated.',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      showConsoleLog: true,
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [range, setRange] = useState(null)
+
+  return (
+    <DtCalendar
+      type="range"
+      onChange={(finalRange) => {
+        // onChange fires ONCE after both dates are selected
+        // Receives the complete range: { from: Day, to: Day }
+        setRange(finalRange)
+        console.log('onChange - Complete range:', finalRange)
+      }}
+      onDateSelect={(day) => {
+        // onDateSelect fires for EACH individual date click
+        // First click: selects start date
+        // Second click: selects end date
+        console.log('onDateSelect - Individual date clicked:', day)
+        // Great for showing selection progress or validation
+      }}
+    />
+  )
+}`
+    },
+    OnGoToToday: {
+      title: 'onGoToToday Callback',
+      description: 'Callback triggered when the "Today" button is clicked',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      showConsoleLog: true,
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      todayBtn={true}
+      onChange={setDate}
+      onGoToToday={() => {
+        console.log('Go to today button clicked')
+      }}
+    />
+  )
+}`
     }
   },
   'Date Formatting': {

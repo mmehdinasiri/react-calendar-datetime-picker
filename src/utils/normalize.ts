@@ -4,12 +4,12 @@
  */
 
 import type {
-  Day,
-  Range,
-  Multi,
-  Week,
-  CalendarLocale,
-  CalendarType
+    Day,
+    Range,
+    Multi,
+    Week,
+    CalendarLocale,
+    CalendarType
 } from '../types'
 import type { CalendarError } from '../types/calendar'
 import { dateToDay } from './date-conversion'
@@ -43,7 +43,7 @@ const isDevelopment = (() => {
 /**
  * Type guards
  */
-function isDayObject(value: unknown): value is Day {
+export function isDayObject(value: unknown): value is Day {
   return (
     typeof value === 'object' &&
     value !== null &&
@@ -56,7 +56,7 @@ function isDayObject(value: unknown): value is Day {
   )
 }
 
-function isRangeObject(value: unknown): value is Range {
+export function isRangeObject(value: unknown): value is Range {
   return (
     typeof value === 'object' &&
     value !== null &&
@@ -67,12 +67,59 @@ function isRangeObject(value: unknown): value is Range {
   )
 }
 
-function isMultiArray(value: unknown): value is Multi {
+export function isMultiArray(value: unknown): value is Multi {
   return (
     Array.isArray(value) &&
     value.length > 0 &&
     value.every((item) => isDayObject(item))
   )
+}
+
+/**
+ * Check if two values are structurally equal
+ * Handles Day, Range, and Multi types
+ */
+export function areValuesEqual(
+  v1: unknown,
+  v2: unknown
+): boolean {
+  if (v1 === v2) return true
+
+  // Treat null and undefined as equal (both mean "no value")
+  if ((v1 === null || v1 === undefined) && (v2 === null || v2 === undefined)) {
+    return true
+  }
+
+  if (!v1 || !v2) return false
+
+  // Check Day equality
+  if (isDayObject(v1) && isDayObject(v2)) {
+    return (
+      v1.year === v2.year &&
+      v1.month === v2.month &&
+      v1.day === v2.day &&
+      (v1.hour || 0) === (v2.hour || 0) &&
+      (v1.minute || 0) === (v2.minute || 0)
+    )
+  }
+
+  // Check Range equality
+  if (isRangeObject(v1) && isRangeObject(v2)) {
+    return (
+      areValuesEqual(v1.from, v2.from) &&
+      areValuesEqual(v1.to, v2.to)
+    )
+  }
+
+  // Check Multi equality
+  if (Array.isArray(v1) && Array.isArray(v2)) {
+    if (v1.length !== v2.length) return false
+    // Sort logic might be needed if order doesn't matter, but usually order matters or is sorted
+    // For now assume same order or just exact match
+    return v1.every((day, i) => areValuesEqual(day, v2[i]))
+  }
+
+  return false
 }
 
 /**

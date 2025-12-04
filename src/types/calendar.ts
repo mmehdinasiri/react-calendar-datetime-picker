@@ -261,6 +261,30 @@ export interface SharedCalendarProps {
    * @default false
    */
   dark?: boolean
+  /**
+   * Callback when date is selected
+   */
+  onDateSelect?: (day: Day) => void
+  /**
+   * Callback when month is selected (in month view)
+   */
+  onMonthSelect?: (month: number) => void
+  /**
+   * Callback when year is selected (in year view)
+   */
+  onYearSelect?: (year: number) => void
+  /**
+   * Callback when view changes (calendar, months, years)
+   */
+  onViewChange?: (view: 'calendar' | 'months' | 'years') => void
+  /**
+   * Callback when navigating months
+   */
+  onMonthNavigate?: (direction: 'prev' | 'next') => void
+  /**
+   * Callback to navigate to today's date
+   */
+  onGoToToday?: () => void
 }
 
 /**

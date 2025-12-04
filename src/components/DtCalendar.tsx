@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo } from 'react'
-import type { Day, Range, Multi } from '../types'
+import type { Day, Range, Multi, InitValueInput } from '../types'
 import type {
   CalendarError,
   CalendarSelectionSingle,
@@ -10,7 +10,10 @@ import type {
 } from '../types/calendar'
 import { CalendarCore } from './CalendarCore'
 import { useCalendarState } from '../hooks/useCalendarState'
-import { normalizeInitValueWithErrors } from '../utils/normalize'
+import {
+  normalizeInitValueWithErrors,
+  areValuesEqual
+} from '../utils/normalize'
 import { normalizeConstraintsProps } from '../utils/constraints'
 
 interface DtCalendarPropsBase extends SharedCalendarProps {
@@ -87,6 +90,12 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     calenderModalClass,
     customization,
     onError,
+    onDateSelect: onDateSelectProp,
+    onMonthSelect: onMonthSelectProp,
+    onYearSelect: onYearSelectProp,
+    onViewChange: onViewChangeProp,
+    onMonthNavigate: onMonthNavigateProp,
+    onGoToToday: onGoToTodayProp,
     numberOfMonths = 1,
     yearListStyle = 'grid'
   } = props
@@ -136,6 +145,30 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     }
   }, [allErrors, onError])
 
+  // Track previous initValue to only convert when it actually changes from props
+  const prevInitValueRef = useRef<InitValueInput | undefined>(undefined)
+
+  // Auto-convert initValue to normalized format if they differ
+  // This ensures parent state is consistent with internal state
+  // Only runs when initValue prop actually changes (not on every render)
+  useEffect(() => {
+    // Only convert if initValue prop changed from previous value (including initial mount)
+    const initValueChanged = prevInitValueRef.current !== initValue
+
+    if (initValueChanged && normalizedInitValue && onChange) {
+      // Only convert if the format differs (string/Date vs Day object)
+      if (!areValuesEqual(initValue, normalizedInitValue)) {
+        // Cast onChange to handle all possible types
+        // The check ensures we only call it when values match structurally but format differs
+        ;(onChange as (date: Day | Range | Multi | null) => void)(
+          normalizedInitValue
+        )
+      }
+    }
+
+    prevInitValueRef.current = initValue
+  }, [initValue, normalizedInitValue, onChange])
+
   // Use calendar state hook
   const { state, actions } = useCalendarState({
     initValue: normalizedInitValue,
@@ -168,13 +201,31 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         customization={customization}
         numberOfMonths={numberOfMonths}
         yearListStyle={yearListStyle}
-        onDateSelect={actions.selectDate}
+        onDateSelect={(day) => {
+          actions.selectDate(day)
+          onDateSelectProp?.(day)
+        }}
         onTimeChange={actions.updateTime}
-        onMonthSelect={actions.selectMonth}
-        onYearSelect={actions.selectYear}
-        onViewChange={actions.setView}
-        onMonthNavigate={actions.navigateMonth}
-        onGoToToday={actions.goToToday}
+        onMonthSelect={(month) => {
+          actions.selectMonth(month)
+          onMonthSelectProp?.(month)
+        }}
+        onYearSelect={(year) => {
+          actions.selectYear(year)
+          onYearSelectProp?.(year)
+        }}
+        onViewChange={(view) => {
+          actions.setView(view)
+          onViewChangeProp?.(view)
+        }}
+        onMonthNavigate={(direction) => {
+          actions.navigateMonth(direction)
+          onMonthNavigateProp?.(direction)
+        }}
+        onGoToToday={() => {
+          actions.goToToday()
+          onGoToTodayProp?.()
+        }}
         presetRanges={presetRanges}
         onPresetRangeSelect={(range: Range) => {
           if (type === 'range') {

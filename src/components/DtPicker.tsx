@@ -55,10 +55,6 @@ interface DtPickerPropsBase extends SharedCalendarProps {
    * Input element ID
    */
   inputId?: string
-  /**
-   * Enable dark theme
-   * @default false
-   */
 }
 
 export interface DtPickerPropsSingle
@@ -119,7 +115,13 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     numberOfMonths = 1,
     customization,
     dark = false,
-    yearListStyle = 'grid'
+    yearListStyle = 'grid',
+    onDateSelect,
+    onMonthSelect,
+    onYearSelect,
+    onViewChange,
+    onMonthNavigate,
+    onGoToToday
   } = props
 
   const [isOpen, setIsOpen] = useState(false)
@@ -271,13 +273,31 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
             customization={customization}
             numberOfMonths={numberOfMonths}
             yearListStyle={yearListStyle}
-            onDateSelect={actions.selectDate}
+            onDateSelect={(day) => {
+              actions.selectDate(day)
+              onDateSelect?.(day)
+            }}
             onTimeChange={actions.updateTime}
-            onMonthSelect={actions.selectMonth}
-            onYearSelect={actions.selectYear}
-            onViewChange={actions.setView}
-            onMonthNavigate={actions.navigateMonth}
-            onGoToToday={actions.goToToday}
+            onMonthSelect={(month) => {
+              actions.selectMonth(month)
+              onMonthSelect?.(month)
+            }}
+            onYearSelect={(year) => {
+              actions.selectYear(year)
+              onYearSelect?.(year)
+            }}
+            onViewChange={(view) => {
+              actions.setView(view)
+              onViewChange?.(view)
+            }}
+            onMonthNavigate={(direction) => {
+              actions.navigateMonth(direction)
+              onMonthNavigate?.(direction)
+            }}
+            onGoToToday={() => {
+              actions.goToToday()
+              onGoToToday?.()
+            }}
             presetRanges={presetRanges}
             onPresetRangeSelect={(range: Range) => {
               if (type === 'range') {

@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect, useRef } from 'react'
 import type {
   CalendarLocale,
   CalendarType,
@@ -8,7 +8,10 @@ import type {
   Multi
 } from '../types'
 import type { CalendarConstraintsInput } from '../types/calendar'
-import { normalizeInitValueWithErrors } from '../utils/normalize'
+import {
+  normalizeInitValueWithErrors,
+  areValuesEqual
+} from '../utils/normalize'
 import { normalizeConstraintsProps } from '../utils/constraints'
 import { formatDateForInput } from '../utils/formatting'
 import { useCalendarState } from './useCalendarState'
@@ -44,6 +47,26 @@ export function useCalendarPicker(
     [initValue, local, type]
   )
   const { value: normalizedInitValue } = initValueResult
+
+  // Track previous initValue to only convert when it actually changes from props
+  const prevInitValueRef = useRef<InitValueInput | undefined>(undefined)
+
+  // Auto-convert initValue to normalized format if they differ
+  // This ensures parent state is consistent with internal state
+  // Only runs when initValue prop actually changes (not on every render)
+  useEffect(() => {
+    // Only convert if initValue prop changed from previous value (including initial mount)
+    const initValueChanged = prevInitValueRef.current !== initValue
+    
+    if (initValueChanged && normalizedInitValue && onChange) {
+      // Only convert if the format differs (string/Date vs Day object)
+      if (!areValuesEqual(initValue, normalizedInitValue)) {
+        onChange(normalizedInitValue)
+      }
+    }
+    
+    prevInitValueRef.current = initValue
+  }, [initValue, normalizedInitValue, onChange])
 
   // Use calendar state hook
   const { state, actions } = useCalendarState({

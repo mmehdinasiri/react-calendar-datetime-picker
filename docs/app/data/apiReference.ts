@@ -43,7 +43,8 @@ export const components: Component[] = [
         name: 'onChange',
         type: '(date: unknown) => void',
         default: 'Required',
-        description: 'Callback function called when date changes'
+        description:
+          'Callback function called when the final date value changes. Receives the calculated value based on type: Day for single, Range for range/week, or Multi (Day[]) for multi. Fires AFTER onDateSelect. Use this to update your application state with the final selected value.'
       },
       {
         name: 'type',
@@ -170,6 +171,44 @@ export const components: Component[] = [
         type: "'grid' | 'list'",
         default: "'grid'",
         description: 'Year list style for year selection view'
+      },
+      {
+        name: 'onDateSelect',
+        type: '(day: Day) => void',
+        default: 'undefined',
+        description:
+          'Callback fired immediately when a date is clicked. Receives the raw Day object that was clicked. Fires BEFORE onChange. Use this to track individual date clicks or intercept before the final value is calculated. Note: For range/multi types, this fires for each individual date click, while onChange receives the final calculated range/array.'
+      },
+      {
+        name: 'onMonthSelect',
+        type: '(month: number) => void',
+        default: 'undefined',
+        description: 'Callback when a month is selected in month view'
+      },
+      {
+        name: 'onYearSelect',
+        type: '(year: number) => void',
+        default: 'undefined',
+        description: 'Callback when a year is selected in year view'
+      },
+      {
+        name: 'onViewChange',
+        type: "(view: 'calendar' | 'months' | 'years') => void",
+        default: 'undefined',
+        description:
+          'Callback when the view changes (calendar, months, or years)'
+      },
+      {
+        name: 'onMonthNavigate',
+        type: "(direction: 'prev' | 'next') => void",
+        default: 'undefined',
+        description: 'Callback when navigating between months'
+      },
+      {
+        name: 'onGoToToday',
+        type: '() => void',
+        default: 'undefined',
+        description: 'Callback when the "Today" button is clicked'
       }
     ]
   },
@@ -188,7 +227,8 @@ export const components: Component[] = [
         name: 'onChange',
         type: '(date: unknown) => void',
         default: 'Required',
-        description: 'Callback function called when date changes'
+        description:
+          'Callback function called when the final date value changes. Receives the calculated value based on type: Day for single, Range for range/week, or Multi (Day[]) for multi. Fires AFTER onDateSelect. Use this to update your application state with the final selected value.'
       },
       {
         name: 'type',
@@ -279,6 +319,51 @@ export const components: Component[] = [
         type: "'grid' | 'list'",
         default: "'grid'",
         description: 'Year list style for year selection view'
+      },
+      {
+        name: 'onCalenderChange',
+        type: '(date: Day | Range | Multi | null) => void',
+        default: 'undefined',
+        description:
+          'Callback that runs when calendar value changes (requires initValue)'
+      },
+      {
+        name: 'onDateSelect',
+        type: '(day: Day) => void',
+        default: 'undefined',
+        description:
+          'Callback fired immediately when a date is clicked. Receives the raw Day object that was clicked. Fires BEFORE onChange. Use this to track individual date clicks or intercept before the final value is calculated. Note: For range/multi types, this fires for each individual date click, while onChange receives the final calculated range/array.'
+      },
+      {
+        name: 'onMonthSelect',
+        type: '(month: number) => void',
+        default: 'undefined',
+        description: 'Callback when a month is selected in month view'
+      },
+      {
+        name: 'onYearSelect',
+        type: '(year: number) => void',
+        default: 'undefined',
+        description: 'Callback when a year is selected in year view'
+      },
+      {
+        name: 'onViewChange',
+        type: "(view: 'calendar' | 'months' | 'years') => void",
+        default: 'undefined',
+        description:
+          'Callback when the view changes (calendar, months, or years)'
+      },
+      {
+        name: 'onMonthNavigate',
+        type: "(direction: 'prev' | 'next') => void",
+        default: 'undefined',
+        description: 'Callback when navigating between months'
+      },
+      {
+        name: 'onGoToToday',
+        type: '() => void',
+        default: 'undefined',
+        description: 'Callback when the "Today" button is clicked'
       }
     ]
   }
