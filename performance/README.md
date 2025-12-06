@@ -16,20 +16,24 @@ performance/
 ## Key Components
 
 ### 📊 Performance Tests (`tests/`)
+
 - **`calendar-performance.test.tsx`** - Comprehensive performance benchmarks
 - Measures render times, re-render efficiency, and interaction performance
 - Uses statistical analysis (median of multiple runs) for stability
 
 ### 🔧 Scripts (`scripts/`)
+
 - **`generate-performance-report.js`** - Creates human-readable performance reports
 - **`extract-performance-metrics.js`** - Extracts metrics from test runs for CI/CD
 
 ### 📈 Results (`results/`)
+
 - **`performance-metrics.json`** - Raw performance data
 - **`performance-report.md`** - Formatted performance report
 - **`baseline-metrics.json`** - Baseline performance for comparison
 
 ### 📚 Documentation (`docs/`)
+
 - **`PERFORMANCE_FIXES.md`** - Implementation details of performance optimizations
 - **`PERFORMANCE_REVIEW.md`** - Analysis of performance improvements
 
@@ -59,27 +63,30 @@ The performance system integrates with GitHub Actions:
 
 ## Performance Targets
 
-| Metric | Target | Notes |
-|--------|--------|-------|
-| Calendar Render (1 month) | < 100ms | Initial load time |
-| Calendar Render (3 months) | < 200ms | Multi-month view |
-| Re-render (unchanged props) | < 25ms | Memoization effectiveness |
-| Month Navigation | < 75ms | User interaction |
+| Metric                       | Target  | Notes                     |
+| ---------------------------- | ------- | ------------------------- |
+| Calendar Render (1 month)    | < 100ms | Initial load time         |
+| Calendar Render (3 months)   | < 200ms | Multi-month view          |
+| Re-render (unchanged props)  | < 25ms  | Memoization effectiveness |
+| Month Navigation             | < 75ms  | User interaction          |
 | Array.from Calls (Re-render) | 0 calls | Static array optimization |
 
 ## Key Features
 
 ### 🧪 Test Stability
+
 - Multiple test runs with statistical analysis
 - Garbage collection between runs
 - Median calculation for reliable metrics
 
 ### 📊 Visual Reporting
+
 - Color-coded performance indicators (🟢🟡🔴)
 - Percentage improvement/degradation calculations
 - Regression detection with configurable thresholds
 
 ### 🔄 CI/CD Integration
+
 - Automatic performance regression detection
 - PR comments with detailed comparisons
 - Artifact preservation for historical analysis
@@ -87,16 +94,19 @@ The performance system integrates with GitHub Actions:
 ## Maintenance
 
 ### Adding New Performance Tests
+
 1. Add test cases to `tests/calendar-performance.test.tsx`
 2. Update performance targets in scripts if needed
 3. Test locally before committing
 
 ### Updating Performance Targets
+
 1. Modify targets in `scripts/generate-performance-report.js`
 2. Update documentation in this README
 3. Update CI/CD workflow if needed
 
 ### Troubleshooting
+
 - Performance metrics inconsistent? Check test stability settings
 - CI failures? Verify script paths and dependencies
 - New metrics not appearing? Check test output format

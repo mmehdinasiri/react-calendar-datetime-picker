@@ -10,7 +10,7 @@ const performanceMetrics: Record<string, number> = {}
 const saveMetrics = () => {
   // Store in global object so test framework can access it
   if (typeof globalThis !== 'undefined') {
-    ;(globalThis as any).performanceMetrics = performanceMetrics
+    globalThis.performanceMetrics = performanceMetrics
   }
 
   // Also log to console for debugging
@@ -35,8 +35,12 @@ const measureRenderTime = async (
   // Multiple measurement runs
   for (let i = 0; i < iterations; i++) {
     // Force garbage collection if available
-    if (typeof globalThis !== 'undefined' && (globalThis as any).gc) {
-      ;(globalThis as any).gc()
+    if (
+      typeof globalThis !== 'undefined' &&
+      'gc' in globalThis &&
+      typeof globalThis.gc === 'function'
+    ) {
+      globalThis.gc()
     }
 
     const startTime = performance.now()
@@ -69,8 +73,12 @@ const measureReRenderTime = async (
   // Multiple measurement runs
   for (let i = 0; i < iterations; i++) {
     // Force garbage collection if available
-    if (typeof globalThis !== 'undefined' && (globalThis as any).gc) {
-      ;(globalThis as any).gc()
+    if (
+      typeof globalThis !== 'undefined' &&
+      'gc' in globalThis &&
+      typeof globalThis.gc === 'function'
+    ) {
+      globalThis.gc()
     }
 
     const startTime = performance.now()
@@ -102,8 +110,12 @@ const measureInteractionTime = async (
   // Multiple measurement runs
   for (let i = 0; i < iterations; i++) {
     // Force garbage collection if available
-    if (typeof globalThis !== 'undefined' && (globalThis as any).gc) {
-      ;(globalThis as any).gc()
+    if (
+      typeof globalThis !== 'undefined' &&
+      'gc' in globalThis &&
+      typeof globalThis.gc === 'function'
+    ) {
+      globalThis.gc()
     }
 
     const startTime = performance.now()
