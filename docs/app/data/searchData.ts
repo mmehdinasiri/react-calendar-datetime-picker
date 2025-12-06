@@ -163,8 +163,9 @@ const apiItems: SearchItem[] = [
 import { examples } from '../examplesConfig'
 
 // Example items
-const exampleItems: SearchItem[] = Object.entries(examples).flatMap(
-  ([category, categoryExamples]) =>
+const exampleItems: SearchItem[] = [
+  // Main examples from examplesConfig
+  ...Object.entries(examples).flatMap(([category, categoryExamples]) =>
     Object.entries(categoryExamples).map(([key, example]) => ({
       id: `example-${category}-${key}`,
       title: example.title,
@@ -173,7 +174,207 @@ const exampleItems: SearchItem[] = Object.entries(examples).flatMap(
       category: 'example' as const,
       tags: [category.toLowerCase(), 'example', 'demo']
     }))
-)
+  ),
+  // Additional examples from customization page
+  {
+    id: 'customization-custom-button-trigger',
+    title: 'Custom Button Trigger',
+    description: 'Calendar modal triggered by a custom styled button',
+    href: '/customization#custombuttontrigger',
+    category: 'example' as const,
+    tags: [
+      'trigger',
+      'button',
+      'custom',
+      'styling',
+      'appearance',
+      'customization'
+    ]
+  },
+  {
+    id: 'customization-custom-div-trigger',
+    title: 'Custom Div with Icon',
+    description:
+      'Calendar triggered by a beautifully styled div element with icon and gradient',
+    href: '/customization#customdivtrigger',
+    category: 'example' as const,
+    tags: [
+      'trigger',
+      'div',
+      'icon',
+      'gradient',
+      'styling',
+      'appearance',
+      'customization'
+    ]
+  },
+  {
+    id: 'customization-custom-styled-input',
+    title: 'Custom Styled Input',
+    description:
+      'Date picker with custom styled input field using inline styles',
+    href: '/customization#customstyledinput',
+    category: 'example' as const,
+    tags: [
+      'input',
+      'styling',
+      'appearance',
+      'customization',
+      'inline',
+      'styles'
+    ]
+  },
+  {
+    id: 'customization-react-hook-form',
+    title: 'React Hook Form Integration',
+    description:
+      'Integrate DtPicker with React Hook Form using the Controller component',
+    href: '/customization#reacthookformintegration',
+    category: 'example' as const,
+    tags: ['react-hook-form', 'form', 'validation', 'controller', 'integration']
+  },
+  {
+    id: 'customization-light-theme',
+    title: 'Light Theme',
+    description: 'Calendar with light theme (default)',
+    href: '/customization#lighttheme',
+    category: 'example' as const,
+    tags: [
+      'theme',
+      'light',
+      'default',
+      'styling',
+      'appearance',
+      'customization'
+    ]
+  },
+  {
+    id: 'customization-dark-theme',
+    title: 'Dark Theme',
+    description: 'Calendar with dark theme enabled using the dark prop',
+    href: '/customization#darktheme',
+    category: 'example' as const,
+    tags: ['theme', 'dark', 'night', 'styling', 'appearance', 'customization']
+  },
+  {
+    id: 'customization-blue-example',
+    title: 'Blue Example',
+    description:
+      'Calendar customized with blue color scheme using CSS variables',
+    href: '/customization#blue-example',
+    category: 'example' as const,
+    tags: [
+      'css',
+      'variables',
+      'blue',
+      'colors',
+      'theme',
+      'customization',
+      'styling'
+    ]
+  },
+  {
+    id: 'customization-brown-example',
+    title: 'Brown Example',
+    description:
+      'Calendar customized with brown color scheme using CSS variables',
+    href: '/customization#brown-example',
+    category: 'example' as const,
+    tags: [
+      'css',
+      'variables',
+      'brown',
+      'colors',
+      'theme',
+      'customization',
+      'styling'
+    ]
+  },
+  {
+    id: 'customization-smaller-calendar',
+    title: 'Smaller Calendar Example',
+    description:
+      'Demonstrates how to create a smaller, more compact calendar using CSS variables',
+    href: '/customization#smaller-calendar-example',
+    category: 'example' as const,
+    tags: [
+      'css',
+      'variables',
+      'responsive',
+      'smaller',
+      'compact',
+      'customization',
+      'styling'
+    ]
+  },
+  {
+    id: 'customization-larger-calendar',
+    title: 'Larger Calendar Example',
+    description:
+      'Shows how to create a larger calendar with bigger elements using CSS variables',
+    href: '/customization#larger-calendar-example',
+    category: 'example' as const,
+    tags: [
+      'css',
+      'variables',
+      'responsive',
+      'larger',
+      'big',
+      'customization',
+      'styling'
+    ]
+  },
+  {
+    id: 'customization-custom-arrow-icons',
+    title: 'Custom Arrow Icons',
+    description: 'Calendar with custom arrow icons for navigation',
+    href: '/customization#customarrowicons',
+    category: 'example' as const,
+    tags: ['icons', 'arrows', 'navigation', 'customization', 'styling']
+  },
+  {
+    id: 'customization-french-localization',
+    title: 'French Month and Weekday Names',
+    description:
+      'Calendar with French month and weekday names - example of localization using customization prop',
+    href: '/customization#custommonthandweekdaynames',
+    category: 'example' as const,
+    tags: [
+      'french',
+      'localization',
+      'i18n',
+      'language',
+      'months',
+      'weekdays',
+      'customization'
+    ]
+  },
+  {
+    id: 'customization-spanish-localization',
+    title: 'Spanish Month and Weekday Names',
+    description:
+      'Calendar with Spanish month and weekday names - example of localization using customization prop',
+    href: '/customization#customnamesspanish',
+    category: 'example' as const,
+    tags: [
+      'spanish',
+      'localization',
+      'i18n',
+      'language',
+      'months',
+      'weekdays',
+      'customization'
+    ]
+  },
+  {
+    id: 'customization-custom-preset-labels',
+    title: 'Custom Preset Labels',
+    description: 'Date range picker with custom labels for preset date ranges',
+    href: '/customization#preset-ranges',
+    category: 'example' as const,
+    tags: ['preset', 'ranges', 'labels', 'customization', 'date', 'range']
+  }
+]
 
 // Combine all search items
 export const searchData: SearchItem[] = [
