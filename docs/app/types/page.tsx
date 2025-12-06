@@ -32,7 +32,7 @@ export default function Types() {
           </div>
         </div>
 
-        <h2>Day</h2>
+        <h2 id='day'>Day</h2>
 
         <p>
           The <code>Day</code> interface represents a single date. This is the
@@ -103,7 +103,7 @@ const dateOnly: Day = {
           </div>
         </div>
 
-        <h2>Range</h2>
+        <h2 id='range'>Range</h2>
 
         <p>
           The <code>Range</code> interface represents a date range with a start
@@ -148,7 +148,7 @@ const dateOnly: Day = {
           </SyntaxHighlighter>
         </div>
 
-        <h2>Multi</h2>
+        <h2 id='multi'>Multi</h2>
 
         <p>
           The <code>Multi</code> type represents multiple selected dates. It's
@@ -193,7 +193,7 @@ const dateOnly: Day = {
           </SyntaxHighlighter>
         </div>
 
-        <h2>Week</h2>
+        <h2 id='week'>Week</h2>
 
         <p>
           The <code>Week</code> interface represents a week selection with start
@@ -238,7 +238,7 @@ const dateOnly: Day = {
           </SyntaxHighlighter>
         </div>
 
-        <h2>Time</h2>
+        <h2 id='time'>Time</h2>
 
         <p>
           The <code>Time</code> interface represents a time of day (without a
@@ -283,7 +283,7 @@ const dateOnly: Day = {
           </SyntaxHighlighter>
         </div>
 
-        <h2>TimeRange</h2>
+        <h2 id='timerange'>TimeRange</h2>
 
         <p>
           The <code>TimeRange</code> interface represents a time range with
@@ -328,7 +328,7 @@ const dateOnly: Day = {
           </SyntaxHighlighter>
         </div>
 
-        <h2>CalendarLocale</h2>
+        <h2 id='calendarlocale'>CalendarLocale</h2>
 
         <p>
           The <code>CalendarLocale</code> type specifies which calendar system
@@ -353,7 +353,7 @@ const dateOnly: Day = {
           </SyntaxHighlighter>
         </div>
 
-        <h2>CalendarType</h2>
+        <h2 id='calendartype'>CalendarType</h2>
 
         <p>
           The <code>CalendarType</code> type specifies the selection mode of the
@@ -380,7 +380,7 @@ const dateOnly: Day = {
           </SyntaxHighlighter>
         </div>
 
-        <h2>DateInput</h2>
+        <h2 id='dateinput'>DateInput</h2>
 
         <p>
           The <code>DateInput</code> type represents all possible input formats

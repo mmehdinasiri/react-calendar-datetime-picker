@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { examples } from '../examplesConfig'
-import { types } from '../data/apiReference'
 
 // Helper function to convert example key to URL-friendly format
 const toKebabCase = (str: string) =>
@@ -27,10 +26,17 @@ const navigation = [
       {
         name: 'Data Types',
         href: '/types',
-        subItems: types.map((type) => ({
-          name: type.name,
-          href: `/types#${type.name.toLowerCase()}`
-        }))
+        subItems: [
+          { name: 'Day', href: '/types#day' },
+          { name: 'Range', href: '/types#range' },
+          { name: 'Multi', href: '/types#multi' },
+          { name: 'Week', href: '/types#week' },
+          { name: 'Time', href: '/types#time' },
+          { name: 'TimeRange', href: '/types#timerange' },
+          { name: 'CalendarLocale', href: '/types#calendarlocale' },
+          { name: 'CalendarType', href: '/types#calendartype' },
+          { name: 'DateInput', href: '/types#dateinput' }
+        ]
       }
     ]
   },

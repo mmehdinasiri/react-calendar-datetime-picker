@@ -293,8 +293,10 @@ export function getGroupInfo(item: SearchItem): {
         }
       }
       if (item.id.startsWith('type-')) {
+        // Extract type name from href (e.g., "/types#day" -> "Day")
+        const typeName = item.href.split('#')[1]
         return {
-          label: 'API Items - Type',
+          label: `Data Types - ${typeName.charAt(0).toUpperCase() + typeName.slice(1)}`,
           color: 'text-green-600 dark:text-green-400'
         }
       }
