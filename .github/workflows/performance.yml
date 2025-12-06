@@ -52,91 +52,7 @@ jobs:
         id: performance-report
         run: |
           echo "Generating performance report..."
-
-          # Create a simple script to parse the performance test results
-          cat > parse-performance.js << 'EOF'
-          const fs = require('fs');
-          const results = JSON.parse(fs.readFileSync('performance/results/performance-results.json', 'utf8'));
-
-          const metrics = {};
-
-          results.testResults.forEach(testResult => {
-            testResult.testResults.forEach(test => {
-              const testName = test.fullName;
-              const logs = test.logs || [];
-
-              // Extract performance metrics from console.log statements
-              logs.forEach(log => {
-                // Match patterns like "DtCalendar (1 month) render time: 16.83ms"
-                const match = log.match(/([^(]+) \(?([^)]*)\)? render time: ([0-9.]+)ms/);
-                if (match) {
-                  const [, component, details, time] = match;
-                  const key = details ? `${component} (${details})` : component;
-                  metrics[key] = parseFloat(time);
-                }
-
-                // Match other performance metrics
-                const navMatch = log.match(/Month navigation time: ([0-9.]+)ms/);
-                if (navMatch) {
-                  metrics['Month Navigation'] = parseFloat(navMatch[1]);
-                }
-
-                const pickerMatch = log.match(/DtPicker modal open time: ([0-9.]+)ms/);
-                if (pickerMatch) {
-                  metrics['DtPicker Modal Open'] = parseFloat(pickerMatch[1]);
-                }
-
-                const arrayMatch = log.match(/Array\.from calls during re-render: ([0-9]+)/);
-                if (arrayMatch) {
-                  metrics['Array.from Calls (Re-render)'] = parseInt(arrayMatch[1]);
-                }
-
-                const gridNavMatch = log.match(/Month navigation with memoized grids: ([0-9.]+)ms/);
-                if (gridNavMatch) {
-                  metrics['Memoized Grid Navigation'] = parseFloat(gridNavMatch[1]);
-                }
-              });
-            });
-          });
-
-          // Output metrics as JSON
-          console.log(JSON.stringify(metrics, null, 2));
-          EOF
-
-          node parse-performance.js > performance/results/performance-metrics.json
-
-          # Create human-readable report
-          cat > performance/results/performance-report.md << 'EOF'
-          ## 🚀 Performance Benchmark Results
-
-          ### 📊 Current Branch Performance
-          | Metric | Value | Status |
-          |--------|-------|--------|
-          EOF
-
-          # Read metrics and generate table
-          node -e "
-          const metrics = JSON.parse(require('fs').readFileSync('performance-metrics.json', 'utf8'));
-          Object.entries(metrics).forEach(([key, value]) => {
-            const unit = key.includes('Calls') ? 'calls' : 'ms';
-            const status = key.includes('Calls') ? (value === 0 ? '✅ PASS' : '⚠️ CHECK') :
-                          value < 50 ? '✅ PASS' : value < 100 ? '⚠️ SLOW' : '❌ FAIL';
-            console.log(\`| \${key} | \${value}\${unit} | \${status} |\`);
-          });
-          " >> performance-report.md
-
-          echo "" >> performance-report.md
-          echo "### 📈 Performance Targets" >> performance-report.md
-          echo "| Metric | Target | Notes |" >> performance-report.md
-          echo "|--------|--------|-------|" >> performance-report.md
-          echo "| Calendar Render (1 month) | < 100ms | Initial load time |" >> performance-report.md
-          echo "| Calendar Render (3 months) | < 200ms | Multi-month view |" >> performance-report.md
-          echo "| Re-render (unchanged props) | < 5ms | Memoization effectiveness |" >> performance-report.md
-          echo "| Month Navigation | < 50ms | User interaction |" >> performance-report.md
-          echo "| Array.from Calls (Re-render) | 0 calls | Static array optimization |" >> performance-report.md
-
-          echo "" >> performance-report.md
-          echo "_Generated on $(date)_" >> performance-report.md
+          node performance/scripts/generate-performance-report.js report performance/results/performance-metrics.json performance/results/performance-report.md
 
           # Set output for GitHub Actions
           echo "report<<EOF" >> $GITHUB_OUTPUT
@@ -166,130 +82,14 @@ jobs:
           node performance/scripts/extract-performance-metrics.js
 
           # Copy the metrics to the parent directory with a different name
-          cp performance-metrics.json ../performance-metrics-main.json
-
-          # Parse main branch results
-          cat > parse-performance.js << 'EOF'
-          const fs = require('fs');
-          const results = JSON.parse(fs.readFileSync('performance/results/performance-results-main.json', 'utf8'));
-
-          const metrics = {};
-
-          results.testResults.forEach(testResult => {
-            testResult.testResults.forEach(test => {
-              const logs = test.logs || [];
-              logs.forEach(log => {
-                const match = log.match(/([^(]+) \(?([^)]*)\)? render time: ([0-9.]+)ms/);
-                if (match) {
-                  const [, component, details, time] = match;
-                  const key = details ? `${component} (${details})` : component;
-                  metrics[key] = parseFloat(time);
-                }
-
-                const navMatch = log.match(/Month navigation time: ([0-9.]+)ms/);
-                if (navMatch) metrics['Month Navigation'] = parseFloat(navMatch[1]);
-
-                const pickerMatch = log.match(/DtPicker modal open time: ([0-9.]+)ms/);
-                if (pickerMatch) metrics['DtPicker Modal Open'] = parseFloat(pickerMatch[1]);
-
-                const arrayMatch = log.match(/Array\.from calls during re-render: ([0-9]+)/);
-                if (arrayMatch) metrics['Array.from Calls (Re-render)'] = parseInt(arrayMatch[1]);
-
-                const gridNavMatch = log.match(/Month navigation with memoized grids: ([0-9.]+)ms/);
-                if (gridNavMatch) metrics['Memoized Grid Navigation'] = parseFloat(gridNavMatch[1]);
-              });
-            });
-          });
-
-          console.log(JSON.stringify(metrics, null, 2));
-          EOF
-
-          node parse-performance.js > performance/results/performance-metrics-main.json
+          cp performance/results/performance-metrics.json ../performance/results/performance-metrics-main.json
 
       - name: Generate comparison report
         if: github.event_name == 'pull_request'
         id: comparison-report
         run: |
           echo "Generating performance comparison report..."
-
-          cat > performance/results/compare-performance.js << 'EOF'
-          const fs = require('fs');
-
-          const current = JSON.parse(fs.readFileSync('performance/results/performance-metrics.json', 'utf8'));
-          const baseline = JSON.parse(fs.readFileSync('performance/results/performance-metrics-main.json', 'utf8'));
-
-          console.log('# ⚡ Performance Comparison: PR vs Main Branch');
-          console.log('');
-          console.log('| Metric | Main Branch | PR Branch | Diff | Change | Status |');
-          console.log('|--------|-------------|-----------|------|--------|--------|');
-
-          const allKeys = new Set([...Object.keys(current), ...Object.keys(baseline)]);
-          let improved = 0;
-          let degraded = 0;
-
-          Array.from(allKeys).sort().forEach(key => {
-            const mainVal = baseline[key];
-            const prVal = current[key];
-
-            if (mainVal === undefined || prVal === undefined) {
-              console.log(`| ${key} | ${mainVal || 'N/A'} | ${prVal || 'N/A'} | N/A | N/A | ❓ NEW |`);
-              return;
-            }
-
-            const isCalls = key.includes('Calls');
-            const unit = isCalls ? 'calls' : 'ms';
-
-            let change, status, diffIndicator;
-            if (isCalls) {
-              // For call counts, lower is better
-              change = prVal - mainVal;
-              if (change < 0) {
-                status = '✅ IMPROVED';
-                diffIndicator = '🟢';
-                improved++;
-              } else if (change > 0) {
-                status = '❌ DEGRADED';
-                diffIndicator = '🔴';
-                degraded++;
-              } else {
-                status = '➡️ SAME';
-                diffIndicator = '⚪';
-              }
-            } else {
-              // For time metrics, lower is better
-              change = prVal - mainVal;
-              const percentChange = mainVal > 0 ? ((change / mainVal) * 100).toFixed(1) : 'N/A';
-
-              if (change < 0) {
-                status = `✅ IMPROVED (${Math.abs(percentChange)}% faster)`;
-                diffIndicator = '🟢';
-                improved++;
-              } else if (change > 0) {
-                status = `❌ DEGRADED (${percentChange}% slower)`;
-                diffIndicator = '🔴';
-                degraded++;
-              } else {
-                status = '➡️ SAME';
-                diffIndicator = '⚪';
-              }
-            }
-
-            const changeStr = isCalls ? (change > 0 ? `+${change}` : change.toString()) :
-                           change >= 0 ? `+${change.toFixed(2)}` : change.toFixed(2);
-
-            console.log(`| ${key} | ${mainVal}${unit} | ${prVal}${unit} | ${diffIndicator} ${changeStr}${unit} | ${changeStr}${unit} | ${status} |`);
-          });
-
-          console.log('');
-          console.log(`## 📊 Summary`);
-          console.log(`- **${improved}** metrics improved`);
-          console.log(`- **${degraded}** metrics degraded`);
-          console.log(`- **${Array.from(allKeys).length - improved - degraded}** metrics unchanged`);
-          console.log('');
-          console.log('_Performance comparison generated automatically_');
-          EOF
-
-          node compare-performance.js > performance/results/performance-comparison.md
+          node performance/scripts/generate-performance-report.js compare performance/results/performance-metrics-main.json performance/results/performance-metrics.json performance/results/performance-comparison.md
 
           # Set output for GitHub Actions
           echo "comparison<<EOF" >> $GITHUB_OUTPUT
@@ -319,13 +119,13 @@ jobs:
               // Flag if > 15% slower (significant regression)
               if (percentChange > 15) {
                 hasRegression = true;
-                regressions.push(\`\${key}: \${percentChange.toFixed(1)}% slower (\${base.toFixed(2)}ms → \${val.toFixed(2)}ms)\`);
+                regressions.push(`❌ ${key}: ${percentChange.toFixed(1)}% slower (${base.toFixed(2)}ms → ${val.toFixed(2)}ms)`);
               }
             });
 
             if (hasRegression) {
               console.log('🚨 PERFORMANCE REGRESSIONS DETECTED:');
-              regressions.forEach(reg => console.log(\`  ❌ \${reg}\`));
+              regressions.forEach(reg => console.log(`  ${reg}`));
               console.log('');
               console.log('These changes exceed the 15% performance regression threshold.');
               console.log('Consider optimizing before merging.');

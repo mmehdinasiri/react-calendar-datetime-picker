@@ -208,8 +208,8 @@ const command = args[0]
 
 switch (command) {
   case 'report': {
-    const resultsPath = args[1] || 'performance-results.json'
-    const outputPath = args[2] || 'performance-report.md'
+    const resultsPath = args[1] || 'performance/results/performance-metrics.json'
+    const outputPath = args[2] || 'performance/results/performance-report.md'
 
     try {
       const metrics = parsePerformanceResults(resultsPath)
@@ -234,9 +234,9 @@ switch (command) {
   }
 
   case 'compare': {
-    const baselinePath = args[1] || 'baseline-metrics.json'
-    const currentPath = args[2] || 'performance-metrics.json'
-    const compareOutputPath = args[3] || 'performance-comparison.md'
+    const baselinePath = args[1] || 'performance/results/baseline-metrics.json'
+    const currentPath = args[2] || 'performance/results/performance-metrics.json'
+    const compareOutputPath = args[3] || 'performance/results/performance-comparison.md'
 
     try {
       const baseline = JSON.parse(fs.readFileSync(baselinePath, 'utf8'))
