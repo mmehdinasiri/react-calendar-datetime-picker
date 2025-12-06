@@ -20,9 +20,9 @@ export default function MigrationGuide() {
           <div className='flex'>
             <div className='ml-3'>
               <p className='text-sm text-gray-200'>
-                <strong>Breaking Changes:</strong> Version 2.x introduces some
-                breaking changes. Most existing code will continue to work, but
-                some prop names and behaviors have changed.
+                <strong>Minimal Breaking Changes:</strong> Version 2.x introduces
+                minimal breaking changes. Most existing code will continue to work
+                without modification, with only minor CSS class name updates.
               </p>
             </div>
           </div>
@@ -136,58 +136,6 @@ export default function MigrationGuide() {
           </div>
 
           <div className='space-y-6'>
-            <div className='border-l-4 border-red-500 bg-bg-tertiary p-4'>
-              <div className='flex'>
-                <div className='ml-3'>
-                  <h3 className='text-lg font-medium text-white'>
-                    Component Import Changes
-                  </h3>
-                  <p className='text-sm text-gray-200 mt-1'>
-                    Component names have been updated for consistency. Update
-                    your imports:
-                  </p>
-                  <div className='mt-3'>
-                    <p className='text-sm text-gray-200 font-medium'>
-                      Before (v1.x):
-                    </p>
-                    <div className='mt-1 rounded overflow-hidden border border-border'>
-                      <SyntaxHighlighter
-                        language='typescript'
-                        style={vscDarkPlus}
-                        customStyle={{
-                          margin: 0,
-                          borderRadius: '0.25rem',
-                          fontSize: '0.875rem',
-                          lineHeight: '1.5',
-                          padding: '0.75rem'
-                        }}
-                      >
-                        {`import { DatePicker, DatePickerCalendar } from 'react-calendar-datetime-picker'`}
-                      </SyntaxHighlighter>
-                    </div>
-                    <p className='text-sm text-gray-200 font-medium mt-3'>
-                      After (v2.x):
-                    </p>
-                    <div className='mt-1 rounded overflow-hidden border border-accent'>
-                      <SyntaxHighlighter
-                        language='typescript'
-                        style={vscDarkPlus}
-                        customStyle={{
-                          margin: 0,
-                          borderRadius: '0.25rem',
-                          fontSize: '0.875rem',
-                          lineHeight: '1.5',
-                          padding: '0.75rem'
-                        }}
-                      >
-                        {`import { DtPicker, DtCalendar } from 'react-calendar-datetime-picker'`}
-                      </SyntaxHighlighter>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <div className='border-l-4 border-orange-500 bg-bg-tertiary p-4'>
               <div className='flex'>
                 <div className='ml-3'>
@@ -201,20 +149,11 @@ export default function MigrationGuide() {
                   <div className='mt-3 space-y-3'>
                     <div>
                       <code className='text-sm bg-bg-primary border border-orange-500 px-2 py-1 rounded text-gray-200'>
-                        local
-                      </code>
-                      <span className='text-gray-300 mx-2'>→</span>
-                      <code className='text-sm bg-bg-primary border border-accent px-2 py-1 rounded text-gray-200'>
-                        locale
-                      </code>
-                    </div>
-                    <div>
-                      <code className='text-sm bg-bg-primary border border-orange-500 px-2 py-1 rounded text-gray-200'>
                         calenderModalClass
                       </code>
                       <span className='text-gray-300 mx-2'>→</span>
                       <code className='text-sm bg-bg-primary border border-accent px-2 py-1 rounded text-gray-200'>
-                        calenderModalClass
+                        calendarModalClass
                       </code>
                       <span className='text-sm text-gray-300 ml-2'>
                         (spelling corrected)
@@ -281,72 +220,23 @@ export default function MigrationGuide() {
           </div>
         </section>
 
-        {/* New Features */}
+        {/* What's New in v2.x */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
             <h2 className='text-2xl font-bold text-white mb-2'>
-              New Features in v2.x
+              What's New in v2.x
             </h2>
-            <p className='text-gray-300'>
-              Take advantage of new capabilities and improvements.
+            <p className='text-gray-300 mb-4'>
+              Version 2.x brings significant improvements and new capabilities.
+              Check out the comprehensive list of features on the homepage.
             </p>
-          </div>
-
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-            <div className='border border-accent bg-bg-tertiary p-4 rounded-lg'>
-              <h3 className='text-lg font-semibold text-white mb-2'>
-                Enhanced TypeScript Support
-              </h3>
-              <p className='text-sm text-gray-200'>
-                Better type definitions, improved IntelliSense, and stricter
-                type checking.
-              </p>
-            </div>
-
-            <div className='border border-accent bg-bg-tertiary p-4 rounded-lg'>
-              <h3 className='text-lg font-semibold text-white mb-2'>
-                Improved Accessibility
-              </h3>
-              <p className='text-sm text-gray-200'>
-                Better keyboard navigation, ARIA labels, and screen reader
-                support.
-              </p>
-            </div>
-
-            <div className='border border-accent bg-bg-tertiary p-4 rounded-lg'>
-              <h3 className='text-lg font-semibold text-white mb-2'>
-                CSS Variables Support
-              </h3>
-              <p className='text-sm text-gray-200'>
-                Easy theming with CSS custom properties for colors and styling.
-              </p>
-            </div>
-
-            <div className='border border-accent bg-bg-tertiary p-4 rounded-lg'>
-              <h3 className='text-lg font-semibold text-white mb-2'>
-                Better Performance
-              </h3>
-              <p className='text-sm text-gray-200'>
-                Optimized rendering and reduced bundle size.
-              </p>
-            </div>
-
-            <div className='border border-accent bg-bg-tertiary p-4 rounded-lg'>
-              <h3 className='text-lg font-semibold text-white mb-2'>
-                Extended Utility Functions
-              </h3>
-              <p className='text-sm text-gray-200'>
-                More date manipulation utilities for complex use cases.
-              </p>
-            </div>
-
-            <div className='border border-accent bg-bg-tertiary p-4 rounded-lg'>
-              <h3 className='text-lg font-semibold text-white mb-2'>
-                Enhanced Customization
-              </h3>
-              <p className='text-sm text-gray-200'>
-                More options for icons, labels, and component styling.
-              </p>
+            <div className='text-center'>
+              <a
+                href='/#new-features-v2x'
+                className='inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-accent hover:bg-accent-hover transition-colors'
+              >
+                Explore New Features →
+              </a>
             </div>
           </div>
         </section>
@@ -381,13 +271,13 @@ export default function MigrationGuide() {
                         lineHeight: '1.5'
                       }}
                     >
-                      {`import { DatePicker } from 'react-calendar-datetime-picker'
+                      {`import { DtPicker } from 'react-calendar-datetime-picker'
 
 function App() {
   const [date, setDate] = useState(null)
 
   return (
-    <DatePicker
+    <DtPicker
       initValue={date}
       onChange={setDate}
       local="en"
@@ -449,9 +339,9 @@ function App() {
                         lineHeight: '1.5'
                       }}
                     >
-                      {`import { DatePickerCalendar } from 'react-calendar-datetime-picker'
+                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
 
-<DatePickerCalendar
+<DtCalendar
   initValue={date}
   onChange={setDate}
   local="fa"
@@ -478,7 +368,7 @@ function App() {
 <DtCalendar
   initValue={date}
   onChange={setDate}
-  locale="fa"
+  local="fa"
   showWeekend={true}
 />`}
                     </SyntaxHighlighter>
@@ -505,7 +395,7 @@ function App() {
                         lineHeight: '1.5'
                       }}
                     >
-                      {`<DatePicker
+                      {`<DtPicker
   initValue={range}
   onChange={setRange}
   type="range"
@@ -534,6 +424,218 @@ function App() {
   type="range"
   withTime={true}
   locale="en"
+/>`}
+                    </SyntaxHighlighter>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Enhanced initValue Support */}
+        <section className='bg-bg-secondary rounded-lg border border-border p-8'>
+          <div className='mb-6'>
+            <h2 className='text-2xl font-bold text-white mb-2'>
+              Enhanced initValue Support
+            </h2>
+            <p className='text-gray-300'>
+              Version 2.x supports more flexible initValue formats and better
+              type safety for initialization.
+            </p>
+          </div>
+
+          <div className='space-y-8'>
+            <div>
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Single Date - Multiple Input Formats
+              </h3>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+                <div>
+                  <h4 className='font-medium text-white mb-2'>Before (v1.x)</h4>
+                  <div className='rounded-lg overflow-hidden border border-border'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`// Only Day object format
+<DtPicker
+  initValue={{ year: 2023, month: 12, day: 25 }}
+  onChange={setDate}
+/>`}
+                    </SyntaxHighlighter>
+                  </div>
+                </div>
+                <div>
+                  <h4 className='font-medium text-white mb-2'>After (v2.x)</h4>
+                  <div className='rounded-lg overflow-hidden border border-accent'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`// Multiple formats supported
+<DtPicker
+  initValue="2023-12-25"  // ISO string
+  onChange={setDate}
+/>
+
+<DtPicker
+  initValue={new Date(2023, 11, 25)}  // Date object
+  onChange={setDate}
+/>
+
+<DtPicker
+  initValue={1703452800000}  // Timestamp
+  onChange={setDate}
+/>`}
+                    </SyntaxHighlighter>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Range Selection - Enhanced Flexibility
+              </h3>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+                <div>
+                  <h4 className='font-medium text-white mb-2'>Before (v1.x)</h4>
+                  <div className='rounded-lg overflow-hidden border border-red-500'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`// Limited to specific object format
+<DtPicker
+  initValue={{
+    from: { year: 2023, month: 12, day: 1 },
+    to: { year: 2023, month: 12, day: 31 }
+  }}
+  onChange={setRange}
+  type="range"
+/>`}
+                    </SyntaxHighlighter>
+                  </div>
+                </div>
+                <div>
+                  <h4 className='font-medium text-white mb-2'>After (v2.x)</h4>
+                  <div className='rounded-lg overflow-hidden border border-accent'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`// Flexible range initialization
+<DtPicker
+  initValue={{
+    from: "2023-12-01",
+    to: "2023-12-31"
+  }}
+  onChange={setRange}
+  type="range"
+/>
+
+<DtPicker
+  initValue={{
+    from: new Date(2023, 11, 1),
+    to: new Date(2023, 11, 31)
+  }}
+  onChange={setRange}
+  type="range"
+/>`}
+                    </SyntaxHighlighter>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className='text-lg font-semibold text-white mb-4'>
+                Multi-Selection - Array Support
+              </h3>
+              <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+                <div>
+                  <h4 className='font-medium text-white mb-2'>Before (v1.x)</h4>
+                  <div className='rounded-lg overflow-hidden border border-red-500'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`// Complex object array format
+<DtPicker
+  initValue={[
+    { year: 2023, month: 12, day: 1 },
+    { year: 2023, month: 12, day: 15 },
+    { year: 2023, month: 12, day: 25 }
+  ]}
+  onChange={setMulti}
+  type="multi"
+/>`}
+                    </SyntaxHighlighter>
+                  </div>
+                </div>
+                <div>
+                  <h4 className='font-medium text-white mb-2'>After (v2.x)</h4>
+                  <div className='rounded-lg overflow-hidden border border-accent'>
+                    <SyntaxHighlighter
+                      language='tsx'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5'
+                      }}
+                    >
+                      {`// Mixed format array support
+<DtPicker
+  initValue={[
+    "2023-12-01",
+    new Date(2023, 11, 15),
+    1703452800000  // timestamp
+  ]}
+  onChange={setMulti}
+  type="multi"
+/>
+
+// Or still use Day objects
+<DtPicker
+  initValue={[
+    { year: 2023, month: 12, day: 1 },
+    { year: 2023, month: 12, day: 15 }
+  ]}
+  onChange={setMulti}
+  type="multi"
 />`}
                     </SyntaxHighlighter>
                   </div>
