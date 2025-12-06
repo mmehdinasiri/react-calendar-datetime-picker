@@ -47,7 +47,7 @@ const navigation = [
       href: `/examples#${toKebabCase(groupName)}`,
       subItems: Object.keys(groupExamples).map((exampleKey) => ({
         name: groupExamples[exampleKey].title,
-        href: `/examples#${toKebabCase(exampleKey)}`
+        href: `/examples#${toKebabCase(groupName)}-${exampleKey}`
       }))
     }))
   },
