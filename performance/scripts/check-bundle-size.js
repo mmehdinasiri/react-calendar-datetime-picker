@@ -40,7 +40,6 @@ function formatBytes(bytes) {
 function checkBundleSize() {
   console.log('🔍 Checking bundle sizes...\n')
 
-  let hasErrors = false
   const results = []
 
   Object.entries(LIMITS).forEach(([filePath, limit]) => {
@@ -48,7 +47,6 @@ function checkBundleSize() {
 
     if (!fs.existsSync(fullPath)) {
       console.error(`❌ File not found: ${filePath}`)
-      hasErrors = true
       return
     }
 

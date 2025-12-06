@@ -87,7 +87,7 @@ function formatBytes(bytes) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-function getBundleStatus(asset, size, isGzip) {
+function getBundleStatus(asset, size) {
   const limits = {
     'index.mjs': 25 * 1024, // 25 kB gzip
     'index.cjs': 20 * 1024, // 20 kB gzip
@@ -130,7 +130,7 @@ function generateMarkdownReport(
       const isGzip = key.includes('(gzip)')
       const baseName = key.replace(' (gzip)', '').replace(' (raw)', '')
       const size = isGzip ? value : bundleMetrics[`${baseName} (gzip)`] || value
-      const status = getBundleStatus(baseName, size, isGzip)
+      const status = getBundleStatus(baseName, size)
       const sizeStr = formatBytes(value)
 
       if (isGzip) {
