@@ -1,0 +1,11 @@
+{
+  "DtCalendar (1 month)": 20.0,
+  "DtCalendar (3 months)": 12.0,
+  "Re-render (unchanged props) - 1st": 5.0,
+  "Re-render (unchanged props) - 2nd": 4.0,
+  "Month Navigation": 8.0,
+  "DtPicker Render": 4.0,
+  "DtPicker Modal Open": 12.0,
+  "Array.from Calls (Re-render)": 2,
+  "Memoized Grid Navigation": 8.0
+}

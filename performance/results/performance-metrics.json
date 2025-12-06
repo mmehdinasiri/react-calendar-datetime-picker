@@ -1,0 +1,11 @@
+{
+  "DtCalendar (1 month)": 4.603624999999965,
+  "DtCalendar (3 months)": 8.638334000000043,
+  "Re-render (unchanged props) - 1st": 1.2194999999999254,
+  "Re-render (unchanged props) - 2nd": 1.187041000000022,
+  "Month Navigation": 4.678125000000023,
+  "DtPicker Render": 1.529292000000055,
+  "DtPicker Modal Open": 1.9204170000000431,
+  "Array.from Calls (Re-render)": 0,
+  "Memoized Grid Navigation": 5.334292000000005
+}

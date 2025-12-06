@@ -25,7 +25,7 @@ export interface YearViewProps {
   onViewChange: (view: 'months') => void
 }
 
-export const YearView: React.FC<YearViewProps> = (props) => {
+const YearViewInner: React.FC<YearViewProps> = (props) => {
   const {
     displayMonth,
     locale,
@@ -141,5 +141,17 @@ export const YearView: React.FC<YearViewProps> = (props) => {
     </div>
   )
 }
+
+// 🟢 Memoize component to prevent unnecessary re-renders
+export const YearView = React.memo(YearViewInner, (prevProps, nextProps) => {
+  return (
+    prevProps.displayMonth === nextProps.displayMonth &&
+    prevProps.locale === nextProps.locale &&
+    prevProps.yearListStyle === nextProps.yearListStyle &&
+    prevProps.customization === nextProps.customization &&
+    prevProps.onYearSelect === nextProps.onYearSelect &&
+    prevProps.onViewChange === nextProps.onViewChange
+  )
+})
 
 YearView.displayName = 'YearView'

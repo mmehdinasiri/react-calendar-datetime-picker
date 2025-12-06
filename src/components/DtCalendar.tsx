@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react'
+import React, { useEffect, useRef, useMemo, useCallback } from 'react'
 import type { Day, Range, Multi, InitValueInput } from '../types'
 import type {
   CalendarError,
@@ -181,6 +181,65 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     numberOfMonths
   })
 
+  // 🟢 Memoize callback functions to prevent React.memo bypass in child components
+  const handleDateSelect = useCallback(
+    (day: Day) => {
+      actions.selectDate(day)
+      onDateSelectProp?.(day)
+    },
+    [actions, onDateSelectProp]
+  )
+
+  const handleMonthSelect = useCallback(
+    (month: number) => {
+      actions.selectMonth(month)
+      onMonthSelectProp?.(month)
+    },
+    [actions, onMonthSelectProp]
+  )
+
+  const handleYearSelect = useCallback(
+    (year: number) => {
+      actions.selectYear(year)
+      onYearSelectProp?.(year)
+    },
+    [actions, onYearSelectProp]
+  )
+
+  const handleViewChange = useCallback(
+    (view: 'calendar' | 'months' | 'years') => {
+      actions.setView(view)
+      onViewChangeProp?.(view)
+    },
+    [actions, onViewChangeProp]
+  )
+
+  const handleMonthNavigate = useCallback(
+    (direction: 'prev' | 'next') => {
+      actions.navigateMonth(direction)
+      onMonthNavigateProp?.(direction)
+    },
+    [actions, onMonthNavigateProp]
+  )
+
+  const handleGoToToday = useCallback(() => {
+    actions.goToToday()
+    onGoToTodayProp?.()
+  }, [actions, onGoToTodayProp])
+
+  const handlePresetRangeSelect = useCallback(
+    (range: Range) => {
+      if (type === 'range') {
+        // Directly set the range for preset selections
+        actions.selectPresetRange(range)
+      } else if (type === 'week') {
+        // For week type, select the start date which will calculate the week bounds
+        actions.selectDate(range.from)
+      }
+    },
+    [actions, type]
+  )
+
   return (
     <div
       className={`react-calendar-datetime-picker ${calenderModalClass || ''}`}
@@ -201,41 +260,15 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         customization={customization}
         numberOfMonths={numberOfMonths}
         yearListStyle={yearListStyle}
-        onDateSelect={(day) => {
-          actions.selectDate(day)
-          onDateSelectProp?.(day)
-        }}
+        onDateSelect={handleDateSelect}
         onTimeChange={actions.updateTime}
-        onMonthSelect={(month) => {
-          actions.selectMonth(month)
-          onMonthSelectProp?.(month)
-        }}
-        onYearSelect={(year) => {
-          actions.selectYear(year)
-          onYearSelectProp?.(year)
-        }}
-        onViewChange={(view) => {
-          actions.setView(view)
-          onViewChangeProp?.(view)
-        }}
-        onMonthNavigate={(direction) => {
-          actions.navigateMonth(direction)
-          onMonthNavigateProp?.(direction)
-        }}
-        onGoToToday={() => {
-          actions.goToToday()
-          onGoToTodayProp?.()
-        }}
+        onMonthSelect={handleMonthSelect}
+        onYearSelect={handleYearSelect}
+        onViewChange={handleViewChange}
+        onMonthNavigate={handleMonthNavigate}
+        onGoToToday={handleGoToToday}
         presetRanges={presetRanges}
-        onPresetRangeSelect={(range: Range) => {
-          if (type === 'range') {
-            // Directly set the range for preset selections
-            actions.selectPresetRange(range)
-          } else if (type === 'week') {
-            // For week type, select the start date which will calculate the week bounds
-            actions.selectDate(range.from)
-          }
-        }}
+        onPresetRangeSelect={handlePresetRangeSelect}
       />
     </div>
   )

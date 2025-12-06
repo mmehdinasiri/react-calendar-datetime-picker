@@ -3,7 +3,7 @@
  * Displays the calendar grid with days
  */
 
-import React, { useRef } from 'react'
+import React, { useRef, useMemo } from 'react'
 import type {
   Day,
   Range,
@@ -82,7 +82,7 @@ export interface CalendarGridViewProps {
   numberOfMonths?: 1 | 2 | 3
 }
 
-export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
+const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
   const {
     selectedValue,
     displayMonth,
@@ -126,9 +126,11 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     numberOfMonths,
     locale
   )
-  const calendarGrids = monthsToDisplay.map((month) =>
-    generateCalendarGrid(month, locale)
-  )
+
+  // 🟢 Memoize expensive calendar grid generation - only recompute when dependencies change
+  const calendarGrids = useMemo(() => {
+    return monthsToDisplay.map((month) => generateCalendarGrid(month, locale))
+  }, [monthsToDisplay, locale])
 
   // Refs for keyboard navigation
   const gridRef = useRef<HTMLDivElement>(null)
@@ -628,5 +630,34 @@ export const CalendarGridView: React.FC<CalendarGridViewProps> = (props) => {
     </div>
   )
 }
+
+// 🟢 Memoize component to prevent unnecessary re-renders
+export const CalendarGridView = React.memo(
+  CalendarGridViewInner,
+  (prevProps, nextProps) => {
+    // Return TRUE if props are equal (skip re-render)
+    return (
+      prevProps.selectedValue === nextProps.selectedValue &&
+      prevProps.displayMonth === nextProps.displayMonth &&
+      prevProps.locale === nextProps.locale &&
+      prevProps.type === nextProps.type &&
+      prevProps.withTime === nextProps.withTime &&
+      prevProps.timeFormat === nextProps.timeFormat &&
+      prevProps.showWeekend === nextProps.showWeekend &&
+      prevProps.todayBtn === nextProps.todayBtn &&
+      prevProps.enlargeSelectedDay === nextProps.enlargeSelectedDay &&
+      prevProps.numberOfMonths === nextProps.numberOfMonths &&
+      prevProps.constraints === nextProps.constraints &&
+      prevProps.customization === nextProps.customization &&
+      prevProps.presetRanges === nextProps.presetRanges &&
+      prevProps.onDateSelect === nextProps.onDateSelect &&
+      prevProps.onTimeChange === nextProps.onTimeChange &&
+      prevProps.onMonthNavigate === nextProps.onMonthNavigate &&
+      prevProps.onViewChange === nextProps.onViewChange &&
+      prevProps.onGoToToday === nextProps.onGoToToday &&
+      prevProps.onPresetRangeSelect === nextProps.onPresetRangeSelect
+    )
+  }
+)
 
 CalendarGridView.displayName = 'CalendarGridView'

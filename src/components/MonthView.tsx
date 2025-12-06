@@ -22,7 +22,7 @@ export interface MonthViewProps {
   onViewChange: (view: 'calendar' | 'years') => void
 }
 
-export const MonthView: React.FC<MonthViewProps> = (props) => {
+const MonthViewInner: React.FC<MonthViewProps> = (props) => {
   const {
     displayMonth,
     locale,
@@ -87,5 +87,16 @@ export const MonthView: React.FC<MonthViewProps> = (props) => {
     </div>
   )
 }
+
+// 🟢 Memoize component to prevent unnecessary re-renders
+export const MonthView = React.memo(MonthViewInner, (prevProps, nextProps) => {
+  return (
+    prevProps.displayMonth === nextProps.displayMonth &&
+    prevProps.locale === nextProps.locale &&
+    prevProps.customization === nextProps.customization &&
+    prevProps.onMonthSelect === nextProps.onMonthSelect &&
+    prevProps.onViewChange === nextProps.onViewChange
+  )
+})
 
 MonthView.displayName = 'MonthView'

@@ -7,6 +7,11 @@ import React from 'react'
 import type { Day } from '../types'
 import { toPersianNumeral } from '../utils/formatting'
 
+// 🟢 Pre-computed static arrays to avoid recreation on every render
+const HOUR_OPTIONS_24 = Array.from({ length: 24 }, (_, i) => i)
+const HOUR_OPTIONS_12 = Array.from({ length: 12 }, (_, i) => i + 1)
+const MINUTE_OPTIONS = Array.from({ length: 60 }, (_, i) => i)
+
 export interface TimeSelectorProps {
   /** Current day value */
   day: Day | null
@@ -22,7 +27,7 @@ export interface TimeSelectorProps {
   onTimeChange: (hour: number, minute: number) => void
 }
 
-export const TimeSelector: React.FC<TimeSelectorProps> = (props) => {
+const TimeSelectorInner: React.FC<TimeSelectorProps> = (props) => {
   const {
     day,
     timeFormat,
@@ -47,19 +52,9 @@ export const TimeSelector: React.FC<TimeSelectorProps> = (props) => {
         : currentHour
   const isPM = !is24Hour && currentHour >= 12
 
-  // Generate hour options
-  const maxHour = is24Hour ? 23 : 12
-  const minHour = is24Hour ? 0 : 1
-  const hourOptions: number[] = []
-  for (let i = minHour; i <= maxHour; i++) {
-    hourOptions.push(i)
-  }
-
-  // Generate minute options (0-59)
-  const minuteOptions: number[] = []
-  for (let i = 0; i <= 59; i++) {
-    minuteOptions.push(i)
-  }
+  // 🟢 Use pre-computed static arrays instead of creating on every render
+  const hourOptions = is24Hour ? HOUR_OPTIONS_24 : HOUR_OPTIONS_12
+  const minuteOptions = MINUTE_OPTIONS
 
   const handleHourChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedDisplayHour = parseInt(e.target.value, 10)
@@ -157,5 +152,22 @@ export const TimeSelector: React.FC<TimeSelectorProps> = (props) => {
     </div>
   )
 }
+
+// 🟢 Memoize component to prevent unnecessary re-renders
+export const TimeSelector = React.memo(
+  TimeSelectorInner,
+  (prevProps, nextProps) => {
+    // Return TRUE if props are equal (skip re-render)
+    // Return FALSE if props differ (re-render needed)
+    return (
+      prevProps.day === nextProps.day &&
+      prevProps.timeFormat === nextProps.timeFormat &&
+      prevProps.locale === nextProps.locale &&
+      prevProps.label === nextProps.label &&
+      prevProps.disabled === nextProps.disabled &&
+      prevProps.onTimeChange === nextProps.onTimeChange
+    )
+  }
+)
 
 TimeSelector.displayName = 'TimeSelector'

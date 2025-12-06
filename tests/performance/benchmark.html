@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Performance Benchmark</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .benchmark-results { margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 5px; }
+        .result-item { margin: 5px 0; }
+        .metric { font-weight: bold; color: #333; }
+        .value { color: #0066cc; font-family: monospace; }
+        .status { margin-left: 10px; padding: 2px 6px; border-radius: 3px; font-size: 0.8em; }
+        .status.pass { background: #d4edda; color: #155724; }
+        .status.fail { background: #f8d7da; color: #721c24; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .calendar-container { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Calendar Performance Benchmark</h1>
+    <p>This benchmark measures the performance improvements in the calendar component.</p>
+
+    <div>
+        <button onclick="runBenchmark()">Run Performance Benchmark</button>
+        <button onclick="runRenderTest()">Test Initial Render</button>
+        <button onclick="runReRenderTest()">Test Re-render Performance</button>
+        <button onclick="runInteractionTest()">Test Month Navigation</button>
+    </div>
+
+    <div id="calendar-container" class="calendar-container" style="display: none;">
+        <!-- Calendar will be rendered here -->
+    </div>
+
+    <div id="results" class="benchmark-results">
+        <h3>Benchmark Results</h3>
+        <div id="results-content">
+            <p>Click "Run Performance Benchmark" to start measurements.</p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the calendar components
+        import { DtCalendar } from '../../src/components/DtCalendar.tsx';
+        import { DtPicker } from '../../src/components/DtPicker.tsx';
+
+        window.results = [];
+
+        function addResult(name, value, expected, unit = 'ms') {
+            const passed = value <= expected;
+            window.results.push({ name, value, expected, unit, passed });
+
+            const statusClass = passed ? 'status pass' : 'status fail';
+            const statusText = passed ? 'PASS' : 'FAIL';
+
+            return `
+                <div class="result-item">
+                    <span class="metric">${name}:</span>
+                    <span class="value">${value.toFixed(2)}${unit}</span>
+                    <span class="${statusClass}">${statusText}</span>
+                    <small>(expected: ≤${expected}${unit})</small>
+                </div>
+            `;
+        }
+
+        function updateResults() {
+            const content = window.results.map(r =>
+                `<div class="result-item">
+                    <span class="metric">${r.name}:</span>
+                    <span class="value">${r.value.toFixed(2)}${r.unit}</span>
+                    <span class="status ${r.passed ? 'pass' : 'fail'}">${r.passed ? 'PASS' : 'FAIL'}</span>
+                    <small>(expected: ≤${r.expected}${r.unit})</small>
+                </div>`
+            ).join('');
+
+            const summary = window.results.length > 0 ?
+                `<div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #ccc;">
+                    <strong>Summary:</strong> ${window.results.filter(r => r.passed).length}/${window.results.length} tests passed
+                </div>` : '';
+
+            document.getElementById('results-content').innerHTML = content + summary;
+        }
+
+        window.runBenchmark = async function() {
+            window.results = [];
+            console.log('Starting comprehensive performance benchmark...');
+
+            // Clear previous results
+            document.getElementById('results-content').innerHTML = '<p>Running benchmarks...</p>';
+
+            try {
+                // Test 1: Initial render performance
+                await runRenderTest();
+
+                // Test 2: Re-render performance
+                await runReRenderTest();
+
+                // Test 3: Interaction performance
+                await runInteractionTest();
+
+                updateResults();
+                console.log('Benchmark complete!');
+                console.table(window.results);
+
+            } catch (error) {
+                document.getElementById('results-content').innerHTML =
+                    `<p style="color: red;">Benchmark failed: ${error.message}</p>`;
+            }
+        };
+
+        window.runRenderTest = async function() {
+            console.log('Testing initial render performance...');
+
+            const container = document.getElementById('calendar-container');
+            container.style.display = 'block';
+            container.innerHTML = '';
+
+            // Test 1-month calendar render
+            const startTime1 = performance.now();
+            ReactDOM.render(React.createElement(DtCalendar, {
+                type: 'single',
+                locale: 'en'
+            }), container);
+            await new Promise(resolve => setTimeout(resolve, 0)); // Wait for render
+            const renderTime1 = performance.now() - startTime1;
+
+            addResult('1-Month Calendar Initial Render', renderTime1, 100);
+
+            // Test 3-month calendar render
+            const startTime3 = performance.now();
+            ReactDOM.render(React.createElement(DtCalendar, {
+                type: 'single',
+                locale: 'en',
+                numberOfMonths: 3
+            }), container);
+            await new Promise(resolve => setTimeout(resolve, 0));
+            const renderTime3 = performance.now() - startTime3;
+
+            addResult('3-Month Calendar Initial Render', renderTime3, 200);
+
+            container.style.display = 'none';
+            updateResults();
+        };
+
+        window.runReRenderTest = async function() {
+            console.log('Testing re-render performance...');
+
+            const container = document.getElementById('calendar-container');
+            container.style.display = 'block';
+
+            // Initial render
+            ReactDOM.render(React.createElement(DtCalendar, {
+                type: 'single',
+                locale: 'en',
+                initValue: null
+            }), container);
+            await new Promise(resolve => setTimeout(resolve, 0));
+
+            // Test re-render with same props (should be memoized)
+            const startTime = performance.now();
+            ReactDOM.render(React.createElement(DtCalendar, {
+                type: 'single',
+                locale: 'en',
+                initValue: null
+            }), container);
+            await new Promise(resolve => setTimeout(resolve, 0));
+            const reRenderTime = performance.now() - startTime;
+
+            addResult('Re-render (unchanged props)', reRenderTime, 5);
+
+            container.style.display = 'none';
+            updateResults();
+        };
+
+        window.runInteractionTest = async function() {
+            console.log('Testing interaction performance...');
+
+            const container = document.getElementById('calendar-container');
+            container.style.display = 'block';
+
+            // Render calendar
+            ReactDOM.render(React.createElement(DtCalendar, {
+                type: 'single',
+                locale: 'en'
+            }), container);
+            await new Promise(resolve => setTimeout(resolve, 0));
+
+            // Find and click next month button
+            const nextButton = container.querySelector('button[title="next"]');
+            if (nextButton) {
+                const startTime = performance.now();
+                nextButton.click();
+                await new Promise(resolve => setTimeout(resolve, 0));
+                const interactionTime = performance.now() - startTime;
+
+                addResult('Month Navigation', interactionTime, 50);
+            } else {
+                addResult('Month Navigation', 999, 50); // Mark as failed
+            }
+
+            container.style.display = 'none';
+            updateResults();
+        };
+
+        // Auto-run basic benchmark on load
+        setTimeout(() => {
+            console.log('Auto-running performance benchmark...');
+            runBenchmark();
+        }, 1000);
+    </script>
+</body>
+</html>

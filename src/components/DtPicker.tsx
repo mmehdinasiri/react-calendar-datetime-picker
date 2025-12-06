@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactNode } from 'react'
+import React, { useState, useRef, ReactNode, useCallback } from 'react'
 import type { Day, Range, Multi } from '../types'
 import type {
   CalendarSelectionSingle,
@@ -157,6 +157,52 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     timeFormat,
     numberOfMonths
   )
+
+  // 🟢 Memoize callback functions to prevent React.memo bypass in child components
+  const handleDateSelect = useCallback(
+    (day: Day) => {
+      actions.selectDate(day)
+      onDateSelect?.(day)
+    },
+    [actions, onDateSelect]
+  )
+
+  const handleMonthSelect = useCallback(
+    (month: number) => {
+      actions.selectMonth(month)
+      onMonthSelect?.(month)
+    },
+    [actions, onMonthSelect]
+  )
+
+  const handleYearSelect = useCallback(
+    (year: number) => {
+      actions.selectYear(year)
+      onYearSelect?.(year)
+    },
+    [actions, onYearSelect]
+  )
+
+  const handleViewChange = useCallback(
+    (view: 'calendar' | 'months' | 'years') => {
+      actions.setView(view)
+      onViewChange?.(view)
+    },
+    [actions, onViewChange]
+  )
+
+  const handleMonthNavigate = useCallback(
+    (direction: 'prev' | 'next') => {
+      actions.navigateMonth(direction)
+      onMonthNavigate?.(direction)
+    },
+    [actions, onMonthNavigate]
+  )
+
+  const handleGoToToday = useCallback(() => {
+    actions.goToToday()
+    onGoToToday?.()
+  }, [actions, onGoToToday])
 
   // Use modal position hook
   const { modalPosition } = useModalPosition(
@@ -321,31 +367,13 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
             customization={customization}
             numberOfMonths={numberOfMonths}
             yearListStyle={yearListStyle}
-            onDateSelect={(day) => {
-              actions.selectDate(day)
-              onDateSelect?.(day)
-            }}
+            onDateSelect={handleDateSelect}
             onTimeChange={actions.updateTime}
-            onMonthSelect={(month) => {
-              actions.selectMonth(month)
-              onMonthSelect?.(month)
-            }}
-            onYearSelect={(year) => {
-              actions.selectYear(year)
-              onYearSelect?.(year)
-            }}
-            onViewChange={(view) => {
-              actions.setView(view)
-              onViewChange?.(view)
-            }}
-            onMonthNavigate={(direction) => {
-              actions.navigateMonth(direction)
-              onMonthNavigate?.(direction)
-            }}
-            onGoToToday={() => {
-              actions.goToToday()
-              onGoToToday?.()
-            }}
+            onMonthSelect={handleMonthSelect}
+            onYearSelect={handleYearSelect}
+            onViewChange={handleViewChange}
+            onMonthNavigate={handleMonthNavigate}
+            onGoToToday={handleGoToToday}
             presetRanges={presetRanges}
             onPresetRangeSelect={(range: Range) => {
               if (type === 'range') {
