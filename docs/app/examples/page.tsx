@@ -3,6 +3,8 @@
 import '../../../src/styles/index.scss'
 import { examples } from '../examplesConfig'
 import { ExampleRenderer } from '../components/ExampleRenderer'
+import { useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 
 // Helper function to convert string to kebab case for IDs
 const toKebabCase = (str: string) =>
@@ -12,6 +14,29 @@ const toKebabCase = (str: string) =>
     .replace(/[^a-z0-9-]/g, '')
 
 export default function Examples() {
+  const searchParams = useSearchParams()
+  const categoryParam = searchParams.get('category')
+  const exampleParam = searchParams.get('example')
+
+  useEffect(() => {
+    if (categoryParam && exampleParam) {
+      // Scroll to the specific example after a brief delay to ensure DOM is rendered
+      const timer = setTimeout(() => {
+        const elementId = `${toKebabCase(categoryParam)}-${exampleParam}`
+        const element = document.getElementById(elementId)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          // Highlight the element briefly
+          element.classList.add('ring-2', 'ring-accent', 'ring-opacity-50')
+          setTimeout(() => {
+            element.classList.remove('ring-2', 'ring-accent', 'ring-opacity-50')
+          }, 2000)
+        }
+      }, 100)
+
+      return () => clearTimeout(timer)
+    }
+  }, [categoryParam, exampleParam])
   return (
     <div className='max-w-6xl mx-auto px-6 py-12'>
       <div className='prose prose-lg max-w-none mb-12'>
@@ -36,6 +61,7 @@ export default function Examples() {
                   key={exampleKey}
                   config={config}
                   exampleKey={exampleKey}
+                  category={groupName}
                 />
               ))}
             </div>

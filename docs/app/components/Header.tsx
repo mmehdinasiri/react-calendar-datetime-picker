@@ -1,18 +1,93 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTheme } from '../contexts/ThemeContext'
+import {
+  searchItems,
+  getGroupInfo,
+  type SearchResult
+} from '../data/searchData'
 
 export function Header() {
   const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+  const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false)
+  const [selectedResultIndex, setSelectedResultIndex] = useState(-1)
   const [isVersionDropdownOpen, setIsVersionDropdownOpen] = useState(false)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const searchDropdownRef = useRef<HTMLDivElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const { theme, toggleTheme } = useTheme()
   const router = useRouter()
 
-  // Close dropdown when clicking outside
+  // Search functionality
+  const handleSearchChange = useCallback((value: string) => {
+    setSearchQuery(value)
+    if (value.trim()) {
+      const results = searchItems(value, 8)
+      setSearchResults(results)
+      setIsSearchDropdownOpen(true)
+      setSelectedResultIndex(-1)
+    } else {
+      setSearchResults([])
+      setIsSearchDropdownOpen(false)
+    }
+  }, [])
+
+  const handleSearchKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (!isSearchDropdownOpen || searchResults.length === 0) return
+
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault()
+          setSelectedResultIndex((prev) =>
+            prev < searchResults.length - 1 ? prev + 1 : prev
+          )
+          break
+        case 'ArrowUp':
+          e.preventDefault()
+          setSelectedResultIndex((prev) => (prev > 0 ? prev - 1 : -1))
+          break
+        case 'Enter':
+          e.preventDefault()
+          if (
+            selectedResultIndex >= 0 &&
+            selectedResultIndex < searchResults.length
+          ) {
+            const result = searchResults[selectedResultIndex]
+            router.push(result.href)
+            setIsSearchDropdownOpen(false)
+            setSearchQuery('')
+            setSearchResults([])
+            searchInputRef.current?.blur()
+          }
+          break
+        case 'Escape':
+          e.preventDefault()
+          setIsSearchDropdownOpen(false)
+          setSelectedResultIndex(-1)
+          searchInputRef.current?.blur()
+          break
+      }
+    },
+    [isSearchDropdownOpen, searchResults, selectedResultIndex, router]
+  )
+
+  const handleResultClick = useCallback(
+    (result: SearchResult) => {
+      router.push(result.href)
+      setIsSearchDropdownOpen(false)
+      setSearchQuery('')
+      setSearchResults([])
+      searchInputRef.current?.blur()
+    },
+    [router]
+  )
+
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -21,16 +96,23 @@ export function Header() {
       ) {
         setIsVersionDropdownOpen(false)
       }
+      if (
+        searchDropdownRef.current &&
+        !searchDropdownRef.current.contains(event.target as Node) &&
+        searchInputRef.current &&
+        !searchInputRef.current.contains(event.target as Node)
+      ) {
+        setIsSearchDropdownOpen(false)
+        setSelectedResultIndex(-1)
+      }
     }
 
-    if (isVersionDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
+    document.addEventListener('mousedown', handleClickOutside)
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isVersionDropdownOpen])
+  }, [])
 
   const handleVersionChange = (version: string) => {
     setIsVersionDropdownOpen(false)
@@ -121,12 +203,67 @@ export function Header() {
               </svg>
             </div>
             <input
+              ref={searchInputRef}
               type='text'
-              placeholder='Search'
+              placeholder='Search documentation...'
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
+              onFocus={() => {
+                if (searchResults.length > 0) {
+                  setIsSearchDropdownOpen(true)
+                }
+              }}
               className='w-full bg-bg-primary border border-border rounded-md pl-10 pr-4 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent'
             />
+            {/* Search Results Dropdown */}
+            {isSearchDropdownOpen && searchResults.length > 0 && (
+              <div
+                ref={searchDropdownRef}
+                className='absolute top-full left-0 right-0 mt-1 bg-bg-primary border border-border rounded-md shadow-lg z-50 max-h-96 overflow-y-auto'
+              >
+                {searchResults.map((result, index) => {
+                  const groupInfo = getGroupInfo(result)
+                  return (
+                    <button
+                      key={result.id}
+                      onClick={() => handleResultClick(result)}
+                      className={`w-full text-left px-4 py-3 hover:bg-bg-tertiary transition-colors border-b border-border last:border-b-0 ${
+                        index === selectedResultIndex ? 'bg-bg-tertiary' : ''
+                      }`}
+                    >
+                      <div className='flex items-start justify-between gap-2'>
+                        <div className='flex-1 min-w-0'>
+                          <div className='flex items-center gap-2 mb-1'>
+                            <span className='font-medium text-gray-900 dark:text-white text-sm truncate'>
+                              {result.title}
+                            </span>
+                            <span
+                              className={`text-xs px-1.5 py-0.5 rounded ${groupInfo.color} bg-gray-100 dark:bg-gray-800`}
+                            >
+                              {groupInfo.label}
+                            </span>
+                          </div>
+                          <p className='text-xs text-gray-600 dark:text-gray-400 line-clamp-2'>
+                            {result.description}
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+            {/* No Results */}
+            {isSearchDropdownOpen &&
+              searchQuery.trim() &&
+              searchResults.length === 0 && (
+                <div className='absolute top-full left-0 right-0 mt-1 bg-bg-primary border border-border rounded-md shadow-lg z-50 p-4'>
+                  <p className='text-sm text-gray-600 dark:text-gray-400'>
+                    No results found for "{searchQuery}"
+                  </p>
+                </div>
+              )}
           </div>
         </div>
 

@@ -11,11 +11,13 @@ import { useTheme } from '../contexts/ThemeContext'
 interface ExampleRendererProps {
   config: ExampleConfig
   exampleKey: string
+  category?: string
 }
 
 export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
   config,
-  exampleKey
+  exampleKey,
+  category
 }) => {
   const { theme } = useTheme()
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -129,7 +131,11 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
 
   return (
     <section
-      id={toKebabCase(exampleKey)}
+      id={
+        category
+          ? `${toKebabCase(category)}-${exampleKey}`
+          : toKebabCase(exampleKey)
+      }
       className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
     >
       <div className='mb-6'>

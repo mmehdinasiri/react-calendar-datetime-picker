@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { examples } from '../examplesConfig'
+import { types } from '../data/apiReference'
 
 // Helper function to convert example key to URL-friendly format
 const toKebabCase = (str: string) =>
@@ -22,7 +23,16 @@ const navigation = [
   },
   {
     title: 'TYPES',
-    items: [{ name: 'Data Types', href: '/types' }]
+    items: [
+      {
+        name: 'Data Types',
+        href: '/types',
+        subItems: types.map((type) => ({
+          name: type.name,
+          href: `/types#${type.name.toLowerCase()}`
+        }))
+      }
+    ]
   },
   {
     title: 'EXAMPLES',
