@@ -91,7 +91,16 @@ main {
 }
 
 .prose code {
-  @apply bg-bg-tertiary px-2 py-1 rounded text-sm font-mono text-accent-light;
+  @apply bg-bg-tertiary px-2 py-1 rounded text-sm font-mono;
+}
+
+/* Darker green color for code elements in light mode for better readability */
+:root .prose code {
+  color: #059669; /* emerald-600 - readable green for better contrast in light mode */
+}
+
+.dark .prose code {
+  color: var(--accent); /* Keep original green accent color in dark mode */
 }
 
 .prose pre {
@@ -107,7 +116,7 @@ main {
 }
 
 .prose a {
-  @apply text-accent-light hover:text-accent-light-hover underline;
+  @apply text-green-700 dark:text-accent-light hover:text-green-800 dark:hover:text-accent-light-hover underline;
 }
 
 .prose strong {
@@ -169,6 +178,15 @@ main {
 }
 
 /* No CSS variable overrides - the library handles theming via data-theme attribute */
+
+/* Accent color adjustments for light mode readability */
+:root {
+  --accent-light: #059669; /* emerald-600 for better contrast in light mode */
+}
+
+.dark {
+  --accent-light: #10b981; /* emerald-500 for dark mode */
+}
 
 /* Dark theme styling for DtPicker input in docs */
 .dark .calendar-picker-input {

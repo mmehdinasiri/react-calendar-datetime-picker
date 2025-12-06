@@ -26,6 +26,42 @@ import {
 } from '../../../src/utils'
 import type { Day } from '../../../src/types'
 import '../../../src/styles/index.scss'
+import Link from 'next/link'
+
+// Type links mapping
+const typeLinks: Record<string, string> = {
+  Day: '/types#day',
+  Range: '/types#range',
+  Multi: '/types#multi',
+  Week: '/types#week',
+  Time: '/types#time',
+  TimeRange: '/types#timerange',
+  CalendarLocale: '/types#calendarlocale',
+  CalendarType: '/types#calendartype',
+  DateInput: '/types#dateinput'
+}
+
+// Function to render type with links
+function renderTypeWithLinks(typeString: string) {
+  // Split by common separators and punctuation
+  const parts = typeString.split(/(\s+|[|&<>{}[\]()?,:=])/)
+
+  return parts.map((part, index) => {
+    const trimmedPart = part.trim()
+    if (typeLinks[trimmedPart]) {
+      return (
+        <Link
+          key={index}
+          href={typeLinks[trimmedPart]}
+          className='text-green-700 dark:text-accent-light hover:text-green-800 dark:hover:text-accent-light-hover underline'
+        >
+          {part}
+        </Link>
+      )
+    }
+    return part
+  })
+}
 
 export default function Utilities() {
   const [selectedDate, setSelectedDate] = useState<Day | null>(null)
@@ -40,6 +76,55 @@ export default function Utilities() {
           functions for date manipulation, comparison, and formatting. All
           utilities work with both Gregorian and Jalali calendar systems.
         </p>
+
+        <h2>Utilities</h2>
+
+        <p>
+          The library exports various utility functions for date manipulation
+          and formatting:
+        </p>
+
+        <div className='space-y-6 mb-8'>
+          <div>
+            <h3>Date Conversion</h3>
+            <ul className='list-disc list-inside space-y-1'>
+              <li><code>gregorianToJalali(date: Day): Day</code> - Convert Gregorian to Jalali date</li>
+              <li><code>jalaliToGregorian(date: Day): Day</code> - Convert Jalali to Gregorian date</li>
+              <li><code>getToday(locale?: CalendarLocale): Day</code> - Get today's date</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Date Comparison</h3>
+            <ul className='list-disc list-inside space-y-1'>
+              <li><code>isBefore(date: Day, compareDate: Day, locale?: CalendarLocale): boolean</code></li>
+              <li><code>isAfter(date: Day, compareDate: Day, locale?: CalendarLocale): boolean</code></li>
+              <li><code>isSameDay(date: Day, compareDate: Day, locale?: CalendarLocale): boolean</code></li>
+              <li><code>isBetween(date: Day, startDate: Day, endDate: Day, locale?: CalendarLocale): boolean</code></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Date Manipulation</h3>
+            <ul className='list-disc list-inside space-y-1'>
+              <li><code>addDays(date: Day, days: number, locale?: CalendarLocale): Day</code></li>
+              <li><code>addMonths(date: Day, months: number, locale?: CalendarLocale): Day</code></li>
+              <li><code>addYears(date: Day, years: number, locale?: CalendarLocale): Day</code></li>
+              <li><code>subtractDays(date: Day, days: number, locale?: CalendarLocale): Day</code></li>
+              <li><code>subtractMonths(date: Day, months: number, locale?: CalendarLocale): Day</code></li>
+              <li><code>subtractYears(date: Day, years: number, locale?: CalendarLocale): Day</code></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Formatting</h3>
+            <ul className='list-disc list-inside space-y-1'>
+              <li><code>formatDateForInput(date: Day | null, format?: string): string</code></li>
+              <li><code>dayToString(date: Day, divider?: string): string</code></li>
+              <li><code>toPersianNumeral(num: number): string</code></li>
+            </ul>
+          </div>
+        </div>
 
         <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-6'>
           <div className='flex'>
@@ -1386,7 +1471,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
                     <code>date, days, locale?</code>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                    <code>Day</code>
+                    <code>{renderTypeWithLinks('Day')}</code>
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Add days to date
@@ -1400,7 +1485,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
                     <code>date, months, locale?</code>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                    <code>Day</code>
+                    <code>{renderTypeWithLinks('Day')}</code>
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Add months to date
@@ -1414,7 +1499,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
                     <code>date, years, locale?</code>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                    <code>Day</code>
+                    <code>{renderTypeWithLinks('Day')}</code>
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Add years to date
@@ -1443,7 +1528,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
                     <code>gregorianDate</code>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                    <code>Day</code>
+                    <code>{renderTypeWithLinks('Day')}</code>
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Convert Gregorian to Jalali
@@ -1457,7 +1542,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
                     <code>jalaliDate</code>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                    <code>Day</code>
+                    <code>{renderTypeWithLinks('Day')}</code>
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Convert Jalali to Gregorian
@@ -1471,7 +1556,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
                     <code>date</code>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                    <code>Day</code>
+                    <code>{renderTypeWithLinks('Day')}</code>
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Get start of day
@@ -1485,7 +1570,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
                     <code>date</code>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                    <code>Day</code>
+                    <code>{renderTypeWithLinks('Day')}</code>
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Get end of day
@@ -1499,7 +1584,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
                     <code>date, locale?</code>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                    <code>Day</code>
+                    <code>{renderTypeWithLinks('Day')}</code>
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Get start of month
@@ -1513,7 +1598,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
                     <code>date, locale?</code>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                    <code>Day</code>
+                    <code>{renderTypeWithLinks('Day')}</code>
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Get end of month
@@ -1527,7 +1612,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
                     <code>date</code>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                    <code>Day</code>
+                    <code>{renderTypeWithLinks('Day')}</code>
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Get start of year
@@ -1541,7 +1626,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
                     <code>date, locale?</code>
                   </td>
                   <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                    <code>Day</code>
+                    <code>{renderTypeWithLinks('Day')}</code>
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Get end of year

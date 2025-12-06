@@ -5,6 +5,57 @@ import { useState } from 'react'
 import { DtCalendar } from 'react-calendar-datetime-picker'
 import type { InitValueInput } from 'react-calendar-datetime-picker'
 
+const features = [
+  {
+    title: 'Enhanced TypeScript Support',
+    description: 'Better type definitions, improved IntelliSense, and stricter type checking for a more robust development experience.'
+  },
+  {
+    title: 'Improved Accessibility',
+    description: 'Better keyboard navigation, ARIA labels, and screen reader support for inclusive user experiences.'
+  },
+  {
+    title: 'CSS Variables Support',
+    description: 'Easy theming with CSS custom properties for colors and styling, enabling seamless theme integration.'
+  },
+  {
+    title: 'Better Performance',
+    description: 'Optimized rendering and reduced bundle size for faster loading and smoother interactions.'
+  },
+  {
+    title: 'Extended Utility Functions',
+    description: 'More date manipulation utilities for complex use cases and advanced date operations.'
+  },
+  {
+    title: 'Enhanced Customization',
+    description: 'More options for icons, labels, and component styling to match your design requirements.'
+  },
+  {
+    title: 'Time Selection Support',
+    description: 'Full time picker integration with date selection, supporting hours and minutes for precise datetime input.'
+  },
+  {
+    title: 'Dual Calendar Support',
+    description: 'Native support for both Gregorian and Jalali (Persian) calendars with automatic locale handling.'
+  },
+  {
+    title: 'Flexible Selection Modes',
+    description: 'Single date, date range, and multi-date selection modes to accommodate various use cases.'
+  },
+  {
+    title: 'Advanced Constraints',
+    description: 'Set minimum and maximum dates, disable specific dates, and control selectable date ranges.'
+  },
+  {
+    title: 'Rich Event System',
+    description: 'Comprehensive callback system for open, close, and change events with full control over user interactions.'
+  },
+  {
+    title: 'Input-less Mode',
+    description: 'Display calendars without input fields for embedded or custom input scenarios.'
+  }
+]
+
 export default function Home() {
   const [lightDate, setLightDate] = useState<InitValueInput | undefined>(
     undefined
@@ -143,125 +194,16 @@ export default function Home() {
         </div>
 
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              Enhanced TypeScript Support
-            </h3>
-            <p className='text-sm text-gray-300'>
-              Better type definitions, improved IntelliSense, and stricter type
-              checking for a more robust development experience.
-            </p>
-          </div>
-
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              Improved Accessibility
-            </h3>
-            <p className='text-sm text-gray-300'>
-              Better keyboard navigation, ARIA labels, and screen reader support
-              for inclusive user experiences.
-            </p>
-          </div>
-
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              CSS Variables Support
-            </h3>
-            <p className='text-sm text-gray-300'>
-              Easy theming with CSS custom properties for colors and styling,
-              enabling seamless theme integration.
-            </p>
-          </div>
-
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              Better Performance
-            </h3>
-            <p className='text-sm text-gray-300'>
-              Optimized rendering and reduced bundle size for faster loading and
-              smoother interactions.
-            </p>
-          </div>
-
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              Extended Utility Functions
-            </h3>
-            <p className='text-sm text-gray-300'>
-              More date manipulation utilities for complex use cases and
-              advanced date operations.
-            </p>
-          </div>
-
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              Enhanced Customization
-            </h3>
-            <p className='text-sm text-gray-300'>
-              More options for icons, labels, and component styling to match
-              your design requirements.
-            </p>
-          </div>
-
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              Time Selection Support
-            </h3>
-            <p className='text-sm text-gray-300'>
-              Full time picker integration with date selection, supporting hours
-              and minutes for precise datetime input.
-            </p>
-          </div>
-
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              Dual Calendar Support
-            </h3>
-            <p className='text-sm text-gray-300'>
-              Native support for both Gregorian and Jalali (Persian) calendars
-              with automatic locale handling.
-            </p>
-          </div>
-
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              Flexible Selection Modes
-            </h3>
-            <p className='text-sm text-gray-300'>
-              Single date, date range, and multi-date selection modes to
-              accommodate various use cases.
-            </p>
-          </div>
-
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              Advanced Constraints
-            </h3>
-            <p className='text-sm text-gray-300'>
-              Set minimum and maximum dates, disable specific dates, and control
-              selectable date ranges.
-            </p>
-          </div>
-
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              Rich Event System
-            </h3>
-            <p className='text-sm text-gray-300'>
-              Comprehensive callback system for open, close, and change events
-              with full control over user interactions.
-            </p>
-          </div>
-
-          <div className='border border-accent bg-bg-secondary p-6 rounded-lg'>
-            <h3 className='text-lg font-semibold text-white mb-3'>
-              Input-less Mode
-            </h3>
-            <p className='text-sm text-gray-300'>
-              Display calendars without input fields for embedded or custom
-              input scenarios.
-            </p>
-          </div>
+          {features.map((feature, index) => (
+            <div key={index} className='border border-accent bg-bg-secondary p-6 rounded-lg'>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-3'>
+                {feature.title}
+              </h3>
+              <p className='text-sm text-gray-600 dark:text-gray-300'>
+                {feature.description}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -2,11 +2,49 @@ import {
   sharedProps,
   dtPickerOnlyProps,
   dtCalendarOnlyProps,
-  types,
-  utilityCategories
+  types
 } from '../data/apiReference'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import Link from 'next/link'
+
+// Type links mapping
+const typeLinks: Record<string, string> = {
+  Day: '/types#day',
+  Range: '/types#range',
+  Multi: '/types#multi',
+  Week: '/types#week',
+  Time: '/types#time',
+  TimeRange: '/types#timerange',
+  CalendarLocale: '/types#calendarlocale',
+  CalendarType: '/types#calendartype',
+  DateInput: '/types#dateinput',
+  InitValueInput: '/types#initvalueinput',
+  CalendarConstraintsInput: '/types#calendarconstraintsinput',
+  PresetRangesConfig: '/customization#preset-ranges'
+}
+
+// Function to render type with links
+function renderTypeWithLinks(typeString: string) {
+  // Split by common separators and punctuation
+  const parts = typeString.split(/(\s+|[|&<>{}[\]()?,:=])/)
+
+  return parts.map((part, index) => {
+    const trimmedPart = part.trim()
+    if (typeLinks[trimmedPart]) {
+      return (
+        <Link
+          key={index}
+          href={typeLinks[trimmedPart]}
+          className='text-green-700 dark:text-accent-light hover:text-green-800 dark:hover:text-accent-light-hover underline'
+        >
+          {part}
+        </Link>
+      )
+    }
+    return part
+  })
+}
 
 function PropsTable({ props }: { props: typeof sharedProps }) {
   return (
@@ -38,13 +76,13 @@ function PropsTable({ props }: { props: typeof sharedProps }) {
                 {prop.name}
               </td>
               <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                <code>{prop.type}</code>
+                <code>{renderTypeWithLinks(prop.type)}</code>
               </td>
               <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
                 {prop.default === 'Required' ? (
                   <em>Required</em>
                 ) : (
-                  <code>{prop.default}</code>
+                  <code>{renderTypeWithLinks(prop.default)}</code>
                 )}
               </td>
               <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
@@ -122,26 +160,6 @@ export default function APIReference() {
           </div>
         ))}
 
-        <h2>Utilities</h2>
-
-        <p>
-          The library exports various utility functions for date manipulation
-          and formatting:
-        </p>
-
-        {utilityCategories.map((category) => (
-          <div key={category.name}>
-            <h3>{category.name}</h3>
-            <ul>
-              {category.utilities.map((utility) => (
-                <li key={utility.name}>
-                  <code>{utility.signature}</code>
-                  {utility.description && ` - ${utility.description}`}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
       </div>
     </div>
   )
