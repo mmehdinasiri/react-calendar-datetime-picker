@@ -42,6 +42,12 @@ jobs:
       - name: Build library
         run: pnpm run build
 
+      - name: Check bundle size
+        run: |
+          echo "Checking bundle sizes..."
+          node performance/scripts/check-bundle-size.js
+        continue-on-error: false
+
       - name: Run performance tests
         run: |
           echo "Running performance tests on current branch..."
@@ -171,9 +177,19 @@ jobs:
               if (!base || key.includes('Calls')) return; // Skip missing metrics and call counts
 
               const percentChange = ((val - base) / base) * 100;
+              const absoluteChange = val - base;
 
-              // Flag if > 15% slower (significant regression)
-              if (percentChange > 15) {
+              // Skip metrics that are too small to be meaningful (< 1ms)
+              if (base < 1 && val < 1) return;
+
+              // Flag regressions that are both significant percentage AND absolute change
+              // OR large absolute changes regardless of percentage
+              const significantRegression = (
+                (percentChange > 15 && absoluteChange > 2) || // 15% + 2ms minimum
+                absoluteChange > 5 // OR 5ms absolute change
+              );
+
+              if (significantRegression) {
                 hasRegression = true;
                 regressions.push(\`❌ \${key}: \${percentChange.toFixed(1)}% slower (\${base.toFixed(2)}ms → \${val.toFixed(2)}ms)\`);
               }

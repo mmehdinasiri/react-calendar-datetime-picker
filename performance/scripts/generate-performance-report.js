@@ -79,6 +79,27 @@ function formatValue(value, isCalls) {
   return value.toFixed(2)
 }
 
+function formatBytes(bytes) {
+  if (bytes === 0) return '0 B'
+  const k = 1024
+  const sizes = ['B', 'kB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
+function getBundleStatus(asset, size, isGzip) {
+  const limits = {
+    'index.mjs': 25 * 1024, // 25 kB gzip
+    'index.cjs': 20 * 1024, // 20 kB gzip
+    'style.css': 5 * 1024 // 5 kB gzip
+  }
+
+  const limit = limits[asset]
+  if (!limit) return '❓ UNKNOWN'
+
+  return size <= limit ? '✅ PASS' : '❌ FAIL'
+}
+
 function getComparisonValue(current, baseline, isCalls) {
   if (baseline === undefined || baseline === null) {
     return 'null'
@@ -94,11 +115,35 @@ function getComparisonValue(current, baseline, isCalls) {
 function generateMarkdownReport(
   metrics,
   title = 'Performance Benchmark Results',
-  baselineMetrics = null
+  baselineMetrics = null,
+  bundleMetrics = null
 ) {
   let report = `# 🚀 ${title}\n\n`
 
-  report += '### 📊 Performance Metrics\n\n'
+  // Bundle Size Section (if available)
+  if (bundleMetrics) {
+    report += '### 📦 Bundle Size\n\n'
+    report += '| Asset | Size | Gzipped | Status |\n'
+    report += '|-------|------|---------|--------|\n'
+
+    Object.entries(bundleMetrics).forEach(([key, value]) => {
+      const isGzip = key.includes('(gzip)')
+      const baseName = key.replace(' (gzip)', '').replace(' (raw)', '')
+      const size = isGzip ? value : bundleMetrics[`${baseName} (gzip)`] || value
+      const status = getBundleStatus(baseName, size, isGzip)
+      const sizeStr = formatBytes(value)
+
+      if (isGzip) {
+        // Find corresponding raw size
+        const rawKey = key.replace(' (gzip)', ' (raw)')
+        const rawSize = bundleMetrics[rawKey]
+        report += `| ${baseName} | ${formatBytes(rawSize)} | ${sizeStr} | ${status} |\n`
+      }
+    })
+    report += '\n'
+  }
+
+  report += '### ⚡ Performance Metrics\n\n'
   report += '| Metric | Value | Target | Comparison | Status |\n'
   report += '|--------|-------|--------|------------|--------|\n'
 
@@ -280,10 +325,23 @@ switch (command) {
         }
       }
 
+      // Try to load bundle metrics if available
+      let bundleMetrics = null
+      const bundleMetricsPath = 'performance/results/bundle-metrics.json'
+      if (fs.existsSync(bundleMetricsPath)) {
+        try {
+          bundleMetrics = JSON.parse(fs.readFileSync(bundleMetricsPath, 'utf8'))
+          console.log('✅ Loaded bundle metrics')
+        } catch (e) {
+          console.warn('⚠️ Could not load bundle metrics:', e.message)
+        }
+      }
+
       const report = generateMarkdownReport(
         metrics,
         'Performance Benchmark Results',
-        baselineMetrics
+        baselineMetrics,
+        bundleMetrics
       )
 
       fs.writeFileSync(outputPath, report)
