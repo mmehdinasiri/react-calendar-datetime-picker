@@ -25,8 +25,11 @@ export default function Types() {
               <p className='text-sm text-gray-200'>
                 <strong>Important:</strong> The library stores dates as{' '}
                 <code>Day</code> objects, not strings or JavaScript{' '}
-                <code>Date</code> objects. The formatted string you see in the
-                input field is only for display purposes.
+                <code>Date</code> objects, because <code>Day</code> objects provide
+                better type safety, easier manipulation, and consistent behavior
+                across different calendar systems (Gregorian and Jalali). The
+                formatted string you see in the input field is only for display
+                purposes.
               </p>
             </div>
           </div>

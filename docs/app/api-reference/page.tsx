@@ -159,7 +159,6 @@ export default function APIReference() {
             </div>
           </div>
         ))}
-
       </div>
     </div>
   )

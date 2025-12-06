@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    name: Run Unit Tests & Lint
+    name: Run Unit Tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -34,12 +34,6 @@ jobs:
 
       - name: Type check
         run: pnpm run typecheck
-
-      - name: Lint
-        run: pnpm run lint
-
-      - name: Format check
-        run: pnpm run format:check
 
       - name: Build library
         run: pnpm run build

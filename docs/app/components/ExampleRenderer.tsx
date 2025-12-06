@@ -312,7 +312,9 @@ ${propsCode ? propsCode + '\n' : ''}      onChange={setDate}
               <div className='space-y-1 text-sm'>
                 {Object.entries(utilityResults).map(([key, value]) => (
                   <div key={key} className='text-gray-700 dark:text-gray-200'>
-                    <span className='font-mono text-green-700 dark:text-accent-light'>{key}:</span>{' '}
+                    <span className='font-mono text-green-700 dark:text-accent-light'>
+                      {key}:
+                    </span>{' '}
                     <span className='font-mono'>
                       {typeof value === 'boolean'
                         ? value.toString()
