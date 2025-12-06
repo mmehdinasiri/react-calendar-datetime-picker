@@ -33,12 +33,15 @@ export default function Home() {
 
           {/* Tagline */}
           <p className='text-xl text-gray-600 dark:text-gray-300 mb-4'>
-            The library for web and native user interfaces with comprehensive calendar
-            support
+            The library for web and native user interfaces with comprehensive
+            calendar support
           </p>
           <p className='text-lg text-gray-600 dark:text-gray-300 mb-8'>
-            Supports <strong>Jalali (Persian)</strong> and <strong>Gregorian</strong> calendar systems
-            with <strong>single</strong>, <strong>range</strong>, <strong>multi-date</strong>, and <strong>week</strong> selection modes.
+            Supports <strong>Jalali (Persian)</strong> and{' '}
+            <strong>Gregorian</strong> calendar systems with{' '}
+            <strong>single</strong>, <strong>range</strong>,{' '}
+            <strong>multi-date</strong>, and <strong>week</strong> selection
+            modes.
           </p>
 
           {/* CTA Buttons */}
