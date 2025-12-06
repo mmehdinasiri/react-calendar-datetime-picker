@@ -17,8 +17,8 @@ export interface TimeSelectorProps {
   day: Day | null
   /** Time format: '12' for 12-hour format, '24' for 24-hour format */
   timeFormat: '12' | '24'
-  /** Calendar locale */
-  locale: 'en' | 'fa'
+  /** Calendar system */
+  calendarSystem: 'gregorian' | 'jalali'
   /** Label for the time selector */
   label?: string
   /** Whether the time selector is disabled */
@@ -31,7 +31,7 @@ const TimeSelectorInner: React.FC<TimeSelectorProps> = (props) => {
   const {
     day,
     timeFormat,
-    locale,
+    calendarSystem,
     label,
     disabled = false,
     onTimeChange
@@ -94,7 +94,7 @@ const TimeSelectorInner: React.FC<TimeSelectorProps> = (props) => {
 
   const formatNumber = (num: number): string => {
     const str = num.toString().padStart(2, '0')
-    return locale === 'fa' ? toPersianNumeral(str) : str
+    return calendarSystem === 'jalali' ? toPersianNumeral(str) : str
   }
 
   return (
@@ -144,8 +144,12 @@ const TimeSelectorInner: React.FC<TimeSelectorProps> = (props) => {
             disabled={disabled}
             aria-label='AM/PM'
           >
-            <option value='AM'>{locale === 'fa' ? 'ق.ظ' : 'AM'}</option>
-            <option value='PM'>{locale === 'fa' ? 'ب.ظ' : 'PM'}</option>
+            <option value='AM'>
+              {calendarSystem === 'jalali' ? 'ق.ظ' : 'AM'}
+            </option>
+            <option value='PM'>
+              {calendarSystem === 'jalali' ? 'ب.ظ' : 'PM'}
+            </option>
           </select>
         )}
       </div>
@@ -162,7 +166,7 @@ export const TimeSelector = React.memo(
     return (
       prevProps.day === nextProps.day &&
       prevProps.timeFormat === nextProps.timeFormat &&
-      prevProps.locale === nextProps.locale &&
+      prevProps.calendarSystem === nextProps.calendarSystem &&
       prevProps.label === nextProps.label &&
       prevProps.disabled === nextProps.disabled &&
       prevProps.onTimeChange === nextProps.onTimeChange

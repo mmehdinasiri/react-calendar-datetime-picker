@@ -30,15 +30,15 @@ export interface PresetRange {
  */
 export function getPresetRange(
   preset: PresetRangeType,
-  locale: CalendarLocale
+  calendarSystem: CalendarLocale
 ): Range {
-  const today = getToday(locale)
+  const today = getToday(calendarSystem)
   // Ensure time is preserved or set to current time
   // getToday already returns current time in local day
 
   switch (preset) {
     case 'yesterday': {
-      const yesterday = subtractDays(today, 1, locale)
+      const yesterday = subtractDays(today, 1, calendarSystem)
       return {
         from: yesterday,
         to: yesterday
@@ -46,7 +46,7 @@ export function getPresetRange(
     }
 
     case 'last7days': {
-      const sevenDaysAgo = subtractDays(today, 6, locale)
+      const sevenDaysAgo = subtractDays(today, 6, calendarSystem)
       return {
         from: sevenDaysAgo,
         to: today
@@ -54,7 +54,7 @@ export function getPresetRange(
     }
 
     case 'last30days': {
-      const thirtyDaysAgo = subtractDays(today, 29, locale)
+      const thirtyDaysAgo = subtractDays(today, 29, calendarSystem)
       return {
         from: thirtyDaysAgo,
         to: today
@@ -62,8 +62,8 @@ export function getPresetRange(
     }
 
     case 'thisMonth': {
-      const firstDay = startOfMonth(today, locale)
-      const lastDay = endOfMonth(today, locale)
+      const firstDay = startOfMonth(today, calendarSystem)
+      const lastDay = endOfMonth(today, calendarSystem)
 
       // Preserve time from today if needed, or default to start/end of day
       // Currently getPresetRange implementation returned today's time for end dates
@@ -83,9 +83,9 @@ export function getPresetRange(
     }
 
     case 'lastMonth': {
-      const lastMonthToday = subtractMonths(today, 1, locale)
-      const firstDay = startOfMonth(lastMonthToday, locale)
-      const lastDay = endOfMonth(lastMonthToday, locale)
+      const lastMonthToday = subtractMonths(today, 1, calendarSystem)
+      const firstDay = startOfMonth(lastMonthToday, calendarSystem)
+      const lastDay = endOfMonth(lastMonthToday, calendarSystem)
 
       return {
         from: firstDay,
@@ -106,7 +106,7 @@ export function getPresetRange(
  */
 export function getPresetLabel(
   preset: PresetRangeType,
-  locale: CalendarLocale
+  calendarSystem: CalendarLocale
 ): string {
   const labels: Record<PresetRangeType, { en: string; fa: string }> = {
     yesterday: { en: 'Yesterday', fa: 'دیروز' },
@@ -116,7 +116,7 @@ export function getPresetLabel(
     lastMonth: { en: 'Last month', fa: 'ماه گذشته' }
   }
 
-  return labels[preset][locale === 'fa' ? 'fa' : 'en']
+  return labels[preset][calendarSystem === 'jalali' ? 'fa' : 'en']
 }
 
 /**
@@ -124,7 +124,7 @@ export function getPresetLabel(
  */
 export function getPresetRangesFromConfig(
   config: import('../types/calendar').PresetRangesConfig,
-  locale: CalendarLocale
+  calendarSystem: CalendarLocale
 ): PresetRange[] {
   if (!config) {
     return []
@@ -145,11 +145,11 @@ export function getPresetRangesFromConfig(
       const label =
         typeof configValue === 'string'
           ? configValue
-          : getPresetLabel(presetType, locale)
+          : getPresetLabel(presetType, calendarSystem)
       presets.push({
         label,
         value: presetType,
-        range: getPresetRange(presetType, locale)
+        range: getPresetRange(presetType, calendarSystem)
       })
     }
   })
@@ -177,7 +177,7 @@ export function getPresetRangesFromConfig(
 export function isPresetRangeActive(
   presetRange: Range,
   selectedRange: Range | null,
-  _locale: CalendarLocale
+  _calendarSystem: CalendarLocale
 ): boolean {
   if (!selectedRange || !selectedRange.from || !selectedRange.to) {
     return false

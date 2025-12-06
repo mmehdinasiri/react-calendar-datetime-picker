@@ -46,8 +46,8 @@ export interface CalendarGridViewProps {
   selectedValue: Day | Range | Multi | Week | null
   /** Currently displayed month */
   displayMonth: Day
-  /** Calendar locale */
-  locale: CalendarLocale
+  /** Calendar system */
+  calendarSystem: CalendarLocale
   /** Calendar selection type */
   type: CalendarType
   /** Enable time selection */
@@ -86,7 +86,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
   const {
     selectedValue,
     displayMonth,
-    locale,
+    calendarSystem,
     type,
     withTime = false,
     timeFormat = '24',
@@ -114,23 +114,25 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
     previousMonth: previousMonthBtnTitle = 'previous'
   } = labels
 
-  const isRTL = locale === 'fa'
+  const isRTL = calendarSystem === 'jalali'
   const { monthNames: customMonthNames, weekdayNames: customWeekdayNames } =
     customization || {}
-  const dayNames = getDayNames(locale, customWeekdayNames)
-  const monthNames = getMonthNames(locale, customMonthNames)
+  const dayNames = getDayNames(calendarSystem, customWeekdayNames)
+  const monthNames = getMonthNames(calendarSystem, customMonthNames)
 
   // Get all months to display
   const monthsToDisplay = getMonthsToDisplay(
     displayMonth,
     numberOfMonths,
-    locale
+    calendarSystem
   )
 
   // 🟢 Memoize expensive calendar grid generation - only recompute when dependencies change
   const calendarGrids = useMemo(() => {
-    return monthsToDisplay.map((month) => generateCalendarGrid(month, locale))
-  }, [monthsToDisplay, locale])
+    return monthsToDisplay.map((month) =>
+      generateCalendarGrid(month, calendarSystem)
+    )
+  }, [monthsToDisplay, calendarSystem])
 
   // Refs for keyboard navigation
   const gridRef = useRef<HTMLDivElement>(null)
@@ -156,10 +158,10 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
         maxDate,
         disabledDates,
         isDateDisabled,
-        locale
+        calendarSystem
       })
     },
-    [minDate, maxDate, disabledDates, isDateDisabled, locale]
+    [minDate, maxDate, disabledDates, isDateDisabled, calendarSystem]
   )
 
   // Focus management
@@ -210,14 +212,14 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
       onGoToToday()
     }
     // Update focused date to today
-    const today = getToday(locale)
+    const today = getToday(calendarSystem)
     setFocusedDate(today)
-  }, [onGoToToday, locale, setFocusedDate])
+  }, [onGoToToday, calendarSystem, setFocusedDate])
 
   // Keyboard navigation
   useKeyboardNavigation({
     focusedDate,
-    locale,
+    calendarSystem,
     type,
     containerRef: gridElementRef,
     enabled: true,
@@ -236,7 +238,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
   ) => {
     const monthLabel = monthNames[month.month - 1]
     const yearLabel =
-      locale === 'fa' ? toPersianNumeral(month.year) : month.year
+      calendarSystem === 'jalali' ? toPersianNumeral(month.year) : month.year
 
     return (
       <div
@@ -258,7 +260,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
             {dayNames.map((name, index) => {
               const isWeekendDay =
                 showWeekend &&
-                (locale === 'fa'
+                (calendarSystem === 'jalali'
                   ? index === 6 || index === 5
                   : index === 0 || index === 6)
 
@@ -334,13 +336,13 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                       day,
                       selectedValue,
                       type,
-                      locale
+                      calendarSystem
                     )
                     const isInRange = isDayInRange(
                       day,
                       selectedValue,
                       type,
-                      locale
+                      calendarSystem
                     )
                     const isStart = isRangeStart(day, selectedValue, type)
                     const isEnd = isRangeEnd(day, selectedValue, type)
@@ -349,11 +351,11 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                       maxDate,
                       disabledDates,
                       isDateDisabled,
-                      locale
+                      calendarSystem
                     })
                     const isWeekend =
                       showWeekend &&
-                      (locale === 'fa'
+                      (calendarSystem === 'jalali'
                         ? dayIndex === 6 || dayIndex === 5
                         : dayIndex === 0 || dayIndex === 6)
 
@@ -404,7 +406,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                       if (isSelectable) {
                         // For week type, select the entire week containing this day
                         if (type === 'week') {
-                          const weekBounds = getWeekBounds(day, locale)
+                          const weekBounds = getWeekBounds(day, calendarSystem)
                           // Select the first day of the week (the week selection logic will handle the rest)
                           onDateSelect(weekBounds.from)
                         } else {
@@ -421,16 +423,19 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
 
                     // Create accessible label
                     const dayLabel =
-                      locale === 'fa'
+                      calendarSystem === 'jalali'
                         ? toPersianNumeral(calendarDay.day)
                         : calendarDay.day
 
                     const monthLabel = monthNames[day.month - 1]
                     const yearLabel =
-                      locale === 'fa' ? toPersianNumeral(day.year) : day.year
+                      calendarSystem === 'jalali'
+                        ? toPersianNumeral(day.year)
+                        : day.year
 
                     const ariaLabel = `${dayLabel} ${monthLabel} ${yearLabel}`
-                    const todayLabel = locale === 'fa' ? 'امروز' : 'Today'
+                    const todayLabel =
+                      calendarSystem === 'jalali' ? 'امروز' : 'Today'
                     const fullAriaLabel = calendarDay.isToday
                       ? `${ariaLabel}, ${todayLabel}`
                       : ariaLabel
@@ -451,7 +456,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                         aria-current={calendarDay.isToday ? 'date' : undefined}
                         tabIndex={isFocused ? 0 : -1}
                       >
-                        {locale === 'fa'
+                        {calendarSystem === 'jalali'
                           ? toPersianNumeral(calendarDay.day)
                           : calendarDay.day}
                       </button>
@@ -473,7 +478,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
       {/* Header - only show for single month or show range for multiple months */}
       <CalendarHeader
         displayMonth={displayMonth}
-        locale={locale}
+        calendarSystem={calendarSystem}
         customization={customization}
         onPrevious={() => onMonthNavigate('prev')}
         onNext={() => onMonthNavigate('next')}
@@ -504,7 +509,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                 <TimeSelector
                   day={selectedValue as Day | null}
                   timeFormat={timeFormat}
-                  locale={locale}
+                  calendarSystem={calendarSystem}
                   disabled={!selectedValue}
                   onTimeChange={(hour, minute) => {
                     const day = selectedValue as Day | null
@@ -518,8 +523,8 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                   <TimeSelector
                     day={(selectedValue as Range | null)?.from || null}
                     timeFormat={timeFormat}
-                    locale={locale}
-                    label={locale === 'fa' ? 'از' : 'From'}
+                    calendarSystem={calendarSystem}
+                    label={calendarSystem === 'jalali' ? 'از' : 'From'}
                     disabled={!(selectedValue as Range | null)?.from}
                     onTimeChange={(hour, minute) => {
                       const range = selectedValue as Range | null
@@ -531,8 +536,8 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                   <TimeSelector
                     day={(selectedValue as Range | null)?.to || null}
                     timeFormat={timeFormat}
-                    locale={locale}
-                    label={locale === 'fa' ? 'تا' : 'To'}
+                    calendarSystem={calendarSystem}
+                    label={calendarSystem === 'jalali' ? 'تا' : 'To'}
                     disabled={!(selectedValue as Range | null)?.to}
                     onTimeChange={(hour, minute) => {
                       const range = selectedValue as Range | null
@@ -547,8 +552,8 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                   <TimeSelector
                     day={(selectedValue as Week | null)?.from || null}
                     timeFormat={timeFormat}
-                    locale={locale}
-                    label={locale === 'fa' ? 'از' : 'From'}
+                    calendarSystem={calendarSystem}
+                    label={calendarSystem === 'jalali' ? 'از' : 'From'}
                     disabled={!(selectedValue as Week | null)?.from}
                     onTimeChange={(hour, minute) => {
                       const week = selectedValue as Week | null
@@ -560,8 +565,8 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                   <TimeSelector
                     day={(selectedValue as Week | null)?.to || null}
                     timeFormat={timeFormat}
-                    locale={locale}
-                    label={locale === 'fa' ? 'تا' : 'To'}
+                    calendarSystem={calendarSystem}
+                    label={calendarSystem === 'jalali' ? 'تا' : 'To'}
                     disabled={!(selectedValue as Week | null)?.to}
                     onTimeChange={(hour, minute) => {
                       const week = selectedValue as Week | null
@@ -578,13 +583,13 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
           {/* Preset Range Buttons - Only for range mode */}
           {presetRanges && type === 'range' && (
             <div className='calendar-preset-ranges'>
-              {getPresetRangesFromConfig(presetRanges, locale).map(
+              {getPresetRangesFromConfig(presetRanges, calendarSystem).map(
                 (preset, index) => {
                   const currentRange = selectedValue as Range | null
                   const isActive = isPresetRangeActive(
                     preset.range,
                     currentRange,
-                    locale
+                    calendarSystem
                   )
                   return (
                     <button
@@ -622,7 +627,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
               }}
               className='calendar-today-btn'
             >
-              {locale === 'fa' ? 'امروز' : 'Today'}
+              {calendarSystem === 'jalali' ? 'امروز' : 'Today'}
             </button>
           )}
         </div>
@@ -639,7 +644,7 @@ export const CalendarGridView = React.memo(
     return (
       prevProps.selectedValue === nextProps.selectedValue &&
       prevProps.displayMonth === nextProps.displayMonth &&
-      prevProps.locale === nextProps.locale &&
+      prevProps.calendarSystem === nextProps.calendarSystem &&
       prevProps.type === nextProps.type &&
       prevProps.withTime === nextProps.withTime &&
       prevProps.timeFormat === nextProps.timeFormat &&

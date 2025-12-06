@@ -11,8 +11,8 @@ import { toGregorian, jalaaliMonthLength } from 'jalaali-js'
 export interface UseKeyboardNavigationOptions {
   /** Currently focused date */
   focusedDate: Day
-  /** Calendar locale */
-  locale: CalendarLocale
+  /** Calendar system */
+  calendarSystem: CalendarLocale
   /** Calendar selection type */
   type: CalendarType
   /** Container ref to scope keyboard events */
@@ -34,10 +34,14 @@ export interface UseKeyboardNavigationOptions {
 /**
  * Add days to a date
  */
-const addDays = (day: Day, daysToAdd: number, locale: CalendarLocale): Day => {
+const addDays = (
+  day: Day,
+  daysToAdd: number,
+  calendarSystem: CalendarLocale
+): Day => {
   // Convert to Gregorian for calculation
   let date: Date
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     const greg = toGregorian(day.year, day.month, day.day)
     date = new Date(greg.gy, greg.gm - 1, greg.gd)
   } else {
@@ -48,7 +52,7 @@ const addDays = (day: Day, daysToAdd: number, locale: CalendarLocale): Day => {
   date.setDate(date.getDate() + daysToAdd)
 
   // Convert back to the correct locale
-  return dateToDay(date, locale)
+  return dateToDay(date, calendarSystem)
 }
 
 /**
@@ -59,7 +63,7 @@ export const useKeyboardNavigation = (
 ) => {
   const {
     focusedDate,
-    locale,
+    calendarSystem,
     containerRef,
     enabled = true,
     onFocusedDateChange,
@@ -95,7 +99,7 @@ export const useKeyboardNavigation = (
       if (isDateSelectable && !isDateSelectable(newDate)) {
         // If we have a direction, try the next date in that direction
         if (direction !== 0) {
-          const nextDate = addDays(newDate, direction, locale)
+          const nextDate = addDays(newDate, direction, calendarSystem)
           return navigateRecursive(nextDate, direction, attempts + 1)
         }
         return false
@@ -104,7 +108,7 @@ export const useKeyboardNavigation = (
       onFocusedDateChange(newDate)
       return true
     },
-    [isDateSelectable, onFocusedDateChange, locale]
+    [isDateSelectable, onFocusedDateChange, calendarSystem]
   )
 
   /**
@@ -123,14 +127,14 @@ export const useKeyboardNavigation = (
           daysToAdd = 7
           break
         case 'left':
-          daysToAdd = locale === 'fa' ? 1 : -1 // RTL support
+          daysToAdd = calendarSystem === 'jalali' ? 1 : -1 // RTL support
           break
         case 'right':
-          daysToAdd = locale === 'fa' ? -1 : 1 // RTL support
+          daysToAdd = calendarSystem === 'jalali' ? -1 : 1 // RTL support
           break
       }
 
-      const newDate = addDays(current, daysToAdd, locale)
+      const newDate = addDays(current, daysToAdd, calendarSystem)
 
       // Check if we've moved to a different month (including year boundaries)
       const monthChanged =
@@ -159,7 +163,7 @@ export const useKeyboardNavigation = (
         navigateToDate(newDate, daysToAdd)
       }
     },
-    [locale, onMonthNavigate, navigateToDate]
+    [calendarSystem, onMonthNavigate, navigateToDate]
   )
 
   /**
@@ -175,7 +179,7 @@ export const useKeyboardNavigation = (
         newDate = { ...current, day: 1 }
       } else {
         // Go to last day of current month
-        if (locale === 'fa') {
+        if (calendarSystem === 'jalali') {
           const lastDay = jalaaliMonthLength(current.year, current.month)
           newDate = { ...current, day: lastDay }
         } else {
@@ -186,7 +190,7 @@ export const useKeyboardNavigation = (
 
       navigateToDate(newDate)
     },
-    [locale, navigateToDate]
+    [calendarSystem, navigateToDate]
   )
 
   /**
@@ -217,7 +221,7 @@ export const useKeyboardNavigation = (
 
       // Calculate last day of new month
       let lastDayOfNewMonth: number
-      if (locale === 'fa') {
+      if (calendarSystem === 'jalali') {
         lastDayOfNewMonth = jalaaliMonthLength(newYear, newMonth)
       } else {
         lastDayOfNewMonth = new Date(newYear, newMonth, 0).getDate()
@@ -231,7 +235,7 @@ export const useKeyboardNavigation = (
         navigateToDate(newDate, 0)
       }, 0)
     },
-    [locale, onMonthNavigate, navigateToDate]
+    [calendarSystem, onMonthNavigate, navigateToDate]
   )
 
   /**

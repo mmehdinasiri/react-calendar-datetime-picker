@@ -61,10 +61,11 @@ export const sharedProps: Prop[] = [
     description: 'Time format'
   },
   {
-    name: 'local',
-    type: 'CalendarLocale',
-    default: "'en'",
-    description: 'Calendar locale'
+    name: 'calendarSystem',
+    type: 'CalendarSystemInput',
+    default: "'gregorian'",
+    description:
+      'Calendar system: "gregorian" or "jalali". Also accepts shorthand aliases: "ge" for "gregorian", "ja" for "jalali"'
   },
   {
     name: 'showWeekend',
@@ -250,7 +251,12 @@ export const types: Type[] = [
   },
   {
     name: 'CalendarLocale',
-    definition: "type CalendarLocale = 'en' | 'fa'"
+    definition: "type CalendarLocale = 'gregorian' | 'jalali'"
+  },
+  {
+    name: 'CalendarSystemInput',
+    definition:
+      "type CalendarSystemInput = 'gregorian' | 'jalali' | 'ge' | 'ja'"
   },
   {
     name: 'DateInput',

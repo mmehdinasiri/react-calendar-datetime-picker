@@ -29,8 +29,8 @@ export interface CalendarCoreProps {
   displayMonth: Day
   /** Current view: 'calendar', 'months', or 'years' */
   currentView: 'calendar' | 'months' | 'years'
-  /** Calendar locale */
-  locale: CalendarLocale
+  /** Calendar system */
+  calendarSystem: CalendarLocale
   /** Calendar selection type */
   type: CalendarType
   /** Enable time selection */
@@ -76,7 +76,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     selectedValue,
     displayMonth,
     currentView,
-    locale,
+    calendarSystem,
     type,
     withTime = false,
     timeFormat = '24',
@@ -104,7 +104,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
       <CalendarGridView
         selectedValue={selectedValue}
         displayMonth={displayMonth}
-        locale={locale}
+        calendarSystem={calendarSystem}
         type={type}
         withTime={withTime}
         timeFormat={timeFormat}
@@ -129,7 +129,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     return (
       <MonthView
         displayMonth={displayMonth}
-        locale={locale}
+        calendarSystem={calendarSystem}
         customization={customization}
         onMonthSelect={onMonthSelect}
         onViewChange={onViewChange}
@@ -141,7 +141,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     return (
       <YearView
         displayMonth={displayMonth}
-        locale={locale}
+        calendarSystem={calendarSystem}
         yearListStyle={yearListStyle}
         customization={customization}
         onYearSelect={onYearSelect}

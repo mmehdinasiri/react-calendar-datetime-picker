@@ -35,23 +35,23 @@ export interface CalendarDay {
  * Gregorian: Sunday (0), Jalali: Saturday (0)
  * Note: Both use 0 as the first day, but the day names arrays are different
  */
-function getFirstDayOfWeek(_locale: CalendarLocale): number {
+function getFirstDayOfWeek(_calendarSystem: CalendarLocale): number {
   return 0 // Both calendars start at index 0, but with different day names
 }
 
 /**
  * Get day names for a given locale
- * @param locale - Calendar locale ('en' or 'fa')
+ * @param locale - Calendar locale ('gregorian' or 'jalali')
  * @param customNames - Optional custom weekday names array (7 elements)
  */
 export function getDayNames(
-  locale: CalendarLocale,
+  calendarSystem: CalendarLocale,
   customNames?: string[]
 ): string[] {
   if (customNames && customNames.length === 7) {
     return customNames
   }
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     // Jalali: Saturday to Friday
     return ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'] // ش = Saturday, ج = Friday
   } else {
@@ -62,17 +62,17 @@ export function getDayNames(
 
 /**
  * Get month names for a given locale
- * @param locale - Calendar locale ('en' or 'fa')
+ * @param locale - Calendar locale ('gregorian' or 'jalali')
  * @param customNames - Optional custom month names array (12 elements)
  */
 export function getMonthNames(
-  locale: CalendarLocale,
+  calendarSystem: CalendarLocale,
   customNames?: string[]
 ): string[] {
   if (customNames && customNames.length === 12) {
     return customNames
   }
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     return [
       'فروردین',
       'اردیبهشت',
@@ -113,9 +113,9 @@ function getDayOfWeek(
   year: number,
   month: number,
   day: number,
-  locale: CalendarLocale
+  calendarSystem: CalendarLocale
 ): number {
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     // For Jalali, convert to Gregorian first to use JavaScript Date
     const jalaliDay: Day = { year, month, day }
     const gregorianDay = jalaliToGregorian(jalaliDay)
@@ -150,14 +150,14 @@ function getDayOfWeek(
  */
 export function generateCalendarGrid(
   month: Day,
-  locale: CalendarLocale
+  calendarSystem: CalendarLocale
 ): CalendarDay[][] {
   const { year, month: monthNum } = month
-  const firstDayOfWeek = getFirstDayOfWeek(locale)
-  const daysInMonth = getDaysInMonth(year, monthNum, locale)
+  const firstDayOfWeek = getFirstDayOfWeek(calendarSystem)
+  const daysInMonth = getDaysInMonth(year, monthNum, calendarSystem)
 
   // Get the first day of the month's day of week
-  const firstDayWeekday = getDayOfWeek(year, monthNum, 1, locale)
+  const firstDayWeekday = getDayOfWeek(year, monthNum, 1, calendarSystem)
 
   // Calculate how many days from previous month to show
   const daysFromPrevMonth = (firstDayWeekday - firstDayOfWeek + 7) % 7
@@ -169,10 +169,10 @@ export function generateCalendarGrid(
     prevMonth = 12
     prevYear = year - 1
   }
-  const daysInPrevMonth = getDaysInMonth(prevYear, prevMonth, locale)
+  const daysInPrevMonth = getDaysInMonth(prevYear, prevMonth, calendarSystem)
 
   // Get today's date for comparison
-  const todayDayObj = getToday(locale)
+  const todayDayObj = getToday(calendarSystem)
 
   const grid: CalendarDay[][] = []
   let currentWeek: CalendarDay[] = []
@@ -275,7 +275,7 @@ export function generateCalendarGrid(
 export function getMonthsToDisplay(
   baseMonth: Day,
   numberOfMonths: number,
-  _locale: CalendarLocale
+  _calendarSystem: CalendarLocale
 ): Day[] {
   const months: Day[] = []
 
@@ -308,11 +308,11 @@ export function getMonthsToDisplay(
 export function getYearRange(
   _centerYear: number,
   _range = 12,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): number[] {
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     // Jalali calendar: typically years 1300-1450 (roughly 1921-2071 Gregorian)
-    const today = getToday(locale)
+    const today = getToday(calendarSystem)
     const currentYear = today.year
     const startYear = 1300
     const endYear = currentYear + 30
@@ -351,17 +351,17 @@ export function getMonths(): number[] {
  */
 export function getWeekBounds(
   day: Day,
-  locale: CalendarLocale
+  calendarSystem: CalendarLocale
 ): { from: Day; to: Day } {
-  const dayOfWeek = getDayOfWeek(day.year, day.month, day.day, locale)
-  const firstDayOfWeek = getFirstDayOfWeek(locale)
+  const dayOfWeek = getDayOfWeek(day.year, day.month, day.day, calendarSystem)
+  const firstDayOfWeek = getFirstDayOfWeek(calendarSystem)
 
   // Calculate days to subtract to get to the start of the week
   const daysToSubtract = (dayOfWeek - firstDayOfWeek + 7) % 7
 
   // Calculate start of week
   let startDate: Date
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     const jalaliDay: Day = { year: day.year, month: day.month, day: day.day }
     const gregorianDay = jalaliToGregorian(jalaliDay)
     const date = new Date(
@@ -382,8 +382,8 @@ export function getWeekBounds(
   endDate.setDate(endDate.getDate() + 6)
 
   // Convert back to Day objects
-  const weekFrom = dateToDay(startDate, locale)
-  const weekTo = dateToDay(endDate, locale)
+  const weekFrom = dateToDay(startDate, calendarSystem)
+  const weekTo = dateToDay(endDate, calendarSystem)
 
   // Preserve time from the original day if it exists
   if (day.hour !== undefined) {
@@ -407,16 +407,19 @@ export function getWeekBounds(
  * Get ISO week number for a given date (Gregorian only)
  * For Jalali, returns a simple week number within the year
  */
-export function getWeekNumber(day: Day, locale: CalendarLocale): number {
-  if (locale === 'fa') {
+export function getWeekNumber(
+  day: Day,
+  calendarSystem: CalendarLocale
+): number {
+  if (calendarSystem === 'jalali') {
     // For Jalali, calculate week number from start of year
     const yearStart: Day = { year: day.year, month: 1, day: 1 }
-    const yearStartWeek = getWeekBounds(yearStart, locale)
-    const currentWeek = getWeekBounds(day, locale)
+    const yearStartWeek = getWeekBounds(yearStart, calendarSystem)
+    const currentWeek = getWeekBounds(day, calendarSystem)
 
     // Calculate difference in days
-    const startDate = dayToDate(yearStartWeek.from, locale)
-    const currentDate = dayToDate(currentWeek.from, locale)
+    const startDate = dayToDate(yearStartWeek.from, calendarSystem)
+    const currentDate = dayToDate(currentWeek.from, calendarSystem)
     const diffTime = currentDate.getTime() - startDate.getTime()
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
     const weekNumber = Math.floor(diffDays / 7) + 1

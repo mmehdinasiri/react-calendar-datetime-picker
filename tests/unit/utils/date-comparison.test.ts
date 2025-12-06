@@ -250,18 +250,18 @@ describe('date-comparison utils', () => {
       const d2: Day = { year: 1402, month: 1, day: 2 }
 
       it('isBefore', () => {
-        expect(isBefore(d1, d2, 'fa')).toBe(true)
-        expect(isBefore(d2, d1, 'fa')).toBe(false)
+        expect(isBefore(d1, d2, 'jalali')).toBe(true)
+        expect(isBefore(d2, d1, 'jalali')).toBe(false)
       })
 
       it('isAfter', () => {
-        expect(isAfter(d2, d1, 'fa')).toBe(true)
-        expect(isAfter(d1, d2, 'fa')).toBe(false)
+        expect(isAfter(d2, d1, 'jalali')).toBe(true)
+        expect(isAfter(d1, d2, 'jalali')).toBe(false)
       })
 
       it('isSameDay', () => {
-        expect(isSameDay(d1, { ...d1 }, 'fa')).toBe(true)
-        expect(isSameDay(d1, d2, 'fa')).toBe(false)
+        expect(isSameDay(d1, { ...d1 }, 'jalali')).toBe(true)
+        expect(isSameDay(d1, d2, 'jalali')).toBe(false)
       })
     })
 
@@ -269,7 +269,7 @@ describe('date-comparison utils', () => {
       it('addMonths handles Jalali month lengths', () => {
         // 31 Ordibehesht 1402 -> +1 month -> 31 Khordad 1402 (both have 31 days)
         const start: Day = { year: 1402, month: 2, day: 31 }
-        const nextMonth = addMonths(start, 1, 'fa')
+        const nextMonth = addMonths(start, 1, 'jalali')
         expect(nextMonth).toEqual({
           year: 1402,
           month: 3,
@@ -280,7 +280,7 @@ describe('date-comparison utils', () => {
 
         // 31 Shahrivar 1402 -> +1 month -> 30 Mehr 1402 (Mehr has 30 days)
         const startShahrivar: Day = { year: 1402, month: 6, day: 31 }
-        const nextMonthMehr = addMonths(startShahrivar, 1, 'fa')
+        const nextMonthMehr = addMonths(startShahrivar, 1, 'jalali')
         expect(nextMonthMehr).toEqual({
           year: 1402,
           month: 7,
@@ -293,7 +293,7 @@ describe('date-comparison utils', () => {
       it('addMonths crosses Jalali year boundary', () => {
         // 29 Esfand 1402 -> +1 month -> 29 Farvardin 1403
         const start: Day = { year: 1402, month: 12, day: 29 }
-        const nextMonth = addMonths(start, 1, 'fa')
+        const nextMonth = addMonths(start, 1, 'jalali')
         expect(nextMonth).toEqual({
           year: 1403,
           month: 1,
@@ -306,7 +306,7 @@ describe('date-comparison utils', () => {
       it('subtractMonths crosses Jalali year boundary', () => {
         // 10 Farvardin 1403 -> -1 month -> 10 Esfand 1402
         const start: Day = { year: 1403, month: 1, day: 10 }
-        const prevMonth = subtractMonths(start, 1, 'fa')
+        const prevMonth = subtractMonths(start, 1, 'jalali')
         expect(prevMonth).toEqual({
           year: 1402,
           month: 12,
@@ -319,7 +319,7 @@ describe('date-comparison utils', () => {
       it('addYears handles Jalali leap year to non-leap year', () => {
         // 30 Esfand 1403 (leap) -> +1 year -> 29 Esfand 1404 (non-leap)
         const leapDay: Day = { year: 1403, month: 12, day: 30 }
-        const nextYear = addYears(leapDay, 1, 'fa')
+        const nextYear = addYears(leapDay, 1, 'jalali')
         expect(nextYear).toEqual({
           year: 1404,
           month: 12,
@@ -335,25 +335,25 @@ describe('date-comparison utils', () => {
         const d1: Day = { year: 1402, month: 1, day: 1 }
         const d2: Day = { year: 1402, month: 1, day: 10 }
         // 9 days diff
-        expect(getDifferenceInDays(d2, d1, 'fa')).toBe(9)
+        expect(getDifferenceInDays(d2, d1, 'jalali')).toBe(9)
 
         // Across months (Farvardin has 31 days)
         // 1 Farvardin to 1 Ordibehesht = 31 days
         const d3: Day = { year: 1402, month: 2, day: 1 }
-        expect(getDifferenceInDays(d3, d1, 'fa')).toBe(31)
+        expect(getDifferenceInDays(d3, d1, 'jalali')).toBe(31)
       })
 
       it('getDifferenceInYears works correctly for Jalali', () => {
         const d1: Day = { year: 1402, month: 1, day: 1 }
         const d2: Day = { year: 1403, month: 1, day: 1 }
-        expect(getDifferenceInYears(d2, d1, 'fa')).toBe(1)
+        expect(getDifferenceInYears(d2, d1, 'jalali')).toBe(1)
       })
     })
 
     it('endOfMonth handles Jalali leap years', () => {
       // 1403 is a leap year, Esfand has 30 days
       const esfand1403: Day = { year: 1403, month: 12, day: 1 }
-      expect(endOfMonth(esfand1403, 'fa')).toEqual({
+      expect(endOfMonth(esfand1403, 'jalali')).toEqual({
         year: 1403,
         month: 12,
         day: 30,
@@ -363,7 +363,7 @@ describe('date-comparison utils', () => {
 
       // 1402 is NOT a leap year, Esfand has 29 days
       const esfand1402: Day = { year: 1402, month: 12, day: 1 }
-      expect(endOfMonth(esfand1402, 'fa')).toEqual({
+      expect(endOfMonth(esfand1402, 'jalali')).toEqual({
         year: 1402,
         month: 12,
         day: 29,

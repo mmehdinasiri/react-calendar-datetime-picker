@@ -51,8 +51,8 @@ const ChevronRightIcon = ({ className }: { className?: string }) => (
 export interface CalendarHeaderProps {
   /** Currently displayed month */
   displayMonth: Day
-  /** Calendar locale */
-  locale: CalendarLocale
+  /** Calendar system */
+  calendarSystem: CalendarLocale
   /** Customization options */
   customization?: CalendarCustomization
   /** Callback when previous button is clicked */
@@ -74,7 +74,7 @@ export interface CalendarHeaderProps {
 export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
   const {
     displayMonth,
-    locale,
+    calendarSystem,
     customization = {},
     onPrevious,
     onNext,
@@ -93,7 +93,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
   const { header: headerClass } = classes
   const { next: NextBtnIcon, previous: PreviousBtnIcon } = icons
 
-  const monthNames = getMonthNames(locale, customMonthNames)
+  const monthNames = getMonthNames(calendarSystem, customMonthNames)
 
   return (
     <div className={`calendar-header ${headerClass || ''}`}>
@@ -131,13 +131,13 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
               onClick={onYearClick}
               className='calendar-year-btn'
             >
-              {locale === 'fa'
+              {calendarSystem === 'jalali'
                 ? toPersianNumeral(displayMonth.year)
                 : displayMonth.year}
             </button>
           ) : (
             <div className='calendar-year-btn' style={{ cursor: 'default' }}>
-              {locale === 'fa'
+              {calendarSystem === 'jalali'
                 ? toPersianNumeral(displayMonth.year)
                 : displayMonth.year}
             </div>

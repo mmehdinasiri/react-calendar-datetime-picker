@@ -120,7 +120,7 @@ function ReactHookFormExample() {
           control={control}
           render={({ field }) => (
             <DtPicker
-              local='en'
+              calendarSystem='gregorian'
               initValue={field.value}
               onChange={(date) => {
                 field.onChange(date)
@@ -372,7 +372,7 @@ function App() {
                   <div className='calendar-container'>
                     <DatePickerWithValueDisplay
                       onChange={setStyledInputDate}
-                      local='en'
+                      calendarSystem='gregorian'
                     />
                   </div>
                 </div>
@@ -399,7 +399,7 @@ function App() {
 
   return (
     <DtPicker
-      local="en"
+      calendarSystem="gregorian"
       onChange={setDate}
       triggerElement={
         <input
@@ -503,7 +503,7 @@ function App() {
         control={control}
         render={({ field }) => (
           <DtPicker
-            local="en"
+            calendarSystem="gregorian"
             initValue={field.value}
             onChange={(date) => {
               field.onChange(date)

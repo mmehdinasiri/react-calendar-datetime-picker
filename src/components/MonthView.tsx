@@ -12,8 +12,8 @@ import { CalendarHeader } from './CalendarHeader'
 export interface MonthViewProps {
   /** Currently displayed month */
   displayMonth: Day
-  /** Calendar locale */
-  locale: CalendarLocale
+  /** Calendar system */
+  calendarSystem: CalendarLocale
   /** Customization options */
   customization?: CalendarCustomization
   /** Callback when month is selected */
@@ -25,7 +25,7 @@ export interface MonthViewProps {
 const MonthViewInner: React.FC<MonthViewProps> = (props) => {
   const {
     displayMonth,
-    locale,
+    calendarSystem,
     customization = {},
     onMonthSelect,
     onViewChange
@@ -34,14 +34,14 @@ const MonthViewInner: React.FC<MonthViewProps> = (props) => {
   const { classes = {}, monthNames: customMonthNames } = customization
   const { months: monthsClass } = classes
 
-  const isRTL = locale === 'fa'
-  const monthNames = getMonthNames(locale, customMonthNames)
+  const isRTL = calendarSystem === 'jalali'
+  const monthNames = getMonthNames(calendarSystem, customMonthNames)
 
   return (
     <div className='calendar-core' dir={isRTL ? 'rtl' : 'ltr'}>
       <CalendarHeader
         displayMonth={displayMonth}
-        locale={locale}
+        calendarSystem={calendarSystem}
         customization={customization}
         onPrevious={() => onViewChange('calendar')}
         onNext={() => onViewChange('years')}
@@ -52,7 +52,7 @@ const MonthViewInner: React.FC<MonthViewProps> = (props) => {
       <div
         className={`calendar-months ${monthsClass || ''}`}
         role='grid'
-        aria-label={locale === 'fa' ? 'انتخاب ماه' : 'Select month'}
+        aria-label={calendarSystem === 'jalali' ? 'انتخاب ماه' : 'Select month'}
       >
         {monthNames.map((monthName, index) => {
           const month = index + 1
@@ -92,7 +92,7 @@ const MonthViewInner: React.FC<MonthViewProps> = (props) => {
 export const MonthView = React.memo(MonthViewInner, (prevProps, nextProps) => {
   return (
     prevProps.displayMonth === nextProps.displayMonth &&
-    prevProps.locale === nextProps.locale &&
+    prevProps.calendarSystem === nextProps.calendarSystem &&
     prevProps.customization === nextProps.customization &&
     prevProps.onMonthSelect === nextProps.onMonthSelect &&
     prevProps.onViewChange === nextProps.onViewChange

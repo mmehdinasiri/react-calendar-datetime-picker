@@ -24,12 +24,12 @@ describe('formatting utils', () => {
       const day: Day = { year: 1402, month: 1, day: 1 }
 
       it('formats single date', () => {
-        expect(formatDateForInput(day, 'fa', 'single')).toBe('۱۴۰۲/۰۱/۰۱')
+        expect(formatDateForInput(day, 'jalali', 'single')).toBe('۱۴۰۲/۰۱/۰۱')
       })
 
       it('formats single date with time', () => {
         const dayWithTime: Day = { ...day, hour: 13, minute: 30 }
-        expect(formatDateForInput(dayWithTime, 'fa', 'single', true)).toBe(
+        expect(formatDateForInput(dayWithTime, 'jalali', 'single', true)).toBe(
           '۱۴۰۲/۰۱/۰۱ ۱۳:۳۰'
         )
       })
@@ -40,7 +40,7 @@ describe('formatting utils', () => {
           to: { year: 1402, month: 1, day: 5 }
         }
         expect(
-          formatDateForInput(range, 'fa', 'range', false, 'از', 'تا')
+          formatDateForInput(range, 'jalali', 'range', false, 'از', 'تا')
         ).toBe('از ۱۴۰۲/۰۱/۰۱ تا ۱۴۰۲/۰۱/۰۵')
       })
 
@@ -49,14 +49,22 @@ describe('formatting utils', () => {
           from: { year: 1402, month: 1, day: 1 },
           to: { year: 1402, month: 1, day: 7 }
         }
-        expect(formatDateForInput(week, 'fa', 'week')).toBe(
+        expect(formatDateForInput(week, 'jalali', 'week')).toBe(
           'هفته: ۱۴۰۲/۰۱/۰۱ - ۱۴۰۲/۰۱/۰۷'
         )
       })
 
       it('uses custom format with Persian numerals', () => {
         expect(
-          formatDateForInput(day, 'fa', 'single', false, '', '', 'YYYY-MM-DD')
+          formatDateForInput(
+            day,
+            'jalali',
+            'single',
+            false,
+            '',
+            '',
+            'YYYY-MM-DD'
+          )
         ).toBe('۱۴۰۲-۰۱-۰۱')
       })
     })
@@ -65,14 +73,16 @@ describe('formatting utils', () => {
       const day: Day = { year: 2023, month: 1, day: 1 }
 
       it('formats single date', () => {
-        expect(formatDateForInput(day, 'en', 'single')).toBe('2023/01/01')
+        expect(formatDateForInput(day, 'gregorian', 'single')).toBe(
+          '2023/01/01'
+        )
       })
 
       it('formats single date with time', () => {
         const dayWithTime: Day = { ...day, hour: 13, minute: 30 }
-        expect(formatDateForInput(dayWithTime, 'en', 'single', true)).toBe(
-          '2023/01/01 13:30'
-        )
+        expect(
+          formatDateForInput(dayWithTime, 'gregorian', 'single', true)
+        ).toBe('2023/01/01 13:30')
       })
 
       it('formats range', () => {
@@ -81,7 +91,7 @@ describe('formatting utils', () => {
           to: { year: 2023, month: 1, day: 5 }
         }
         expect(
-          formatDateForInput(range, 'en', 'range', false, 'From', 'To')
+          formatDateForInput(range, 'gregorian', 'range', false, 'From', 'To')
         ).toBe('From 2023/01/01 To 2023/01/05')
       })
 
@@ -90,7 +100,7 @@ describe('formatting utils', () => {
           from: { year: 2023, month: 1, day: 1 },
           to: { year: 2023, month: 1, day: 7 }
         }
-        expect(formatDateForInput(week, 'en', 'week')).toBe(
+        expect(formatDateForInput(week, 'gregorian', 'week')).toBe(
           'Week: 2023/01/01 - 2023/01/07'
         )
       })
@@ -100,7 +110,7 @@ describe('formatting utils', () => {
   describe('parseDateString', () => {
     describe('Jalali locale (fa)', () => {
       it('parses english numerals', () => {
-        expect(parseDateString('1402/01/01', 'fa')).toEqual({
+        expect(parseDateString('1402/01/01', 'jalali')).toEqual({
           year: 1402,
           month: 1,
           day: 1
@@ -108,7 +118,7 @@ describe('formatting utils', () => {
       })
 
       it('parses persian numerals', () => {
-        expect(parseDateString('۱۴۰۲/۰۱/۰۱', 'fa')).toEqual({
+        expect(parseDateString('۱۴۰۲/۰۱/۰۱', 'jalali')).toEqual({
           year: 1402,
           month: 1,
           day: 1
@@ -116,12 +126,12 @@ describe('formatting utils', () => {
       })
 
       it('parses different separators', () => {
-        expect(parseDateString('1402-01-01', 'fa')).toEqual({
+        expect(parseDateString('1402-01-01', 'jalali')).toEqual({
           year: 1402,
           month: 1,
           day: 1
         })
-        expect(parseDateString('۱۴۰۲.۰۱.۰۱', 'fa')).toEqual({
+        expect(parseDateString('۱۴۰۲.۰۱.۰۱', 'jalali')).toEqual({
           year: 1402,
           month: 1,
           day: 1
@@ -131,12 +141,12 @@ describe('formatting utils', () => {
 
     describe('Gregorian locale (en)', () => {
       it('parses standard date strings', () => {
-        expect(parseDateString('2023/01/01', 'en')).toEqual({
+        expect(parseDateString('2023/01/01', 'gregorian')).toEqual({
           year: 2023,
           month: 1,
           day: 1
         })
-        expect(parseDateString('2023-01-01', 'en')).toEqual({
+        expect(parseDateString('2023-01-01', 'gregorian')).toEqual({
           year: 2023,
           month: 1,
           day: 1
@@ -145,10 +155,10 @@ describe('formatting utils', () => {
     })
 
     it('returns null for structurally invalid strings', () => {
-      expect(parseDateString('invalid', 'fa')).toBeNull()
-      expect(parseDateString('invalid', 'en')).toBeNull()
+      expect(parseDateString('invalid', 'jalali')).toBeNull()
+      expect(parseDateString('invalid', 'gregorian')).toBeNull()
       // parseDateString only checks if parts are numbers, validation happens later
-      expect(parseDateString('1402/13/1', 'fa')).toEqual({
+      expect(parseDateString('1402/13/1', 'jalali')).toEqual({
         year: 1402,
         month: 13,
         day: 1

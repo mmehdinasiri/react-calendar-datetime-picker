@@ -325,7 +325,7 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          isBefore(selectedDate, today, 'en')
+                          isBefore(selectedDate, today, 'gregorian')
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -335,19 +335,28 @@ export default function Utilities() {
                           date1 (selectedDate) ={' '}
                           {dayToString(selectedDate, '/')}
                           <br />
-                          date2 (today) = {dayToString(getToday('en'), '/')}
+                          date2 (today) ={' '}
+                          {dayToString(getToday('gregorian'), '/')}
                         </span>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
                         <strong>Result:</strong>{' '}
                         <code>
-                          {isBefore(selectedDate, getToday('en'), 'en')
+                          {isBefore(
+                            selectedDate,
+                            getToday('gregorian'),
+                            'gregorian'
+                          )
                             ? 'true'
                             : 'false'}
                         </code>
                         <br />
                         <span className='text-gray-700 dark:text-gray-300 text-xs'>
-                          {isBefore(selectedDate, getToday('en'), 'en')
+                          {isBefore(
+                            selectedDate,
+                            getToday('gregorian'),
+                            'gregorian'
+                          )
                             ? `Selected date is before today`
                             : `Selected date is not before today`}
                         </span>
@@ -390,7 +399,7 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          isAfter(selectedDate, today, 'en')
+                          isAfter(selectedDate, today, 'gregorian')
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -400,19 +409,28 @@ export default function Utilities() {
                           date1 (selectedDate) ={' '}
                           {dayToString(selectedDate, '/')}
                           <br />
-                          date2 (today) = {dayToString(getToday('en'), '/')}
+                          date2 (today) ={' '}
+                          {dayToString(getToday('gregorian'), '/')}
                         </span>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
                         <strong>Result:</strong>{' '}
                         <code>
-                          {isAfter(selectedDate, getToday('en'), 'en')
+                          {isAfter(
+                            selectedDate,
+                            getToday('gregorian'),
+                            'gregorian'
+                          )
                             ? 'true'
                             : 'false'}
                         </code>
                         <br />
                         <span className='text-gray-700 dark:text-gray-300 text-xs'>
-                          {isAfter(selectedDate, getToday('en'), 'en')
+                          {isAfter(
+                            selectedDate,
+                            getToday('gregorian'),
+                            'gregorian'
+                          )
                             ? `Selected date is after today`
                             : `Selected date is not after today`}
                         </span>
@@ -454,7 +472,7 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          isSameDay(selectedDate, today, 'en')
+                          isSameDay(selectedDate, today, 'gregorian')
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -464,19 +482,28 @@ export default function Utilities() {
                           date1 (selectedDate) ={' '}
                           {dayToString(selectedDate, '/')}
                           <br />
-                          date2 (today) = {dayToString(getToday('en'), '/')}
+                          date2 (today) ={' '}
+                          {dayToString(getToday('gregorian'), '/')}
                         </span>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
                         <strong>Result:</strong>{' '}
                         <code>
-                          {isSameDay(selectedDate, getToday('en'), 'en')
+                          {isSameDay(
+                            selectedDate,
+                            getToday('gregorian'),
+                            'gregorian'
+                          )
                             ? 'true'
                             : 'false'}
                         </code>
                         <br />
                         <span className='text-gray-700 dark:text-gray-300 text-xs'>
-                          {isSameDay(selectedDate, getToday('en'), 'en')
+                          {isSameDay(
+                            selectedDate,
+                            getToday('gregorian'),
+                            'gregorian'
+                          )
                             ? `Selected date is today`
                             : `Selected date is not today`}
                         </span>
@@ -524,7 +551,8 @@ export default function Utilities() {
                       <strong>Function call:</strong>
                       <br />
                       <code className='text-xs'>
-                        isBetween(selectedDate, weekAgo, weekFromNow, 'en')
+                        isBetween(selectedDate, weekAgo, weekFromNow,
+                        'gregorian')
                       </code>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
@@ -532,9 +560,9 @@ export default function Utilities() {
                       <br />
                       <span className='text-gray-700 dark:text-gray-300'>
                         {(() => {
-                          const today = getToday('en')
-                          const weekAgo = addDays(today, -7, 'en')
-                          const weekFromNow = addDays(today, 7, 'en')
+                          const today = getToday('gregorian')
+                          const weekAgo = addDays(today, -7, 'gregorian')
+                          const weekFromNow = addDays(today, 7, 'gregorian')
                           return (
                             <>
                               date (selectedDate) ={' '}
@@ -557,14 +585,14 @@ export default function Utilities() {
                       <strong>Result:</strong>{' '}
                       <code>
                         {(() => {
-                          const today = getToday('en')
-                          const weekAgo = addDays(today, -7, 'en')
-                          const weekFromNow = addDays(today, 7, 'en')
+                          const today = getToday('gregorian')
+                          const weekAgo = addDays(today, -7, 'gregorian')
+                          const weekFromNow = addDays(today, 7, 'gregorian')
                           return isBetween(
                             selectedDate,
                             weekAgo,
                             weekFromNow,
-                            'en'
+                            'gregorian'
                           )
                             ? 'true'
                             : 'false'
@@ -573,14 +601,14 @@ export default function Utilities() {
                       <br />
                       <span className='text-gray-700 dark:text-gray-300 text-xs'>
                         {(() => {
-                          const today = getToday('en')
-                          const weekAgo = addDays(today, -7, 'en')
-                          const weekFromNow = addDays(today, 7, 'en')
+                          const today = getToday('gregorian')
+                          const weekAgo = addDays(today, -7, 'gregorian')
+                          const weekFromNow = addDays(today, 7, 'gregorian')
                           return isBetween(
                             selectedDate,
                             weekAgo,
                             weekFromNow,
-                            'en'
+                            'gregorian'
                           )
                             ? `Selected date is within the range`
                             : `Selected date is outside the range`
@@ -644,7 +672,7 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          addDays(selectedDate, 1, 'en')
+                          addDays(selectedDate, 1, 'gregorian')
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -658,7 +686,10 @@ export default function Utilities() {
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
                         <strong>Result (Tomorrow):</strong>{' '}
-                        {dayToString(addDays(selectedDate, 1, 'en'), '/')}
+                        {dayToString(
+                          addDays(selectedDate, 1, 'gregorian'),
+                          '/'
+                        )}
                       </div>
                     </div>
                   ) : (
@@ -696,7 +727,7 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          addMonths(selectedDate, 1, 'en')
+                          addMonths(selectedDate, 1, 'gregorian')
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -710,7 +741,10 @@ export default function Utilities() {
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
                         <strong>Result (Next Month):</strong>{' '}
-                        {dayToString(addMonths(selectedDate, 1, 'en'), '/')}
+                        {dayToString(
+                          addMonths(selectedDate, 1, 'gregorian'),
+                          '/'
+                        )}
                       </div>
                     </div>
                   ) : (
@@ -748,7 +782,7 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          addYears(selectedDate, 1, 'en')
+                          addYears(selectedDate, 1, 'gregorian')
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -762,7 +796,10 @@ export default function Utilities() {
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
                         <strong>Result (Next Year):</strong>{' '}
-                        {dayToString(addYears(selectedDate, 1, 'en'), '/')}
+                        {dayToString(
+                          addYears(selectedDate, 1, 'gregorian'),
+                          '/'
+                        )}
                       </div>
                     </div>
                   ) : (
@@ -805,7 +842,7 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          getDifferenceInDays(selectedDate, today, 'en')
+                          getDifferenceInDays(selectedDate, today, 'gregorian')
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -815,15 +852,16 @@ export default function Utilities() {
                           date1 (selectedDate) ={' '}
                           {dayToString(selectedDate, '/')}
                           <br />
-                          date2 (today) = {dayToString(getToday('en'), '/')}
+                          date2 (today) ={' '}
+                          {dayToString(getToday('gregorian'), '/')}
                         </span>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
                         <strong>Result:</strong>{' '}
                         {getDifferenceInDays(
                           selectedDate,
-                          getToday('en'),
-                          'en'
+                          getToday('gregorian'),
+                          'gregorian'
                         )}{' '}
                         days
                         <br />
@@ -831,8 +869,8 @@ export default function Utilities() {
                           {(() => {
                             const diff = getDifferenceInDays(
                               selectedDate,
-                              getToday('en'),
-                              'en'
+                              getToday('gregorian'),
+                              'gregorian'
                             )
                             if (diff > 0) {
                               return `Selected date is ${diff} day${diff !== 1 ? 's' : ''} after today (positive = date1 is after date2)`
@@ -1146,7 +1184,7 @@ export default function Utilities() {
                       <strong>Function call:</strong>
                       <br />
                       <code className='text-xs'>
-                        startOfMonth(selectedDate, 'en')
+                        startOfMonth(selectedDate, 'gregorian')
                       </code>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
@@ -1158,7 +1196,10 @@ export default function Utilities() {
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
                       <strong>Result (First day of month):</strong>{' '}
-                      {dayToString(startOfMonth(selectedDate, 'en'), '/')}
+                      {dayToString(
+                        startOfMonth(selectedDate, 'gregorian'),
+                        '/'
+                      )}
                     </div>
                   </div>
                 ) : (
@@ -1198,7 +1239,7 @@ export default function Utilities() {
                       <strong>Function call:</strong>
                       <br />
                       <code className='text-xs'>
-                        endOfMonth(selectedDate, 'en')
+                        endOfMonth(selectedDate, 'gregorian')
                       </code>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
@@ -1210,7 +1251,7 @@ export default function Utilities() {
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
                       <strong>Result (Last day of month):</strong>{' '}
-                      {dayToString(endOfMonth(selectedDate, 'en'), '/')}
+                      {dayToString(endOfMonth(selectedDate, 'gregorian'), '/')}
                     </div>
                   </div>
                 ) : (
@@ -1302,7 +1343,7 @@ export default function Utilities() {
                       <strong>Function call:</strong>
                       <br />
                       <code className='text-xs'>
-                        endOfYear(selectedDate, 'en')
+                        endOfYear(selectedDate, 'gregorian')
                       </code>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
@@ -1314,7 +1355,7 @@ export default function Utilities() {
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
                       <strong>Result (Last day of year):</strong>{' '}
-                      {dayToString(endOfYear(selectedDate, 'en'), '/')}
+                      {dayToString(endOfYear(selectedDate, 'gregorian'), '/')}
                     </div>
                   </div>
                 ) : (
@@ -1357,21 +1398,21 @@ export default function Utilities() {
                   {`import { isBefore, isAfter, addDays } from 'react-calendar-datetime-picker'
 
 function validateBookingDates(checkIn, checkOut) {
-  const today = getToday('en')
-  const maxStay = addDays(checkIn, 30, 'en')
+  const today = getToday('gregorian')
+  const maxStay = addDays(checkIn, 30, 'gregorian')
 
   // Check-in must be today or later
-  if (isBefore(checkIn, today, 'en')) {
+  if (isBefore(checkIn, today, 'gregorian')) {
     return 'Check-in date cannot be in the past'
   }
 
   // Check-out must be after check-in
-  if (!isAfter(checkOut, checkIn, 'en')) {
+  if (!isAfter(checkOut, checkIn, 'gregorian')) {
     return 'Check-out must be after check-in'
   }
 
   // Maximum stay is 30 days
-  if (isAfter(checkOut, maxStay, 'en')) {
+  if (isAfter(checkOut, maxStay, 'gregorian')) {
     return 'Maximum stay is 30 days'
   }
 
@@ -1429,8 +1470,8 @@ console.log(dayToString(gregorian, '/')) // "2024/12/25"`}
                   {`import { getDifferenceInYears, getToday } from 'react-calendar-datetime-picker'
 
 function calculateAge(birthDate) {
-  const today = getToday('en')
-  return getDifferenceInYears(today, birthDate, 'en')
+  const today = getToday('gregorian')
+  return getDifferenceInYears(today, birthDate, 'gregorian')
 }
 
 // Usage

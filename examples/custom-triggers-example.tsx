@@ -21,7 +21,7 @@ function CustomTriggersExample() {
         <DtPicker
           onChange={setDate1}
           placeholder='Select a date...'
-          local='en'
+          calendarSystem='gregorian'
         />
         <p>Selected: {date1 ? date1.toString() : 'None'}</p>
       </div>
@@ -45,7 +45,7 @@ function CustomTriggersExample() {
               📅 Pick Date
             </button>
           }
-          local='en'
+          calendarSystem='gregorian'
         />
         <p>Selected: {date2 ? date2.toString() : 'None'}</p>
       </div>
@@ -73,7 +73,7 @@ function CustomTriggersExample() {
               <span style={{ marginLeft: 'auto' }}>▼</span>
             </div>
           }
-          local='en'
+          calendarSystem='gregorian'
         />
         <p>Selected: {date3 ? date3.toString() : 'None'}</p>
       </div>
@@ -97,7 +97,7 @@ function CustomTriggersExample() {
               readOnly
             />
           }
-          local='en'
+          calendarSystem='gregorian'
         />
         <p>Selected: {date4 ? date4.toString() : 'None'}</p>
       </div>
@@ -141,13 +141,13 @@ const { control, setValue } = useForm()
         <DtPicker
           onChange={setDate1}
           triggerElement={<CustomTriggerButton selectedDate={date1} />}
-          local='en'
+          calendarSystem='gregorian'
         />
       </div>
 
       <div style={{ marginBottom: '30px' }}>
         <h2>7. Still works with DtCalendar (unchanged)</h2>
-        <DtCalendar onChange={setDate2} local='en' />
+        <DtCalendar onChange={setDate2} calendarSystem='gregorian' />
       </div>
     </div>
   )

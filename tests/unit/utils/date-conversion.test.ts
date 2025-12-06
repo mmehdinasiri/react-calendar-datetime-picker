@@ -101,23 +101,25 @@ describe('date-conversion utils', () => {
     const jalali: Day = { year: 1402, month: 1, day: 1 }
 
     it('converts to fa (Gregorian -> Jalali)', () => {
-      expect(convertToLocale(gregorian, 'fa')).toEqual(
+      expect(convertToLocale(gregorian, 'jalali')).toEqual(
         expect.objectContaining(jalali)
       )
     })
 
     it('converts to en (Jalali -> Gregorian)', () => {
-      expect(convertToLocale(jalali, 'en')).toEqual(
+      expect(convertToLocale(jalali, 'gregorian')).toEqual(
         expect.objectContaining(gregorian)
       )
     })
 
     it('returns as-is if target locale matches source assumption', () => {
       // Logic assumes input is in OTHER locale if sourceLocale not provided
-      // convertToLocale(day, 'fa') assumes day is 'en'.
+      // convertToLocale(day, 'jalali') assumes day is 'gregorian'.
       // If we pass explicit sourceLocale:
-      expect(convertToLocale(jalali, 'fa', 'fa')).toEqual(jalali)
-      expect(convertToLocale(gregorian, 'en', 'en')).toEqual(gregorian)
+      expect(convertToLocale(jalali, 'jalali', 'jalali')).toEqual(jalali)
+      expect(convertToLocale(gregorian, 'gregorian', 'gregorian')).toEqual(
+        gregorian
+      )
     })
   })
 
@@ -133,12 +135,12 @@ describe('date-conversion utils', () => {
     })
 
     it('returns today in Gregorian', () => {
-      const today = getToday('en')
+      const today = getToday('gregorian')
       expect(today).toEqual({ year: 2023, month: 3, day: 21 })
     })
 
     it('returns today in Jalali', () => {
-      const today = getToday('fa')
+      const today = getToday('jalali')
       expect(today).toEqual({ year: 1402, month: 1, day: 1 })
     })
   })
@@ -147,7 +149,7 @@ describe('date-conversion utils', () => {
     const date = new Date(2023, 2, 21, 10, 30, 0) // March 21, 2023 10:30
 
     it('converts Date to Gregorian Day', () => {
-      expect(dateToDay(date, 'en')).toEqual({
+      expect(dateToDay(date, 'gregorian')).toEqual({
         year: 2023,
         month: 3,
         day: 21,
@@ -157,7 +159,7 @@ describe('date-conversion utils', () => {
     })
 
     it('converts Date to Jalali Day', () => {
-      expect(dateToDay(date, 'fa')).toEqual({
+      expect(dateToDay(date, 'jalali')).toEqual({
         year: 1402,
         month: 1,
         day: 1,
@@ -170,7 +172,7 @@ describe('date-conversion utils', () => {
   describe('dayToDate', () => {
     it('converts Gregorian Day to Date', () => {
       const day: Day = { year: 2023, month: 3, day: 21, hour: 10, minute: 30 }
-      const date = dayToDate(day, 'en')
+      const date = dayToDate(day, 'gregorian')
       expect(date.getFullYear()).toBe(2023)
       expect(date.getMonth()).toBe(2) // March is 2
       expect(date.getDate()).toBe(21)
@@ -181,7 +183,7 @@ describe('date-conversion utils', () => {
     it('converts Jalali Day to Date', () => {
       const day: Day = { year: 1402, month: 1, day: 1, hour: 10, minute: 30 }
       // Should convert to Gregorian (2023-03-21) then to Date
-      const date = dayToDate(day, 'fa')
+      const date = dayToDate(day, 'jalali')
       expect(date.getFullYear()).toBe(2023)
       expect(date.getMonth()).toBe(2)
       expect(date.getDate()).toBe(21)
@@ -191,7 +193,7 @@ describe('date-conversion utils', () => {
 
     it('defaults time to 00:00 if missing', () => {
       const day: Day = { year: 2023, month: 3, day: 21 }
-      const date = dayToDate(day, 'en')
+      const date = dayToDate(day, 'gregorian')
       expect(date.getHours()).toBe(0)
       expect(date.getMinutes()).toBe(0)
     })

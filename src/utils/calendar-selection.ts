@@ -20,7 +20,7 @@ export function isDaySelected(
   day: Day,
   selectedValue: Day | Range | Multi | Week | null,
   type: CalendarType,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): boolean {
   if (!selectedValue) return false
 
@@ -36,16 +36,16 @@ export function isDaySelected(
   if (type === 'range') {
     const range = selectedValue as Range
     if (!range.from || !range.to) return false
-    const dayCompare = compareDays(day, range.from, locale)
-    const toCompare = compareDays(day, range.to, locale)
+    const dayCompare = compareDays(day, range.from, calendarSystem)
+    const toCompare = compareDays(day, range.to, calendarSystem)
     return dayCompare >= 0 && toCompare <= 0
   }
 
   if (type === 'week') {
     const week = selectedValue as Week
     if (!week.from || !week.to) return false
-    const dayCompare = compareDays(day, week.from, locale)
-    const toCompare = compareDays(day, week.to, locale)
+    const dayCompare = compareDays(day, week.from, calendarSystem)
+    const toCompare = compareDays(day, week.to, calendarSystem)
     return dayCompare >= 0 && toCompare <= 0
   }
 
@@ -70,7 +70,7 @@ export function isDayInRange(
   day: Day,
   selectedValue: Day | Range | Multi | Week | null,
   type: CalendarType,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): boolean {
   if ((type !== 'range' && type !== 'week') || !selectedValue) return false
 
@@ -89,8 +89,8 @@ export function isDayInRange(
 
   if (!from || !to) return false
 
-  const dayCompare = compareDays(day, from, locale)
-  const toCompare = compareDays(day, to, locale)
+  const dayCompare = compareDays(day, from, calendarSystem)
+  const toCompare = compareDays(day, to, calendarSystem)
 
   // Day is between from and to (exclusive of boundaries for styling)
   return dayCompare > 0 && toCompare < 0

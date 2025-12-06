@@ -201,7 +201,7 @@ function App() {
             }}
           >
             {`<DtPicker
-  local="en"
+  calendarSystem="gregorian"
   onChange={setDate}
 />`}
           </SyntaxHighlighter>
@@ -221,7 +221,7 @@ function App() {
             }}
           >
             {`<DtPicker
-  local="fa"
+  calendarSystem="jalali"
   onChange={setDate}
 />`}
           </SyntaxHighlighter>

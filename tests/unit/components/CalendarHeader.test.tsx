@@ -44,7 +44,7 @@ describe('CalendarHeader', () => {
     render(
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
       />
@@ -61,7 +61,7 @@ describe('CalendarHeader', () => {
     render(
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
       />
@@ -80,7 +80,7 @@ describe('CalendarHeader', () => {
     render(
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
         onMonthClick={mockOnMonthClick}
@@ -102,7 +102,7 @@ describe('CalendarHeader', () => {
     render(
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
         // No onMonthClick or onYearClick
@@ -122,7 +122,7 @@ describe('CalendarHeader', () => {
     render(
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
         showYear={false}
@@ -139,7 +139,7 @@ describe('CalendarHeader', () => {
     render(
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
-        locale='fa'
+        calendarSystem='jalali'
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
       />
@@ -156,7 +156,7 @@ describe('CalendarHeader', () => {
     const { container } = render(
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         customization={{ classes: customClasses }}
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
@@ -174,7 +174,7 @@ describe('CalendarHeader', () => {
     render(
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         customization={{
           icons: { next: CustomNextIcon, previous: CustomPrevIcon }
         }}
@@ -207,14 +207,14 @@ describe('CalendarHeader', () => {
     render(
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         customization={{ monthNames: customMonths }}
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
       />
     )
 
-    expect(getMonthNames).toHaveBeenCalledWith('en', customMonths)
+    expect(getMonthNames).toHaveBeenCalledWith('gregorian', customMonths)
     expect(screen.getByText('M1')).toBeInTheDocument()
   })
 })

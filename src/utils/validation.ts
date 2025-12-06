@@ -29,9 +29,9 @@ function isJalaliLeapYear(year: number): boolean {
 export function getDaysInMonth(
   year: number,
   month: number,
-  locale: CalendarLocale
+  calendarSystem: CalendarLocale
 ): number {
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     // Jalali calendar: first 6 months have 31 days, next 5 have 30, last has 29 or 30
     if (month <= 6) return 31
     if (month <= 11) return 30
@@ -49,11 +49,11 @@ export function getDaysInMonth(
 /**
  * Validate a Day object
  */
-export function isValidDay(day: Day, locale: CalendarLocale): boolean {
+export function isValidDay(day: Day, calendarSystem: CalendarLocale): boolean {
   if (day.year <= 0) return false
   if (day.month < 1 || day.month > 12) return false
 
-  const maxDay = getDaysInMonth(day.year, day.month, locale)
+  const maxDay = getDaysInMonth(day.year, day.month, calendarSystem)
   if (day.day < 1 || day.day > maxDay) return false
 
   if (day.hour !== undefined && (day.hour < 0 || day.hour > 23)) {
@@ -74,20 +74,21 @@ export function isDateInRange(
   day: Day,
   minDate?: Day,
   maxDate?: Day,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): boolean {
-  if (!isValidDay(day, locale)) return false
+  if (!isValidDay(day, calendarSystem)) return false
 
   // Convert all dates to the same calendar system for comparison
   // We'll compare in Gregorian for consistency
-  const dayGregorian = locale === 'fa' ? jalaliToGregorian(day) : day
+  const dayGregorian =
+    calendarSystem === 'jalali' ? jalaliToGregorian(day) : day
   const minGregorian = minDate
-    ? locale === 'fa'
+    ? calendarSystem === 'jalali'
       ? jalaliToGregorian(minDate)
       : minDate
     : null
   const maxGregorian = maxDate
-    ? locale === 'fa'
+    ? calendarSystem === 'jalali'
       ? jalaliToGregorian(maxDate)
       : maxDate
     : null
@@ -128,16 +129,17 @@ export function isDateInRange(
 export function isDateInDisabledList(
   day: Day,
   disabledDates?: Day[],
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): boolean {
   if (!disabledDates || disabledDates.length === 0) return false
 
   // Convert to Gregorian for comparison
-  const dayGregorian = locale === 'fa' ? jalaliToGregorian(day) : day
+  const dayGregorian =
+    calendarSystem === 'jalali' ? jalaliToGregorian(day) : day
 
   return disabledDates.some((disabledDay) => {
     const disabledGregorian =
-      locale === 'fa' ? jalaliToGregorian(disabledDay) : disabledDay
+      calendarSystem === 'jalali' ? jalaliToGregorian(disabledDay) : disabledDay
 
     return (
       dayGregorian.year === disabledGregorian.year &&
@@ -155,13 +157,13 @@ export function isDateDisabled(
   options: {
     disabledDates?: Day[]
     isDateDisabled?: (date: Day) => boolean
-    locale?: CalendarLocale
+    calendarSystem?: CalendarLocale
   }
 ): boolean {
   const {
     disabledDates,
     isDateDisabled: isDateDisabledCallback,
-    locale = 'en'
+    calendarSystem = 'gregorian'
   } = options
 
   // Check custom callback first
@@ -170,7 +172,7 @@ export function isDateDisabled(
   }
 
   // Check disabled dates list
-  if (isDateInDisabledList(day, disabledDates, locale)) {
+  if (isDateInDisabledList(day, disabledDates, calendarSystem)) {
     return true
   }
 
@@ -187,7 +189,7 @@ export function isDateSelectable(
     maxDate?: Day
     disabledDates?: Day[]
     isDateDisabled?: (date: Day) => boolean
-    locale?: CalendarLocale
+    calendarSystem?: CalendarLocale
   }
 ): boolean {
   const {
@@ -195,16 +197,16 @@ export function isDateSelectable(
     maxDate,
     disabledDates,
     isDateDisabled: isDateDisabledCallback,
-    locale = 'en'
+    calendarSystem = 'gregorian'
   } = options
 
-  if (!isValidDay(day, locale)) return false
-  if (!isDateInRange(day, minDate, maxDate, locale)) return false
+  if (!isValidDay(day, calendarSystem)) return false
+  if (!isDateInRange(day, minDate, maxDate, calendarSystem)) return false
   if (
     isDateDisabled(day, {
       disabledDates,
       isDateDisabled: isDateDisabledCallback,
-      locale
+      calendarSystem
     })
   )
     return false
@@ -219,11 +221,11 @@ export function isDateSelectable(
 export function compareDays(
   day1: Day,
   day2: Day,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): number {
   // Convert to Gregorian for comparison
-  const d1 = locale === 'fa' ? jalaliToGregorian(day1) : day1
-  const d2 = locale === 'fa' ? jalaliToGregorian(day2) : day2
+  const d1 = calendarSystem === 'jalali' ? jalaliToGregorian(day1) : day1
+  const d2 = calendarSystem === 'jalali' ? jalaliToGregorian(day2) : day2
 
   if (d1.year !== d2.year) {
     return d1.year < d2.year ? -1 : 1

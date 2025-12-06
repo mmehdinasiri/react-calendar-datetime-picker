@@ -14,25 +14,25 @@ import type { Day } from '@/types'
 describe('calendar-grid utils', () => {
   describe('getDayNames', () => {
     it('returns default English day names', () => {
-      const days = getDayNames('en')
+      const days = getDayNames('gregorian')
       expect(days).toEqual(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'])
     })
 
     it('returns default Persian day names', () => {
-      const days = getDayNames('fa')
+      const days = getDayNames('jalali')
       expect(days).toEqual(['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'])
     })
 
     it('returns custom day names if provided', () => {
       const customNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-      const days = getDayNames('en', customNames)
+      const days = getDayNames('gregorian', customNames)
       expect(days).toEqual(customNames)
     })
   })
 
   describe('getMonthNames', () => {
     it('returns default English month names', () => {
-      const months = getMonthNames('en')
+      const months = getMonthNames('gregorian')
       expect(months).toEqual([
         'January',
         'February',
@@ -50,7 +50,7 @@ describe('calendar-grid utils', () => {
     })
 
     it('returns default Persian month names', () => {
-      const months = getMonthNames('fa')
+      const months = getMonthNames('jalali')
       expect(months).toEqual([
         'فروردین',
         'اردیبهشت',
@@ -69,7 +69,7 @@ describe('calendar-grid utils', () => {
 
     it('returns custom month names if provided', () => {
       const customNames = Array(12).fill('M')
-      const months = getMonthNames('en', customNames)
+      const months = getMonthNames('gregorian', customNames)
       expect(months).toEqual(customNames)
     })
   })
@@ -78,7 +78,7 @@ describe('calendar-grid utils', () => {
     it('generates correct grid for Jan 2023 (English)', () => {
       // Jan 1 2023 is Sunday
       const month: Day = { year: 2023, month: 1, day: 1 }
-      const grid = generateCalendarGrid(month, 'en')
+      const grid = generateCalendarGrid(month, 'gregorian')
 
       expect(grid.length).toBe(6) // Always returns 6 weeks
       expect(grid[0].length).toBe(7)
@@ -97,7 +97,7 @@ describe('calendar-grid utils', () => {
     it('generates correct grid for Farvardin 1402 (Persian)', () => {
       // 1 Farvardin 1402 is roughly 21 March 2023
       const month: Day = { year: 1402, month: 1, day: 1 }
-      const grid = generateCalendarGrid(month, 'fa')
+      const grid = generateCalendarGrid(month, 'jalali')
 
       expect(grid.length).toBe(6)
       const currentMonthDays = grid.flat().filter((d) => d.isCurrentMonth)
@@ -106,7 +106,7 @@ describe('calendar-grid utils', () => {
 
     it('handles February 2023 (28 days)', () => {
       const month: Day = { year: 2023, month: 2, day: 1 }
-      const grid = generateCalendarGrid(month, 'en')
+      const grid = generateCalendarGrid(month, 'gregorian')
 
       const currentMonthDays = grid.flat().filter((d) => d.isCurrentMonth)
       expect(currentMonthDays.length).toBe(28)
@@ -114,7 +114,7 @@ describe('calendar-grid utils', () => {
 
     it('handles leap year February 2024 (29 days)', () => {
       const month: Day = { year: 2024, month: 2, day: 1 }
-      const grid = generateCalendarGrid(month, 'en')
+      const grid = generateCalendarGrid(month, 'gregorian')
 
       const currentMonthDays = grid.flat().filter((d) => d.isCurrentMonth)
       expect(currentMonthDays.length).toBe(29)
@@ -128,7 +128,7 @@ describe('calendar-grid utils', () => {
       // However, if the test fails saying it has 29 days, maybe the implementation uses a different algorithm or library?
       // Let's try 1408 which is definitely a leap year (1408 % 33 = 22 -> in list).
       const month: Day = { year: 1403, month: 12, day: 1 }
-      const grid = generateCalendarGrid(month, 'fa')
+      const grid = generateCalendarGrid(month, 'jalali')
 
       const currentMonthDays = grid.flat().filter((d) => d.isCurrentMonth)
       // Esfand has 29 days in normal years and 30 in leap years
@@ -149,14 +149,14 @@ describe('calendar-grid utils', () => {
   describe('getMonthsToDisplay', () => {
     it('returns 1 month if numberOfMonths is 1', () => {
       const baseMonth = { year: 2023, month: 1, day: 1 }
-      const result = getMonthsToDisplay(baseMonth, 1, 'en')
+      const result = getMonthsToDisplay(baseMonth, 1, 'gregorian')
       expect(result).toHaveLength(1)
       expect(result[0]).toEqual({ year: 2023, month: 1, day: 1 })
     })
 
     it('returns consecutive months crossing year boundary', () => {
       const baseMonth = { year: 2023, month: 12, day: 1 }
-      const result = getMonthsToDisplay(baseMonth, 3, 'en')
+      const result = getMonthsToDisplay(baseMonth, 3, 'gregorian')
       expect(result).toHaveLength(3)
       expect(result).toEqual([
         { year: 2023, month: 12, day: 1 },
@@ -170,7 +170,7 @@ describe('calendar-grid utils', () => {
     it('returns correct bounds for a week in Jan 2023 (English)', () => {
       // Jan 4 2023 is Wednesday. Week starts Sunday Jan 1
       const day = { year: 2023, month: 1, day: 4 }
-      const bounds = getWeekBounds(day, 'en')
+      const bounds = getWeekBounds(day, 'gregorian')
 
       expect(bounds.from).toEqual(
         expect.objectContaining({ year: 2023, month: 1, day: 1 })
@@ -183,7 +183,7 @@ describe('calendar-grid utils', () => {
     it('returns correct bounds for week crossing month (English)', () => {
       // Jan 31 2023 is Tuesday. Week starts Sunday Jan 29, ends Sat Feb 4
       const day = { year: 2023, month: 1, day: 31 }
-      const bounds = getWeekBounds(day, 'en')
+      const bounds = getWeekBounds(day, 'gregorian')
 
       expect(bounds.from).toEqual(
         expect.objectContaining({ year: 2023, month: 1, day: 29 })
@@ -196,13 +196,13 @@ describe('calendar-grid utils', () => {
 
   describe('getYearRange', () => {
     it('returns range for Gregorian', () => {
-      const years = getYearRange(2023, 12, 'en')
+      const years = getYearRange(2023, 12, 'gregorian')
       expect(years[0]).toBe(1900)
       expect(years.length).toBeGreaterThan(100)
     })
 
     it('returns range for Jalali', () => {
-      const years = getYearRange(1402, 12, 'fa')
+      const years = getYearRange(1402, 12, 'jalali')
       expect(years[0]).toBe(1300)
       expect(years.length).toBeGreaterThan(100)
     })
@@ -224,7 +224,7 @@ describe('calendar-grid utils', () => {
       // Actually, the implementation seems to use ISO week calculation.
       // 2023 starts on Sunday.
       // Let's check implementation behavior
-      const weekNum = getWeekNumber(day, 'en')
+      const weekNum = getWeekNumber(day, 'gregorian')
       expect(weekNum).toBeGreaterThan(0)
     })
   })

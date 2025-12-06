@@ -117,7 +117,7 @@ export const examples: ExamplesConfig = {
       description: 'Basic date picker with input field',
       component: 'DtPicker',
       props: {
-        local: 'en',
+        calendarSystem: 'gregorian',
         placeholder: 'Select a date'
       },
       wrapper: 'picker-container'
@@ -193,7 +193,7 @@ export const examples: ExamplesConfig = {
         'Calendar with Persian locale (fa) - displays Jalali calendar with Persian month names and RTL layout',
       component: 'DtCalendar',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         showWeekend: true,
         todayBtn: true
       },
@@ -205,7 +205,7 @@ export const examples: ExamplesConfig = {
         'Date picker with Persian locale - input field with Jalali calendar',
       component: 'DtPicker',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         placeholder: 'تاریخ را انتخاب کنید',
         showWeekend: true,
         todayBtn: true
@@ -218,7 +218,7 @@ export const examples: ExamplesConfig = {
       component: 'DtCalendar',
       props: {
         type: 'range',
-        local: 'fa',
+        calendarSystem: 'jalali',
         showWeekend: true,
         todayBtn: true
       },
@@ -230,7 +230,7 @@ export const examples: ExamplesConfig = {
       component: 'DtPicker',
       props: {
         type: 'range',
-        local: 'fa',
+        calendarSystem: 'jalali',
         placeholder: 'انتخاب بازه تاریخ',
         showWeekend: true,
         todayBtn: true
@@ -243,7 +243,7 @@ export const examples: ExamplesConfig = {
       component: 'DtCalendar',
       props: {
         type: 'week',
-        local: 'fa',
+        calendarSystem: 'jalali',
         showWeekend: true,
         todayBtn: true
       },
@@ -388,7 +388,7 @@ export const examples: ExamplesConfig = {
         'Persian (Jalali) calendar with time selection in 24-hour format',
       component: 'DtCalendar',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         withTime: true,
         timeFormat: '24',
         showWeekend: true,
@@ -403,7 +403,7 @@ export const examples: ExamplesConfig = {
         'Persian (Jalali) date picker with time selection in 24-hour format',
       component: 'DtPicker',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         withTime: true,
         timeFormat: '24',
         showTimeInput: true,
@@ -650,19 +650,19 @@ export const examples: ExamplesConfig = {
         type: 'range',
         presetRanges: {
           custom: (() => {
-            const today = getToday('en')
+            const today = getToday('gregorian')
             return [
               {
                 label: 'Last 14 Days',
                 range: {
-                  from: subtractDays(today, 13, 'en'),
+                  from: subtractDays(today, 13, 'gregorian'),
                   to: today
                 }
               },
               {
                 label: 'Last 30 Days',
                 range: {
-                  from: subtractDays(today, 29, 'en'),
+                  from: subtractDays(today, 29, 'gregorian'),
                   to: today
                 }
               }
@@ -1000,22 +1000,22 @@ function App() {
       wrapper: 'calendar-container',
       utilityCode: `import { isBefore, getToday } from 'react-calendar-datetime-picker'
 
-const today = getToday('en')
+const today = getToday('gregorian')
 const selectedDate = // Select a date in the calendar
 
-isBefore(selectedDate, today, 'en')`,
+isBefore(selectedDate, today, 'gregorian')`,
       getUtilityResults: (selectedDate?: Day | null) => {
         if (!selectedDate) {
           return {
             'Select a date in the calendar to see results': null
           }
         }
-        const today = getToday('en')
+        const today = getToday('gregorian')
         return {
-          'isBefore(selectedDate, today, "en")': isBefore(
+          'isBefore(selectedDate, today, "gregorian")': isBefore(
             selectedDate,
             today,
-            'en'
+            'gregorian'
           ),
           selectedDate: dayToString(selectedDate, '/'),
           today: dayToString(today, '/')
@@ -1033,22 +1033,22 @@ isBefore(selectedDate, today, 'en')`,
       wrapper: 'calendar-container',
       utilityCode: `import { isAfter, getToday } from 'react-calendar-datetime-picker'
 
-const today = getToday('en')
+const today = getToday('gregorian')
 const selectedDate = // Select a date in the calendar
 
-isAfter(selectedDate, today, 'en')`,
+isAfter(selectedDate, today, 'gregorian')`,
       getUtilityResults: (selectedDate?: Day | null) => {
         if (!selectedDate) {
           return {
             'Select a date in the calendar to see results': null
           }
         }
-        const today = getToday('en')
+        const today = getToday('gregorian')
         return {
-          'isAfter(selectedDate, today, "en")': isAfter(
+          'isAfter(selectedDate, today, "gregorian")': isAfter(
             selectedDate,
             today,
-            'en'
+            'gregorian'
           ),
           selectedDate: dayToString(selectedDate, '/'),
           today: dayToString(today, '/')
@@ -1068,23 +1068,26 @@ isAfter(selectedDate, today, 'en')`,
       utilityCode: `import { addDays, subtractDays, dayToString } from 'react-calendar-datetime-picker'
 
 const selectedDate = // Select a date in the calendar
-const tomorrow = addDays(selectedDate, 1, 'en')
-const nextWeek = addDays(selectedDate, 7, 'en')
-const yesterday = subtractDays(selectedDate, 1, 'en')`,
+const tomorrow = addDays(selectedDate, 1, 'gregorian')
+const nextWeek = addDays(selectedDate, 7, 'gregorian')
+const yesterday = subtractDays(selectedDate, 1, 'gregorian')`,
       getUtilityResults: (selectedDate?: Day | null) => {
         if (!selectedDate) {
           return {
             'Select a date in the calendar to see results': null
           }
         }
-        const tomorrow = addDays(selectedDate, 1, 'en')
-        const nextWeek = addDays(selectedDate, 7, 'en')
-        const yesterday = subtractDays(selectedDate, 1, 'en')
+        const tomorrow = addDays(selectedDate, 1, 'gregorian')
+        const nextWeek = addDays(selectedDate, 7, 'gregorian')
+        const yesterday = subtractDays(selectedDate, 1, 'gregorian')
         return {
           selectedDate: dayToString(selectedDate, '/'),
-          'addDays(selectedDate, 1, "en")': dayToString(tomorrow, '/'),
-          'addDays(selectedDate, 7, "en")': dayToString(nextWeek, '/'),
-          'subtractDays(selectedDate, 1, "en")': dayToString(yesterday, '/')
+          'addDays(selectedDate, 1, "gregorian")': dayToString(tomorrow, '/'),
+          'addDays(selectedDate, 7, "gregorian")': dayToString(nextWeek, '/'),
+          'subtractDays(selectedDate, 1, "gregorian")': dayToString(
+            yesterday,
+            '/'
+          )
         }
       }
     },
@@ -1094,7 +1097,7 @@ const yesterday = subtractDays(selectedDate, 1, 'en')`,
         'Select a date in the Gregorian calendar to see its Jalali equivalent',
       component: 'DtCalendar',
       props: {
-        local: 'en',
+        calendarSystem: 'gregorian',
         showWeekend: true,
         todayBtn: true
       },

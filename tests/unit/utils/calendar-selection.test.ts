@@ -61,7 +61,7 @@ describe('calendar-selection utils', () => {
         // Day: 15 Farvardin 1402
         const faDay: Day = { year: 1402, month: 1, day: 15 }
 
-        expect(isDaySelected(faDay, faRange, 'range', 'fa')).toBe(true)
+        expect(isDaySelected(faDay, faRange, 'range', 'jalali')).toBe(true)
       })
     })
 
@@ -112,8 +112,8 @@ describe('calendar-selection utils', () => {
       const faDay: Day = { year: 1402, month: 1, day: 15 }
       const faFrom: Day = { year: 1402, month: 1, day: 10 }
 
-      expect(isDayInRange(faDay, faRange, 'range', 'fa')).toBe(true)
-      expect(isDayInRange(faFrom, faRange, 'range', 'fa')).toBe(false)
+      expect(isDayInRange(faDay, faRange, 'range', 'jalali')).toBe(true)
+      expect(isDayInRange(faFrom, faRange, 'range', 'jalali')).toBe(false)
     })
   })
 

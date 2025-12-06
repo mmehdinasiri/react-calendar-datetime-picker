@@ -27,7 +27,7 @@ describe('CalendarCore', () => {
   const defaultProps = {
     selectedValue: null,
     displayMonth: { year: 2023, month: 1, day: 1 } as Day,
-    locale: 'en' as const,
+    calendarSystem: 'gregorian' as const,
     type: 'single' as const,
     onDateSelect: vi.fn(),
     onTimeChange: vi.fn(),

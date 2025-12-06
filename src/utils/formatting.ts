@@ -37,7 +37,7 @@ export function toPersianNumeral(num: number | string): string {
 function formatDateWithCustomFormat(
   day: Day,
   format: string,
-  locale: CalendarLocale,
+  calendarSystem: CalendarLocale,
   timeFormat: '12' | '24' = '24'
 ): string {
   const year = day.year.toString()
@@ -112,9 +112,9 @@ function formatDateWithCustomFormat(
       .trim()
   }
 
-  // Convert to Persian numerals if locale is 'fa'
+  // Convert to Persian numerals if locale is 'jalali'
   // This only converts digits, leaving separators and text unchanged
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     formatted = toPersianNumeral(formatted)
   }
 
@@ -126,7 +126,7 @@ function formatDateWithCustomFormat(
  */
 function formatDay(
   day: Day,
-  locale: CalendarLocale,
+  calendarSystem: CalendarLocale,
   showTime = false,
   dateFormat?: string,
   timeFormat: '12' | '24' = '24'
@@ -135,7 +135,12 @@ function formatDay(
 
   if (dateFormat) {
     // Use custom format (includes time if format string contains time tokens)
-    formatted = formatDateWithCustomFormat(day, dateFormat, locale, timeFormat)
+    formatted = formatDateWithCustomFormat(
+      day,
+      dateFormat,
+      calendarSystem,
+      timeFormat
+    )
   } else {
     // Default format: YYYY/MM/DD
     const year = day.year.toString()
@@ -150,8 +155,8 @@ function formatDay(
       formatted += ` ${hour}:${minute}`
     }
 
-    // Convert to Persian numerals if locale is 'fa'
-    if (locale === 'fa') {
+    // Convert to Persian numerals if locale is 'jalali'
+    if (calendarSystem === 'jalali') {
       formatted = toPersianNumeral(formatted)
     }
   }
@@ -164,7 +169,7 @@ function formatDay(
  */
 export function formatDateForInput(
   value: Day | Range | Multi | Week | null,
-  locale: CalendarLocale,
+  calendarSystem: CalendarLocale,
   type: CalendarType,
   showTime = false,
   fromLabel = 'from',
@@ -175,14 +180,20 @@ export function formatDateForInput(
   if (!value) return ''
 
   if (type === 'single' && 'year' in value) {
-    return formatDay(value as Day, locale, showTime, dateFormat, timeFormat)
+    return formatDay(
+      value as Day,
+      calendarSystem,
+      showTime,
+      dateFormat,
+      timeFormat
+    )
   }
 
   if (type === 'range' && 'from' in value && 'to' in value) {
     const range = value as Range
     const fromStr = formatDay(
       range.from,
-      locale,
+      calendarSystem,
       showTime,
       dateFormat,
       timeFormat
@@ -191,7 +202,13 @@ export function formatDateForInput(
     if (!range.to) {
       return `${fromLabel} ${fromStr}`
     }
-    const toStr = formatDay(range.to, locale, showTime, dateFormat, timeFormat)
+    const toStr = formatDay(
+      range.to,
+      calendarSystem,
+      showTime,
+      dateFormat,
+      timeFormat
+    )
     return `${fromLabel} ${fromStr} ${toLabel} ${toStr}`
   }
 
@@ -199,13 +216,19 @@ export function formatDateForInput(
     const week = value as Week
     const fromStr = formatDay(
       week.from,
-      locale,
+      calendarSystem,
       showTime,
       dateFormat,
       timeFormat
     )
-    const toStr = formatDay(week.to, locale, showTime, dateFormat, timeFormat)
-    const weekLabel = locale === 'fa' ? 'هفته' : 'Week'
+    const toStr = formatDay(
+      week.to,
+      calendarSystem,
+      showTime,
+      dateFormat,
+      timeFormat
+    )
+    const weekLabel = calendarSystem === 'jalali' ? 'هفته' : 'Week'
     return `${weekLabel}: ${fromStr} - ${toStr}`
   }
 
@@ -213,7 +236,13 @@ export function formatDateForInput(
     const multi = value as Multi
     if (multi.length === 0) return ''
     if (multi.length === 1) {
-      return formatDay(multi[0], locale, showTime, dateFormat, timeFormat)
+      return formatDay(
+        multi[0],
+        calendarSystem,
+        showTime,
+        dateFormat,
+        timeFormat
+      )
     }
     // Show count for multiple dates
     return `${multi.length} dates selected`
@@ -239,13 +268,13 @@ export function dayToString(day: Day, divider = '/'): string {
  */
 export function parseDateString(
   dateString: string,
-  locale: CalendarLocale
+  calendarSystem: CalendarLocale
 ): Day | null {
   // Remove whitespace
   let cleaned = dateString.trim()
 
   // Convert Persian numerals to English numerals for Jalali locale
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     const persianToEnglish: { [key: string]: string } = {
       '۰': '0',
       '۱': '1',

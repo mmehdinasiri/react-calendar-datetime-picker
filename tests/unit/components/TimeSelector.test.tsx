@@ -21,7 +21,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay}
         timeFormat='24'
-        locale='en'
+        calendarSystem='gregorian'
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -37,7 +37,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30
         timeFormat='24'
-        locale='en'
+        calendarSystem='gregorian'
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -59,7 +59,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30 -> 2:30 PM
         timeFormat='12'
-        locale='en'
+        calendarSystem='gregorian'
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -89,7 +89,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={midnightDay}
         timeFormat='12'
-        locale='en'
+        calendarSystem='gregorian'
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -106,7 +106,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30
         timeFormat='24'
-        locale='en'
+        calendarSystem='gregorian'
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -122,7 +122,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30
         timeFormat='24'
-        locale='en'
+        calendarSystem='gregorian'
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -138,7 +138,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30 (2:30 PM)
         timeFormat='12'
-        locale='en'
+        calendarSystem='gregorian'
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -155,7 +155,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30 (2:30 PM)
         timeFormat='12'
-        locale='en'
+        calendarSystem='gregorian'
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -175,7 +175,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={amDay}
         timeFormat='12'
-        locale='en'
+        calendarSystem='gregorian'
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -187,12 +187,12 @@ describe('TimeSelector', () => {
     expect(mockOnTimeChange).toHaveBeenCalledWith(5, 30)
   })
 
-  it('renders correctly for "fa" locale', () => {
+  it('renders correctly for "jalali" locale', () => {
     render(
       <TimeSelector
         day={defaultDay}
         timeFormat='24'
-        locale='fa'
+        calendarSystem='jalali'
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -208,7 +208,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay}
         timeFormat='12'
-        locale='fa'
+        calendarSystem='jalali'
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -223,7 +223,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay}
         timeFormat='24'
-        locale='en'
+        calendarSystem='gregorian'
         disabled={true}
         onTimeChange={mockOnTimeChange}
       />
@@ -238,7 +238,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={null}
         timeFormat='24'
-        locale='en'
+        calendarSystem='gregorian'
         onTimeChange={mockOnTimeChange}
       />
     )

@@ -4,7 +4,7 @@ import type { Day } from '@/types'
 
 describe('constraints utils', () => {
   describe('normalizeConstraintsProps', () => {
-    const locale = 'en'
+    const locale = 'gregorian'
     const type = 'single'
 
     it('returns empty constraints if input is undefined', () => {
@@ -73,7 +73,7 @@ describe('constraints utils', () => {
         const date = new Date(2023, 0, 15) // Jan 15 2023
         const { constraints, errors } = normalizeConstraintsProps(
           { minDate: date },
-          'en',
+          'gregorian',
           type
         )
 
@@ -92,7 +92,7 @@ describe('constraints utils', () => {
         const date = new Date(2023, 2, 21)
         const { constraints, errors } = normalizeConstraintsProps(
           { maxDate: date },
-          'fa',
+          'jalali',
           type
         )
 
@@ -109,7 +109,7 @@ describe('constraints utils', () => {
       it('normalizes ISO date strings', () => {
         const { constraints, errors } = normalizeConstraintsProps(
           { minDate: '2023-12-25' },
-          'en',
+          'gregorian',
           type
         )
 
@@ -129,7 +129,7 @@ describe('constraints utils', () => {
 
         const { constraints, errors } = normalizeConstraintsProps(
           { maxDate: timestamp },
-          'en',
+          'gregorian',
           type
         )
 
@@ -153,7 +153,7 @@ describe('constraints utils', () => {
           {
             disabledDates: [dayObj, dateObj, dateStr, timestamp] as any
           },
-          'en',
+          'gregorian',
           type
         )
 
@@ -217,14 +217,14 @@ describe('constraints utils', () => {
       })
     })
 
-    describe('Persian locale (fa)', () => {
+    describe('Persian locale (jalali)', () => {
       it('validates dates in Jalali calendar', () => {
         // 30 Esfand is valid in leap year 1403
         const validDate: Day = { year: 1403, month: 12, day: 30 }
 
         const { constraints, errors } = normalizeConstraintsProps(
           { maxDate: validDate },
-          'fa',
+          'jalali',
           type
         )
 
@@ -238,7 +238,7 @@ describe('constraints utils', () => {
 
         const { constraints, errors } = normalizeConstraintsProps(
           { maxDate: invalidDate },
-          'fa',
+          'jalali',
           type
         )
 

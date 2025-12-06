@@ -55,7 +55,7 @@ function calculateNewValue(
   currentValue: Day | Range | Multi | Week | null,
   selectedDay: Day,
   type: CalendarType,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): Day | Range | Multi | Week | null {
   if (type === 'single') {
     return selectedDay
@@ -63,7 +63,7 @@ function calculateNewValue(
 
   if (type === 'week') {
     // Calculate week bounds for the selected day
-    return getWeekBounds(selectedDay, locale)
+    return getWeekBounds(selectedDay, calendarSystem)
   }
 
   if (type === 'range') {
@@ -133,7 +133,7 @@ function calculateNewValue(
 function navigateMonth(
   currentMonth: Day,
   direction: 'prev' | 'next',
-  _locale: CalendarLocale
+  _calendarSystem: CalendarLocale
 ): Day {
   let newMonth = currentMonth.month + (direction === 'next' ? 1 : -1)
   let newYear = currentMonth.year
@@ -171,7 +171,7 @@ function calendarReducer(
   state: CalendarState,
   action: CalendarAction,
   type: CalendarType,
-  locale: CalendarLocale,
+  calendarSystem: CalendarLocale,
   withTime: boolean = false,
   numberOfMonths: number = 1
 ): CalendarState {
@@ -183,7 +183,7 @@ function calendarReducer(
         state.selectedValue,
         dayWithTime,
         type,
-        locale
+        calendarSystem
       )
 
       // Ensure both from and to have time if withTime is enabled and it's a range
@@ -216,7 +216,7 @@ function calendarReducer(
             const visibleMonths = getMonthsToDisplay(
               state.displayMonth,
               numberOfMonths,
-              locale
+              calendarSystem
             )
             const isMonthVisible = visibleMonths.some(
               (m) =>
@@ -241,7 +241,7 @@ function calendarReducer(
           const visibleMonths = getMonthsToDisplay(
             state.displayMonth,
             numberOfMonths,
-            locale
+            calendarSystem
           )
           const isMonthVisible = visibleMonths.some(
             (m) =>
@@ -297,7 +297,7 @@ function calendarReducer(
 
     case 'SELECT_WEEK': {
       // Calculate week bounds for the selected day
-      const weekBounds = getWeekBounds(action.payload, locale)
+      const weekBounds = getWeekBounds(action.payload, calendarSystem)
       const newValue: Week = {
         from: addSystemTimeIfNeeded(weekBounds.from, withTime),
         to: addSystemTimeIfNeeded(weekBounds.to, withTime)
@@ -337,7 +337,7 @@ function calendarReducer(
         state.selectedValue,
         action.payload,
         'multi',
-        locale
+        calendarSystem
       )
       return {
         ...state,
@@ -461,7 +461,11 @@ function calendarReducer(
     case 'NAVIGATE_MONTH': {
       return {
         ...state,
-        displayMonth: navigateMonth(state.displayMonth, action.payload, locale)
+        displayMonth: navigateMonth(
+          state.displayMonth,
+          action.payload,
+          calendarSystem
+        )
       }
     }
 
@@ -507,7 +511,7 @@ function calendarReducer(
     }
 
     case 'GO_TO_TODAY': {
-      const today = getToday(locale)
+      const today = getToday(calendarSystem)
       return {
         ...state,
         displayMonth: { year: today.year, month: today.month, day: 1 },
@@ -526,8 +530,8 @@ function calendarReducer(
 export interface UseCalendarStateOptions {
   /** Initial value - should be normalized (Day | Range | Multi | null) */
   initValue?: Day | Range | Multi | null
-  /** Calendar locale */
-  locale: CalendarLocale
+  /** Calendar system */
+  calendarSystem: CalendarLocale
   /** Calendar selection type */
   type: CalendarType
   /** Enable time selection */
@@ -546,7 +550,7 @@ export interface UseCalendarStateOptions {
 export function useCalendarState(options: UseCalendarStateOptions) {
   const {
     initValue,
-    locale,
+    calendarSystem,
     type,
     withTime = false,
     numberOfMonths = 1,
@@ -560,13 +564,20 @@ export function useCalendarState(options: UseCalendarStateOptions) {
   // Initial state - use normalized initValue if provided
   const initialState: CalendarState = {
     selectedValue: initValue || null,
-    displayMonth: monthFromInitValue || getToday(locale),
+    displayMonth: monthFromInitValue || getToday(calendarSystem),
     currentView: 'calendar'
   }
 
-  // Reducer with type, locale, withTime, and numberOfMonths
+  // Reducer with type, calendarSystem, withTime, and numberOfMonths
   const reducer = (state: CalendarState, action: CalendarAction) =>
-    calendarReducer(state, action, type, locale, withTime, numberOfMonths)
+    calendarReducer(
+      state,
+      action,
+      type,
+      calendarSystem,
+      withTime,
+      numberOfMonths
+    )
 
   const [state, dispatch] = useReducer(reducer, initialState)
 
@@ -592,7 +603,7 @@ export function useCalendarState(options: UseCalendarStateOptions) {
       state.selectedValue,
       dayWithTime,
       type,
-      locale
+      calendarSystem
     )
     onChange(newValue)
 

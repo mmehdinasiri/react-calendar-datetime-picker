@@ -311,7 +311,7 @@ function App() {
     <DtPicker
       initValue={date}
       onChange={setDate}
-      locale="en"
+      calendarSystem="gregorian"
       placeholder="Select date"
     />
   )
@@ -369,7 +369,7 @@ function App() {
 <DtCalendar
   initValue={date}
   onChange={setDate}
-  local="fa"
+  calendarSystem="jalali"
   showWeekend={true}
 />`}
                     </SyntaxHighlighter>
@@ -424,7 +424,7 @@ function App() {
   onChange={setRange}
   type="range"
   withTime={true}
-  locale="en"
+  calendarSystem="gregorian"
 />`}
                     </SyntaxHighlighter>
                   </div>
@@ -679,8 +679,8 @@ function App() {
                   }}
                 >
                   {`// v2.x - locale parameter is now optional
-isBefore(date1, date2, 'en')  // Gregorian
-isBefore(date1, date2, 'fa')  // Jalali
+isBefore(date1, date2, 'gregorian')  // Gregorian
+isBefore(date1, date2, 'jalali')  // Jalali
 isBefore(date1, date2)        // Uses default locale`}
                 </SyntaxHighlighter>
               </div>

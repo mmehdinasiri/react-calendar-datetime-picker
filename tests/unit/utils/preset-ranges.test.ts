@@ -15,7 +15,7 @@ describe('preset-ranges utils', () => {
   })
 
   describe('getPresetRange (en)', () => {
-    const locale = 'en'
+    const locale = 'gregorian'
 
     it('returns correct range for yesterday', () => {
       const range = getPresetRange('yesterday', locale)
@@ -52,7 +52,7 @@ describe('preset-ranges utils', () => {
   })
 
   describe('getPresetRange (fa)', () => {
-    const locale = 'fa'
+    const locale = 'jalali'
 
     it('returns correct range for yesterday', () => {
       const range = getPresetRange('yesterday', locale)

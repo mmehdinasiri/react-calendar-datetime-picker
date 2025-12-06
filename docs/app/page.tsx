@@ -140,7 +140,7 @@ export default function Home() {
               <DtCalendar
                 initValue={lightDate}
                 onChange={setLightDate}
-                local='en'
+                calendarSystem='gregorian'
                 showWeekend={true}
                 todayBtn={true}
               />
@@ -160,7 +160,7 @@ export default function Home() {
                 initValue={darkDate}
                 onChange={setDarkDate}
                 dark={true}
-                local='fa'
+                calendarSystem='jalali'
                 showWeekend={true}
                 todayBtn={true}
               />

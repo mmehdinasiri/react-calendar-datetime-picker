@@ -124,7 +124,7 @@ export function areValuesEqual(v1: unknown, v2: unknown): boolean {
  */
 function normalizeDayWithErrors(
   day: unknown,
-  locale: CalendarLocale,
+  calendarSystem: CalendarLocale,
   fieldName: string = 'date'
 ): { value: Day | null; error: CalendarError | null } {
   if (!day) {
@@ -134,7 +134,7 @@ function normalizeDayWithErrors(
   // Handle Day objects (already in the correct format)
   if (isDayObject(day)) {
     // Validate day object
-    if (isValidDay(day, locale)) {
+    if (isValidDay(day, calendarSystem)) {
       return {
         value: {
           year: day.year,
@@ -173,7 +173,7 @@ function normalizeDayWithErrors(
       }
       return { value: null, error }
     }
-    return { value: dateToDay(day, locale), error: null }
+    return { value: dateToDay(day, calendarSystem), error: null }
   }
 
   // Handle numbers (timestamps)
@@ -191,7 +191,7 @@ function normalizeDayWithErrors(
       }
       return { value: null, error }
     }
-    return { value: dateToDay(date, locale), error: null }
+    return { value: dateToDay(date, calendarSystem), error: null }
   }
 
   // Handle strings (date strings like "2024/12/25", "2024-12-25", ISO strings, etc.)
@@ -199,11 +199,11 @@ function normalizeDayWithErrors(
     // First try to parse as Date (handles ISO strings like "2024-12-25T00:00:00Z")
     const dateFromString = new Date(day)
     if (!isNaN(dateFromString.getTime())) {
-      return { value: dateToDay(dateFromString, locale), error: null }
+      return { value: dateToDay(dateFromString, calendarSystem), error: null }
     }
 
     // Fall back to simple date string parsing (handles "2024/12/25", "2024-12-25", etc.)
-    const parsed = parseDateString(day, locale)
+    const parsed = parseDateString(day, calendarSystem)
     if (parsed) {
       return { value: parsed, error: null }
     }
@@ -237,7 +237,7 @@ function normalizeDayWithErrors(
  */
 export function normalizeInitValueWithErrors(
   value: unknown,
-  locale: CalendarLocale,
+  calendarSystem: CalendarLocale,
   type: CalendarType,
   fieldName: string = 'initValue'
 ): { value: Day | Range | Multi | Week | null; errors: CalendarError[] } {
@@ -249,7 +249,7 @@ export function normalizeInitValueWithErrors(
 
   // Handle single date
   if (type === 'single') {
-    const result = normalizeDayWithErrors(value, locale, fieldName)
+    const result = normalizeDayWithErrors(value, calendarSystem, fieldName)
     if (result.error) {
       errors.push(result.error)
     }
@@ -261,12 +261,12 @@ export function normalizeInitValueWithErrors(
     if (isRangeObject(value)) {
       const fromResult = normalizeDayWithErrors(
         value.from,
-        locale,
+        calendarSystem,
         `${fieldName}.from`
       )
       const toResult = normalizeDayWithErrors(
         value.to,
-        locale,
+        calendarSystem,
         `${fieldName}.to`
       )
 
@@ -297,12 +297,12 @@ export function normalizeInitValueWithErrors(
     if (isRangeObject(value)) {
       const fromResult = normalizeDayWithErrors(
         value.from,
-        locale,
+        calendarSystem,
         `${fieldName}.from`
       )
       const toResult = normalizeDayWithErrors(
         value.to,
-        locale,
+        calendarSystem,
         `${fieldName}.to`
       )
 
@@ -314,13 +314,13 @@ export function normalizeInitValueWithErrors(
       }
     } else {
       // Single date - convert to week bounds
-      const dayResult = normalizeDayWithErrors(value, locale, fieldName)
+      const dayResult = normalizeDayWithErrors(value, calendarSystem, fieldName)
       if (dayResult.error) {
         errors.push(dayResult.error)
         return { value: null, errors }
       }
       if (dayResult.value) {
-        const weekBounds = getWeekBounds(dayResult.value, locale)
+        const weekBounds = getWeekBounds(dayResult.value, calendarSystem)
         return { value: weekBounds, errors }
       }
     }
@@ -334,7 +334,7 @@ export function normalizeInitValueWithErrors(
       value.forEach((day, index) => {
         const result = normalizeDayWithErrors(
           day,
-          locale,
+          calendarSystem,
           `${fieldName}[${index}]`
         )
         if (result.error) {
@@ -368,10 +368,10 @@ export function normalizeInitValueWithErrors(
  */
 export function normalizeInitValue(
   value: unknown,
-  locale: CalendarLocale,
+  calendarSystem: CalendarLocale,
   type: CalendarType
 ): Day | Range | Multi | Week | null {
-  return normalizeInitValueWithErrors(value, locale, type).value
+  return normalizeInitValueWithErrors(value, calendarSystem, type).value
 }
 
 /**

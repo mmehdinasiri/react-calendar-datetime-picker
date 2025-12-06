@@ -131,7 +131,7 @@ export const examples: ExamplesConfig = {
       description: 'Basic date picker with input field',
       component: 'DtPicker',
       props: {
-        local: 'en',
+        calendarSystem: 'gregorian',
         placeholder: 'Select a date'
       },
       wrapper: 'picker-container'
@@ -168,7 +168,7 @@ export const examples: ExamplesConfig = {
         'Calendar with Persian locale (fa) - displays Jalali calendar with Persian month names and RTL layout',
       component: 'DtCalendar',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         showWeekend: true,
         todayBtn: true
       },
@@ -180,7 +180,7 @@ export const examples: ExamplesConfig = {
         'Date picker with Persian locale - input field with Jalali calendar',
       component: 'DtPicker',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         placeholder: 'تاریخ را انتخاب کنید',
         showWeekend: true,
         todayBtn: true
@@ -336,7 +336,7 @@ export const examples: ExamplesConfig = {
         'Persian (Jalali) calendar with custom Persian month names - override default Persian names with custom Persian words',
       component: 'DtCalendar',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         customization: {
           monthNames: [
             'ماه اول',
@@ -652,7 +652,7 @@ export const examples: ExamplesConfig = {
       component: 'DtCalendar',
       props: {
         type: 'range',
-        local: 'fa',
+        calendarSystem: 'jalali',
         showWeekend: true,
         todayBtn: true
       },
@@ -664,7 +664,7 @@ export const examples: ExamplesConfig = {
       component: 'DtPicker',
       props: {
         type: 'range',
-        local: 'fa',
+        calendarSystem: 'jalali',
         placeholder: 'انتخاب بازه تاریخ',
         showWeekend: true,
         todayBtn: true
@@ -698,7 +698,7 @@ export const examples: ExamplesConfig = {
       component: 'DtCalendar',
       props: {
         type: 'week',
-        local: 'fa',
+        calendarSystem: 'jalali',
         showWeekend: true,
         todayBtn: true
       },
@@ -978,7 +978,7 @@ export const examples: ExamplesConfig = {
       props: {
         showWeekend: true,
         todayBtn: true,
-        local: 'en'
+        calendarSystem: 'gregorian'
       },
       wrapper: 'calendar-container'
     },
@@ -1171,7 +1171,7 @@ export const examples: ExamplesConfig = {
         'Persian (Jalali) calendar with time selection in 24-hour format',
       component: 'DtCalendar',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         withTime: true,
         timeFormat: '24',
         showWeekend: true,
@@ -1186,7 +1186,7 @@ export const examples: ExamplesConfig = {
         'Persian (Jalali) date picker with time selection in 24-hour format',
       component: 'DtPicker',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         withTime: true,
         timeFormat: '24',
         showTimeInput: true,
@@ -1297,7 +1297,7 @@ export const examples: ExamplesConfig = {
         'Arrow keys work in RTL mode - right arrow moves backward, left arrow moves forward',
       component: 'DtCalendar',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         showWeekend: true,
         todayBtn: true
       },
@@ -1523,7 +1523,7 @@ export const examples: ExamplesConfig = {
         'Persian (Jalali) date picker with DD/MM/YYYY format - custom format with Persian locale',
       component: 'DtPicker',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         dateFormat: 'DD/MM/YYYY',
         placeholder: 'تاریخ را انتخاب کنید (DD/MM/YYYY)',
         initValue: new Date(2024, 11, 25),
@@ -1779,7 +1779,7 @@ export const examples: ExamplesConfig = {
         'Two months side by side with Persian (Jalali) calendar - RTL layout',
       component: 'DtCalendar',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         numberOfMonths: 2,
         showWeekend: true,
         todayBtn: true
@@ -1815,7 +1815,7 @@ export const examples: ExamplesConfig = {
       wrapper: 'calendar-container',
       utilityCode: `import { isBefore, getToday } from 'react-calendar-datetime-picker'
 
-const today = getToday('en')
+const today = getToday('gregorian')
 const selectedDate = // Select a date in the calendar
 
 isBefore(selectedDate, today, 'en')
@@ -1826,7 +1826,7 @@ isBefore(today, selectedDate, 'en')`,
             'Select a date in the calendar to see results': null
           }
         }
-        const today = getToday('en')
+        const today = getToday('gregorian')
         return {
           'isBefore(selectedDate, today, "en")': isBefore(
             selectedDate,
@@ -1855,7 +1855,7 @@ isBefore(today, selectedDate, 'en')`,
       wrapper: 'calendar-container',
       utilityCode: `import { isAfter, getToday } from 'react-calendar-datetime-picker'
 
-const today = getToday('en')
+const today = getToday('gregorian')
 const selectedDate = // Select a date in the calendar
 
 isAfter(selectedDate, today, 'en')
@@ -1866,7 +1866,7 @@ isAfter(today, selectedDate, 'en')`,
             'Select a date in the calendar to see results': null
           }
         }
-        const today = getToday('en')
+        const today = getToday('gregorian')
         return {
           'isAfter(selectedDate, today, "en")': isAfter(
             selectedDate,
@@ -1895,14 +1895,14 @@ isAfter(today, selectedDate, 'en')`,
       wrapper: 'calendar-container',
       utilityCode: `import { isSameDay, getToday } from 'react-calendar-datetime-picker'
 
-const today = getToday('en')
+const today = getToday('gregorian')
 const todayWithTime = { ...today, hour: 14, minute: 30 }
 const tomorrow = { ...today, day: today.day + 1 }
 
 isSameDay(today, todayWithTime, 'en') // ignores time
 isSameDay(today, tomorrow, 'en')`,
       getUtilityResults: () => {
-        const today = getToday('en')
+        const today = getToday('gregorian')
         const todayWithTime = { ...today, hour: 14, minute: 30 }
         const tomorrow = { ...today, day: today.day + 1 }
         return {
@@ -1927,7 +1927,7 @@ isSameDay(today, tomorrow, 'en')`,
       wrapper: 'calendar-container',
       utilityCode: `import { isBetween, getToday, addDays } from 'react-calendar-datetime-picker'
 
-const today = getToday('en')
+const today = getToday('gregorian')
 const start = addDays(today, -5, 'en')
 const end = addDays(today, 5, 'en')
 const selectedDate = // Select a date in the calendar
@@ -1939,7 +1939,7 @@ isBetween(selectedDate, start, end, 'en')`,
             'Select a date in the calendar to see results': null
           }
         }
-        const today = getToday('en')
+        const today = getToday('gregorian')
         const start = addDays(today, -5, 'en')
         const end = addDays(today, 5, 'en')
         return {
@@ -2086,7 +2086,7 @@ dayToString(lastYear, '/')`,
   getToday 
 } from 'react-calendar-datetime-picker'
 
-const today = getToday('en')
+const today = getToday('gregorian')
 const selectedDate = // Select a date in the calendar
 
 getDifferenceInDays(selectedDate, today, 'en')
@@ -2098,7 +2098,7 @@ getDifferenceInYears(selectedDate, today, 'en')`,
             'Select a date in the calendar to see results': null
           }
         }
-        const today = getToday('en')
+        const today = getToday('gregorian')
         return {
           'getDifferenceInDays(selectedDate, today, "en")': getDifferenceInDays(
             selectedDate,
@@ -2120,7 +2120,7 @@ getDifferenceInYears(selectedDate, today, 'en')`,
         'Select a date in the Gregorian calendar to see its Jalali equivalent and back conversion.',
       component: 'DtCalendar',
       props: {
-        local: 'en',
+        calendarSystem: 'gregorian',
         showWeekend: true,
         todayBtn: true
       },
@@ -2209,7 +2209,7 @@ endOfYear(selectedDate, 'en')`,
         'Select a date in the Persian calendar to see utility functions working with Jalali dates.',
       component: 'DtCalendar',
       props: {
-        local: 'fa',
+        calendarSystem: 'jalali',
         showWeekend: true,
         todayBtn: true
       },
@@ -2218,7 +2218,7 @@ endOfYear(selectedDate, 'en')`,
   isBefore, addDays, addMonths, getToday, dayToString 
 } from 'react-calendar-datetime-picker'
 
-const today = getToday('fa')  // Persian calendar
+const today = getToday('jalali')  // Persian calendar
 const selectedDate = // Select a date in the calendar
 const tomorrow = addDays(selectedDate, 1, 'fa')
 const nextMonth = addMonths(selectedDate, 1, 'fa')
@@ -2233,7 +2233,7 @@ isBefore(selectedDate, today, 'fa')`,
             'Select a date in the calendar to see results': null
           }
         }
-        const today = getToday('fa')
+        const today = getToday('jalali')
         const tomorrow = addDays(selectedDate, 1, 'fa')
         const nextMonth = addMonths(selectedDate, 1, 'fa')
         return {

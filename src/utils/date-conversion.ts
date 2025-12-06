@@ -3,7 +3,8 @@
  */
 
 import { toJalaali, toGregorian } from 'jalaali-js'
-import type { Day, CalendarLocale } from '../types'
+import type { Day } from '../types'
+import type { CalendarLocale, CalendarSystemInput } from '../types/calendar'
 
 /**
  * Convert Gregorian Day to Jalali Day
@@ -37,7 +38,7 @@ export function jalaliToGregorian(day: Day): Day {
  * Convert a Day object to the target locale
  * Assumes the source day is in the opposite locale (Gregorian <-> Jalali)
  * @param day - Day object in source locale
- * @param targetLocale - Target locale ('en' for Gregorian, 'fa' for Jalali)
+ * @param targetLocale - Target locale ('gregorian' for Gregorian, 'jalali' for Jalali)
  * @param sourceLocale - Source locale (optional, defaults to opposite of targetLocale)
  */
 export function convertToLocale(
@@ -47,7 +48,7 @@ export function convertToLocale(
 ): Day {
   // If source locale is not provided, assume it's the opposite of target
   const actualSourceLocale =
-    sourceLocale || (targetLocale === 'fa' ? 'en' : 'fa')
+    sourceLocale || (targetLocale === 'jalali' ? 'gregorian' : 'jalali')
 
   // If already in target locale, return as-is
   if (actualSourceLocale === targetLocale) {
@@ -55,7 +56,7 @@ export function convertToLocale(
   }
 
   // Convert between calendars
-  if (targetLocale === 'fa') {
+  if (targetLocale === 'jalali') {
     // Convert from Gregorian to Jalali
     return gregorianToJalali(day)
   } else {
@@ -65,9 +66,22 @@ export function convertToLocale(
 }
 
 /**
+ * Normalize calendar system input to CalendarLocale
+ * Converts shorthand aliases ('ge' -> 'gregorian', 'ja' -> 'jalali')
+ */
+export function normalizeCalendarSystem(
+  input: CalendarSystemInput | undefined
+): CalendarLocale {
+  if (!input) return 'gregorian'
+  if (input === 'ge') return 'gregorian'
+  if (input === 'ja') return 'jalali'
+  return input
+}
+
+/**
  * Get today's date in the specified locale
  */
-export function getToday(locale: CalendarLocale): Day {
+export function getToday(calendarSystem: CalendarLocale): Day {
   const today = new Date()
   const gregorianDay: Day = {
     year: today.getFullYear(),
@@ -75,7 +89,7 @@ export function getToday(locale: CalendarLocale): Day {
     day: today.getDate()
   }
 
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     return gregorianToJalali(gregorianDay)
   }
 
@@ -85,7 +99,7 @@ export function getToday(locale: CalendarLocale): Day {
 /**
  * Convert a JavaScript Date object to a Day object in the specified locale
  */
-export function dateToDay(date: Date, locale: CalendarLocale): Day {
+export function dateToDay(date: Date, calendarSystem: CalendarLocale): Day {
   const gregorianDay: Day = {
     year: date.getFullYear(),
     month: date.getMonth() + 1,
@@ -94,7 +108,7 @@ export function dateToDay(date: Date, locale: CalendarLocale): Day {
     minute: date.getMinutes()
   }
 
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     return gregorianToJalali(gregorianDay)
   }
 
@@ -105,9 +119,13 @@ export function dateToDay(date: Date, locale: CalendarLocale): Day {
  * Convert a Day object to a JavaScript Date object
  * Converts Jalali dates to Gregorian before creating Date object
  */
-export function dayToDate(day: Day, locale: CalendarLocale = 'en'): Date {
+export function dayToDate(
+  day: Day,
+  calendarSystem: CalendarLocale = 'gregorian'
+): Date {
   // If day is in Jalali, convert to Gregorian first
-  const gregorianDay = locale === 'fa' ? jalaliToGregorian(day) : day
+  const gregorianDay =
+    calendarSystem === 'jalali' ? jalaliToGregorian(day) : day
 
   return new Date(
     gregorianDay.year,

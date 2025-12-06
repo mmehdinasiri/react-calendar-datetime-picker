@@ -52,7 +52,7 @@ describe('useModalPosition', () => {
 
   it('calculates position correctly (default: below)', () => {
     const { result } = renderHook(() =>
-      useModalPosition(inputRef, modalRef, true, 'en')
+      useModalPosition(inputRef, modalRef, true, 'gregorian')
     )
 
     act(() => {
@@ -81,7 +81,7 @@ describe('useModalPosition', () => {
     })) as any
 
     const { result } = renderHook(() =>
-      useModalPosition(inputRef, modalRef, true, 'en')
+      useModalPosition(inputRef, modalRef, true, 'gregorian')
     )
 
     act(() => {
@@ -97,7 +97,7 @@ describe('useModalPosition', () => {
 
   it('handles RTL positioning', () => {
     const { result } = renderHook(() =>
-      useModalPosition(inputRef, modalRef, true, 'fa')
+      useModalPosition(inputRef, modalRef, true, 'jalali')
     )
 
     act(() => {
@@ -126,7 +126,7 @@ describe('useModalPosition', () => {
     })) as any
 
     const { result } = renderHook(() =>
-      useModalPosition(inputRef, modalRef, true, 'en')
+      useModalPosition(inputRef, modalRef, true, 'gregorian')
     )
 
     act(() => {
@@ -140,7 +140,7 @@ describe('useModalPosition', () => {
 
   it('resets position when closed', () => {
     const { result, rerender } = renderHook(
-      ({ isOpen }) => useModalPosition(inputRef, modalRef, isOpen, 'en'),
+      ({ isOpen }) => useModalPosition(inputRef, modalRef, isOpen, 'gregorian'),
       { initialProps: { isOpen: true } }
     )
 

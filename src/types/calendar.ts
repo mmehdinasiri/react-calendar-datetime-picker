@@ -30,11 +30,18 @@ export type InitValueInput =
   | null
 
 /**
- * Calendar locale
- * - 'en': Gregorian calendar
- * - 'fa': Jalali (Persian) calendar
+ * Calendar system
+ * - 'gregorian': Gregorian calendar
+ * - 'jalali': Jalali (Persian) calendar
  */
-export type CalendarLocale = 'en' | 'fa'
+export type CalendarLocale = 'gregorian' | 'jalali'
+
+/**
+ * Calendar system input (accepts shorthand aliases)
+ * - 'gregorian' or 'ge': Gregorian calendar
+ * - 'jalali' or 'ja': Jalali (Persian) calendar
+ */
+export type CalendarSystemInput = 'gregorian' | 'jalali' | 'ge' | 'ja'
 
 /**
  * Calendar selection type
@@ -205,10 +212,11 @@ export interface SharedCalendarProps {
    */
   timeFormat?: '12' | '24'
   /**
-   * Calendar locale: 'en' (Gregorian) or 'fa' (Jalali)
-   * @default 'en'
+   * Calendar system: 'gregorian' (Gregorian) or 'jalali' (Jalali)
+   * Also accepts shorthand aliases: 'ge' for 'gregorian', 'ja' for 'jalali'
+   * @default 'gregorian'
    */
-  local?: CalendarLocale
+  calendarSystem?: CalendarSystemInput
   /**
    * Show weekend highlighting
    * @default false

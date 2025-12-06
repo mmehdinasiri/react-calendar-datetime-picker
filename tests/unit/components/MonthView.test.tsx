@@ -79,7 +79,7 @@ describe('MonthView', () => {
     render(
       <MonthView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
@@ -94,7 +94,7 @@ describe('MonthView', () => {
     render(
       <MonthView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
@@ -111,7 +111,7 @@ describe('MonthView', () => {
     render(
       <MonthView
         displayMonth={defaultDisplayMonth}
-        locale='fa'
+        calendarSystem='jalali'
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
@@ -133,7 +133,7 @@ describe('MonthView', () => {
     render(
       <MonthView
         displayMonth={displayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
@@ -152,7 +152,7 @@ describe('MonthView', () => {
     render(
       <MonthView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
@@ -169,7 +169,7 @@ describe('MonthView', () => {
     render(
       <MonthView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
@@ -212,14 +212,14 @@ describe('MonthView', () => {
     render(
       <MonthView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         customization={{ monthNames: customMonths }}
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
     )
 
-    expect(getMonthNames).toHaveBeenCalledWith('en', customMonths)
+    expect(getMonthNames).toHaveBeenCalledWith('gregorian', customMonths)
     expect(screen.getByText('M1')).toBeInTheDocument()
   })
 
@@ -229,7 +229,7 @@ describe('MonthView', () => {
     render(
       <MonthView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         customization={{ classes: customClasses }}
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}

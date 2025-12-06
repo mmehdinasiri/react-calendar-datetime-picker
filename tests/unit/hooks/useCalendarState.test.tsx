@@ -21,7 +21,11 @@ describe('useCalendarState', () => {
 
   it('initializes with default values', () => {
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'single', onChange })
+      useCalendarState({
+        calendarSystem: 'gregorian',
+        type: 'single',
+        onChange
+      })
     )
 
     expect(result.current.state.selectedValue).toBeNull()
@@ -37,7 +41,12 @@ describe('useCalendarState', () => {
   it('initializes with initValue', () => {
     const initValue: Day = { year: 2023, month: 1, day: 1 }
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'single', onChange, initValue })
+      useCalendarState({
+        calendarSystem: 'gregorian',
+        type: 'single',
+        onChange,
+        initValue
+      })
     )
 
     expect(result.current.state.selectedValue).toEqual(initValue)
@@ -51,7 +60,11 @@ describe('useCalendarState', () => {
 
   it('selects single date', () => {
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'single', onChange })
+      useCalendarState({
+        calendarSystem: 'gregorian',
+        type: 'single',
+        onChange
+      })
     )
 
     const day: Day = { year: 2023, month: 6, day: 1 }
@@ -66,7 +79,7 @@ describe('useCalendarState', () => {
 
   it('selects range (start then end)', () => {
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'range', onChange })
+      useCalendarState({ calendarSystem: 'gregorian', type: 'range', onChange })
     )
 
     const start: Day = { year: 2023, month: 6, day: 1 }
@@ -93,7 +106,7 @@ describe('useCalendarState', () => {
 
   it('selects multi dates', () => {
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'multi', onChange })
+      useCalendarState({ calendarSystem: 'gregorian', type: 'multi', onChange })
     )
 
     const day1: Day = { year: 2023, month: 6, day: 1 }
@@ -120,7 +133,7 @@ describe('useCalendarState', () => {
 
   it('selects week', () => {
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'week', onChange })
+      useCalendarState({ calendarSystem: 'gregorian', type: 'week', onChange })
     )
 
     // Select a Wednesday (June 7, 2023)
@@ -143,7 +156,11 @@ describe('useCalendarState', () => {
 
   it('navigates months', () => {
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'single', onChange })
+      useCalendarState({
+        calendarSystem: 'gregorian',
+        type: 'single',
+        onChange
+      })
     )
 
     // Initial: May 2023
@@ -165,7 +182,11 @@ describe('useCalendarState', () => {
 
   it('changes views', () => {
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'single', onChange })
+      useCalendarState({
+        calendarSystem: 'gregorian',
+        type: 'single',
+        onChange
+      })
     )
 
     act(() => {
@@ -182,7 +203,12 @@ describe('useCalendarState', () => {
   it('clears selection', () => {
     const initValue: Day = { year: 2023, month: 1, day: 1 }
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'single', onChange, initValue })
+      useCalendarState({
+        calendarSystem: 'gregorian',
+        type: 'single',
+        onChange,
+        initValue
+      })
     )
 
     act(() => {
@@ -197,7 +223,7 @@ describe('useCalendarState', () => {
     const initValue: Day = { year: 2023, month: 1, day: 1, hour: 10, minute: 0 }
     const { result } = renderHook(() =>
       useCalendarState({
-        locale: 'en',
+        calendarSystem: 'gregorian',
         type: 'single',
         onChange,
         initValue,
@@ -217,7 +243,7 @@ describe('useCalendarState', () => {
   it('adds system time if withTime is true', () => {
     const { result } = renderHook(() =>
       useCalendarState({
-        locale: 'en',
+        calendarSystem: 'gregorian',
         type: 'single',
         onChange,
         withTime: true
@@ -243,7 +269,7 @@ describe('useCalendarState', () => {
       (props) => useCalendarState(props),
       {
         initialProps: {
-          locale: 'en' as const,
+          calendarSystem: 'gregorian' as const,
           type: 'single' as const,
           onChange,
           initValue: null as Day | null
@@ -252,7 +278,12 @@ describe('useCalendarState', () => {
     )
 
     const newValue: Day = { year: 2023, month: 10, day: 1 }
-    rerender({ locale: 'en', type: 'single', onChange, initValue: newValue })
+    rerender({
+      calendarSystem: 'gregorian',
+      type: 'single',
+      onChange,
+      initValue: newValue
+    })
 
     expect(result.current.state.selectedValue).toEqual(newValue)
     expect(result.current.state.displayMonth).toEqual(
@@ -262,7 +293,7 @@ describe('useCalendarState', () => {
 
   it('selects preset range', () => {
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'range', onChange })
+      useCalendarState({ calendarSystem: 'gregorian', type: 'range', onChange })
     )
 
     const range: Range = {
@@ -284,7 +315,11 @@ describe('useCalendarState', () => {
 
   it('selects month', () => {
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'single', onChange })
+      useCalendarState({
+        calendarSystem: 'gregorian',
+        type: 'single',
+        onChange
+      })
     )
 
     act(() => {
@@ -298,7 +333,11 @@ describe('useCalendarState', () => {
 
   it('selects year', () => {
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'single', onChange })
+      useCalendarState({
+        calendarSystem: 'gregorian',
+        type: 'single',
+        onChange
+      })
     )
 
     act(() => {
@@ -311,7 +350,11 @@ describe('useCalendarState', () => {
 
   it('goes to today', () => {
     const { result } = renderHook(() =>
-      useCalendarState({ locale: 'en', type: 'single', onChange })
+      useCalendarState({
+        calendarSystem: 'gregorian',
+        type: 'single',
+        onChange
+      })
     )
 
     // Navigate away first
@@ -337,7 +380,7 @@ describe('useCalendarState', () => {
     it('initializes with Jalali date', () => {
       // System time is May 15, 2023 -> Ordibehesht 25, 1402
       const { result } = renderHook(() =>
-        useCalendarState({ locale: 'fa', type: 'single', onChange })
+        useCalendarState({ calendarSystem: 'jalali', type: 'single', onChange })
       )
 
       expect(result.current.state.displayMonth).toEqual(
@@ -349,7 +392,12 @@ describe('useCalendarState', () => {
       // 1402/01/01 (Farvardin 1st)
       const initValue: Day = { year: 1402, month: 1, day: 1 }
       const { result } = renderHook(() =>
-        useCalendarState({ locale: 'fa', type: 'single', onChange, initValue })
+        useCalendarState({
+          calendarSystem: 'jalali',
+          type: 'single',
+          onChange,
+          initValue
+        })
       )
 
       expect(result.current.state.selectedValue).toEqual(initValue)
@@ -360,7 +408,7 @@ describe('useCalendarState', () => {
 
     it('navigates Jalali months', () => {
       const { result } = renderHook(() =>
-        useCalendarState({ locale: 'fa', type: 'single', onChange })
+        useCalendarState({ calendarSystem: 'jalali', type: 'single', onChange })
       )
 
       // Initial: 1402/2

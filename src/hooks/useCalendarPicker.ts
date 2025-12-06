@@ -24,7 +24,7 @@ export function useCalendarPicker(
   initValue: InitValueInput | undefined,
   onChange: (date: Day | Range | Multi | null) => void,
   type: CalendarType,
-  local: CalendarLocale,
+  calendarSystem: CalendarLocale,
   withTime: boolean,
   constraintsInput: CalendarConstraintsInput | undefined,
   showTimeInput: boolean,
@@ -36,15 +36,21 @@ export function useCalendarPicker(
 ) {
   // Normalize constraints props
   const constraintsResult = useMemo(
-    () => normalizeConstraintsProps(constraintsInput, local, type),
-    [constraintsInput, local, type]
+    () => normalizeConstraintsProps(constraintsInput, calendarSystem, type),
+    [constraintsInput, calendarSystem, type]
   )
   const { constraints } = constraintsResult
 
   // Normalize initValue
   const initValueResult = useMemo(
-    () => normalizeInitValueWithErrors(initValue, local, type, 'initValue'),
-    [initValue, local, type]
+    () =>
+      normalizeInitValueWithErrors(
+        initValue,
+        calendarSystem,
+        type,
+        'initValue'
+      ),
+    [initValue, calendarSystem, type]
   )
   const { value: normalizedInitValue } = initValueResult
 
@@ -71,7 +77,7 @@ export function useCalendarPicker(
   // Use calendar state hook
   const { state, actions } = useCalendarState({
     initValue: normalizedInitValue,
-    locale: local,
+    calendarSystem: calendarSystem,
     type,
     onChange: (date) => {
       // Pass the normalized value directly
@@ -97,7 +103,7 @@ export function useCalendarPicker(
   const displayValue = useMemo(() => {
     return formatDateForInput(
       state.selectedValue,
-      local,
+      calendarSystem,
       type,
       showTimeInput && withTime,
       'from',
@@ -107,7 +113,7 @@ export function useCalendarPicker(
     )
   }, [
     state.selectedValue,
-    local,
+    calendarSystem,
     type,
     showTimeInput,
     withTime,

@@ -14,10 +14,10 @@ export function useModalPosition(
   triggerRef: RefObject<HTMLElement | null>,
   modalRef: RefObject<HTMLDivElement | null>,
   isOpen: boolean,
-  locale: CalendarLocale
+  calendarSystem: CalendarLocale
 ) {
   const [modalPosition, setModalPosition] = useState<ModalPosition | null>(null)
-  const isRTL = locale === 'fa'
+  const isRTL = calendarSystem === 'jalali'
 
   // Calculate modal position relative to trigger element
   const calculateModalPosition = useMemo(() => {

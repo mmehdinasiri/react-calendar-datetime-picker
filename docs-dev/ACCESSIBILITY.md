@@ -245,7 +245,7 @@ Verify:
 
 ### RTL Testing
 
-1. Switch to Persian locale (`local="fa"`)
+1. Switch to Persian locale (`calendarSystem="jalali"`)
 2. Verify arrow keys work correctly (left/right reversed)
 3. Verify all ARIA labels are in Persian
 4. Verify visual layout is RTL

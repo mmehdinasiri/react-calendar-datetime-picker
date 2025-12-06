@@ -15,6 +15,7 @@ import {
   areValuesEqual
 } from '../utils/normalize'
 import { normalizeConstraintsProps } from '../utils/constraints'
+import { normalizeCalendarSystem } from '../utils/date-conversion'
 
 interface DtCalendarPropsBase extends SharedCalendarProps {
   /**
@@ -68,7 +69,7 @@ export type DtCalendarProps =
  *
  * function App() {
  *   const [date, setDate] = useState(null)
- *   return <DtCalendar onChange={setDate} local="fa" />
+ *   return <DtCalendar onChange={setDate} calendarSystem="jalali" />
  * }
  * ```
  */
@@ -80,7 +81,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     type = 'single',
     withTime = false,
     timeFormat = '24',
-    local = 'en',
+    calendarSystem = 'gregorian',
     showWeekend = false,
     todayBtn = false,
     presetRanges,
@@ -100,17 +101,34 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     yearListStyle = 'grid'
   } = props
 
+  // Normalize calendarSystem input (handles 'ge'/'ja' aliases)
+  const normalizedCalendarSystem = useMemo(
+    () => normalizeCalendarSystem(calendarSystem),
+    [calendarSystem]
+  )
+
   // Normalize constraints props with error tracking
   const constraintsResult = useMemo(
-    () => normalizeConstraintsProps(constraintsInput, local, type),
-    [constraintsInput, local, type]
+    () =>
+      normalizeConstraintsProps(
+        constraintsInput,
+        normalizedCalendarSystem,
+        type
+      ),
+    [constraintsInput, normalizedCalendarSystem, type]
   )
   const { constraints, errors: constraintsErrors } = constraintsResult
 
   // Normalize initValue upfront for proper initial state with error tracking
   const initValueResult = useMemo(
-    () => normalizeInitValueWithErrors(initValue, local, type, 'initValue'),
-    [initValue, local, type]
+    () =>
+      normalizeInitValueWithErrors(
+        initValue,
+        normalizedCalendarSystem,
+        type,
+        'initValue'
+      ),
+    [initValue, normalizedCalendarSystem, type]
   )
   const { value: normalizedInitValue, errors: initValueErrors } =
     initValueResult
@@ -172,7 +190,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
   // Use calendar state hook
   const { state, actions } = useCalendarState({
     initValue: normalizedInitValue,
-    locale: local,
+    calendarSystem: normalizedCalendarSystem,
     type,
     // Cast onChange to broader type for internal compatibility
     onChange: onChange as (date: Day | Range | Multi | null) => void,
@@ -249,7 +267,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         selectedValue={state.selectedValue}
         displayMonth={state.displayMonth}
         currentView={state.currentView}
-        locale={local}
+        calendarSystem={normalizedCalendarSystem}
         type={type}
         withTime={withTime}
         timeFormat={timeFormat}

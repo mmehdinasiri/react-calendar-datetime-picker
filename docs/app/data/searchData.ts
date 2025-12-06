@@ -138,14 +138,30 @@ const apiItems: SearchItem[] = [
     tags: ['prop', 'calendar', 'dtcalendar']
   })),
   // Types
-  ...types.map((type) => ({
-    id: `type-${type.name}`,
-    title: type.name,
-    description: type.definition,
-    href: `/types#${type.name}`,
-    category: 'api' as const,
-    tags: ['type', 'typescript', 'interface']
-  })),
+  ...types.map((type) => {
+    // Generate tags based on type definition content
+    const tags = ['type', 'typescript', 'interface']
+
+    // Add calendar-related tags for CalendarSystemInput and CalendarLocale
+    if (type.name === 'CalendarSystemInput' || type.name === 'CalendarLocale') {
+      tags.push('gregorian', 'jalali', 'calendar', 'system')
+      if (type.name === 'CalendarSystemInput') {
+        tags.push('ge', 'ja', 'alias', 'shorthand')
+      }
+    }
+
+    // Convert type name to lowercase for anchor (e.g., "CalendarSystemInput" -> "calendarsysteminput")
+    const anchorId = type.name.toLowerCase()
+
+    return {
+      id: `type-${type.name}`,
+      title: type.name,
+      description: type.definition,
+      href: `/types#${anchorId}`,
+      category: 'api' as const,
+      tags
+    }
+  }),
   // Utilities
   ...utilityCategories.flatMap((category) =>
     category.utilities.map((utility) => ({

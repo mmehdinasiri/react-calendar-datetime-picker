@@ -30,7 +30,7 @@ describe('useKeyboardNavigation', () => {
 
   const getHookProps = (overrides = {}) => ({
     focusedDate,
-    locale: 'en' as const,
+    calendarSystem: 'gregorian' as const,
     type: 'single' as const,
     containerRef: containerRef as React.RefObject<HTMLDivElement>,
     enabled: true,
@@ -98,7 +98,9 @@ describe('useKeyboardNavigation', () => {
   })
 
   it('handles RTL navigation for fa locale', () => {
-    renderHook(() => useKeyboardNavigation(getHookProps({ locale: 'fa' })))
+    renderHook(() =>
+      useKeyboardNavigation(getHookProps({ calendarSystem: 'jalali' }))
+    )
 
     // In RTL, Left is Next, Right is Prev
 

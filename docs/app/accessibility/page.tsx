@@ -487,7 +487,7 @@ export default function Accessibility() {
                   }}
                 >
                   {`<DtPicker
-  local="fa"
+  calendarSystem="jalali"
   placeholder="تاریخ را انتخاب کنید"
 />`}
                 </SyntaxHighlighter>

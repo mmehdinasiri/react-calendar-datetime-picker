@@ -34,7 +34,7 @@ import { normalizeInitValueWithErrors } from './normalize'
  *   - minDate: Minimum selectable date (Date, string, timestamp, or Day)
  *   - disabledDates: Array of disabled dates (Date[], string[], number[], or Day[])
  *   - isDateDisabled: Callback function to check if a date should be disabled
- * @param locale - Calendar locale ('en' for Gregorian, 'fa' for Jalali).
+ * @param locale - Calendar locale ('gregorian' for Gregorian, 'jalali' for Jalali).
  *   Used for proper date conversion and validation.
  * @param _type - Calendar selection type (single, range, multi, week).
  *   Currently not used but kept for API consistency and future extensibility.
@@ -55,7 +55,7 @@ import { normalizeInitValueWithErrors } from './normalize'
  *     disabledDates: [1672531200000, { year: 2023, month: 1, day: 15 }],
  *     isDateDisabled: (date) => date.day === 1
  *   },
- *   'en',
+ *   'gregorian',
  *   'single'
  * )
  *
@@ -82,7 +82,7 @@ import { normalizeInitValueWithErrors } from './normalize'
  *     maxDate: { year: 2023, month: 13, day: 1 }, // Invalid month
  *     minDate: "invalid-date-string"
  *   },
- *   'en',
+ *   'gregorian',
  *   'single'
  * )
  *
@@ -98,7 +98,7 @@ import { normalizeInitValueWithErrors } from './normalize'
  */
 export function normalizeConstraintsProps(
   constraintsInput: CalendarConstraintsInput | undefined,
-  locale: CalendarLocale,
+  calendarSystem: CalendarLocale,
   _type: CalendarType
 ): { constraints: CalendarConstraints; errors: CalendarError[] } {
   // Initialize empty constraints and errors arrays
@@ -118,7 +118,7 @@ export function normalizeConstraintsProps(
   if (constraintsInput.maxDate) {
     const result = normalizeInitValueWithErrors(
       constraintsInput.maxDate,
-      locale,
+      calendarSystem,
       'single', // Always 'single' since maxDate is a single date
       'constraints.maxDate' // Field name for error reporting
     )
@@ -142,7 +142,7 @@ export function normalizeConstraintsProps(
   if (constraintsInput.minDate) {
     const result = normalizeInitValueWithErrors(
       constraintsInput.minDate,
-      locale,
+      calendarSystem,
       'single', // Always 'single' since minDate is a single date
       'constraints.minDate' // Field name for error reporting
     )
@@ -172,7 +172,7 @@ export function normalizeConstraintsProps(
     constraintsInput.disabledDates.forEach((date, index) => {
       const result = normalizeInitValueWithErrors(
         date,
-        locale,
+        calendarSystem,
         'single', // Each disabled date is a single date
         `constraints.disabledDates[${index}]` // Include index in field name for precise error reporting
       )

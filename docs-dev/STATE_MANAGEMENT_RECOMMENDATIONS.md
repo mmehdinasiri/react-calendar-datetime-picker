@@ -31,19 +31,21 @@ const DtPicker: React.FC<DtPickerProps> = (props) => {
   const [currentView, setCurrentView] = useState<
     'calendar' | 'months' | 'years'
   >('calendar')
-  const [displayMonth, setDisplayMonth] = useState<Day>(getToday(props.local))
+  const [displayMonth, setDisplayMonth] = useState<Day>(
+    getToday(props.calendarSystem)
+  )
 
   // Sync initValue when it changes externally
   useEffect(() => {
     if (initValue !== undefined) {
-      const normalized = normalizeInitValue(initValue, props.local)
+      const normalized = normalizeInitValue(initValue, props.calendarSystem)
       setSelectedValue(normalized)
       // Update display month to show selected date
       if (normalized) {
         setDisplayMonth(extractMonthFromValue(normalized))
       }
     }
-  }, [initValue, props.local])
+  }, [initValue, props.calendarSystem])
 
   // Handle value changes
   const handleChange = (newValue: Day | Range | Multi | null) => {
@@ -114,7 +116,7 @@ const calendarReducer = (
 ### Key Principles:
 
 1. **Normalize on Input**: Convert any input format to internal `Day` format immediately
-2. **Handle Locale Conversion**: Convert between Gregorian/Jalali based on `local` prop
+2. **Handle Locale Conversion**: Convert between Gregorian/Jalali based on `calendarSystem` prop
 3. **Validate**: Ensure dates are valid and within min/max constraints
 4. **Update Display**: Automatically navigate calendar to show selected date
 
@@ -171,11 +173,15 @@ const prevInitValueRef = useRef(initValue)
 useEffect(() => {
   // Only update if initValue actually changed
   if (initValue !== prevInitValueRef.current) {
-    const normalized = normalizeInitValue(initValue, props.local, props.type)
+    const normalized = normalizeInitValue(
+      initValue,
+      props.calendarSystem,
+      props.type
+    )
     dispatch({ type: 'SYNC_INIT_VALUE', payload: normalized })
     prevInitValueRef.current = initValue
   }
-}, [initValue, props.local, props.type])
+}, [initValue, props.calendarSystem, props.type])
 ```
 
 ## 3. Jalali Calendar Support
@@ -251,7 +257,7 @@ export function generateCalendarGrid(
 
 ### CSS Strategy:
 
-1. **Use `dir` attribute**: Set `dir="rtl"` on root element when `local="fa"`
+1. **Use `dir` attribute**: Set `dir="rtl"` on root element when `calendarSystem="jalali"`
 2. **CSS Logical Properties**: Use `margin-inline-start` instead of `margin-left`
 3. **CSS Variables**: Define RTL-aware spacing variables
 4. **Conditional Classes**: Add `rtl` class when needed
@@ -261,7 +267,7 @@ export function generateCalendarGrid(
 ```typescript
 // Component
 const DtPicker: React.FC<DtPickerProps> = (props) => {
-  const isRTL = props.local === 'fa'
+  const isRTL = props.calendarSystem === 'jalali'
 
   return (
     <div
@@ -359,7 +365,7 @@ Both `DtPicker` and `DtCalendar` should share the same calendar core:
 ```typescript
 // components/CalendarCore.tsx
 export interface CalendarCoreProps {
-  // All calendar-related props (type, local, withTime, etc.)
+  // All calendar-related props (type, calendarSystem, withTime, etc.)
   selectedValue: Day | Range | Multi | null
   displayMonth: Day
   currentView: 'calendar' | 'months' | 'years'
@@ -410,19 +416,19 @@ export function useCalendarState(props: {
   onChange: (date: unknown) => void
   onCalenderChange?: (date: unknown) => void // Note: requires initValue
   type: CalendarType
-  local: CalendarLocale
+  calendarSystem: CalendarLocale
 }) {
-  const { initValue, onChange, onCalenderChange, type, local } = props
+  const { initValue, onChange, onCalenderChange, type, calendarSystem } = props
 
   const [state, dispatch] = useReducer(calendarReducer, initialState)
 
   // Sync initValue
   useEffect(() => {
     if (initValue !== undefined) {
-      const normalized = normalizeInitValue(initValue, local, type)
+      const normalized = normalizeInitValue(initValue, calendarSystem, type)
       dispatch({ type: 'SYNC_INIT_VALUE', payload: normalized })
     }
-  }, [initValue, local, type])
+  }, [initValue, calendarSystem, type])
 
   // Handle changes
   const handleDateSelect = (day: Day) => {
@@ -469,7 +475,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     onChange: props.onChange,
     onCalenderChange: props.onCalenderChange,
     type: props.type || 'single',
-    local: props.local || 'en'
+    calendarSystem: props.calendarSystem || 'gregorian'
   })
 
   // Handle modal open
@@ -481,7 +487,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
   // Format display value for input
   const displayValue = formatDateForInput(
     state.selectedValue,
-    props.local || 'en',
+    props.calendarSystem || 'gregorian',
     props.type || 'single',
     props.showTimeInput
   )
@@ -526,7 +532,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     onChange: props.onChange,
     onCalenderChange: props.onCalenderChange,
     type: props.type || 'single',
-    local: props.local || 'en'
+    calendarSystem: props.calendarSystem || 'gregorian'
   })
 
   return (

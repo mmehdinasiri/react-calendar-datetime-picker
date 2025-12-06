@@ -22,9 +22,9 @@ import { compareDays, getDaysInMonth } from './validation'
 export function isBefore(
   day1: Day,
   day2: Day,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): boolean {
-  return compareDays(day1, day2, locale) < 0
+  return compareDays(day1, day2, calendarSystem) < 0
 }
 
 /**
@@ -37,9 +37,9 @@ export function isBefore(
 export function isAfter(
   day1: Day,
   day2: Day,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): boolean {
-  return compareDays(day1, day2, locale) > 0
+  return compareDays(day1, day2, calendarSystem) > 0
 }
 
 /**
@@ -52,9 +52,9 @@ export function isAfter(
 export function isSameDay(
   day1: Day,
   day2: Day,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): boolean {
-  return compareDays(day1, day2, locale) === 0
+  return compareDays(day1, day2, calendarSystem) === 0
 }
 
 /**
@@ -69,17 +69,19 @@ export function isBetween(
   day: Day,
   start: Day,
   end: Day,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): boolean {
-  const comparison = compareDays(start, end, locale)
+  const comparison = compareDays(start, end, calendarSystem)
   // If start is after end, swap them
   if (comparison > 0) {
     return (
-      compareDays(day, end, locale) >= 0 && compareDays(day, start, locale) <= 0
+      compareDays(day, end, calendarSystem) >= 0 &&
+      compareDays(day, start, calendarSystem) <= 0
     )
   }
   return (
-    compareDays(day, start, locale) >= 0 && compareDays(day, end, locale) <= 0
+    compareDays(day, start, calendarSystem) >= 0 &&
+    compareDays(day, end, calendarSystem) <= 0
   )
 }
 
@@ -93,11 +95,11 @@ export function isBetween(
 export function addDays(
   day: Day,
   days: number,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): Day {
-  const date = dayToDate(day, locale)
+  const date = dayToDate(day, calendarSystem)
   date.setDate(date.getDate() + days)
-  return dateToDay(date, locale)
+  return dateToDay(date, calendarSystem)
 }
 
 /**
@@ -110,9 +112,9 @@ export function addDays(
 export function subtractDays(
   day: Day,
   days: number,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): Day {
-  return addDays(day, -days, locale)
+  return addDays(day, -days, calendarSystem)
 }
 
 /**
@@ -125,9 +127,9 @@ export function subtractDays(
 export function addMonths(
   day: Day,
   months: number,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): Day {
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     let { year, month, day: d } = day
 
     // Calculate new total months
@@ -136,7 +138,7 @@ export function addMonths(
     const newMonth = (totalMonths % 12) + 1
 
     // Handle days in month
-    const maxDay = getDaysInMonth(newYear, newMonth, locale)
+    const maxDay = getDaysInMonth(newYear, newMonth, calendarSystem)
     const newDay = Math.min(d, maxDay)
 
     return {
@@ -148,7 +150,7 @@ export function addMonths(
     }
   }
 
-  const date = dayToDate(day, locale)
+  const date = dayToDate(day, calendarSystem)
   const originalDay = day.day
 
   // Set day to 1 to avoid overflow when changing month
@@ -157,12 +159,16 @@ export function addMonths(
 
   // Get max days in the new month
   // Note: For Gregorian, we use the standard Date behavior for month/year
-  const maxDay = getDaysInMonth(date.getFullYear(), date.getMonth() + 1, locale)
+  const maxDay = getDaysInMonth(
+    date.getFullYear(),
+    date.getMonth() + 1,
+    calendarSystem
+  )
 
   // Restore day, capped at maxDay
   date.setDate(Math.min(originalDay, maxDay))
 
-  return dateToDay(date, locale)
+  return dateToDay(date, calendarSystem)
 }
 
 /**
@@ -175,9 +181,9 @@ export function addMonths(
 export function subtractMonths(
   day: Day,
   months: number,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): Day {
-  return addMonths(day, -months, locale)
+  return addMonths(day, -months, calendarSystem)
 }
 
 /**
@@ -190,11 +196,11 @@ export function subtractMonths(
 export function addYears(
   day: Day,
   years: number,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): Day {
-  if (locale === 'fa') {
+  if (calendarSystem === 'jalali') {
     const newYear = day.year + years
-    const maxDay = getDaysInMonth(newYear, day.month, locale)
+    const maxDay = getDaysInMonth(newYear, day.month, calendarSystem)
     const newDay = Math.min(day.day, maxDay)
 
     return {
@@ -206,7 +212,7 @@ export function addYears(
     }
   }
 
-  const date = dayToDate(day, locale)
+  const date = dayToDate(day, calendarSystem)
   const originalDay = day.day
 
   // Set day to 1 to avoid overflow when changing year (e.g. Feb 29)
@@ -214,12 +220,16 @@ export function addYears(
   date.setFullYear(date.getFullYear() + years)
 
   // Get max days in the new month/year
-  const maxDay = getDaysInMonth(date.getFullYear(), date.getMonth() + 1, locale)
+  const maxDay = getDaysInMonth(
+    date.getFullYear(),
+    date.getMonth() + 1,
+    calendarSystem
+  )
 
   // Restore day, capped at maxDay
   date.setDate(Math.min(originalDay, maxDay))
 
-  return dateToDay(date, locale)
+  return dateToDay(date, calendarSystem)
 }
 
 /**
@@ -232,9 +242,9 @@ export function addYears(
 export function subtractYears(
   day: Day,
   years: number,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): Day {
-  return addYears(day, -years, locale)
+  return addYears(day, -years, calendarSystem)
 }
 
 /**
@@ -247,10 +257,10 @@ export function subtractYears(
 export function getDifferenceInDays(
   day1: Day,
   day2: Day,
-  locale: CalendarLocale = 'en'
+  calendarSystem: CalendarLocale = 'gregorian'
 ): number {
-  const d1 = locale === 'fa' ? jalaliToGregorian(day1) : day1
-  const d2 = locale === 'fa' ? jalaliToGregorian(day2) : day2
+  const d1 = calendarSystem === 'jalali' ? jalaliToGregorian(day1) : day1
+  const d2 = calendarSystem === 'jalali' ? jalaliToGregorian(day2) : day2
 
   // Use UTC to avoid DST issues and ignore time components for pure day difference
   const date1 = Date.UTC(d1.year, d1.month - 1, d1.day)
@@ -270,9 +280,9 @@ export function getDifferenceInDays(
 export function getDifferenceInMonths(
   day1: Day,
   day2: Day,
-  _locale: CalendarLocale = 'en'
+  _calendarSystem: CalendarLocale = 'gregorian'
 ): number {
-  // If locale is 'fa', we don't need to convert to Gregorian
+  // If locale is 'jalali', we don't need to convert to Gregorian
   // We can calculate the difference directly using Jalali dates
   // This avoids issues with leap year mismatches during conversion
   const yearDiff = day1.year - day2.year
@@ -291,9 +301,9 @@ export function getDifferenceInMonths(
 export function getDifferenceInYears(
   day1: Day,
   day2: Day,
-  _locale: CalendarLocale = 'en'
+  _calendarSystem: CalendarLocale = 'gregorian'
 ): number {
-  // If locale is 'fa', we don't need to convert to Gregorian
+  // If locale is 'jalali', we don't need to convert to Gregorian
   // We can calculate the difference directly using Jalali dates
   let yearDiff = day1.year - day2.year
 
@@ -360,7 +370,10 @@ export function endOfDay(day: Day): Day {
  * @param _locale - Calendar locale (unused, kept for API consistency)
  * @returns Day object representing the first day of the month
  */
-export function startOfMonth(day: Day, _locale: CalendarLocale = 'en'): Day {
+export function startOfMonth(
+  day: Day,
+  _calendarSystem: CalendarLocale = 'gregorian'
+): Day {
   return {
     ...day,
     day: 1,
@@ -375,8 +388,11 @@ export function startOfMonth(day: Day, _locale: CalendarLocale = 'en'): Day {
  * @param locale - Calendar locale
  * @returns Day object representing the last day of the month
  */
-export function endOfMonth(day: Day, locale: CalendarLocale = 'en'): Day {
-  const daysInMonth = getDaysInMonth(day.year, day.month, locale)
+export function endOfMonth(
+  day: Day,
+  calendarSystem: CalendarLocale = 'gregorian'
+): Day {
+  const daysInMonth = getDaysInMonth(day.year, day.month, calendarSystem)
   return {
     ...day,
     day: daysInMonth,
@@ -406,8 +422,11 @@ export function startOfYear(day: Day): Day {
  * @param locale - Calendar locale
  * @returns Day object representing the last day of the year
  */
-export function endOfYear(day: Day, locale: CalendarLocale = 'en'): Day {
-  const daysInMonth = getDaysInMonth(day.year, 12, locale)
+export function endOfYear(
+  day: Day,
+  calendarSystem: CalendarLocale = 'gregorian'
+): Day {
+  const daysInMonth = getDaysInMonth(day.year, 12, calendarSystem)
   return {
     ...day,
     month: 12,

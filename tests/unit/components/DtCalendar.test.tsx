@@ -6,7 +6,7 @@ import { DtCalendar } from '@/components/DtCalendar'
 vi.mock('@/components/CalendarCore', () => ({
   CalendarCore: ({
     selectedValue,
-    locale,
+    calendarSystem,
     type,
     onDateSelect,
     onViewChange,
@@ -16,7 +16,7 @@ vi.mock('@/components/CalendarCore', () => ({
     onGoToToday
   }: any) => (
     <div data-testid='calendar-core'>
-      <span data-testid='core-locale'>{locale}</span>
+      <span data-testid='core-locale'>{calendarSystem}</span>
       <span data-testid='core-type'>{type}</span>
       <span data-testid='core-value'>{JSON.stringify(selectedValue)}</span>
       <button
@@ -93,8 +93,8 @@ describe('DtCalendar', () => {
   })
 
   it('passes locale prop to CalendarCore', () => {
-    render(<DtCalendar {...defaultProps} local='fa' />)
-    expect(screen.getByTestId('core-locale')).toHaveTextContent('fa')
+    render(<DtCalendar {...defaultProps} calendarSystem='jalali' />)
+    expect(screen.getByTestId('core-locale')).toHaveTextContent('jalali')
   })
 
   it('passes type prop to CalendarCore', () => {

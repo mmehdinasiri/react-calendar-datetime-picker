@@ -335,7 +335,7 @@ const dateOnly: Day = {
 
         <p>
           The <code>CalendarLocale</code> type specifies which calendar system
-          to use.
+          to use. This is the internal type used throughout the library.
         </p>
 
         <div className='rounded-lg overflow-hidden border border-border mb-4'>
@@ -349,11 +349,83 @@ const dateOnly: Day = {
               lineHeight: '1.5'
             }}
           >
-            {`type CalendarLocale = 'en' | 'fa'
+            {`type CalendarLocale = 'gregorian' | 'jalali'
 
-// 'en' - Gregorian calendar (English)
-// 'fa' - Jalali calendar (Persian)`}
+// 'gregorian' - Gregorian calendar
+// 'jalali' - Jalali calendar (Persian)`}
           </SyntaxHighlighter>
+        </div>
+
+        <h2 id='calendarsysteminput'>CalendarSystemInput</h2>
+
+        <p>
+          The <code>CalendarSystemInput</code> type is what you pass to the{' '}
+          <code>calendarSystem</code> prop in <code>DtPicker</code> and{' '}
+          <code>DtCalendar</code>. It accepts the full names or convenient
+          shorthand aliases.
+        </p>
+
+        <div className='rounded-lg overflow-hidden border border-border mb-4'>
+          <SyntaxHighlighter
+            language='typescript'
+            style={vscDarkPlus}
+            customStyle={{
+              margin: 0,
+              borderRadius: '0.5rem',
+              fontSize: '0.875rem',
+              lineHeight: '1.5'
+            }}
+          >
+            {`type CalendarSystemInput = 'gregorian' | 'jalali' | 'ge' | 'ja'
+
+// Full names:
+// 'gregorian' - Gregorian calendar
+// 'jalali' - Jalali calendar (Persian)
+
+// Shorthand aliases:
+// 'ge' - Alias for 'gregorian'
+// 'ja' - Alias for 'jalali'`}
+          </SyntaxHighlighter>
+        </div>
+
+        <h3>Example Usage</h3>
+
+        <div className='rounded-lg overflow-hidden border border-border mb-4'>
+          <SyntaxHighlighter
+            language='tsx'
+            style={vscDarkPlus}
+            customStyle={{
+              margin: 0,
+              borderRadius: '0.5rem',
+              fontSize: '0.875rem',
+              lineHeight: '1.5'
+            }}
+          >
+            {`// All of these are valid:
+<DtPicker calendarSystem="gregorian" onChange={setDate} />
+<DtPicker calendarSystem="ge" onChange={setDate} />
+<DtPicker calendarSystem="jalali" onChange={setDate} />
+<DtPicker calendarSystem="ja" onChange={setDate} />
+
+<DtCalendar calendarSystem="gregorian" onChange={setDate} />
+<DtCalendar calendarSystem="ge" onChange={setDate} />
+<DtCalendar calendarSystem="jalali" onChange={setDate} />
+<DtCalendar calendarSystem="ja" onChange={setDate} />`}
+          </SyntaxHighlighter>
+        </div>
+
+        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-4'>
+          <div className='flex'>
+            <div className='ml-3'>
+              <p className='text-sm text-gray-200'>
+                <strong>Note:</strong> The shorthand aliases (<code>'ge'</code>{' '}
+                and <code>'ja'</code>) are automatically normalized to their
+                full names internally. The library always works with{' '}
+                <code>CalendarLocale</code> internally, but accepts{' '}
+                <code>CalendarSystemInput</code> as a convenience for users.
+              </p>
+            </div>
+          </div>
         </div>
 
         <h2 id='calendartype'>CalendarType</h2>

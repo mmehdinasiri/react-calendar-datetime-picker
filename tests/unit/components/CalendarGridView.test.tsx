@@ -47,7 +47,7 @@ describe('CalendarGridView', () => {
   const defaultProps = {
     selectedValue: null,
     displayMonth: { year: 2023, month: 1, day: 1 } as Day,
-    locale: 'en' as const,
+    calendarSystem: 'gregorian' as const,
     type: 'single' as const,
     onDateSelect: vi.fn(),
     onTimeChange: vi.fn(),
@@ -231,7 +231,7 @@ describe('CalendarGridView', () => {
     render(
       <CalendarGridView
         {...defaultProps}
-        locale='fa'
+        calendarSystem='jalali'
         displayMonth={{ year: 1402, month: 1, day: 1 }}
         todayBtn={true}
       />
@@ -262,7 +262,7 @@ describe('CalendarGridView', () => {
     render(
       <CalendarGridView
         {...defaultProps}
-        locale='fa'
+        calendarSystem='jalali'
         displayMonth={{ year: 1402, month: 1, day: 1 }}
         showWeekend={true}
       />

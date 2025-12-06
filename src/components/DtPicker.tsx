@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactNode, useCallback } from 'react'
+import React, { useState, useRef, ReactNode, useCallback, useMemo } from 'react'
 import type { Day, Range, Multi } from '../types'
 import type {
   CalendarSelectionSingle,
@@ -15,6 +15,7 @@ import {
   useEscapeKey,
   useFocusTrap
 } from '../hooks'
+import { normalizeCalendarSystem } from '../utils/date-conversion'
 
 interface DtPickerPropsBase extends SharedCalendarProps {
   /**
@@ -95,7 +96,7 @@ export type DtPickerProps =
  *
  * function App() {
  *   const [date, setDate] = useState(null)
- *   return <DtPicker onChange={setDate} local="en" />
+ *   return <DtPicker onChange={setDate} calendarSystem="gregorian" />
  * }
  * ```
  */
@@ -106,7 +107,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     type = 'single',
     withTime = false,
     showTimeInput = false,
-    local = 'en',
+    calendarSystem = 'gregorian',
     showWeekend = false,
     clearBtn = false,
     isRequired = false,
@@ -141,13 +142,19 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
   const triggerRef = useRef<HTMLElement>(null)
   const modalRef = useRef<HTMLDivElement>(null)
 
+  // Normalize calendarSystem input (handles 'ge'/'ja' aliases)
+  const normalizedCalendarSystem = useMemo(
+    () => normalizeCalendarSystem(calendarSystem),
+    [calendarSystem]
+  )
+
   // Use calendar picker hook for shared calendar logic
   const { state, actions, constraints, displayValue } = useCalendarPicker(
     initValue,
     // Cast onChange to broader type for internal compatibility
     onChange as (date: Day | Range | Multi | null) => void,
     type,
-    local,
+    normalizedCalendarSystem,
     withTime,
     constraintsInput,
     showTimeInput,
@@ -209,7 +216,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     triggerRef,
     modalRef,
     isOpen,
-    local
+    normalizedCalendarSystem
   )
 
   // Use click outside hook
@@ -251,7 +258,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
 
   const inputWrapperClass = `calendar-picker-input-wrapper ${inputClass || ''}`
   const modalClass = `calendar-picker-modal ${calenderModalClass || ''}`
-  const isRTL = local === 'fa'
+  const isRTL = normalizedCalendarSystem === 'jalali'
 
   // Render trigger element (either custom or default input)
   const renderTrigger = () => {
@@ -356,7 +363,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
             selectedValue={state.selectedValue}
             displayMonth={state.displayMonth}
             currentView={state.currentView}
-            locale={local}
+            calendarSystem={normalizedCalendarSystem}
             type={type}
             withTime={withTime}
             timeFormat={timeFormat}

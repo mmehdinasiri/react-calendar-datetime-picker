@@ -45,7 +45,7 @@ describe('YearView', () => {
     render(
       <YearView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -59,7 +59,7 @@ describe('YearView', () => {
     render(
       <YearView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -77,7 +77,7 @@ describe('YearView', () => {
     render(
       <YearView
         displayMonth={defaultDisplayMonth} // 2023
-        locale='en'
+        calendarSystem='gregorian'
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -92,7 +92,7 @@ describe('YearView', () => {
     render(
       <YearView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -106,7 +106,7 @@ describe('YearView', () => {
     expect(mockOnViewChange).toHaveBeenCalledWith('months')
   })
 
-  it('handles RTL and Persian numbers for "fa" locale', () => {
+  it('handles RTL and Persian numbers for "jalali" locale', () => {
     // Mock getYearRange to likely just return numbers, the component handles formatting
     vi.mocked(getYearRange).mockReturnValue([1401, 1402, 1403])
 
@@ -115,7 +115,7 @@ describe('YearView', () => {
     render(
       <YearView
         displayMonth={faDisplayMonth}
-        locale='fa'
+        calendarSystem='jalali'
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -133,7 +133,7 @@ describe('YearView', () => {
     const { rerender } = render(
       <YearView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         yearListStyle='list'
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
@@ -146,7 +146,7 @@ describe('YearView', () => {
     rerender(
       <YearView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         yearListStyle='grid'
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
@@ -160,7 +160,7 @@ describe('YearView', () => {
     render(
       <YearView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -181,7 +181,7 @@ describe('YearView', () => {
     render(
       <YearView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         customization={{ classes: customClasses }}
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
@@ -196,7 +196,7 @@ describe('YearView', () => {
     render(
       <YearView
         displayMonth={defaultDisplayMonth}
-        locale='en'
+        calendarSystem='gregorian'
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />

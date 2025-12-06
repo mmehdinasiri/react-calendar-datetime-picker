@@ -137,7 +137,11 @@ describe('Performance Benchmarks', () => {
   describe('DtCalendar Component', () => {
     it('should render 1-month calendar in less than 100ms', async () => {
       const renderTime = await measureRenderTime(
-        <DtCalendar type='single' local='en' onChange={() => {}} />,
+        <DtCalendar
+          type='single'
+          calendarSystem='gregorian'
+          onChange={() => {}}
+        />,
         'DtCalendar (1 month)'
       )
 
@@ -151,7 +155,7 @@ describe('Performance Benchmarks', () => {
       const renderTime = await measureRenderTime(
         <DtCalendar
           type='single'
-          local='en'
+          calendarSystem='gregorian'
           numberOfMonths={3}
           onChange={() => {}}
         />,
@@ -168,7 +172,7 @@ describe('Performance Benchmarks', () => {
       const { rerender } = render(
         <DtCalendar
           type='single'
-          local='en'
+          calendarSystem='gregorian'
           initValue={null}
           onChange={() => {}}
         />
@@ -179,7 +183,7 @@ describe('Performance Benchmarks', () => {
         rerender,
         <DtCalendar
           type='single'
-          local='en'
+          calendarSystem='gregorian'
           initValue={null}
           onChange={() => {}}
         />,
@@ -191,7 +195,7 @@ describe('Performance Benchmarks', () => {
         rerender,
         <DtCalendar
           type='single'
-          local='en'
+          calendarSystem='gregorian'
           initValue={null}
           onChange={() => {}}
         />,
@@ -208,7 +212,13 @@ describe('Performance Benchmarks', () => {
     })
 
     it('should navigate months quickly', async () => {
-      render(<DtCalendar type='single' local='en' onChange={() => {}} />)
+      render(
+        <DtCalendar
+          type='single'
+          calendarSystem='gregorian'
+          onChange={() => {}}
+        />
+      )
 
       // Find next month button by title attribute
       const nextButton = screen.getByTitle('next')
@@ -227,7 +237,11 @@ describe('Performance Benchmarks', () => {
   describe('DtPicker Component', () => {
     it('should render picker quickly', async () => {
       const renderTime = await measureRenderTime(
-        <DtPicker type='single' local='en' onChange={() => {}} />,
+        <DtPicker
+          type='single'
+          calendarSystem='gregorian'
+          onChange={() => {}}
+        />,
         'DtPicker Render'
       )
 
@@ -236,7 +250,13 @@ describe('Performance Benchmarks', () => {
     })
 
     it('should open modal quickly', async () => {
-      render(<DtPicker type='single' local='en' onChange={() => {}} />)
+      render(
+        <DtPicker
+          type='single'
+          calendarSystem='gregorian'
+          onChange={() => {}}
+        />
+      )
 
       // Find trigger button
       const triggerButton = screen.getByRole('button')
@@ -255,7 +275,12 @@ describe('Performance Benchmarks', () => {
   describe('TimeSelector Performance', () => {
     it('should not recreate arrays on re-renders', async () => {
       const { rerender } = render(
-        <DtCalendar type='single' local='en' withTime onChange={() => {}} />
+        <DtCalendar
+          type='single'
+          calendarSystem='gregorian'
+          withTime
+          onChange={() => {}}
+        />
       )
 
       // Spy on Array.from to detect if arrays are being recreated
@@ -263,7 +288,12 @@ describe('Performance Benchmarks', () => {
 
       // Re-render with same props
       rerender(
-        <DtCalendar type='single' local='en' withTime onChange={() => {}} />
+        <DtCalendar
+          type='single'
+          calendarSystem='gregorian'
+          withTime
+          onChange={() => {}}
+        />
       )
 
       // Array.from should not be called again for static arrays
@@ -289,7 +319,7 @@ describe('Performance Benchmarks', () => {
       render(
         <DtCalendar
           type='single'
-          local='en'
+          calendarSystem='gregorian'
           numberOfMonths={2}
           onChange={() => {}}
         />
