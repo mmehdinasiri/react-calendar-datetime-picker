@@ -182,7 +182,14 @@ const exampleItems: SearchItem[] = [
     description: 'Calendar modal triggered by a custom styled button',
     href: '/customization#custombuttontrigger',
     category: 'example' as const,
-    tags: ['trigger', 'button', 'custom', 'styling', 'appearance', 'customization']
+    tags: [
+      'trigger',
+      'button',
+      'custom',
+      'styling',
+      'appearance',
+      'customization'
+    ]
   },
   {
     id: 'customization-custom-div-trigger',
@@ -191,7 +198,15 @@ const exampleItems: SearchItem[] = [
       'Calendar triggered by a beautifully styled div element with icon and gradient',
     href: '/customization#customdivtrigger',
     category: 'example' as const,
-    tags: ['trigger', 'div', 'icon', 'gradient', 'styling', 'appearance', 'customization']
+    tags: [
+      'trigger',
+      'div',
+      'icon',
+      'gradient',
+      'styling',
+      'appearance',
+      'customization'
+    ]
   },
   {
     id: 'customization-custom-styled-input',
@@ -200,7 +215,14 @@ const exampleItems: SearchItem[] = [
       'Date picker with custom styled input field using inline styles',
     href: '/customization#customstyledinput',
     category: 'example' as const,
-    tags: ['input', 'styling', 'appearance', 'customization', 'inline', 'styles']
+    tags: [
+      'input',
+      'styling',
+      'appearance',
+      'customization',
+      'inline',
+      'styles'
+    ]
   },
   {
     id: 'customization-react-hook-form',
@@ -217,7 +239,14 @@ const exampleItems: SearchItem[] = [
     description: 'Calendar with light theme (default)',
     href: '/customization#lighttheme',
     category: 'example' as const,
-    tags: ['theme', 'light', 'default', 'styling', 'appearance', 'customization']
+    tags: [
+      'theme',
+      'light',
+      'default',
+      'styling',
+      'appearance',
+      'customization'
+    ]
   },
   {
     id: 'customization-dark-theme',
@@ -234,7 +263,15 @@ const exampleItems: SearchItem[] = [
       'Calendar customized with blue color scheme using CSS variables',
     href: '/customization#blue-example',
     category: 'example' as const,
-    tags: ['css', 'variables', 'blue', 'colors', 'theme', 'customization', 'styling']
+    tags: [
+      'css',
+      'variables',
+      'blue',
+      'colors',
+      'theme',
+      'customization',
+      'styling'
+    ]
   },
   {
     id: 'customization-brown-example',
@@ -243,7 +280,15 @@ const exampleItems: SearchItem[] = [
       'Calendar customized with brown color scheme using CSS variables',
     href: '/customization#brown-example',
     category: 'example' as const,
-    tags: ['css', 'variables', 'brown', 'colors', 'theme', 'customization', 'styling']
+    tags: [
+      'css',
+      'variables',
+      'brown',
+      'colors',
+      'theme',
+      'customization',
+      'styling'
+    ]
   },
   {
     id: 'customization-smaller-calendar',
@@ -252,7 +297,15 @@ const exampleItems: SearchItem[] = [
       'Demonstrates how to create a smaller, more compact calendar using CSS variables',
     href: '/customization#smaller-calendar-example',
     category: 'example' as const,
-    tags: ['css', 'variables', 'responsive', 'smaller', 'compact', 'customization', 'styling']
+    tags: [
+      'css',
+      'variables',
+      'responsive',
+      'smaller',
+      'compact',
+      'customization',
+      'styling'
+    ]
   },
   {
     id: 'customization-larger-calendar',
@@ -261,7 +314,15 @@ const exampleItems: SearchItem[] = [
       'Shows how to create a larger calendar with bigger elements using CSS variables',
     href: '/customization#larger-calendar-example',
     category: 'example' as const,
-    tags: ['css', 'variables', 'responsive', 'larger', 'big', 'customization', 'styling']
+    tags: [
+      'css',
+      'variables',
+      'responsive',
+      'larger',
+      'big',
+      'customization',
+      'styling'
+    ]
   },
   {
     id: 'customization-custom-arrow-icons',
@@ -278,7 +339,15 @@ const exampleItems: SearchItem[] = [
       'Calendar with French month and weekday names - example of localization using customization prop',
     href: '/customization#custommonthandweekdaynames',
     category: 'example' as const,
-    tags: ['french', 'localization', 'i18n', 'language', 'months', 'weekdays', 'customization']
+    tags: [
+      'french',
+      'localization',
+      'i18n',
+      'language',
+      'months',
+      'weekdays',
+      'customization'
+    ]
   },
   {
     id: 'customization-spanish-localization',
@@ -287,7 +356,15 @@ const exampleItems: SearchItem[] = [
       'Calendar with Spanish month and weekday names - example of localization using customization prop',
     href: '/customization#customnamesspanish',
     category: 'example' as const,
-    tags: ['spanish', 'localization', 'i18n', 'language', 'months', 'weekdays', 'customization']
+    tags: [
+      'spanish',
+      'localization',
+      'i18n',
+      'language',
+      'months',
+      'weekdays',
+      'customization'
+    ]
   },
   {
     id: 'customization-custom-preset-labels',

@@ -20,9 +20,10 @@ export default function MigrationGuide() {
           <div className='flex'>
             <div className='ml-3'>
               <p className='text-sm text-gray-200'>
-                <strong>Minimal Breaking Changes:</strong> Version 2.x introduces
-                minimal breaking changes. Most existing code will continue to work
-                without modification, with only minor CSS class name updates.
+                <strong>Minimal Breaking Changes:</strong> Version 2.x
+                introduces minimal breaking changes. Most existing code will
+                continue to work without modification, with only minor CSS class
+                name updates.
               </p>
             </div>
           </div>
