@@ -46,34 +46,77 @@ function parsePerformanceResults(metricsPath) {
   }
 }
 
+function getTarget(metric) {
+  const targets = {
+    'DtCalendar (1 month)': '< 100ms',
+    'DtCalendar (3 months)': '< 200ms',
+    'Re-render (unchanged props)': '< 25ms',
+    'Month Navigation': '< 75ms',
+    'Array.from Calls (Re-render)': '0 calls',
+    'Array.from Calls': '0 calls',
+    'DtPicker Render': '< 150ms',
+    'DtPicker Modal Open': '< 100ms',
+    'Memoized Grid Navigation': '< 30ms'
+  }
+
+  // Find matching target (check if metric name contains any target key)
+  // Sort by length (longest first) to match more specific keys first
+  const sortedKeys = Object.keys(targets).sort((a, b) => b.length - a.length)
+
+  for (const targetKey of sortedKeys) {
+    if (metric.includes(targetKey)) {
+      return targets[targetKey]
+    }
+  }
+
+  return 'N/A'
+}
+
+function formatValue(value, isCalls) {
+  if (isCalls) {
+    return Math.round(value).toString()
+  }
+  return value.toFixed(2)
+}
+
+function getComparisonValue(current, baseline, isCalls) {
+  if (baseline === undefined || baseline === null) {
+    return 'null'
+  }
+
+  const diff = current - baseline
+  if (isCalls) {
+    return diff > 0 ? `+${Math.round(diff)}` : Math.round(diff).toString()
+  }
+  return diff >= 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2)
+}
+
 function generateMarkdownReport(
   metrics,
-  title = 'Performance Benchmark Results'
+  title = 'Performance Benchmark Results',
+  baselineMetrics = null
 ) {
   let report = `# 🚀 ${title}\n\n`
 
   report += '### 📊 Performance Metrics\n\n'
-  report += '| Metric | Value | Status |\n'
-  report += '|--------|-------|--------|\n'
+  report += '| Metric | Value | Target | Comparison | Status |\n'
+  report += '|--------|-------|--------|------------|--------|\n'
 
   Object.entries(metrics).forEach(([key, value]) => {
-    const unit = key.includes('Calls') ? 'calls' : 'ms'
+    const isCalls = key.includes('Calls')
+    const unit = isCalls ? 'calls' : 'ms'
+    const formattedValue = formatValue(value, isCalls)
+    const target = getTarget(key)
     const status = getStatus(key, value)
-    report += `| ${key} | ${value}${unit} | ${status} |\n`
-  })
 
-  report += '\n### 📈 Performance Targets\n\n'
-  report += '| Metric | Target | Notes |\n'
-  report += '|--------|--------|-------|\n'
-  report += '| Calendar Render (1 month) | < 100ms | Initial load time |\n'
-  report += '| Calendar Render (3 months) | < 200ms | Multi-month view |\n'
-  report +=
-    '| Re-render (unchanged props) | < 25ms | Memoization effectiveness |\n'
-  report += '| Month Navigation | < 75ms | User interaction |\n'
-  report +=
-    '| Array.from Calls (Re-render) | 0 calls | Static array optimization |\n'
-  report += '| DtPicker Render | < 150ms | Component initialization |\n'
-  report += '| DtPicker Modal Open | < 100ms | Modal interaction |\n'
+    // Get comparison value (difference from baseline)
+    const baselineValue = baselineMetrics ? baselineMetrics[key] : null
+    const comparison = getComparisonValue(value, baselineValue, isCalls)
+    const comparisonStr =
+      comparison === 'null' ? 'null' : `${comparison}${unit}`
+
+    report += `| ${key} | ${formattedValue}${unit} | ${target} | ${comparisonStr} | ${status} |\n`
+  })
 
   report += '\n_Generated on ' + new Date().toISOString() + '_\n'
 
@@ -88,15 +131,16 @@ function getStatus(metric, value) {
   const targets = {
     'DtCalendar (1 month)': 100,
     'DtCalendar (3 months)': 200,
-    'Re-render': 25,
+    'Re-render (unchanged props)': 25,
     'Month Navigation': 75,
     'DtPicker Render': 150,
     'DtPicker Modal Open': 100,
     'Memoized Grid Navigation': 30
   }
 
-  // Find matching target
-  const targetKey = Object.keys(targets).find((key) => metric.includes(key))
+  // Find matching target (sort by length to match more specific keys first)
+  const sortedKeys = Object.keys(targets).sort((a, b) => b.length - a.length)
+  const targetKey = sortedKeys.find((key) => metric.includes(key))
   if (!targetKey) return '❓ UNKNOWN'
 
   const target = targets[targetKey]
@@ -110,10 +154,15 @@ function compareMetrics(baseline, current) {
 
   Object.keys(current).forEach((key) => {
     const currentVal = current[key]
-    const baselineVal = baseline[key]
+    const baselineVal =
+      baseline && baseline[key] !== undefined ? baseline[key] : null
 
-    if (baselineVal === undefined) {
-      comparison[key] = { current: currentVal, change: 'NEW', status: '➕ NEW' }
+    if (baselineVal === null || baselineVal === undefined) {
+      comparison[key] = {
+        current: currentVal,
+        change: 'null',
+        status: '➕ NEW'
+      }
       return
     }
 
@@ -123,7 +172,8 @@ function compareMetrics(baseline, current) {
     let status, changeDesc
     if (isCalls) {
       // For call counts, lower is better
-      changeDesc = change > 0 ? `+${change}` : change.toString()
+      changeDesc =
+        change > 0 ? `+${Math.round(change)}` : Math.round(change).toString()
       status =
         change < 0 ? '✅ IMPROVED' : change > 0 ? '❌ DEGRADED' : '➡️ SAME'
     } else {
@@ -170,11 +220,14 @@ function generateComparisonReport(baselineMetrics, currentMetrics) {
 
   Object.entries(comparison).forEach(([key, data]) => {
     const unit = key.includes('Calls') ? 'calls' : 'ms'
+    const isCalls = key.includes('Calls')
     const baselineStr =
-      data.baseline !== undefined ? `${data.baseline}${unit}` : 'N/A'
-    const currentStr = `${data.current}${unit}`
+      data.baseline !== null && data.baseline !== undefined
+        ? `${formatValue(data.baseline, isCalls)}${unit}`
+        : 'null'
+    const currentStr = `${formatValue(data.current, isCalls)}${unit}`
 
-    report += `| ${key} | ${baselineStr} | ${currentStr} | ${data.diffIndicator} ${data.change}${unit} | ${data.change}${unit} | ${data.status} |\n`
+    report += `| ${key} | ${baselineStr} | ${currentStr} | ${data.diffIndicator} ${data.change === 'null' ? 'null' : data.change + unit} | ${data.change === 'null' ? 'null' : data.change + unit} | ${data.status} |\n`
   })
 
   // Summary
@@ -211,10 +264,27 @@ switch (command) {
     const resultsPath =
       args[1] || 'performance/results/performance-metrics.json'
     const outputPath = args[2] || 'performance/results/performance-report.md'
+    const baselinePath = args[3] || null
 
     try {
       const metrics = parsePerformanceResults(resultsPath)
-      const report = generateMarkdownReport(metrics)
+
+      // Try to load baseline metrics if path provided
+      let baselineMetrics = null
+      if (baselinePath && fs.existsSync(baselinePath)) {
+        try {
+          baselineMetrics = JSON.parse(fs.readFileSync(baselinePath, 'utf8'))
+          console.log('✅ Loaded baseline metrics for comparison')
+        } catch (e) {
+          console.warn('⚠️ Could not load baseline metrics:', e.message)
+        }
+      }
+
+      const report = generateMarkdownReport(
+        metrics,
+        'Performance Benchmark Results',
+        baselineMetrics
+      )
 
       fs.writeFileSync(outputPath, report)
       console.log(`Performance report generated: ${outputPath}`)
@@ -267,7 +337,7 @@ Current branch performance metrics are still available in the report above.`
       const baseline = JSON.parse(fs.readFileSync(baselinePath, 'utf8'))
       const current = JSON.parse(fs.readFileSync(currentPath, 'utf8'))
 
-      const report = generateComparisonReport(baseline, current)
+      const report = generateComparisonReport(baseline || null, current)
       fs.writeFileSync(compareOutputPath, report)
 
       console.log(`Performance comparison generated: ${compareOutputPath}`)
@@ -284,7 +354,7 @@ Current branch performance metrics are still available in the report above.`
   default: {
     console.log('Usage:')
     console.log(
-      '  node performance/scripts/generate-performance-report.js report [results.json] [output.md]'
+      '  node performance/scripts/generate-performance-report.js report [results.json] [output.md] [baseline.json]'
     )
     console.log(
       '  node performance/scripts/generate-performance-report.js compare [baseline.json] [current.json] [output.md]'
@@ -293,6 +363,9 @@ Current branch performance metrics are still available in the report above.`
     console.log('Examples:')
     console.log(
       '  node performance/scripts/generate-performance-report.js report'
+    )
+    console.log(
+      '  node performance/scripts/generate-performance-report.js report performance-metrics.json report.md baseline-metrics.json'
     )
     console.log(
       '  node performance/scripts/generate-performance-report.js compare baseline.json performance-metrics.json'
