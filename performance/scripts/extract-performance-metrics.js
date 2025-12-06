@@ -40,7 +40,7 @@ function main() {
   try {
     // Run the performance tests
     const output = execSync(
-      'npx vitest run tests/unit/calendar-performance.test.tsx',
+      'npx vitest run performance/tests/calendar-performance.test.tsx',
       {
         encoding: 'utf8',
         stdio: 'pipe'
@@ -55,7 +55,7 @@ function main() {
     if (metrics) {
       // Save to file
       fs.writeFileSync(
-        'performance-metrics.json',
+        'performance/results/performance-metrics.json',
         JSON.stringify(metrics, null, 2)
       )
       console.log(

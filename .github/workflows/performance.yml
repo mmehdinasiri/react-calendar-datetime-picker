@@ -56,7 +56,7 @@ jobs:
           # Create a simple script to parse the performance test results
           cat > parse-performance.js << 'EOF'
           const fs = require('fs');
-          const results = JSON.parse(fs.readFileSync('performance-results.json', 'utf8'));
+          const results = JSON.parse(fs.readFileSync('performance/results/performance-results.json', 'utf8'));
 
           const metrics = {};
 
@@ -103,10 +103,10 @@ jobs:
           console.log(JSON.stringify(metrics, null, 2));
           EOF
 
-          node parse-performance.js > performance-metrics.json
+          node parse-performance.js > performance/results/performance-metrics.json
 
           # Create human-readable report
-          cat > performance-report.md << 'EOF'
+          cat > performance/results/performance-report.md << 'EOF'
           ## 🚀 Performance Benchmark Results
 
           ### 📊 Current Branch Performance
@@ -140,7 +140,7 @@ jobs:
 
           # Set output for GitHub Actions
           echo "report<<EOF" >> $GITHUB_OUTPUT
-          cat performance-report.md >> $GITHUB_OUTPUT
+          cat performance/results/performance-report.md >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Checkout main branch for baseline
@@ -171,7 +171,7 @@ jobs:
           # Parse main branch results
           cat > parse-performance.js << 'EOF'
           const fs = require('fs');
-          const results = JSON.parse(fs.readFileSync('performance-results-main.json', 'utf8'));
+          const results = JSON.parse(fs.readFileSync('performance/results/performance-results-main.json', 'utf8'));
 
           const metrics = {};
 
@@ -204,7 +204,7 @@ jobs:
           console.log(JSON.stringify(metrics, null, 2));
           EOF
 
-          node parse-performance.js > performance-metrics-main.json
+          node parse-performance.js > performance/results/performance-metrics-main.json
 
       - name: Generate comparison report
         if: github.event_name == 'pull_request'
@@ -212,11 +212,11 @@ jobs:
         run: |
           echo "Generating performance comparison report..."
 
-          cat > compare-performance.js << 'EOF'
+          cat > performance/results/compare-performance.js << 'EOF'
           const fs = require('fs');
 
-          const current = JSON.parse(fs.readFileSync('performance-metrics.json', 'utf8'));
-          const baseline = JSON.parse(fs.readFileSync('performance-metrics-main.json', 'utf8'));
+          const current = JSON.parse(fs.readFileSync('performance/results/performance-metrics.json', 'utf8'));
+          const baseline = JSON.parse(fs.readFileSync('performance/results/performance-metrics-main.json', 'utf8'));
 
           console.log('# ⚡ Performance Comparison: PR vs Main Branch');
           console.log('');
@@ -289,11 +289,11 @@ jobs:
           console.log('_Performance comparison generated automatically_');
           EOF
 
-          node compare-performance.js > performance-comparison.md
+          node compare-performance.js > performance/results/performance-comparison.md
 
           # Set output for GitHub Actions
           echo "comparison<<EOF" >> $GITHUB_OUTPUT
-          cat performance-comparison.md >> $GITHUB_OUTPUT
+          cat performance/results/performance-comparison.md >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Check performance regression
@@ -304,8 +304,8 @@ jobs:
           const fs = require('fs');
 
           try {
-            const baseline = JSON.parse(fs.readFileSync('performance-metrics-main.json', 'utf8'));
-            const current = JSON.parse(fs.readFileSync('performance-metrics.json', 'utf8'));
+            const baseline = JSON.parse(fs.readFileSync('performance/results/performance-metrics-main.json', 'utf8'));
+            const current = JSON.parse(fs.readFileSync('performance/results/performance-metrics.json', 'utf8'));
 
             let hasRegression = false;
             const regressions = [];
@@ -385,7 +385,7 @@ jobs:
         with:
           name: performance-results-${{ github.sha }}
           path: |
-            performance-metrics.json
-            performance-report.md
-            ${{ github.event_name == 'pull_request' && 'performance-comparison.md' || '' }}
-            ${{ github.event_name == 'pull_request' && 'main-branch/performance-metrics-main.json' || '' }}
+            performance/results/performance-metrics.json
+            performance/results/performance-report.md
+            ${{ github.event_name == 'pull_request' && 'performance/results/performance-comparison.md' || '' }}
+            ${{ github.event_name == 'pull_request' && 'performance/results/performance-metrics-main.json' || '' }}
