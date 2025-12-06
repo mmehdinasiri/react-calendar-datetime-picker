@@ -100,6 +100,22 @@ function getBundleStatus(asset, size) {
   return size <= limit ? '✅ PASS' : '❌ FAIL'
 }
 
+function getBundleComparison(current, baseline) {
+  if (baseline === undefined || baseline === null) {
+    return 'null'
+  }
+
+  const diff = current - baseline
+  const percentChange = baseline > 0 ? (diff / baseline) * 100 : 0
+
+  if (diff === 0) return '0 B'
+  if (diff > 0) {
+    return `+${formatBytes(diff)} (+${percentChange.toFixed(1)}%)`
+  } else {
+    return `${formatBytes(diff)} (${percentChange.toFixed(1)}%)`
+  }
+}
+
 function getComparisonValue(current, baseline, isCalls) {
   if (baseline === undefined || baseline === null) {
     return 'null'
@@ -116,15 +132,16 @@ function generateMarkdownReport(
   metrics,
   title = 'Performance Benchmark Results',
   baselineMetrics = null,
-  bundleMetrics = null
+  bundleMetrics = null,
+  baselineBundleMetrics = null
 ) {
   let report = `# 🚀 ${title}\n\n`
 
   // Bundle Size Section (if available)
   if (bundleMetrics) {
     report += '### 📦 Bundle Size\n\n'
-    report += '| Asset | Size | Gzipped | Status |\n'
-    report += '|-------|------|---------|--------|\n'
+    report += '| Asset | Size | Gzipped | Comparison | Status |\n'
+    report += '|-------|------|---------|------------|--------|\n'
 
     Object.entries(bundleMetrics).forEach(([key, value]) => {
       const isGzip = key.includes('(gzip)')
@@ -133,14 +150,35 @@ function generateMarkdownReport(
       const status = getBundleStatus(baseName, size)
       const sizeStr = formatBytes(value)
 
+      // Get comparison value from baseline
+      const baselineValue = baselineBundleMetrics
+        ? baselineBundleMetrics[key]
+        : null
+      const comparison =
+        baselineValue !== null && baselineValue !== undefined
+          ? getBundleComparison(value, baselineValue)
+          : 'null'
+
       if (isGzip) {
         // Find corresponding raw size
         const rawKey = key.replace(' (gzip)', ' (raw)')
         const rawSize = bundleMetrics[rawKey]
-        report += `| ${baseName} | ${formatBytes(rawSize)} | ${sizeStr} | ${status} |\n`
+        const rawComparison =
+          baselineBundleMetrics && baselineBundleMetrics[rawKey] !== undefined
+            ? getBundleComparison(rawSize, baselineBundleMetrics[rawKey])
+            : 'null'
+        report += `| ${baseName} | ${formatBytes(rawSize)} (${rawComparison}) | ${sizeStr} (${comparison}) | ${comparison} | ${status} |\n`
       }
     })
     report += '\n'
+
+    // Only show note if no baseline bundle metrics are available for comparison
+    if (!baselineBundleMetrics) {
+      report +=
+        '> **Note:** Bundle size comparison against main branch is not available. '
+      report +=
+        'This may be because the main branch has a different project structure or bundle size tracking is not set up.\n\n'
+    }
   }
 
   report += '### ⚡ Performance Metrics\n\n'
@@ -162,6 +200,14 @@ function generateMarkdownReport(
 
     report += `| ${key} | ${formattedValue}${unit} | ${target} | ${comparisonStr} | ${status} |\n`
   })
+
+  if (!baselineMetrics) {
+    report += '\n'
+    report +=
+      '> **Note:** Performance comparison against main branch is not available. '
+    report +=
+      'This may be because the main branch has a different project structure or performance tests are not set up.\n'
+  }
 
   report += '\n_Generated on ' + new Date().toISOString() + '_\n'
 
@@ -325,6 +371,21 @@ switch (command) {
         }
       }
 
+      // Try to load baseline bundle metrics if available
+      let baselineBundleMetrics = null
+      const baselineBundleMetricsPath =
+        'performance/results/bundle-metrics-main.json'
+      if (fs.existsSync(baselineBundleMetricsPath)) {
+        try {
+          baselineBundleMetrics = JSON.parse(
+            fs.readFileSync(baselineBundleMetricsPath, 'utf8')
+          )
+          console.log('✅ Loaded baseline bundle metrics for comparison')
+        } catch (e) {
+          console.warn('⚠️ Could not load baseline bundle metrics:', e.message)
+        }
+      }
+
       // Try to load bundle metrics if available
       let bundleMetrics = null
       const bundleMetricsPath = 'performance/results/bundle-metrics.json'
@@ -341,7 +402,8 @@ switch (command) {
         metrics,
         'Performance Benchmark Results',
         baselineMetrics,
-        bundleMetrics
+        bundleMetrics,
+        baselineBundleMetrics
       )
 
       fs.writeFileSync(outputPath, report)
