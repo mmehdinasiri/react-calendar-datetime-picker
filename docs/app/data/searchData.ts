@@ -142,15 +142,15 @@ const apiItems: SearchItem[] = [
     // Generate tags based on type definition content
     const tags = ['type', 'typescript', 'interface']
 
-    // Add calendar-related tags for CalendarSystemInput and CalendarLocale
-    if (type.name === 'CalendarSystemInput' || type.name === 'CalendarLocale') {
+    // Add calendar-related tags for CalendarSystem and CalendarLocale
+    if (type.name === 'CalendarSystem' || type.name === 'CalendarLocale') {
       tags.push('gregorian', 'jalali', 'calendar', 'system')
-      if (type.name === 'CalendarSystemInput') {
+      if (type.name === 'CalendarSystem') {
         tags.push('ge', 'ja', 'alias', 'shorthand')
       }
     }
 
-    // Convert type name to lowercase for anchor (e.g., "CalendarSystemInput" -> "calendarsysteminput")
+    // Convert type name to lowercase for anchor (e.g., "CalendarSystem" -> "calendarsystem")
     const anchorId = type.name.toLowerCase()
 
     return {

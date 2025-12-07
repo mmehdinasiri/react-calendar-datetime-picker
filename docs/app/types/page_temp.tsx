@@ -241,6 +241,31 @@ const dateOnly: Day = {
           </SyntaxHighlighter>
         </div>
 
+        <h2 id='calendarlocale'>CalendarLocale</h2>
+
+        <p>
+          The <code>CalendarLocale</code> type specifies which calendar system
+          to use. This is the internal type used throughout the library.
+        </p>
+
+        <div className='rounded-lg overflow-hidden border border-border mb-4'>
+          <SyntaxHighlighter
+            language='typescript'
+            style={vscDarkPlus}
+            customStyle={{
+              margin: 0,
+              borderRadius: '0.5rem',
+              fontSize: '0.875rem',
+              lineHeight: '1.5'
+            }}
+          >
+            {`type CalendarLocale = 'gregorian' | 'jalali'
+
+// 'gregorian' - Gregorian calendar
+// 'jalali' - Jalali calendar (Persian)`}
+          </SyntaxHighlighter>
+        </div>
+
         <h2 id='calendarsystem'>CalendarSystem</h2>
 
         <p>
@@ -313,13 +338,13 @@ const dateOnly: Day = {
           </div>
         </div>
 
-        <h2 id='locale'>Locale</h2>
+        <h2 id='calendaruilocale'>CalendarUILocale</h2>
 
         <p>
-          The <code>locale</code> prop accepts a <code>CalendarUILocale</code>{' '}
-          type that specifies the user interface language and text direction for
-          the calendar. Each locale determines both the language of labels and
-          the number system (Latin vs Persian numerals).
+          The <code>CalendarUILocale</code> type specifies the user interface
+          language and text direction for the calendar. Each locale determines
+          both the language of labels and the number system (Latin vs Persian
+          numerals).
         </p>
 
         <div className='rounded-lg overflow-hidden border border-border mb-4'>
@@ -426,3 +451,4 @@ function App() {
     </div>
   )
 }
+

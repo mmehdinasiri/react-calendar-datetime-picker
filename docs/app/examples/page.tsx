@@ -5,6 +5,8 @@ import { examples } from '../examplesConfig'
 import { ExampleRenderer } from '../components/ExampleRenderer'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 // Helper function to convert string to kebab case for IDs
 const toKebabCase = (str: string) =>
@@ -50,375 +52,543 @@ export default function Examples() {
       </div>
 
       <div className='space-y-16'>
-        {Object.entries(examples).map(([groupName, groupExamples]) => (
-          <div key={groupName} id={toKebabCase(groupName)}>
-            <h2 className='text-3xl font-bold text-gray-900 dark:text-white mb-8 pb-4 border-b border-border'>
-              {groupName === 'internationalization'
-                ? 'Internationalization'
-                : groupName === 'Locales'
-                  ? 'Locales'
-                  : groupName === 'translation-customization'
-                    ? 'Translation Customization'
-                    : groupName}
-            </h2>
-            {groupName === 'Locales' && (
-              <div className='mb-8 space-y-4'>
-                <p className='text-gray-600 dark:text-gray-400 text-lg'>
-                  A locale determines the language and regional settings for the
-                  calendar component. When you set the{' '}
-                  <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
-                    locale
-                  </code>{' '}
-                  prop, the calendar automatically adapts all UI text, including
-                  month names, weekday names, button labels, and number
-                  formatting to match the selected language. Each locale also
-                  configures the text direction (LTR or RTL) and number system
-                  (Latin or Persian numerals).
-                </p>
-                <div className='text-gray-600 dark:text-gray-400'>
-                  <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                    Supported Locales:
+        {Object.entries(examples)
+          .filter(
+            ([groupName]) =>
+              groupName !== 'Locale' &&
+              groupName !== 'Translation Customization' &&
+              groupName !== 'Date Utilities' &&
+              groupName !== 'Customization'
+          )
+          .map(([groupName, groupExamples]) => (
+            <div key={groupName} id={toKebabCase(groupName)}>
+              <h2 className='text-3xl font-bold text-gray-900 dark:text-white mb-8 pb-4 border-b border-border'>
+                {groupName}
+              </h2>
+              {groupName === 'Basic' && (
+                <div className='mb-8 space-y-4'>
+                  <p className='text-gray-600 dark:text-gray-400 text-lg'>
+                    React Calendar DateTime Picker provides two main components
+                    for different use cases:
                   </p>
-                  <ul className='list-disc list-inside space-y-1 ml-4'>
-                    <li>
-                      <strong>English (en)</strong> - Default locale with Latin
-                      numbers, LTR direction, and English month/weekday names
-                    </li>
-                    <li>
-                      <strong>Persian (fa)</strong> - Persian/Farsi locale with
-                      Persian numerals, RTL direction, and Persian month/weekday
-                      names. Uses Jalali calendar system.
-                    </li>
-                    <li>
-                      <strong>German (de)</strong> - German locale with Latin
-                      numbers, LTR direction, and German month/weekday names
-                    </li>
-                    <li>
-                      <strong>Spanish (es)</strong> - Spanish locale with Latin
-                      numbers, LTR direction, and Spanish month/weekday names
-                    </li>
-                    <li>
-                      <strong>French (fr)</strong> - French locale with Latin
-                      numbers, LTR direction, and French month/weekday names
-                    </li>
-                  </ul>
+                  <div className='text-gray-600 dark:text-gray-400 space-y-4'>
+                    <div>
+                      <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                        <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                          DtPicker
+                        </code>
+                      </p>
+                      <p>
+                        A date picker component with an input field that opens a
+                        calendar in a modal/popup when clicked. Perfect for
+                        forms and scenarios where you need a compact input that
+                        reveals the calendar on demand. The input field displays
+                        the selected date in a formatted string, while the
+                        component internally works with{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Day
+                        </code>{' '}
+                        objects.
+                      </p>
+                      <ul className='list-disc list-inside space-y-1 ml-4 mt-2'>
+                        <li>Includes an input field with placeholder</li>
+                        <li>Opens calendar in a modal/popup</li>
+                        <li>Supports clear button and validation</li>
+                        <li>Can show time in the input field</li>
+                        <li>Ideal for forms and compact UI spaces</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                        <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                          DtCalendar
+                        </code>
+                      </p>
+                      <p>
+                        A standalone calendar component that displays the
+                        calendar directly in the page. Perfect for dashboards,
+                        calendar views, and scenarios where you want the
+                        calendar always visible. The component works directly
+                        with{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Day
+                        </code>{' '}
+                        objects and provides full calendar functionality.
+                      </p>
+                      <ul className='list-disc list-inside space-y-1 ml-4 mt-2'>
+                        <li>Always visible calendar display</li>
+                        <li>No input field or modal</li>
+                        <li>Direct calendar interaction</li>
+                        <li>Perfect for dashboards and calendar views</li>
+                        <li>Supports all selection types and features</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
-            {groupName === 'Translation Customization' && (
-              <div className='mb-8 space-y-4'>
-                <p className='text-gray-600 dark:text-gray-400 text-lg'>
-                  While the built-in locales provide comprehensive translations
-                  for common languages, you may need to customize specific
-                  translations to match your application's requirements. You can
-                  override any part of the translations by providing a partial{' '}
-                  <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
-                    translations
-                  </code>{' '}
-                  object through the{' '}
-                  <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
-                    customization
-                  </code>{' '}
-                  prop. This allows you to customize specific labels, month
-                  names, or weekday names while keeping the rest of the locale
-                  defaults intact.
-                </p>
-                <p className='text-gray-600 dark:text-gray-400 text-lg'>
-                  The{' '}
-                  <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
-                    CalendarTranslations
-                  </code>{' '}
-                  interface defines all customizable translation properties. You
-                  can override any of these properties partially, and the
-                  component will merge your customizations with the default
-                  locale translations.
-                </p>
-                <div className='overflow-x-auto'>
-                  <table className='min-w-full border-collapse border border-gray-300 dark:border-gray-700 mt-4'>
-                    <thead>
-                      <tr className='bg-gray-100 dark:bg-gray-800'>
-                        <th className='border border-gray-300 dark:border-gray-700 px-4 py-2 text-left font-semibold text-gray-900 dark:text-gray-100'>
-                          Property
-                        </th>
-                        <th className='border border-gray-300 dark:border-gray-700 px-4 py-2 text-left font-semibold text-gray-900 dark:text-gray-100'>
-                          Type
-                        </th>
-                        <th className='border border-gray-300 dark:border-gray-700 px-4 py-2 text-left font-semibold text-gray-900 dark:text-gray-100'>
-                          Description
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className='text-gray-600 dark:text-gray-400'>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          months
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string[]
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Month names (12 elements, index 0-11 for months 1-12)
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          weekdays
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string[]
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Weekday names (7 elements, starting from first day of
-                          week)
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          direction
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          'ltr' | 'rtl'
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Text direction (Left-to-Right or Right-to-Left)
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          numbers
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          'latin' | 'persian'
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Number system (Latin or Persian numerals)
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.today
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Today button text
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.clear
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Clear button text{' '}
-                          <strong>aria-label (accessibility only)</strong> -{' '}
-                          <em>DtPicker only</em>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.ok
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          OK/Confirm button text
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.nextMonth
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Next month navigation button{' '}
-                          <strong>title (tooltip)</strong>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.previousMonth
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Previous month navigation button{' '}
-                          <strong>title (tooltip)</strong>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.selectMonth
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Month selection view{' '}
-                          <strong>aria-label (accessibility only)</strong>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.selectYear
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Year selection view{' '}
-                          <strong>aria-label (accessibility only)</strong>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.from
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Input field from label (for date range display in
-                          DtPicker)
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.to
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Input field to label (for date range display in
-                          DtPicker)
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.timeFrom
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Time selector from label (for time input in range
-                          selection)
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.timeTo
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Time selector to label (for time input in range
-                          selection)
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.am
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          AM indicator
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          labels.pm
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          PM indicator
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          presetRanges.yesterday
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Yesterday preset range label
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          presetRanges.last7days
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Last 7 days preset range label
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          presetRanges.last30days
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Last 30 days preset range label
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          presetRanges.thisMonth
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          This month preset range label
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2 font-mono text-sm'>
-                          presetRanges.lastMonth
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          string
-                        </td>
-                        <td className='border border-gray-300 dark:border-gray-700 px-4 py-2'>
-                          Last month preset range label
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+              )}
+              {groupName === 'Types' && (
+                <div className='mb-8 space-y-4'>
+                  <p className='text-gray-600 dark:text-gray-400 text-lg'>
+                    The{' '}
+                    <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                      type
+                    </code>{' '}
+                    prop determines the selection behavior of the calendar
+                    component. You can choose from four different selection
+                    types, each with its own use case and return value format.
+                  </p>
+                  <div>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Type Definition:
+                    </p>
+                    <div className='rounded-lg overflow-hidden border border-border'>
+                      <SyntaxHighlighter
+                        language='typescript'
+                        style={vscDarkPlus}
+                        customStyle={{
+                          margin: 0,
+                          borderRadius: '0.5rem',
+                          fontSize: '0.875rem',
+                          lineHeight: '1.5'
+                        }}
+                      >
+                        {`type CalendarType = 'single' | 'range' | 'multi' | 'week'`}
+                      </SyntaxHighlighter>
+                    </div>
+                  </div>
+                  <div className='text-gray-600 dark:text-gray-400'>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Selection Types:
+                    </p>
+                    <ul className='list-disc list-inside space-y-1 ml-4'>
+                      <li>
+                        <strong>single</strong> - Select a single date
+                        (default). Returns a{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Day
+                        </code>{' '}
+                        object or null.
+                      </li>
+                      <li>
+                        <strong>range</strong> - Select a date range. Returns a{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Range
+                        </code>{' '}
+                        object with{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          from
+                        </code>{' '}
+                        and{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          to
+                        </code>{' '}
+                        properties, or null.
+                      </li>
+                      <li>
+                        <strong>multi</strong> - Select multiple dates. Returns
+                        a{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Multi
+                        </code>{' '}
+                        array of{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Day
+                        </code>{' '}
+                        objects, or null.
+                      </li>
+                      <li>
+                        <strong>week</strong> - Select an entire week at once.
+                        Returns a{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Range
+                        </code>{' '}
+                        object representing the week, or null.
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+              )}
+              {groupName === 'Time' && (
+                <div className='mb-8 space-y-4'>
+                  <p className='text-gray-600 dark:text-gray-400 text-lg'>
+                    The calendar component supports time selection through the{' '}
+                    <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                      withTime
+                    </code>{' '}
+                    prop. When enabled, users can select both date and time. The{' '}
+                    <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                      timeFormat
+                    </code>{' '}
+                    prop allows you to choose between 12-hour (AM/PM) and
+                    24-hour time formats.
+                  </p>
+                  <div>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Type Definitions:
+                    </p>
+                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                      <SyntaxHighlighter
+                        language='typescript'
+                        style={vscDarkPlus}
+                        customStyle={{
+                          margin: 0,
+                          borderRadius: '0.5rem',
+                          fontSize: '0.875rem',
+                          lineHeight: '1.5'
+                        }}
+                      >
+                        {`withTime?: boolean
+timeFormat?: '12' | '24'`}
+                      </SyntaxHighlighter>
+                    </div>
+                  </div>
+                  <div className='text-gray-600 dark:text-gray-400'>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Props:
+                    </p>
+                    <ul className='list-disc list-inside space-y-1 ml-4'>
+                      <li>
+                        <strong>withTime</strong> - When set to{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          true
+                        </code>
+                        , enables time selection. The selected{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Day
+                        </code>{' '}
+                        object will include{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          hour
+                        </code>{' '}
+                        and{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          minute
+                        </code>{' '}
+                        properties.
+                      </li>
+                      <li>
+                        <strong>timeFormat</strong> - Determines the time
+                        display format:
+                        <ul className='list-disc list-inside space-y-1 ml-6 mt-1'>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              '12'
+                            </code>{' '}
+                            - 12-hour format with AM/PM indicators (1-12)
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              '24'
+                            </code>{' '}
+                            - 24-hour format (0-23)
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+              {groupName === 'Callbacks' && (
+                <div className='mb-8 space-y-4'>
+                  <p className='text-gray-600 dark:text-gray-400 text-lg'>
+                    The calendar component provides several callback functions
+                    that allow you to respond to user interactions and state
+                    changes. These callbacks enable you to track date
+                    selections, view changes, navigation events, and more.
+                  </p>
+                  <div>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Callback Type Definitions:
+                    </p>
+                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                      <SyntaxHighlighter
+                        language='typescript'
+                        style={vscDarkPlus}
+                        customStyle={{
+                          margin: 0,
+                          borderRadius: '0.5rem',
+                          fontSize: '0.875rem',
+                          lineHeight: '1.5'
+                        }}
+                      >
+                        {`// Main callback - type depends on selection type
+onChange: (date: Day | Range | Multi | null) => void
+
+// Event-specific callbacks
+onDateSelect?: (day: Day) => void
+onMonthSelect?: (month: number) => void
+onYearSelect?: (year: number) => void
+onViewChange?: (view: 'calendar' | 'months' | 'years') => void
+onMonthNavigate?: (direction: 'prev' | 'next') => void
+onGoToToday?: () => void`}
+                      </SyntaxHighlighter>
+                    </div>
+                  </div>
+                  <div className='text-gray-600 dark:text-gray-400'>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Callbacks:
+                    </p>
+                    <ul className='list-disc list-inside space-y-1 ml-4'>
+                      <li>
+                        <strong>onChange</strong> - Main callback fired when the
+                        selected date value changes. The type of the parameter
+                        depends on the{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          type
+                        </code>{' '}
+                        prop:
+                        <ul className='list-disc list-inside space-y-1 ml-6 mt-1'>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              type='single'
+                            </code>{' '}
+                            - Receives{' '}
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              Day | null
+                            </code>
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              type='range'
+                            </code>{' '}
+                            - Receives{' '}
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              Range | null
+                            </code>
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              type='multi'
+                            </code>{' '}
+                            - Receives{' '}
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              Multi | null
+                            </code>
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              type='week'
+                            </code>{' '}
+                            - Receives{' '}
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              Range | null
+                            </code>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <strong>onDateSelect</strong> - Fired when a date is
+                        clicked, before the final selection is confirmed.
+                        Receives the raw{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Day
+                        </code>{' '}
+                        object that was clicked.
+                      </li>
+                      <li>
+                        <strong>onMonthSelect</strong> - Fired when a month is
+                        selected in the month selection view. Receives the month
+                        number (1-12).
+                      </li>
+                      <li>
+                        <strong>onYearSelect</strong> - Fired when a year is
+                        selected in the year selection view. Receives the year
+                        number.
+                      </li>
+                      <li>
+                        <strong>onViewChange</strong> - Fired when the calendar
+                        view changes between calendar, months, or years.
+                        Receives the new view name.
+                      </li>
+                      <li>
+                        <strong>onMonthNavigate</strong> - Fired when navigating
+                        between months using the previous/next buttons. Receives{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          'prev'
+                        </code>{' '}
+                        or{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          'next'
+                        </code>
+                        .
+                      </li>
+                      <li>
+                        <strong>onGoToToday</strong> - Fired when the "Today"
+                        button is clicked. No parameters.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+              {groupName === 'Date Formatting' && (
+                <div className='mb-8 space-y-4'>
+                  <p className='text-gray-600 dark:text-gray-400 text-lg'>
+                    The calendar component allows you to customize the date
+                    format displayed in the input field (for{' '}
+                    <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                      DtPicker
+                    </code>
+                    ) using the{' '}
+                    <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                      dateFormat
+                    </code>{' '}
+                    prop. This only affects the display format, not the internal
+                    data structure which always uses{' '}
+                    <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                      Day
+                    </code>{' '}
+                    objects.
+                  </p>
+                  <div>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Type Definition:
+                    </p>
+                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                      <SyntaxHighlighter
+                        language='typescript'
+                        style={vscDarkPlus}
+                        customStyle={{
+                          margin: 0,
+                          borderRadius: '0.5rem',
+                          fontSize: '0.875rem',
+                          lineHeight: '1.5'
+                        }}
+                      >
+                        {`dateFormat?: string`}
+                      </SyntaxHighlighter>
+                    </div>
+                  </div>
+                  <div className='text-gray-600 dark:text-gray-400'>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Format Tokens:
+                    </p>
+                    <ul className='list-disc list-inside space-y-1 ml-4'>
+                      <li>
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          YYYY
+                        </code>{' '}
+                        - 4-digit year (e.g., 2025)
+                      </li>
+                      <li>
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          MM
+                        </code>{' '}
+                        - 2-digit month (e.g., 01-12)
+                      </li>
+                      <li>
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          DD
+                        </code>{' '}
+                        - 2-digit day (e.g., 01-31)
+                      </li>
+                    </ul>
+                    <p className='mt-4'>
+                      <strong>Examples:</strong>
+                    </p>
+                    <ul className='list-disc list-inside space-y-1 ml-4'>
+                      <li>
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          "DD/MM/YYYY"
+                        </code>{' '}
+                        - European format (e.g., 25/12/2025)
+                      </li>
+                      <li>
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          "MM-DD-YYYY"
+                        </code>{' '}
+                        - US format (e.g., 12-25-2025)
+                      </li>
+                      <li>
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          "YYYY/MM/DD"
+                        </code>{' '}
+                        - ISO format (e.g., 2025/12/25)
+                      </li>
+                      <li>
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          "YYYY년 MM월 DD일"
+                        </code>{' '}
+                        - Custom format with text (e.g., 2025년 12월 25일)
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+              {groupName === 'Multiple Months' && (
+                <div className='mb-8 space-y-4'>
+                  <p className='text-gray-600 dark:text-gray-400 text-lg'>
+                    The calendar component can display multiple months side by
+                    side using the{' '}
+                    <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                      numberOfMonths
+                    </code>{' '}
+                    prop. This is particularly useful for range selection,
+                    allowing users to see a wider date range at once and select
+                    start and end dates more easily.
+                  </p>
+                  <div>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Type Definition:
+                    </p>
+                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                      <SyntaxHighlighter
+                        language='typescript'
+                        style={vscDarkPlus}
+                        customStyle={{
+                          margin: 0,
+                          borderRadius: '0.5rem',
+                          fontSize: '0.875rem',
+                          lineHeight: '1.5'
+                        }}
+                      >
+                        {`numberOfMonths?: 1 | 2 | 3`}
+                      </SyntaxHighlighter>
+                    </div>
+                  </div>
+                  <div className='text-gray-600 dark:text-gray-400'>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Options:
+                    </p>
+                    <ul className='list-disc list-inside space-y-1 ml-4'>
+                      <li>
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          1
+                        </code>{' '}
+                        - Display a single month (default)
+                      </li>
+                      <li>
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          2
+                        </code>{' '}
+                        - Display two months side by side
+                      </li>
+                      <li>
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          3
+                        </code>{' '}
+                        - Display three months side by side
+                      </li>
+                    </ul>
+                    <p className='mt-4'>
+                      <strong>Note:</strong> Multiple months are especially
+                      useful for range selection, as users can easily see and
+                      select dates across month boundaries.
+                    </p>
+                  </div>
+                </div>
+              )}
+              <div className='space-y-8'>
+                {Object.entries(groupExamples).map(([exampleKey, config]) => (
+                  <ExampleRenderer
+                    key={exampleKey}
+                    config={config}
+                    exampleKey={exampleKey}
+                    category={groupName}
+                  />
+                ))}
               </div>
-            )}
-            <div className='space-y-8'>
-              {Object.entries(groupExamples).map(([exampleKey, config]) => (
-                <ExampleRenderer
-                  key={exampleKey}
-                  config={config}
-                  exampleKey={exampleKey}
-                  category={groupName}
-                />
-              ))}
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   )

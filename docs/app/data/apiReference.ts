@@ -62,7 +62,7 @@ export const sharedProps: Prop[] = [
   },
   {
     name: 'calendarSystem',
-    type: 'CalendarSystemInput',
+    type: 'CalendarSystem',
     default: "'gregorian'",
     description:
       'Calendar system: "gregorian" or "jalali". Also accepts shorthand aliases: "ge" for "gregorian", "ja" for "jalali"'
@@ -254,9 +254,9 @@ export const types: Type[] = [
     definition: "type CalendarLocale = 'gregorian' | 'jalali'"
   },
   {
-    name: 'CalendarSystemInput',
+    name: 'CalendarSystem',
     definition:
-      "type CalendarSystemInput = 'gregorian' | 'jalali' | 'ge' | 'ja'"
+      "type CalendarSystem = 'gregorian' | 'jalali' | 'ge' | 'ja'"
   },
   {
     name: 'DateInput',

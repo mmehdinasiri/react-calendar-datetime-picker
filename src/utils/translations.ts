@@ -344,11 +344,12 @@ export function mergeTranslations(
       : defaultTranslations.direction ||
         (locale ? getTextDirection(locale) : 'ltr')
 
-  // Month names: custom translations override, otherwise use calendar system-based months
-  // This ensures jalali calendar shows jalali month names, gregorian shows gregorian month names
+  // Month names: custom translations override, otherwise use locale-specific months
+  // For Jalali calendar, always use Persian month names regardless of locale
+  // For Gregorian calendar, use locale-specific month names (French, German, etc.)
   const months =
     customTranslations?.months ||
-    (calendarSystem
+    (calendarSystem === 'jalali'
       ? getMonthNamesByCalendarSystem(calendarSystem)
       : defaultTranslations.months)
 

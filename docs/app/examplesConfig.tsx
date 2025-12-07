@@ -147,7 +147,7 @@ export const examples: ExamplesConfig = {
       wrapper: 'calendar-container'
     }
   },
-  'Types & Locale': {
+  Types: {
     SingleDateSelection: {
       title: 'Single Date Selection',
       description: 'Select a single date (default)',
@@ -188,7 +188,7 @@ export const examples: ExamplesConfig = {
       wrapper: 'calendar-container'
     }
   },
-  Locales: {
+  Locale: {
     PersianCalendar: {
       title: 'Persian Calendar',
       description:
@@ -209,6 +209,32 @@ export const examples: ExamplesConfig = {
       component: 'DtCalendar',
       props: {
         locale: 'fr',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    JalaliWithEnglishLocale: {
+      title: 'Jalali Calendar with English Locale',
+      description:
+        'Jalali calendar system (ja) with English locale (en) - displays Jalali dates with English month names and LTR layout',
+      component: 'DtCalendar',
+      props: {
+        calendarSystem: 'ja',
+        locale: 'en',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    GregorianWithPersianLocale: {
+      title: 'Gregorian Calendar with Persian Locale',
+      description:
+        'Gregorian calendar system (ge) with Persian locale (fa) - displays Gregorian dates with Persian month names, RTL layout, and Persian numerals',
+      component: 'DtCalendar',
+      props: {
+        calendarSystem: 'ge',
+        locale: 'fa',
         showWeekend: true,
         todayBtn: true
       },

@@ -4,7 +4,7 @@
 
 import { toJalaali, toGregorian } from 'jalaali-js'
 import type { Day } from '../types'
-import type { CalendarLocale, CalendarSystemInput } from '../types/calendar'
+import type { CalendarLocale, CalendarSystem } from '../types/calendar'
 
 /**
  * Convert Gregorian Day to Jalali Day
@@ -70,7 +70,7 @@ export function convertToLocale(
  * Converts shorthand aliases ('ge' -> 'gregorian', 'ja' -> 'jalali')
  */
 export function normalizeCalendarSystem(
-  input: CalendarSystemInput | undefined
+  input: CalendarSystem | undefined
 ): CalendarLocale {
   if (!input) return 'gregorian'
   if (input === 'ge') return 'gregorian'

@@ -17,7 +17,7 @@ const typeLinks: Record<string, string> = {
   Time: '/types#time',
   TimeRange: '/types#timerange',
   CalendarLocale: '/types#calendarlocale',
-  CalendarSystemInput: '/types#calendarsysteminput',
+  CalendarSystem: '/types#calendarsystem',
   CalendarType: '/types#calendartype',
   DateInput: '/types#dateinput',
   InitValueInput: '/types#initvalueinput',

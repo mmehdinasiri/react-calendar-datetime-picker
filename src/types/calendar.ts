@@ -41,23 +41,18 @@ export type CalendarLocale = 'gregorian' | 'jalali'
  * - 'gregorian' or 'ge': Gregorian calendar
  * - 'jalali' or 'ja': Jalali (Persian) calendar
  */
-export type CalendarSystemInput = 'gregorian' | 'jalali' | 'ge' | 'ja'
+export type CalendarSystem = 'gregorian' | 'jalali' | 'ge' | 'ja'
 
 /**
  * Supported UI locales for internationalization
  */
-export type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr' | 'ar'
+export type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'
 
 /**
- * Text direction for locale
- */
-export type TextDirection = 'ltr' | 'rtl'
-
-/**
- * Locales that use Persian/Arabic numerals (۰-۹)
+ * Locales that use Persian numerals (۰-۹)
  * These numerals are also known as Eastern Arabic numerals or Indo-Arabic numerals
  */
-export const persianArabicNumbers: CalendarUILocale[] = ['fa', 'ar']
+export const persianArabicNumbers: CalendarUILocale[] = ['fa']
 
 /**
  * Locales that use Latin numerals (0-9)
@@ -73,7 +68,7 @@ export interface CalendarTranslations {
   /** Weekday names (7 elements, starting from first day of week) */
   weekdays: string[]
   /** Text direction */
-  direction: TextDirection
+  direction: 'ltr' | 'rtl'
   /** Number system - automatically determined from locale */
   numbers: 'latin' | 'persian'
   /** Common labels */
@@ -286,7 +281,7 @@ export interface SharedCalendarProps {
    * Also accepts shorthand aliases: 'ge' for 'gregorian', 'ja' for 'jalali'
    * @default 'gregorian'
    */
-  calendarSystem?: CalendarSystemInput
+  calendarSystem?: CalendarSystem
   /**
    * Locale for internationalization
    * Controls language, text direction, and number system

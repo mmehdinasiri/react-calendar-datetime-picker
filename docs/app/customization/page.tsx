@@ -188,12 +188,48 @@ export default function Customization() {
             <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               Custom Trigger Elements
             </h2>
-            <p className='text-gray-700 dark:text-gray-300'>
+            <p className='text-gray-600 dark:text-gray-400 text-lg mb-4'>
               Bind the calendar modal to any HTML element instead of just input
-              fields. Use the <code>triggerElement</code> prop to create
-              custom-styled triggers like buttons, divs, or any interactive
-              element.
+              fields. Use the{' '}
+              <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                triggerElement
+              </code>{' '}
+              prop to create custom-styled triggers like buttons, divs, or any
+              interactive element. When provided, the default input field will
+              not be rendered.
             </p>
+            <div className='mb-4'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Type Definition:
+              </p>
+              <div className='rounded-lg overflow-hidden border border-border'>
+                <SyntaxHighlighter
+                  language='typescript'
+                  style={vscDarkPlus}
+                  customStyle={{
+                    margin: 0,
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                    lineHeight: '1.5'
+                  }}
+                >
+                  {`triggerElement?: ReactNode`}
+                </SyntaxHighlighter>
+              </div>
+            </div>
+            <div className='text-gray-600 dark:text-gray-400'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Props:
+              </p>
+              <ul className='list-disc list-inside space-y-1 ml-4'>
+                <li>
+                  <strong>triggerElement</strong> - Accepts any React node
+                  (button, div, input, etc.). When provided, replaces the
+                  default input field. The element will trigger the calendar
+                  modal when clicked.
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Custom Trigger Examples */}
@@ -696,10 +732,52 @@ import { Controller } from 'react-hook-form'
             <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               Themes
             </h2>
-            <p className='text-gray-700 dark:text-gray-300'>
+            <p className='text-gray-600 dark:text-gray-400 text-lg mb-4'>
               The calendar supports light and dark themes, as well as custom
-              themes using CSS variables.
+              themes using CSS variables. The{' '}
+              <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                dark
+              </code>{' '}
+              prop enables the dark theme for both DtPicker and DtCalendar
+              components.
             </p>
+            <div className='mb-4'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Type Definition:
+              </p>
+              <div className='rounded-lg overflow-hidden border border-border'>
+                <SyntaxHighlighter
+                  language='typescript'
+                  style={vscDarkPlus}
+                  customStyle={{
+                    margin: 0,
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                    lineHeight: '1.5'
+                  }}
+                >
+                  {`dark?: boolean`}
+                </SyntaxHighlighter>
+              </div>
+            </div>
+            <div className='text-gray-600 dark:text-gray-400'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Props:
+              </p>
+              <ul className='list-disc list-inside space-y-1 ml-4'>
+                <li>
+                  <strong>dark</strong> - When set to{' '}
+                  <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                    true
+                  </code>
+                  , enables the dark theme. Default is{' '}
+                  <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                    false
+                  </code>{' '}
+                  (light theme).
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Theme Examples */}
@@ -744,11 +822,46 @@ import { Controller } from 'react-hook-form'
             <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               CSS Variables (Recommended)
             </h2>
-            <p className='text-gray-700 dark:text-gray-300'>
+            <p className='text-gray-600 dark:text-gray-400 text-lg mb-4'>
               The easiest way to customize the calendar appearance is by
-              overriding CSS variables. Apply custom variables using the
-              calenderModalClass prop.
+              overriding CSS variables. Apply custom variables using the{' '}
+              <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                calenderModalClass
+              </code>{' '}
+              prop. This class is applied to the calendar component, allowing
+              you to override any CSS variable.
             </p>
+            <div className='mb-4'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Type Definition:
+              </p>
+              <div className='rounded-lg overflow-hidden border border-border'>
+                <SyntaxHighlighter
+                  language='typescript'
+                  style={vscDarkPlus}
+                  customStyle={{
+                    margin: 0,
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                    lineHeight: '1.5'
+                  }}
+                >
+                  {`calenderModalClass?: string`}
+                </SyntaxHighlighter>
+              </div>
+            </div>
+            <div className='text-gray-600 dark:text-gray-400'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Props:
+              </p>
+              <ul className='list-disc list-inside space-y-1 ml-4'>
+                <li>
+                  <strong>calenderModalClass</strong> - A CSS class name that
+                  will be applied to the calendar component. Use this class to
+                  override CSS variables for colors, spacing, fonts, and more.
+                </li>
+              </ul>
+            </div>
           </div>
 
           <div className='space-y-6'>
@@ -1426,10 +1539,69 @@ function App() {
             <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               Custom CSS Classes
             </h2>
-            <p className='text-gray-700 dark:text-gray-300'>
+            <p className='text-gray-600 dark:text-gray-400 text-lg mb-4'>
               Override specific calendar elements using the{' '}
-              <code>calenderModalClass</code> prop and custom CSS.
+              <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                customization
+              </code>{' '}
+              prop with the{' '}
+              <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                classes
+              </code>{' '}
+              property. This allows you to add custom CSS classes to specific
+              calendar components.
             </p>
+            <div className='mb-4'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Type Definition:
+              </p>
+              <div className='rounded-lg overflow-hidden border border-border'>
+                <SyntaxHighlighter
+                  language='typescript'
+                  style={vscDarkPlus}
+                  customStyle={{
+                    margin: 0,
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                    lineHeight: '1.5'
+                  }}
+                >
+                  {`interface CalendarClasses {
+  header?: string
+  days?: string
+  months?: string
+  years?: string
+}
+
+customization?: {
+  classes?: CalendarClasses
+}`}
+                </SyntaxHighlighter>
+              </div>
+            </div>
+            <div className='text-gray-600 dark:text-gray-400'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Properties:
+              </p>
+              <ul className='list-disc list-inside space-y-1 ml-4'>
+                <li>
+                  <strong>header</strong> - Custom CSS class for the calendar
+                  header
+                </li>
+                <li>
+                  <strong>days</strong> - Custom CSS class for the days grid
+                  container
+                </li>
+                <li>
+                  <strong>months</strong> - Custom CSS class for the months
+                  selection view
+                </li>
+                <li>
+                  <strong>years</strong> - Custom CSS class for the years
+                  selection view
+                </li>
+              </ul>
+            </div>
           </div>
 
           <div className='space-y-6'>
@@ -1515,10 +1687,67 @@ function App() {
             <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               Custom Icons
             </h2>
-            <p className='text-gray-700 dark:text-gray-300'>
-              Customize navigation icons and text labels using the{' '}
-              <code>customization</code> prop.
+            <p className='text-gray-600 dark:text-gray-400 text-lg mb-4'>
+              Customize navigation icons using the{' '}
+              <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                customization
+              </code>{' '}
+              prop with the{' '}
+              <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                icons
+              </code>{' '}
+              property. Replace the default chevron icons with your own React
+              components.
             </p>
+            <div className='mb-4'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Type Definition:
+              </p>
+              <div className='rounded-lg overflow-hidden border border-border'>
+                <SyntaxHighlighter
+                  language='typescript'
+                  style={vscDarkPlus}
+                  customStyle={{
+                    margin: 0,
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                    lineHeight: '1.5'
+                  }}
+                >
+                  {`interface CalendarIcons {
+  next?: React.ComponentType<{ className?: string }>
+  previous?: React.ComponentType<{ className?: string }>
+}
+
+customization?: {
+  icons?: CalendarIcons
+}`}
+                </SyntaxHighlighter>
+              </div>
+            </div>
+            <div className='text-gray-600 dark:text-gray-400'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Properties:
+              </p>
+              <ul className='list-disc list-inside space-y-1 ml-4'>
+                <li>
+                  <strong>next</strong> - React component for the next month
+                  navigation button. Receives a{' '}
+                  <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                    className
+                  </code>{' '}
+                  prop.
+                </li>
+                <li>
+                  <strong>previous</strong> - React component for the previous
+                  month navigation button. Receives a{' '}
+                  <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                    className
+                  </code>{' '}
+                  prop.
+                </li>
+              </ul>
+            </div>
           </div>
 
           <div className='space-y-6'></div>
@@ -1582,10 +1811,106 @@ function App() {
             <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
               Preset Date Ranges
             </h2>
-            <p className='text-gray-700 dark:text-gray-300'>
+            <p className='text-gray-600 dark:text-gray-400 text-lg mb-4'>
               Add quick selection buttons for common date ranges like "Last 7
-              days", "This month", etc.
+              days", "This month", etc. The{' '}
+              <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                presetRanges
+              </code>{' '}
+              prop allows you to enable built-in presets with custom labels, or
+              create completely custom preset ranges.
             </p>
+            <div className='mb-4'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Type Definition:
+              </p>
+              <div className='rounded-lg overflow-hidden border border-border'>
+                <SyntaxHighlighter
+                  language='typescript'
+                  style={vscDarkPlus}
+                  customStyle={{
+                    margin: 0,
+                    borderRadius: '0.5rem',
+                    fontSize: '0.875rem',
+                    lineHeight: '1.5'
+                  }}
+                >
+                  {`interface PresetRangesConfig {
+  yesterday?: boolean | string
+  last7days?: boolean | string
+  last30days?: boolean | string
+  thisMonth?: boolean | string
+  lastMonth?: boolean | string
+  custom?: CustomPresetRange[]
+}
+
+interface CustomPresetRange {
+  label: string
+  range: Range
+}
+
+presetRanges?: PresetRangesConfig`}
+                </SyntaxHighlighter>
+              </div>
+            </div>
+            <div className='text-gray-600 dark:text-gray-400'>
+              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                Properties:
+              </p>
+              <ul className='list-disc list-inside space-y-1 ml-4'>
+                <li>
+                  <strong>yesterday</strong> - Show "Yesterday" button. Set to{' '}
+                  <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                    true
+                  </code>{' '}
+                  for default label, or a string for custom label.
+                </li>
+                <li>
+                  <strong>last7days</strong> - Show "Last 7 days" button. Set to{' '}
+                  <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                    true
+                  </code>{' '}
+                  for default label, or a string for custom label.
+                </li>
+                <li>
+                  <strong>last30days</strong> - Show "Last 30 days" button. Set
+                  to{' '}
+                  <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                    true
+                  </code>{' '}
+                  for default label, or a string for custom label.
+                </li>
+                <li>
+                  <strong>thisMonth</strong> - Show "This month" button. Set to{' '}
+                  <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                    true
+                  </code>{' '}
+                  for default label, or a string for custom label.
+                </li>
+                <li>
+                  <strong>lastMonth</strong> - Show "Last month" button. Set to{' '}
+                  <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                    true
+                  </code>{' '}
+                  for default label, or a string for custom label.
+                </li>
+                <li>
+                  <strong>custom</strong> - Array of completely custom preset
+                  ranges with custom labels and date ranges.
+                </li>
+              </ul>
+              <p className='mt-4'>
+                <strong>Note:</strong> Preset ranges only work with{' '}
+                <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                  type='range'
+                </code>{' '}
+                or{' '}
+                <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                  type='week'
+                </code>
+                .
+              </p>
+            </div>
           </div>
 
           <div className='space-y-6'>

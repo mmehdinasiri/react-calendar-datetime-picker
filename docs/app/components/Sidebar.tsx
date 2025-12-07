@@ -31,11 +31,8 @@ const navigation = [
           { name: 'Range', href: '/types#range' },
           { name: 'Multi', href: '/types#multi' },
           { name: 'Week', href: '/types#week' },
-          { name: 'Time', href: '/types#time' },
-          { name: 'TimeRange', href: '/types#timerange' },
-          { name: 'CalendarLocale', href: '/types#calendarlocale' },
-          { name: 'CalendarType', href: '/types#calendartype' },
-          { name: 'DateInput', href: '/types#dateinput' }
+          { name: 'CalendarSystem', href: '/types#calendarsystem' },
+          { name: 'Locale', href: '/types#locale' }
         ]
       }
     ]
@@ -45,7 +42,11 @@ const navigation = [
     items: Object.entries(examples)
       .filter(
         ([groupName]) =>
-          groupName !== 'Locales' && groupName !== 'Translation Customization'
+          groupName !== 'Locales' &&
+          groupName !== 'Locale' &&
+          groupName !== 'Translation Customization' &&
+          groupName !== 'Customization' &&
+          groupName !== 'Date Utilities'
       )
       .map(([groupName, groupExamples]) => ({
         name: groupName,
@@ -61,53 +62,61 @@ const navigation = [
     items: [
       {
         name: 'Locales',
-        href: '/examples#locales',
+        href: '/internationalization#locale',
         subItems: [
           {
             name: 'Persian (fa)',
-            href: '/examples#locales-persiancalendar'
+            href: '/internationalization#locale-persiancalendar'
           },
           {
             name: 'French (fr)',
-            href: '/examples#locales-frenchcalendar'
+            href: '/internationalization#locale-frenchcalendar'
+          },
+          {
+            name: 'Jalali with English',
+            href: '/internationalization#locale-jalaliwithenglishlocale'
+          },
+          {
+            name: 'Gregorian with Persian',
+            href: '/internationalization#locale-gregorianwithpersianlocale'
           }
         ]
       },
       {
         name: 'Translation Customization',
-        href: '/examples#translation-customization',
+        href: '/internationalization#translation-customization',
         subItems: [
           {
             name: 'Custom Button Labels',
-            href: '/examples#translation-customization-customlabels'
+            href: '/internationalization#translation-customization-customlabels'
           },
           {
             name: 'Custom Weekday Names',
-            href: '/examples#translation-customization-customweekdays'
+            href: '/internationalization#translation-customization-customweekdays'
           },
           {
             name: 'Custom Month Names',
-            href: '/examples#translation-customization-custommonthnames'
+            href: '/internationalization#translation-customization-custommonthnames'
           },
           {
             name: 'Custom AM/PM Labels',
-            href: '/examples#translation-customization-customampm'
+            href: '/internationalization#translation-customization-customampm'
           },
           {
             name: 'Custom Preset Range Labels',
-            href: '/examples#translation-customization-custompresetranges'
+            href: '/internationalization#translation-customization-custompresetranges'
           },
           {
             name: 'Custom Time Selector Labels',
-            href: '/examples#translation-customization-customtimelabels'
+            href: '/internationalization#translation-customization-customtimelabels'
           },
           {
             name: 'Custom Input Range Labels',
-            href: '/examples#translation-customization-custominputrangelabels'
+            href: '/internationalization#translation-customization-custominputrangelabels'
           },
           {
             name: 'Combined Customizations',
-            href: '/examples#translation-customization-combinedcustomizations'
+            href: '/internationalization#translation-customization-combinedcustomizations'
           }
         ]
       }
