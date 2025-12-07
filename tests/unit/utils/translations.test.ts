@@ -686,7 +686,7 @@ describe('translations utils', () => {
           'jalali'
         )
         expect(resultFr.weekdays).toEqual(faTranslations.weekdays)
-        expect(resultFr.weekdays).toEqual(['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'])
+        expect(resultFr.weekdays).toEqual(['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'])
 
         // Test with German locale
         const resultDe = mergeTranslations(

@@ -1,4 +1,4 @@
-import React, { useState, useRef, ReactNode, useCallback, useMemo } from 'react'
+import React, { useMemo, ReactNode, useCallback } from 'react'
 import type { Day, Range, Multi } from '../types'
 import type {
   CalendarSelectionSingle,
@@ -8,19 +8,15 @@ import type {
   SharedCalendarProps
 } from '../types/calendar'
 import { CalendarCore } from './CalendarCore'
+import { DtPickerTrigger } from './DtPickerTrigger'
 import {
   useCalendarPicker,
   useModalPosition,
-  useClickOutside,
-  useEscapeKey,
-  useFocusTrap
+  useCalendarSetup,
+  useCalendarCallbacks,
+  useModalState
 } from '../hooks'
-import { normalizeCalendarSystem } from '../utils/date-conversion'
-import {
-  getTranslations,
-  mergeTranslations,
-  getEffectiveLocale
-} from '../utils/translations'
+import { normalizeConstraintsProps } from '../utils/constraints'
 
 interface DtPickerPropsBase extends SharedCalendarProps {
   /**
@@ -116,7 +112,6 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     showWeekend = false,
     weekStart,
     clearBtn = false,
-    isRequired = false,
     todayBtn = false,
     presetRanges,
     isDisabled = false,
@@ -143,63 +138,39 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     onGoToToday
   } = props
 
-  const [isOpen, setIsOpen] = useState(false)
-  const pickerRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const triggerRef = useRef<HTMLElement>(null)
-  const modalRef = useRef<HTMLDivElement>(null)
-
-  // Normalize calendarSystem input (handles 'ge'/'ja' aliases)
-  const normalizedCalendarSystem = useMemo(
-    () => normalizeCalendarSystem(calendarSystem),
-    [calendarSystem]
-  )
-
-  // Determine effective locale based on calendar system
-  const effectiveLocale = useMemo(
-    () => getEffectiveLocale(locale, normalizedCalendarSystem),
-    [locale, normalizedCalendarSystem]
-  )
-
-  // Get translations for the locale
-  const defaultTranslations = useMemo(
-    () => getTranslations(effectiveLocale),
-    [effectiveLocale]
-  )
-
-  // Merge with custom translations from customization
-  // Pass calendarSystem to ensure month names come from calendar system
-  // Number system is automatically determined from locale in mergeTranslations
-  const translations = useMemo(() => {
-    return mergeTranslations(
-      defaultTranslations,
-      customization?.translations,
-      effectiveLocale,
-      normalizedCalendarSystem
-    )
-  }, [
-    defaultTranslations,
-    customization?.translations,
+  // 🎯 Use consolidated calendar setup hook
+  const {
+    normalizedCalendarSystem,
     effectiveLocale,
-    normalizedCalendarSystem
-  ])
+    translations,
+    effectiveWeekStart
+  } = useCalendarSetup(calendarSystem, locale, weekStart, customization)
 
-  // Auto-determine weekStart: if calendarSystem is 'jalali' and locale is 'en', use Saturday (6)
-  // Otherwise use provided weekStart or default based on calendar system
-  const effectiveWeekStart = useMemo(() => {
-    if (weekStart !== undefined) {
-      return weekStart
-    }
-    // For Jalali calendar with English locale, use Saturday (6) as week start
-    if (normalizedCalendarSystem === 'jalali' && effectiveLocale === 'en') {
-      return 6
-    }
-    // Default: Gregorian uses Sunday (0), Jalali uses Saturday (6)
-    return normalizedCalendarSystem === 'jalali' ? 6 : 0
-  }, [weekStart, normalizedCalendarSystem, effectiveLocale])
+  // 🎯 Use modal state hook (encapsulates all modal behavior)
+  const {
+    isOpen,
+    handlers: modalHandlers,
+    refs: { pickerRef, modalRef }
+  } = useModalState()
+
+  // Create wrapper refs for trigger
+  const inputRef = useMemo(() => React.createRef<HTMLInputElement>(), [])
+  const triggerRef = useMemo(() => React.createRef<HTMLElement>(), [])
+
+  // Normalize constraints props with error tracking
+  const constraintsResult = useMemo(
+    () =>
+      normalizeConstraintsProps(
+        constraintsInput,
+        normalizedCalendarSystem,
+        type
+      ),
+    [constraintsInput, normalizedCalendarSystem, type]
+  )
+  const { constraints } = constraintsResult
 
   // Use calendar picker hook for shared calendar logic
-  const { state, actions, constraints, displayValue } = useCalendarPicker(
+  const { state, actions, displayValue } = useCalendarPicker(
     initValue,
     // Cast onChange to broader type for internal compatibility
     onChange as (date: Day | Range | Multi | null) => void,
@@ -209,58 +180,32 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     constraintsInput,
     showTimeInput,
     autoClose,
-    () => setIsOpen(false),
+    modalHandlers.close,
     dateFormat,
     timeFormat,
     numberOfMonths,
     translations
   )
 
-  // 🟢 Memoize callback functions to prevent React.memo bypass in child components
-  const handleDateSelect = useCallback(
-    (day: Day) => {
-      actions.selectDate(day)
-      onDateSelect?.(day)
-    },
-    [actions, onDateSelect]
-  )
-
-  const handleMonthSelect = useCallback(
-    (month: number) => {
-      actions.selectMonth(month)
-      onMonthSelect?.(month)
-    },
-    [actions, onMonthSelect]
-  )
-
-  const handleYearSelect = useCallback(
-    (year: number) => {
-      actions.selectYear(year)
-      onYearSelect?.(year)
-    },
-    [actions, onYearSelect]
-  )
-
-  const handleViewChange = useCallback(
-    (view: 'calendar' | 'months' | 'years') => {
-      actions.setView(view)
-      onViewChange?.(view)
-    },
-    [actions, onViewChange]
-  )
-
-  const handleMonthNavigate = useCallback(
-    (direction: 'prev' | 'next') => {
-      actions.navigateMonth(direction)
-      onMonthNavigate?.(direction)
-    },
-    [actions, onMonthNavigate]
-  )
-
-  const handleGoToToday = useCallback(() => {
-    actions.goToToday()
-    onGoToToday?.()
-  }, [actions, onGoToToday])
+  // 🎯 Use consolidated calendar callbacks hook
+  const {
+    handleDateSelect,
+    handleMonthSelect,
+    handleYearSelect,
+    handleViewChange,
+    handleMonthNavigate,
+    handleGoToToday,
+    handlePresetRangeSelect
+  } = useCalendarCallbacks({
+    actions,
+    onDateSelect,
+    onMonthSelect,
+    onYearSelect,
+    onViewChange,
+    onMonthNavigate,
+    onGoToToday,
+    type
+  })
 
   // Use modal position hook
   const { modalPosition } = useModalPosition(
@@ -270,113 +215,40 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     normalizedCalendarSystem
   )
 
-  // Use click outside hook
-  useClickOutside(isOpen, pickerRef, modalRef, () => setIsOpen(false))
-
-  // Use escape key hook
-  useEscapeKey(isOpen, () => setIsOpen(false))
-
-  // Use focus trap hook for modal
-  useFocusTrap({
-    containerRef: modalRef as React.RefObject<HTMLElement>,
-    enabled: isOpen,
-    autoFocus: true,
-    restoreFocus: true
-  })
-
   // Handle trigger click (works for both input and custom trigger)
-  const handleTriggerClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    if (!isDisabled) {
-      setIsOpen((prev) => !prev)
-    }
-  }
+  const handleTriggerClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+      if (!isDisabled) {
+        modalHandlers.toggle()
+      }
+    },
+    [isDisabled, modalHandlers]
+  )
 
   // Handle input keydown (Enter to open)
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !isDisabled && !isOpen) {
-      e.preventDefault()
-      setIsOpen(true)
-    }
-  }
+  const handleInputKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter' && !isDisabled && !isOpen) {
+        e.preventDefault()
+        modalHandlers.open()
+      }
+    },
+    [isDisabled, isOpen, modalHandlers]
+  )
 
   // Handle clear button
-  const handleClear = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    actions.clearSelection()
-    setIsOpen(false)
-  }
+  const handleClear = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation()
+      actions.clearSelection()
+      modalHandlers.close()
+    },
+    [actions, modalHandlers]
+  )
 
-  const inputWrapperClass = `calendar-picker-input-wrapper ${inputClass || ''}`
   const modalClass = `calendar-picker-modal ${calenderModalClass || ''}`
   const isRTL = normalizedCalendarSystem === 'jalali'
-
-  // Render trigger element (either custom or default input)
-  const renderTrigger = () => {
-    if (triggerElement) {
-      // Custom trigger element - wrap it with a div that has the ref and handles clicks
-      return (
-        <div
-          ref={triggerRef as React.RefObject<HTMLDivElement>}
-          className={triggerClass || ''}
-          onClick={handleTriggerClick}
-          style={{
-            display: 'inline-block',
-            cursor: isDisabled ? 'not-allowed' : 'pointer'
-          }}
-          aria-haspopup='dialog'
-          aria-expanded={isOpen}
-          tabIndex={0} // Make focusable
-        >
-          {triggerElement}
-        </div>
-      )
-    }
-
-    // Default input trigger
-    return (
-      <div className={inputWrapperClass}>
-        <input
-          ref={(el) => {
-            inputRef.current = el
-            if (el) triggerRef.current = el
-          }}
-          id={inputId}
-          type='text'
-          readOnly
-          value={displayValue}
-          placeholder={placeholder}
-          disabled={isDisabled}
-          required={isRequired}
-          onClick={handleTriggerClick}
-          onKeyDown={handleInputKeyDown}
-          className='calendar-picker-input'
-          aria-label={placeholder || 'Select date'}
-          aria-haspopup='dialog'
-          aria-expanded={isOpen}
-        />
-        {clearBtn && state.selectedValue && (
-          <button
-            type='button'
-            onClick={handleClear}
-            className='calendar-picker-clear'
-            aria-label={translations.labels.clear}
-          >
-            <span>×</span>
-          </button>
-        )}
-        <button
-          type='button'
-          onClick={handleTriggerClick}
-          disabled={isDisabled}
-          className='calendar-picker-toggle'
-          aria-label='Open calendar'
-        >
-          📅
-        </button>
-      </div>
-    )
-  }
 
   return (
     <div
@@ -384,7 +256,24 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
       className='calendar-picker'
       dir={isRTL ? 'rtl' : 'ltr'}
     >
-      {renderTrigger()}
+      <DtPickerTrigger
+        triggerElement={triggerElement}
+        displayValue={displayValue}
+        placeholder={placeholder}
+        isDisabled={isDisabled}
+        isOpen={isOpen}
+        clearBtn={clearBtn}
+        hasSelectedValue={!!state.selectedValue}
+        onTriggerClick={handleTriggerClick}
+        onInputKeyDown={handleInputKeyDown}
+        onClear={handleClear}
+        inputRef={inputRef as React.RefObject<HTMLInputElement>}
+        triggerRef={triggerRef as React.RefObject<HTMLElement>}
+        inputId={inputId}
+        inputClass={inputClass}
+        triggerClass={triggerClass}
+        translationsClear={translations.labels.clear}
+      />
 
       {isOpen && (
         <div
@@ -436,13 +325,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
             onMonthNavigate={handleMonthNavigate}
             onGoToToday={handleGoToToday}
             presetRanges={presetRanges}
-            onPresetRangeSelect={(range: Range) => {
-              if (type === 'range') {
-                actions.selectPresetRange(range)
-              } else if (type === 'week') {
-                actions.selectDate(range.from)
-              }
-            }}
+            onPresetRangeSelect={handlePresetRangeSelect}
           />
         </div>
       )}

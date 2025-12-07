@@ -4,6 +4,9 @@
 export { DtPicker } from './DtPicker'
 export type { DtPickerProps } from './DtPicker'
 
+export { DtPickerTrigger } from './DtPickerTrigger'
+export type { DtPickerTriggerProps } from './DtPickerTrigger'
+
 export { DtCalendar } from './DtCalendar'
 export type { DtCalendarProps } from './DtCalendar'
 

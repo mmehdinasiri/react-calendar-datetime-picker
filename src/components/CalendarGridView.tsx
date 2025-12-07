@@ -122,31 +122,20 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
 
   const isRTL = translations.direction === 'rtl'
   // Rotate weekday names based on weekStart
-  // For Persian locale with Jalali calendar, weekdays already start with Saturday, so no rotation needed
-  // For English locale with Jalali calendar, we need to rotate to start with Saturday
+  // Weekday arrays follow JavaScript Date.getDay() order: [Sunday(0), Monday(1), ..., Saturday(6)]
+  // For Farsi: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'] (Sunday to Saturday)
   const dayNames = useMemo(() => {
     // If weekStart is undefined or 0 (Sunday), no rotation needed
     if (weekStart === undefined || weekStart === 0) {
       return translations.weekdays
     }
 
-    // For Jalali calendar with weekStart = 6 (Saturday), check if weekdays already start with Saturday
-    // Persian weekday array is: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'] (Saturday to Friday)
-    // If the first weekday is 'ش' (Saturday in Persian), the array is already in the correct order
-    if (
-      calendarSystem === 'jalali' &&
-      weekStart === 6 &&
-      translations.weekdays[0] === 'ش'
-    ) {
-      return translations.weekdays
-    }
-
-    // For other cases (e.g., English locale with Jalali), rotate the array
     // Rotate array: move first weekStart elements to the end
+    // This puts the desired weekStart day at the beginning
     const rotated = [...translations.weekdays]
     const moved = rotated.splice(0, weekStart)
     return [...rotated, ...moved]
-  }, [translations.weekdays, weekStart, calendarSystem])
+  }, [translations.weekdays, weekStart])
   const monthNames = translations.months
 
   // Get all months to display
@@ -288,30 +277,15 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
             {dayNames.map((name, index) => {
               // Calculate the actual day of week (0-6 in Gregorian format) for weekend detection
               // 0 = Sunday, 6 = Saturday
-              let actualDayOfWeek: number
-
-              // For Persian locale with Jalali calendar, weekdays are not rotated
-              // The array is: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'] (Saturday to Friday)
-              // Map directly: index 0 = Saturday (6), index 1 = Sunday (0), etc.
-              if (
-                _locale === 'fa' &&
-                calendarSystem === 'jalali' &&
-                (weekStart === undefined || weekStart === 6)
-              ) {
-                // Persian weekday order: Saturday=0, Sunday=1, Monday=2, Tuesday=3, Wednesday=4, Thursday=5, Friday=6
-                // Convert to Gregorian: Saturday=6, Sunday=0, Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5
-                const persianToGregorian = [6, 0, 1, 2, 3, 4, 5]
-                actualDayOfWeek = persianToGregorian[index]
-              } else {
-                // For rotated arrays or other cases, calculate based on weekStart
-                const defaultWeekStart =
-                  weekStart !== undefined
-                    ? weekStart
-                    : calendarSystem === 'jalali'
-                      ? 6
-                      : 0
-                actualDayOfWeek = (defaultWeekStart + index) % 7
-              }
+              // Weekday arrays follow JavaScript Date.getDay() order: [Sunday(0), Monday(1), ..., Saturday(6)]
+              // After rotation, index 0 corresponds to weekStart, so we calculate: (weekStart + index) % 7
+              const defaultWeekStart =
+                weekStart !== undefined
+                  ? weekStart
+                  : calendarSystem === 'jalali'
+                    ? 6
+                    : 0
+              const actualDayOfWeek = (defaultWeekStart + index) % 7
 
               const isWeekendDay =
                 showWeekend &&

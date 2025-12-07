@@ -55,8 +55,10 @@ vi.mock('@/components/CalendarCore', () => ({
 }))
 
 // Mock hooks with dynamic return values based on props
-vi.mock('@/hooks', () => {
+vi.mock('@/hooks', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/hooks')>()
   return {
+    ...actual,
     useCalendarPicker: (initValue: any) => ({
       state: {
         selectedValue: initValue,
@@ -78,12 +80,55 @@ vi.mock('@/hooks', () => {
       // Simple mock logic for display value
       displayValue: initValue ? '2023/01/15' : ''
     }),
+    useCalendarSetup: () => ({
+      normalizedCalendarSystem: 'gregorian' as const,
+      effectiveLocale: 'en' as const,
+      translations: {
+        months: [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December'
+        ],
+        weekdays: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+        direction: 'ltr' as const,
+        numbers: 'latin' as const,
+        labels: {
+          today: 'Today',
+          clear: 'Clear',
+          ok: 'OK',
+          nextMonth: 'next',
+          previousMonth: 'previous',
+          selectMonth: 'Select month',
+          selectYear: 'Select year',
+          from: 'From',
+          to: 'To',
+          timeFrom: 'From',
+          timeTo: 'To',
+          am: 'AM',
+          pm: 'PM'
+        },
+        presetRanges: {
+          yesterday: 'Yesterday',
+          last7days: 'Last 7 days',
+          last30days: 'Last 30 days',
+          thisMonth: 'This month',
+          lastMonth: 'Last month'
+        }
+      },
+      effectiveWeekStart: 0
+    }),
     useModalPosition: () => ({
       modalPosition: { top: 100, left: 100 }
-    }),
-    useClickOutside: vi.fn(),
-    useEscapeKey: vi.fn(),
-    useFocusTrap: vi.fn()
+    })
   }
 })
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo, useCallback } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import type { Day, Range, Multi, InitValueInput } from '../types'
 import type {
   CalendarError,
@@ -9,18 +9,17 @@ import type {
   SharedCalendarProps
 } from '../types/calendar'
 import { CalendarCore } from './CalendarCore'
-import { useCalendarState } from '../hooks/useCalendarState'
+import {
+  useCalendarState,
+  useCalendarSetup,
+  useCalendarCallbacks,
+  useCallbackOnChange
+} from '../hooks'
 import {
   normalizeInitValueWithErrors,
   areValuesEqual
 } from '../utils/normalize'
 import { normalizeConstraintsProps } from '../utils/constraints'
-import { normalizeCalendarSystem } from '../utils/date-conversion'
-import {
-  getTranslations,
-  mergeTranslations,
-  getEffectiveLocale
-} from '../utils/translations'
 
 interface DtCalendarPropsBase extends SharedCalendarProps {
   /**
@@ -108,54 +107,13 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     yearListStyle = 'grid'
   } = props
 
-  // Normalize calendarSystem input (handles 'ge'/'ja' aliases)
-  const normalizedCalendarSystem = useMemo(
-    () => normalizeCalendarSystem(calendarSystem),
-    [calendarSystem]
-  )
-
-  // Determine effective locale based on calendar system
-  const effectiveLocale = useMemo(
-    () => getEffectiveLocale(locale, normalizedCalendarSystem),
-    [locale, normalizedCalendarSystem]
-  )
-
-  // Get translations for the locale
-  const defaultTranslations = useMemo(
-    () => getTranslations(effectiveLocale),
-    [effectiveLocale]
-  )
-
-  // Merge with custom translations from customization
-  // Pass calendarSystem to ensure month names come from calendar system
-  // Number system is automatically determined from locale in mergeTranslations
-  const translations = useMemo(() => {
-    return mergeTranslations(
-      defaultTranslations,
-      customization?.translations,
-      effectiveLocale,
-      normalizedCalendarSystem
-    )
-  }, [
-    defaultTranslations,
-    customization?.translations,
+  // 🎯 Use consolidated calendar setup hook
+  const {
+    normalizedCalendarSystem,
     effectiveLocale,
-    normalizedCalendarSystem
-  ])
-
-  // Auto-determine weekStart: if calendarSystem is 'jalali' and locale is 'en', use Saturday (6)
-  // Otherwise use provided weekStart or default based on calendar system
-  const effectiveWeekStart = useMemo(() => {
-    if (weekStart !== undefined) {
-      return weekStart
-    }
-    // For Jalali calendar with English locale, use Saturday (6) as week start
-    if (normalizedCalendarSystem === 'jalali' && effectiveLocale === 'en') {
-      return 6
-    }
-    // Default: Gregorian uses Sunday (0), Jalali uses Saturday (6)
-    return normalizedCalendarSystem === 'jalali' ? 6 : 0
-  }, [weekStart, normalizedCalendarSystem, effectiveLocale])
+    translations,
+    effectiveWeekStart
+  } = useCalendarSetup(calendarSystem, locale, weekStart, customization)
 
   // Normalize constraints props with error tracking
   const constraintsResult = useMemo(
@@ -183,35 +141,19 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
   const { value: normalizedInitValue, errors: initValueErrors } =
     initValueResult
 
-  // Collect all errors and call onError callback if provided
+  // Collect all errors
   const allErrors = useMemo(
     () => [...constraintsErrors, ...initValueErrors],
     [constraintsErrors, initValueErrors]
   )
 
-  const prevErrorsRef = useRef<string>('')
-
-  useEffect(() => {
-    if (!onError) return
-
-    // Create a stable string representation of errors for comparison
-    // Only include fields that matter for comparison (exclude 'value' which might be large objects)
-    const errorsKey = JSON.stringify(
-      allErrors.map((err) => ({
-        type: err.type,
-        field: err.field,
-        message: err.message
-      }))
-    )
-
-    // Only call onError if errors actually changed
-    if (errorsKey !== prevErrorsRef.current) {
-      if (allErrors.length > 0) {
-        onError(allErrors)
-      }
-      prevErrorsRef.current = errorsKey
+  // 🎯 Use callback on change hook for error handling
+  // Much simpler than JSON.stringify comparison
+  useCallbackOnChange(allErrors, (errors) => {
+    if (errors.length > 0 && onError) {
+      onError(errors)
     }
-  }, [allErrors, onError])
+  })
 
   // Track previous initValue to only convert when it actually changes from props
   const prevInitValueRef = useRef<InitValueInput | undefined>(undefined)
@@ -250,64 +192,25 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     weekStart: effectiveWeekStart
   })
 
-  // 🟢 Memoize callback functions to prevent React.memo bypass in child components
-  const handleDateSelect = useCallback(
-    (day: Day) => {
-      actions.selectDate(day)
-      onDateSelectProp?.(day)
-    },
-    [actions, onDateSelectProp]
-  )
-
-  const handleMonthSelect = useCallback(
-    (month: number) => {
-      actions.selectMonth(month)
-      onMonthSelectProp?.(month)
-    },
-    [actions, onMonthSelectProp]
-  )
-
-  const handleYearSelect = useCallback(
-    (year: number) => {
-      actions.selectYear(year)
-      onYearSelectProp?.(year)
-    },
-    [actions, onYearSelectProp]
-  )
-
-  const handleViewChange = useCallback(
-    (view: 'calendar' | 'months' | 'years') => {
-      actions.setView(view)
-      onViewChangeProp?.(view)
-    },
-    [actions, onViewChangeProp]
-  )
-
-  const handleMonthNavigate = useCallback(
-    (direction: 'prev' | 'next') => {
-      actions.navigateMonth(direction)
-      onMonthNavigateProp?.(direction)
-    },
-    [actions, onMonthNavigateProp]
-  )
-
-  const handleGoToToday = useCallback(() => {
-    actions.goToToday()
-    onGoToTodayProp?.()
-  }, [actions, onGoToTodayProp])
-
-  const handlePresetRangeSelect = useCallback(
-    (range: Range) => {
-      if (type === 'range') {
-        // Directly set the range for preset selections
-        actions.selectPresetRange(range)
-      } else if (type === 'week') {
-        // For week type, select the start date which will calculate the week bounds
-        actions.selectDate(range.from)
-      }
-    },
-    [actions, type]
-  )
+  // 🎯 Use consolidated calendar callbacks hook
+  const {
+    handleDateSelect,
+    handleMonthSelect,
+    handleYearSelect,
+    handleViewChange,
+    handleMonthNavigate,
+    handleGoToToday,
+    handlePresetRangeSelect
+  } = useCalendarCallbacks({
+    actions,
+    onDateSelect: onDateSelectProp,
+    onMonthSelect: onMonthSelectProp,
+    onYearSelect: onYearSelectProp,
+    onViewChange: onViewChangeProp,
+    onMonthNavigate: onMonthNavigateProp,
+    onGoToToday: onGoToTodayProp,
+    type
+  })
 
   return (
     <div

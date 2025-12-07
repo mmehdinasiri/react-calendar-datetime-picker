@@ -352,7 +352,7 @@ export const examples: ExamplesConfig = {
             'ماه یازدهم',
             'ماه دوازدهم'
           ],
-          weekdayNames: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج']
+          weekdayNames: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش']
         },
         showWeekend: true,
         todayBtn: true
@@ -795,40 +795,22 @@ export const examples: ExamplesConfig = {
             {
               label: 'Last 14 days',
               range: (() => {
-                const today = new Date()
-                const fourteenDaysAgo = new Date(today)
-                fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 13)
+                const today = getToday('gregorian') // { year: 2024, month: 12, day: 19 }
+                const fourteenDaysAgo = subtractDays(today, 13, 'gregorian') // { year: 2024, month: 12, day: 6 }
                 return {
-                  from: {
-                    year: fourteenDaysAgo.getFullYear(),
-                    month: fourteenDaysAgo.getMonth() + 1,
-                    day: fourteenDaysAgo.getDate()
-                  },
-                  to: {
-                    year: today.getFullYear(),
-                    month: today.getMonth() + 1,
-                    day: today.getDate()
-                  }
+                  from: fourteenDaysAgo,
+                  to: today
                 }
               })()
             },
             {
               label: 'Next 7 days',
               range: (() => {
-                const today = new Date()
-                const sevenDaysLater = new Date(today)
-                sevenDaysLater.setDate(sevenDaysLater.getDate() + 7)
+                const today = getToday('gregorian') // { year: 2024, month: 12, day: 19 }
+                const sevenDaysLater = addDays(today, 7, 'gregorian') // { year: 2024, month: 12, day: 26 }
                 return {
-                  from: {
-                    year: today.getFullYear(),
-                    month: today.getMonth() + 1,
-                    day: today.getDate()
-                  },
-                  to: {
-                    year: sevenDaysLater.getFullYear(),
-                    month: sevenDaysLater.getMonth() + 1,
-                    day: sevenDaysLater.getDate()
-                  }
+                  from: today,
+                  to: sevenDaysLater
                 }
               })()
             }

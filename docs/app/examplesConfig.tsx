@@ -794,40 +794,22 @@ function App() {
             {
               label: 'Last 14 days',
               range: (() => {
-                const today = new Date()
-                const fourteenDaysAgo = new Date(today)
-                fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 13)
+                const today = getToday('gregorian') // { year: 2024, month: 12, day: 19 }
+                const fourteenDaysAgo = subtractDays(today, 13, 'gregorian') // { year: 2024, month: 12, day: 6 }
                 return {
-                  from: {
-                    year: fourteenDaysAgo.getFullYear(),
-                    month: fourteenDaysAgo.getMonth() + 1,
-                    day: fourteenDaysAgo.getDate()
-                  },
-                  to: {
-                    year: today.getFullYear(),
-                    month: today.getMonth() + 1,
-                    day: today.getDate()
-                  }
+                  from: fourteenDaysAgo,
+                  to: today
                 }
               })()
             },
             {
               label: 'Next 7 days',
               range: (() => {
-                const today = new Date()
-                const sevenDaysLater = new Date(today)
-                sevenDaysLater.setDate(sevenDaysLater.getDate() + 7)
+                const today = getToday('gregorian') // { year: 2024, month: 12, day: 19 }
+                const sevenDaysLater = addDays(today, 7, 'gregorian') // { year: 2024, month: 12, day: 26 }
                 return {
-                  from: {
-                    year: today.getFullYear(),
-                    month: today.getMonth() + 1,
-                    day: today.getDate()
-                  },
-                  to: {
-                    year: sevenDaysLater.getFullYear(),
-                    month: sevenDaysLater.getMonth() + 1,
-                    day: sevenDaysLater.getDate()
-                  }
+                  from: today,
+                  to: sevenDaysLater
                 }
               })()
             }
@@ -836,39 +818,49 @@ function App() {
         showWeekend: true,
         todayBtn: true
       },
-      wrapper: 'calendar-container'
-    },
-    CustomPresetRanges: {
-      title: 'Custom Preset Ranges',
-      description: 'Define your own custom date ranges using Day objects',
-      component: 'DtCalendar',
-      props: {
-        type: 'range',
-        presetRanges: {
-          custom: (() => {
-            const today = getToday('gregorian')
-            return [
-              {
-                label: 'Last 14 Days',
-                range: {
-                  from: subtractDays(today, 13, 'gregorian'),
-                  to: today
-                }
-              },
-              {
-                label: 'Last 30 Days',
-                range: {
-                  from: subtractDays(today, 29, 'gregorian'),
-                  to: today
-                }
+      wrapper: 'calendar-container',
+      customCode: `import { DtCalendar, getToday, subtractDays, addDays } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [range, setRange] = useState(null)
+
+  return (
+    <DtCalendar
+      type="range"
+      presetRanges={{
+        yesterday: true,
+        custom: [
+          {
+            label: 'Last 14 days',
+            range: (() => {
+              const today = getToday('gregorian') // { year: 2024, month: 12, day: 19 }
+              const fourteenDaysAgo = subtractDays(today, 13, 'gregorian') // { year: 2024, month: 12, day: 6 }
+              return {
+                from: fourteenDaysAgo,
+                to: today
               }
-            ]
-          })()
-        },
-        showWeekend: true,
-        todayBtn: true
-      },
-      wrapper: 'calendar-container'
+            })()
+          },
+          {
+            label: 'Next 7 days',
+            range: (() => {
+              const today = getToday('gregorian') // { year: 2024, month: 12, day: 19 }
+              const sevenDaysLater = addDays(today, 7, 'gregorian') // { year: 2024, month: 12, day: 26 }
+              return {
+                from: today,
+                to: sevenDaysLater
+              }
+            })()
+          }
+        ]
+      }}
+      showWeekend={true}
+      todayBtn={true}
+      onChange={setRange}
+    />
+  )
+}`
     }
   },
   Callbacks: {
