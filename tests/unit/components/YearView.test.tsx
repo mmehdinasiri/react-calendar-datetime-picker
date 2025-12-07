@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { YearView } from '@/components/YearView'
 import { getYearRange } from '@/utils/calendar-grid'
+import { enTranslations, faTranslations } from '@/utils/translations'
 import type { Day } from '@/types'
 
 // Mock the utils to isolate tests
@@ -46,6 +47,8 @@ describe('YearView', () => {
       <YearView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -60,6 +63,8 @@ describe('YearView', () => {
       <YearView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -78,6 +83,8 @@ describe('YearView', () => {
       <YearView
         displayMonth={defaultDisplayMonth} // 2023
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -93,6 +100,8 @@ describe('YearView', () => {
       <YearView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -116,6 +125,8 @@ describe('YearView', () => {
       <YearView
         displayMonth={faDisplayMonth}
         calendarSystem='jalali'
+        locale='fa'
+        translations={faTranslations}
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -134,6 +145,8 @@ describe('YearView', () => {
       <YearView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         yearListStyle='list'
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
@@ -147,6 +160,8 @@ describe('YearView', () => {
       <YearView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         yearListStyle='grid'
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
@@ -161,6 +176,8 @@ describe('YearView', () => {
       <YearView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -182,6 +199,8 @@ describe('YearView', () => {
       <YearView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         customization={{ classes: customClasses }}
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
@@ -197,6 +216,8 @@ describe('YearView', () => {
       <YearView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         onYearSelect={mockOnYearSelect}
         onViewChange={mockOnViewChange}
       />
@@ -207,5 +228,94 @@ describe('YearView', () => {
     // usually useLayoutEffect or useEffect fires.
     // We mocked Element.prototype.scrollTo
     expect(Element.prototype.scrollTo).toHaveBeenCalled()
+  })
+
+  describe('Translation Integration', () => {
+    it('uses selectYear accessibility label from translations', () => {
+      render(
+        <YearView
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='gregorian'
+          locale='en'
+          translations={enTranslations}
+          onYearSelect={mockOnYearSelect}
+          onViewChange={mockOnViewChange}
+        />
+      )
+
+      const grid = screen.getByRole('grid')
+      expect(grid).toHaveAttribute('aria-label', 'Select year')
+    })
+
+    it('uses Persian selectYear accessibility label', () => {
+      render(
+        <YearView
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='jalali'
+          locale='fa'
+          translations={faTranslations}
+          onYearSelect={mockOnYearSelect}
+          onViewChange={mockOnViewChange}
+        />
+      )
+
+      const grid = screen.getByRole('grid')
+      expect(grid).toHaveAttribute('aria-label', 'انتخاب سال')
+    })
+
+    it('renders year numbers correctly for Gregorian', () => {
+      render(
+        <YearView
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='gregorian'
+          locale='en'
+          translations={enTranslations}
+          onYearSelect={mockOnYearSelect}
+          onViewChange={mockOnViewChange}
+        />
+      )
+
+      mockYears.forEach((year) => {
+        const yearButton = screen.getByText(year.toString())
+        expect(yearButton).toBeInTheDocument()
+      })
+    })
+
+    it('highlights current year correctly', () => {
+      const currentYearMonth: Day = { year: 2023, month: 1, day: 1 }
+
+      render(
+        <YearView
+          displayMonth={currentYearMonth}
+          calendarSystem='gregorian'
+          locale='en'
+          translations={enTranslations}
+          onYearSelect={mockOnYearSelect}
+          onViewChange={mockOnViewChange}
+        />
+      )
+
+      // 2023 should be highlighted as current year
+      const year2023Button = screen.getByText('2023')
+      expect(year2023Button).toHaveClass('calendar-year-current')
+    })
+
+    it('handles year selection correctly', () => {
+      render(
+        <YearView
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='gregorian'
+          locale='en'
+          translations={enTranslations}
+          onYearSelect={mockOnYearSelect}
+          onViewChange={mockOnViewChange}
+        />
+      )
+
+      const year2020Button = screen.getByText('2020')
+      fireEvent.click(year2020Button)
+
+      expect(mockOnYearSelect).toHaveBeenCalledWith(2020)
+    })
   })
 })

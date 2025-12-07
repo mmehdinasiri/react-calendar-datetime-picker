@@ -106,17 +106,9 @@ export function getPresetRange(
  */
 export function getPresetLabel(
   preset: PresetRangeType,
-  calendarSystem: CalendarLocale
+  presetRanges: Record<PresetRangeType, string>
 ): string {
-  const labels: Record<PresetRangeType, { en: string; fa: string }> = {
-    yesterday: { en: 'Yesterday', fa: 'دیروز' },
-    last7days: { en: 'Last 7 days', fa: '۷ روز گذشته' },
-    last30days: { en: 'Last 30 days', fa: '۳۰ روز گذشته' },
-    thisMonth: { en: 'This month', fa: 'این ماه' },
-    lastMonth: { en: 'Last month', fa: 'ماه گذشته' }
-  }
-
-  return labels[preset][calendarSystem === 'jalali' ? 'fa' : 'en']
+  return presetRanges[preset]
 }
 
 /**
@@ -124,7 +116,8 @@ export function getPresetLabel(
  */
 export function getPresetRangesFromConfig(
   config: import('../types/calendar').PresetRangesConfig,
-  calendarSystem: CalendarLocale
+  calendarSystem: CalendarLocale,
+  presetRanges: Record<PresetRangeType, string>
 ): PresetRange[] {
   if (!config) {
     return []
@@ -141,11 +134,8 @@ export function getPresetRangesFromConfig(
 
   allPresetTypes.forEach((presetType) => {
     const configValue = config[presetType]
-    if (configValue !== undefined) {
-      const label =
-        typeof configValue === 'string'
-          ? configValue
-          : getPresetLabel(presetType, calendarSystem)
+    if (configValue === true) {
+      const label = getPresetLabel(presetType, presetRanges)
       presets.push({
         label,
         value: presetType,

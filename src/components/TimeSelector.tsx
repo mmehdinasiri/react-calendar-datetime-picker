@@ -4,7 +4,7 @@
  */
 
 import React from 'react'
-import type { Day } from '../types'
+import type { Day, CalendarTranslations } from '../types'
 import { toPersianNumeral } from '../utils/formatting'
 
 // 🟢 Pre-computed static arrays to avoid recreation on every render
@@ -17,8 +17,8 @@ export interface TimeSelectorProps {
   day: Day | null
   /** Time format: '12' for 12-hour format, '24' for 24-hour format */
   timeFormat: '12' | '24'
-  /** Calendar system */
-  calendarSystem: 'gregorian' | 'jalali'
+  /** Translation object */
+  translations: CalendarTranslations
   /** Label for the time selector */
   label?: string
   /** Whether the time selector is disabled */
@@ -31,7 +31,7 @@ const TimeSelectorInner: React.FC<TimeSelectorProps> = (props) => {
   const {
     day,
     timeFormat,
-    calendarSystem,
+    translations,
     label,
     disabled = false,
     onTimeChange
@@ -94,7 +94,7 @@ const TimeSelectorInner: React.FC<TimeSelectorProps> = (props) => {
 
   const formatNumber = (num: number): string => {
     const str = num.toString().padStart(2, '0')
-    return calendarSystem === 'jalali' ? toPersianNumeral(str) : str
+    return translations.numbers === 'persian' ? toPersianNumeral(str) : str
   }
 
   return (
@@ -144,12 +144,8 @@ const TimeSelectorInner: React.FC<TimeSelectorProps> = (props) => {
             disabled={disabled}
             aria-label='AM/PM'
           >
-            <option value='AM'>
-              {calendarSystem === 'jalali' ? 'ق.ظ' : 'AM'}
-            </option>
-            <option value='PM'>
-              {calendarSystem === 'jalali' ? 'ب.ظ' : 'PM'}
-            </option>
+            <option value='AM'>{translations.labels.am}</option>
+            <option value='PM'>{translations.labels.pm}</option>
           </select>
         )}
       </div>
@@ -166,7 +162,7 @@ export const TimeSelector = React.memo(
     return (
       prevProps.day === nextProps.day &&
       prevProps.timeFormat === nextProps.timeFormat &&
-      prevProps.calendarSystem === nextProps.calendarSystem &&
+      prevProps.translations === nextProps.translations &&
       prevProps.label === nextProps.label &&
       prevProps.disabled === nextProps.disabled &&
       prevProps.onTimeChange === nextProps.onTimeChange

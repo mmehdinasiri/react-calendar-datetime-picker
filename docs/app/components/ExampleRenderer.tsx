@@ -133,7 +133,7 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
     <section
       id={
         category
-          ? `${toKebabCase(category)}-${exampleKey}`
+          ? `${toKebabCase(category)}-${toKebabCase(exampleKey)}`
           : toKebabCase(exampleKey)
       }
       className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'

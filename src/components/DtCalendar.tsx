@@ -16,6 +16,11 @@ import {
 } from '../utils/normalize'
 import { normalizeConstraintsProps } from '../utils/constraints'
 import { normalizeCalendarSystem } from '../utils/date-conversion'
+import {
+  getTranslations,
+  mergeTranslations,
+  getEffectiveLocale
+} from '../utils/translations'
 
 interface DtCalendarPropsBase extends SharedCalendarProps {
   /**
@@ -98,6 +103,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     onMonthNavigate: onMonthNavigateProp,
     onGoToToday: onGoToTodayProp,
     numberOfMonths = 1,
+    locale,
     yearListStyle = 'grid'
   } = props
 
@@ -106,6 +112,35 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     () => normalizeCalendarSystem(calendarSystem),
     [calendarSystem]
   )
+
+  // Determine effective locale based on calendar system
+  const effectiveLocale = useMemo(
+    () => getEffectiveLocale(locale, normalizedCalendarSystem),
+    [locale, normalizedCalendarSystem]
+  )
+
+  // Get translations for the locale
+  const defaultTranslations = useMemo(
+    () => getTranslations(effectiveLocale),
+    [effectiveLocale]
+  )
+
+  // Merge with custom translations from customization
+  // Pass calendarSystem to ensure month names come from calendar system
+  // Number system is automatically determined from locale in mergeTranslations
+  const translations = useMemo(() => {
+    return mergeTranslations(
+      defaultTranslations,
+      customization?.translations,
+      effectiveLocale,
+      normalizedCalendarSystem
+    )
+  }, [
+    defaultTranslations,
+    customization?.translations,
+    effectiveLocale,
+    normalizedCalendarSystem
+  ])
 
   // Normalize constraints props with error tracking
   const constraintsResult = useMemo(
@@ -268,6 +303,8 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         displayMonth={state.displayMonth}
         currentView={state.currentView}
         calendarSystem={normalizedCalendarSystem}
+        locale={effectiveLocale}
+        translations={translations}
         type={type}
         withTime={withTime}
         timeFormat={timeFormat}

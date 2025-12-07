@@ -1,8 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
   generateCalendarGrid,
-  getDayNames,
-  getMonthNames,
   getWeekBounds,
   getMonthsToDisplay,
   getYearRange,
@@ -12,68 +10,6 @@ import {
 import type { Day } from '@/types'
 
 describe('calendar-grid utils', () => {
-  describe('getDayNames', () => {
-    it('returns default English day names', () => {
-      const days = getDayNames('gregorian')
-      expect(days).toEqual(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'])
-    })
-
-    it('returns default Persian day names', () => {
-      const days = getDayNames('jalali')
-      expect(days).toEqual(['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'])
-    })
-
-    it('returns custom day names if provided', () => {
-      const customNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-      const days = getDayNames('gregorian', customNames)
-      expect(days).toEqual(customNames)
-    })
-  })
-
-  describe('getMonthNames', () => {
-    it('returns default English month names', () => {
-      const months = getMonthNames('gregorian')
-      expect(months).toEqual([
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-      ])
-    })
-
-    it('returns default Persian month names', () => {
-      const months = getMonthNames('jalali')
-      expect(months).toEqual([
-        'فروردین',
-        'اردیبهشت',
-        'خرداد',
-        'تیر',
-        'مرداد',
-        'شهریور',
-        'مهر',
-        'آبان',
-        'آذر',
-        'دی',
-        'بهمن',
-        'اسفند'
-      ])
-    })
-
-    it('returns custom month names if provided', () => {
-      const customNames = Array(12).fill('M')
-      const months = getMonthNames('gregorian', customNames)
-      expect(months).toEqual(customNames)
-    })
-  })
-
   describe('generateCalendarGrid', () => {
     it('generates correct grid for Jan 2023 (English)', () => {
       // Jan 1 2023 is Sunday

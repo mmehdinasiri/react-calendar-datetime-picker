@@ -47,6 +47,11 @@ const features = [
       'Native support for both Gregorian and Jalali (Persian) calendars with automatic locale handling.'
   },
   {
+    title: 'Internationalization (i18n)',
+    description:
+      'Full locale support with translations for English, Persian, German, Spanish, and French. Includes RTL support, custom translations, and localized date formatting.'
+  },
+  {
     title: 'Flexible Selection Modes',
     description:
       'Single date, date range, and multi-date selection modes to accommodate various use cases.'
@@ -161,6 +166,7 @@ export default function Home() {
                 onChange={setDarkDate}
                 dark={true}
                 calendarSystem='jalali'
+                locale='fa'
                 showWeekend={true}
                 todayBtn={true}
               />

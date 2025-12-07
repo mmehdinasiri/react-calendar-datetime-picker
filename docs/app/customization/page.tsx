@@ -1513,7 +1513,7 @@ function App() {
         >
           <div className='mb-6'>
             <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Custom Icons and Labels
+              Custom Icons
             </h2>
             <p className='text-gray-700 dark:text-gray-300'>
               Customize navigation icons and text labels using the{' '}
@@ -1570,84 +1570,6 @@ function App() {
               }}
               exampleKey='CustomArrowIcons'
             />
-            <ExampleRenderer
-              config={{
-                title: 'French Month and Weekday Names',
-                description:
-                  'Calendar with French month and weekday names - example of localization using customization prop',
-                component: 'DtCalendar',
-                props: {
-                  customization: {
-                    monthNames: [
-                      'Janvier',
-                      'Février',
-                      'Mars',
-                      'Avril',
-                      'Mai',
-                      'Juin',
-                      'Juillet',
-                      'Août',
-                      'Septembre',
-                      'Octobre',
-                      'Novembre',
-                      'Décembre'
-                    ],
-                    weekdayNames: [
-                      'Dim',
-                      'Lun',
-                      'Mar',
-                      'Mer',
-                      'Jeu',
-                      'Ven',
-                      'Sam'
-                    ]
-                  },
-                  showWeekend: true,
-                  todayBtn: true
-                },
-                wrapper: 'calendar-container'
-              }}
-              exampleKey='CustomMonthAndWeekdayNames'
-            />
-            <ExampleRenderer
-              config={{
-                title: 'Spanish Month and Weekday Names',
-                description:
-                  'Calendar with Spanish month and weekday names - example of localization using customization prop',
-                component: 'DtCalendar',
-                props: {
-                  customization: {
-                    monthNames: [
-                      'Enero',
-                      'Febrero',
-                      'Marzo',
-                      'Abril',
-                      'Mayo',
-                      'Junio',
-                      'Julio',
-                      'Agosto',
-                      'Septiembre',
-                      'Octubre',
-                      'Noviembre',
-                      'Diciembre'
-                    ],
-                    weekdayNames: [
-                      'Dom',
-                      'Lun',
-                      'Mar',
-                      'Mié',
-                      'Jue',
-                      'Vie',
-                      'Sáb'
-                    ]
-                  },
-                  showWeekend: true,
-                  todayBtn: true
-                },
-                wrapper: 'calendar-container'
-              }}
-              exampleKey='CustomNamesSpanish'
-            />
           </div>
         </section>
 
@@ -1689,6 +1611,299 @@ function App() {
               }}
               exampleKey='CustomPresetLabels'
             />
+          </div>
+        </section>
+
+        {/* Internationalization */}
+        <section
+          id='internationalization'
+          className='bg-bg-secondary rounded-lg border border-border p-8'
+        >
+          <div className='mb-6'>
+            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
+              Internationalization (i18n)
+            </h2>
+            <p className='text-gray-700 dark:text-gray-300'>
+              Full internationalization support with locale-based translations,
+              RTL support, and customizable text.
+            </p>
+          </div>
+
+          <div className='space-y-8'>
+            {/* Supported Locales */}
+            <div id='locale-support'>
+              <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-4'>
+                Supported Locales
+              </h3>
+              <p className='text-gray-700 dark:text-gray-300 mb-4'>
+                The calendar supports multiple locales out of the box:
+              </p>
+
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-6'>
+                <div className='bg-bg-tertiary rounded-lg p-4'>
+                  <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
+                    English (en) - Default
+                  </h4>
+                  <ul className='text-sm text-gray-600 dark:text-gray-400 space-y-1'>
+                    <li>• Latin numbers</li>
+                    <li>• Left-to-right (LTR)</li>
+                    <li>• English month/weekday names</li>
+                  </ul>
+                </div>
+
+                <div className='bg-bg-tertiary rounded-lg p-4'>
+                  <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
+                    Persian/Farsi (fa)
+                  </h4>
+                  <ul className='text-sm text-gray-600 dark:text-gray-400 space-y-1'>
+                    <li>• Persian numbers</li>
+                    <li>• Right-to-left (RTL)</li>
+                    <li>• Persian month/weekday names</li>
+                  </ul>
+                </div>
+
+                <div className='bg-bg-tertiary rounded-lg p-4'>
+                  <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
+                    German (de)
+                  </h4>
+                  <ul className='text-sm text-gray-600 dark:text-gray-400 space-y-1'>
+                    <li>• Latin numbers</li>
+                    <li>• Left-to-right (LTR)</li>
+                    <li>• German month/weekday names</li>
+                  </ul>
+                </div>
+
+                <div className='bg-bg-tertiary rounded-lg p-4'>
+                  <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
+                    Spanish (es)
+                  </h4>
+                  <ul className='text-sm text-gray-600 dark:text-gray-400 space-y-1'>
+                    <li>• Latin numbers</li>
+                    <li>• Left-to-right (LTR)</li>
+                    <li>• Spanish month/weekday names</li>
+                  </ul>
+                </div>
+
+                <div className='bg-bg-tertiary rounded-lg p-4'>
+                  <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
+                    French (fr)
+                  </h4>
+                  <ul className='text-sm text-gray-600 dark:text-gray-400 space-y-1'>
+                    <li>• Latin numbers</li>
+                    <li>• Left-to-right (LTR)</li>
+                    <li>• French month/weekday names</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className='bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-6'>
+                <SyntaxHighlighter
+                  language='typescript'
+                  style={vscDarkPlus}
+                  className='rounded-md'
+                >
+                  {`// Basic locale usage
+<DtPicker locale="fa" onChange={setDate} />
+
+// German locale
+<DtCalendar locale="de" onChange={setDate} />
+
+// French locale
+<DtPicker locale="fr" onChange={setDate} />`}
+                </SyntaxHighlighter>
+              </div>
+            </div>
+
+            {/* Custom Translations */}
+            <div id='custom-translations'>
+              <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-4'>
+                Custom Translations
+              </h3>
+              <p className='text-gray-700 dark:text-gray-300 mb-4'>
+                Override any text in the calendar using the{' '}
+                <code className='bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm'>
+                  translations
+                </code>{' '}
+                property in customization.
+              </p>
+
+              <ExampleRenderer
+                config={{
+                  title: 'Custom Button Labels',
+                  description: 'Customize Today button and navigation labels',
+                  component: 'DtPicker',
+                  props: {
+                    locale: 'en',
+                    showWeekend: true,
+                    todayBtn: true,
+                    clearBtn: true,
+                    initValue: { year: 2024, month: 3, day: 15 },
+                    customization: {
+                      translations: {
+                        labels: {
+                          today: 'Pick Today',
+                          nextMonth: 'Next',
+                          previousMonth: 'Previous',
+                          clear: 'Reset'
+                        }
+                      }
+                    }
+                  },
+                  wrapper: 'picker-container'
+                }}
+                exampleKey='CustomTranslations'
+              />
+
+              <div className='mt-6'>
+                <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-3'>
+                  CalendarTranslations Interface
+                </h4>
+                <div className='bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden'>
+                  <SyntaxHighlighter
+                    language='typescript'
+                    style={vscDarkPlus}
+                    className='rounded-md'
+                  >
+                    {`export interface CalendarTranslations {
+  /** Month names (12 elements, index 0-11 for months 1-12) */
+  months: string[]
+
+  /** Weekday names (7 elements, starting from first day of week) */
+  weekdays: string[]
+
+  /** Text direction */
+  direction: 'ltr' | 'rtl'
+
+  /** Number system */
+  numbers: 'latin' | 'persian'
+
+  /** Common labels */
+  labels: {
+    /** Today button text */
+    today: string
+    /** Clear button text - aria-label (ACCESSIBILITY ONLY) - DtPicker only */
+    clear: string
+    /** Cancel button text */
+    cancel: string
+    /** OK/Confirm button text */
+    ok: string
+    /** Next month button title */
+    nextMonth: string
+    /** Previous month button title */
+    previousMonth: string
+    /** Month selection view label */
+    selectMonth: string
+    /** Year selection view label */
+    selectYear: string
+    /** Time selector from label (for ranges) */
+    from: string
+    /** Time selector to label (for ranges) */
+    to: string
+    /** AM indicator */
+    am: string
+    /** PM indicator */
+    pm: string
+  }
+
+  /** Preset range labels */
+  presetRanges: {
+    yesterday: string
+    last7days: string
+    last30days: string
+    thisMonth: string
+    lastMonth: string
+  }
+}`}
+                  </SyntaxHighlighter>
+                </div>
+              </div>
+
+              <div className='bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mt-6'>
+                <SyntaxHighlighter
+                  language='typescript'
+                  style={vscDarkPlus}
+                  className='rounded-md'
+                >
+                  {`// Complete custom translations example
+<DtPicker
+  locale="en"
+  customization={{
+    translations: {
+      months: [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ],
+      weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      direction: 'ltr',
+      numbers: 'latin',
+      labels: {
+        today: 'Today',
+        clear: 'Clear',
+        cancel: 'Cancel',
+        ok: 'OK',
+        nextMonth: 'Next',
+        previousMonth: 'Previous',
+        selectMonth: 'Select month',
+        selectYear: 'Select year',
+        from: 'From',
+        to: 'To',
+        am: 'AM',
+        pm: 'PM'
+      },
+      presetRanges: {
+        yesterday: 'Yesterday',
+        last7days: 'Last 7 days',
+        last30days: 'Last 30 days',
+        thisMonth: 'This month',
+        lastMonth: 'Last month'
+      }
+    }
+  }}
+  onChange={setDate}
+/>`}
+                </SyntaxHighlighter>
+              </div>
+            </div>
+
+            {/* RTL Support */}
+            <div id='rtl-support'>
+              <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-4'>
+                RTL Support
+              </h3>
+              <p className='text-gray-700 dark:text-gray-300 mb-4'>
+                Automatic right-to-left layout support for RTL languages like
+                Persian and Arabic.
+              </p>
+
+              <ExampleRenderer
+                config={{
+                  title: 'Persian RTL Layout',
+                  description:
+                    'Automatic RTL layout with Persian text and numbers',
+                  component: 'DtPicker',
+                  props: {
+                    locale: 'fa',
+                    withTime: true,
+                    timeFormat: '12'
+                  },
+                  wrapper: 'picker-container'
+                }}
+                exampleKey='PersianRTL'
+              />
+
+              <div className='bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mt-4'>
+                <h4 className='text-blue-900 dark:text-blue-100 font-semibold mb-2'>
+                  RTL Features:
+                </h4>
+                <ul className='text-blue-800 dark:text-blue-200 text-sm space-y-1'>
+                  <li>• Automatic text direction detection</li>
+                  <li>• Persian/Arabic numerals in dates and times</li>
+                  <li>• RTL calendar layout</li>
+                  <li>• Localized month and weekday names</li>
+                  <li>• RTL time picker interface</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </section>
       </div>

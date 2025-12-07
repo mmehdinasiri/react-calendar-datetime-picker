@@ -7,7 +7,10 @@ import type {
   Range,
   Multi
 } from '../types'
-import type { CalendarConstraintsInput } from '../types/calendar'
+import type {
+  CalendarConstraintsInput,
+  CalendarTranslations
+} from '../types/calendar'
 import {
   normalizeInitValueWithErrors,
   areValuesEqual
@@ -32,7 +35,8 @@ export function useCalendarPicker(
   onClose?: () => void,
   dateFormat?: string,
   timeFormat: '12' | '24' = '24',
-  numberOfMonths: 1 | 2 | 3 = 1
+  numberOfMonths: 1 | 2 | 3 = 1,
+  translations?: CalendarTranslations
 ) {
   // Normalize constraints props
   const constraintsResult = useMemo(
@@ -101,13 +105,16 @@ export function useCalendarPicker(
 
   // Format display value for input (use state.selectedValue from calendar)
   const displayValue = useMemo(() => {
+    const fromLabel = translations?.labels?.from || 'from'
+    const toLabel = translations?.labels?.to || 'to'
+    const numberSystem = translations?.numbers || 'latin'
     return formatDateForInput(
       state.selectedValue,
-      calendarSystem,
+      numberSystem,
       type,
       showTimeInput && withTime,
-      'from',
-      'to',
+      fromLabel,
+      toLabel,
       dateFormat,
       timeFormat
     )
@@ -118,7 +125,8 @@ export function useCalendarPicker(
     showTimeInput,
     withTime,
     dateFormat,
-    timeFormat
+    timeFormat,
+    translations
   ])
 
   return {

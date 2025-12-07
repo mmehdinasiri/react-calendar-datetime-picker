@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { CalendarCore } from '@/components/CalendarCore'
+import { enTranslations } from '@/utils/translations'
 import type { Day } from '@/types'
 
 // Mock child components
@@ -28,6 +29,8 @@ describe('CalendarCore', () => {
     selectedValue: null,
     displayMonth: { year: 2023, month: 1, day: 1 } as Day,
     calendarSystem: 'gregorian' as const,
+    locale: 'en' as const,
+    translations: enTranslations,
     type: 'single' as const,
     onDateSelect: vi.fn(),
     onTimeChange: vi.fn(),

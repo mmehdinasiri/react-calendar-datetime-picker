@@ -11,7 +11,8 @@ import type {
   Week,
   CalendarLocale,
   CalendarType,
-  CalendarListStyle
+  CalendarListStyle,
+  CalendarTranslations
 } from '../types'
 import type {
   CalendarConstraints,
@@ -31,6 +32,10 @@ export interface CalendarCoreProps {
   currentView: 'calendar' | 'months' | 'years'
   /** Calendar system */
   calendarSystem: CalendarLocale
+  /** Locale for internationalization */
+  locale: string
+  /** Translation object */
+  translations: CalendarTranslations
   /** Calendar selection type */
   type: CalendarType
   /** Enable time selection */
@@ -77,6 +82,8 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     displayMonth,
     currentView,
     calendarSystem,
+    locale,
+    translations,
     type,
     withTime = false,
     timeFormat = '24',
@@ -105,6 +112,8 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
         selectedValue={selectedValue}
         displayMonth={displayMonth}
         calendarSystem={calendarSystem}
+        locale={locale}
+        translations={translations}
         type={type}
         withTime={withTime}
         timeFormat={timeFormat}
@@ -130,6 +139,8 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
       <MonthView
         displayMonth={displayMonth}
         calendarSystem={calendarSystem}
+        locale={locale}
+        translations={translations}
         customization={customization}
         onMonthSelect={onMonthSelect}
         onViewChange={onViewChange}
@@ -142,6 +153,8 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
       <YearView
         displayMonth={displayMonth}
         calendarSystem={calendarSystem}
+        locale={locale}
+        translations={translations}
         yearListStyle={yearListStyle}
         customization={customization}
         onYearSelect={onYearSelect}

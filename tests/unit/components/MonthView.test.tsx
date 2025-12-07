@@ -1,13 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { MonthView } from '@/components/MonthView'
-import { getMonthNames } from '@/utils/calendar-grid'
+import { enTranslations, faTranslations } from '@/utils/translations'
 import type { Day } from '@/types'
 
 // Mock the utils
-vi.mock('@/utils/calendar-grid', () => ({
-  getMonthNames: vi.fn()
-}))
+vi.mock('@/utils/calendar-grid', () => ({}))
 
 // Mock CalendarHeader
 vi.mock('@/components/CalendarHeader', () => ({
@@ -41,38 +39,9 @@ describe('MonthView', () => {
   const mockOnViewChange = vi.fn()
 
   const defaultDisplayMonth: Day = { year: 2023, month: 1, day: 1 }
-  const mockEnglishMonths = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ]
-  const mockPersianMonths = [
-    'فروردین',
-    'اردیبهشت',
-    'خرداد',
-    'تیر',
-    'مرداد',
-    'شهریور',
-    'مهر',
-    'آبان',
-    'آذر',
-    'دی',
-    'بهمن',
-    'اسفند'
-  ]
 
   beforeEach(() => {
     vi.clearAllMocks()
-    vi.mocked(getMonthNames).mockReturnValue(mockEnglishMonths)
   })
 
   it('renders correctly', () => {
@@ -80,6 +49,8 @@ describe('MonthView', () => {
       <MonthView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
@@ -95,29 +66,31 @@ describe('MonthView', () => {
       <MonthView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
     )
 
-    mockEnglishMonths.forEach((month) => {
+    enTranslations.months.forEach((month) => {
       expect(screen.getByText(month)).toBeInTheDocument()
     })
   })
 
   it('displays correct month names for Persian locale', () => {
-    vi.mocked(getMonthNames).mockReturnValue(mockPersianMonths)
-
     render(
       <MonthView
         displayMonth={defaultDisplayMonth}
         calendarSystem='jalali'
+        locale='fa'
+        translations={faTranslations}
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
     )
 
-    mockPersianMonths.forEach((month) => {
+    faTranslations.months.forEach((month) => {
       expect(screen.getByText(month)).toBeInTheDocument()
     })
 
@@ -134,6 +107,8 @@ describe('MonthView', () => {
       <MonthView
         displayMonth={displayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
@@ -153,6 +128,8 @@ describe('MonthView', () => {
       <MonthView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
@@ -170,6 +147,8 @@ describe('MonthView', () => {
       <MonthView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
       />
@@ -192,37 +171,6 @@ describe('MonthView', () => {
     expect(mockOnViewChange).toHaveBeenCalledWith('years')
   })
 
-  it('supports custom month names', () => {
-    const customMonths = [
-      'M1',
-      'M2',
-      'M3',
-      'M4',
-      'M5',
-      'M6',
-      'M7',
-      'M8',
-      'M9',
-      'M10',
-      'M11',
-      'M12'
-    ]
-    vi.mocked(getMonthNames).mockReturnValue(customMonths)
-
-    render(
-      <MonthView
-        displayMonth={defaultDisplayMonth}
-        calendarSystem='gregorian'
-        customization={{ monthNames: customMonths }}
-        onMonthSelect={mockOnMonthSelect}
-        onViewChange={mockOnViewChange}
-      />
-    )
-
-    expect(getMonthNames).toHaveBeenCalledWith('gregorian', customMonths)
-    expect(screen.getByText('M1')).toBeInTheDocument()
-  })
-
   it('applies custom classes', () => {
     const customClasses = { months: 'custom-months-class' }
 
@@ -230,6 +178,8 @@ describe('MonthView', () => {
       <MonthView
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        locale='en'
+        translations={enTranslations}
         customization={{ classes: customClasses }}
         onMonthSelect={mockOnMonthSelect}
         onViewChange={mockOnViewChange}
@@ -238,5 +188,131 @@ describe('MonthView', () => {
 
     const grid = screen.getByRole('grid')
     expect(grid).toHaveClass('custom-months-class')
+  })
+
+  describe('Translation Integration', () => {
+    it('renders month names from English translations', () => {
+      render(
+        <MonthView
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='gregorian'
+          locale='en'
+          translations={enTranslations}
+          onMonthSelect={mockOnMonthSelect}
+          onViewChange={mockOnViewChange}
+        />
+      )
+
+      // Should render all 12 English month names
+      enTranslations.months.forEach((month) => {
+        expect(screen.getByText(month)).toBeInTheDocument()
+      })
+    })
+
+    it('renders month names from Persian translations', () => {
+      render(
+        <MonthView
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='jalali'
+          locale='fa'
+          translations={faTranslations}
+          onMonthSelect={mockOnMonthSelect}
+          onViewChange={mockOnViewChange}
+        />
+      )
+
+      // Should render all 12 Persian month names
+      faTranslations.months.forEach((month) => {
+        expect(screen.getByText(month)).toBeInTheDocument()
+      })
+    })
+
+    it('highlights current month correctly', () => {
+      render(
+        <MonthView
+          displayMonth={{ year: 2023, month: 6, day: 1 }} // June
+          calendarSystem='gregorian'
+          locale='en'
+          translations={enTranslations}
+          onMonthSelect={mockOnMonthSelect}
+          onViewChange={mockOnViewChange}
+        />
+      )
+
+      // June should be highlighted as current month
+      const juneButton = screen.getByText('June')
+      expect(juneButton).toHaveClass('calendar-month-current')
+    })
+
+    it('uses selectMonth accessibility label from translations', () => {
+      render(
+        <MonthView
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='gregorian'
+          locale='en'
+          translations={enTranslations}
+          onMonthSelect={mockOnMonthSelect}
+          onViewChange={mockOnViewChange}
+        />
+      )
+
+      const grid = screen.getByRole('grid')
+      expect(grid).toHaveAttribute('aria-label', 'Select month')
+    })
+
+    it('renders custom month names from translations', () => {
+      const customTranslations = {
+        ...enTranslations,
+        months: [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec'
+        ]
+      }
+
+      render(
+        <MonthView
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='gregorian'
+          locale='en'
+          translations={customTranslations}
+          onMonthSelect={mockOnMonthSelect}
+          onViewChange={mockOnViewChange}
+        />
+      )
+
+      // Should render custom abbreviated month names
+      expect(screen.getByText('Jan')).toBeInTheDocument()
+      expect(screen.getByText('Feb')).toBeInTheDocument()
+      expect(screen.getByText('Mar')).toBeInTheDocument()
+    })
+
+    it('handles month selection with correct month index', () => {
+      render(
+        <MonthView
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='gregorian'
+          locale='en'
+          translations={enTranslations}
+          onMonthSelect={mockOnMonthSelect}
+          onViewChange={mockOnViewChange}
+        />
+      )
+
+      const marchButton = screen.getByText('March')
+      fireEvent.click(marchButton)
+
+      // March is month 3 (0-indexed as 2)
+      expect(mockOnMonthSelect).toHaveBeenCalledWith(3)
+    })
   })
 })

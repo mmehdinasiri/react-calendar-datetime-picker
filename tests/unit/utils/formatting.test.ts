@@ -24,12 +24,12 @@ describe('formatting utils', () => {
       const day: Day = { year: 1402, month: 1, day: 1 }
 
       it('formats single date', () => {
-        expect(formatDateForInput(day, 'jalali', 'single')).toBe('۱۴۰۲/۰۱/۰۱')
+        expect(formatDateForInput(day, 'persian', 'single')).toBe('۱۴۰۲/۰۱/۰۱')
       })
 
       it('formats single date with time', () => {
         const dayWithTime: Day = { ...day, hour: 13, minute: 30 }
-        expect(formatDateForInput(dayWithTime, 'jalali', 'single', true)).toBe(
+        expect(formatDateForInput(dayWithTime, 'persian', 'single', true)).toBe(
           '۱۴۰۲/۰۱/۰۱ ۱۳:۳۰'
         )
       })
@@ -40,7 +40,7 @@ describe('formatting utils', () => {
           to: { year: 1402, month: 1, day: 5 }
         }
         expect(
-          formatDateForInput(range, 'jalali', 'range', false, 'از', 'تا')
+          formatDateForInput(range, 'persian', 'range', false, 'از', 'تا')
         ).toBe('از ۱۴۰۲/۰۱/۰۱ تا ۱۴۰۲/۰۱/۰۵')
       })
 
@@ -49,7 +49,7 @@ describe('formatting utils', () => {
           from: { year: 1402, month: 1, day: 1 },
           to: { year: 1402, month: 1, day: 7 }
         }
-        expect(formatDateForInput(week, 'jalali', 'week')).toBe(
+        expect(formatDateForInput(week, 'persian', 'week')).toBe(
           'هفته: ۱۴۰۲/۰۱/۰۱ - ۱۴۰۲/۰۱/۰۷'
         )
       })
@@ -58,7 +58,7 @@ describe('formatting utils', () => {
         expect(
           formatDateForInput(
             day,
-            'jalali',
+            'persian',
             'single',
             false,
             '',
@@ -73,16 +73,14 @@ describe('formatting utils', () => {
       const day: Day = { year: 2023, month: 1, day: 1 }
 
       it('formats single date', () => {
-        expect(formatDateForInput(day, 'gregorian', 'single')).toBe(
-          '2023/01/01'
-        )
+        expect(formatDateForInput(day, 'latin', 'single')).toBe('2023/01/01')
       })
 
       it('formats single date with time', () => {
         const dayWithTime: Day = { ...day, hour: 13, minute: 30 }
-        expect(
-          formatDateForInput(dayWithTime, 'gregorian', 'single', true)
-        ).toBe('2023/01/01 13:30')
+        expect(formatDateForInput(dayWithTime, 'latin', 'single', true)).toBe(
+          '2023/01/01 13:30'
+        )
       })
 
       it('formats range', () => {
@@ -91,7 +89,7 @@ describe('formatting utils', () => {
           to: { year: 2023, month: 1, day: 5 }
         }
         expect(
-          formatDateForInput(range, 'gregorian', 'range', false, 'From', 'To')
+          formatDateForInput(range, 'latin', 'range', false, 'From', 'To')
         ).toBe('From 2023/01/01 To 2023/01/05')
       })
 
@@ -100,7 +98,7 @@ describe('formatting utils', () => {
           from: { year: 2023, month: 1, day: 1 },
           to: { year: 2023, month: 1, day: 7 }
         }
-        expect(formatDateForInput(week, 'gregorian', 'week')).toBe(
+        expect(formatDateForInput(week, 'latin', 'week')).toBe(
           'Week: 2023/01/01 - 2023/01/07'
         )
       })

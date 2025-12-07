@@ -37,13 +37,7 @@ export {
 export { normalizeConstraintsProps } from './constraints'
 
 // Calendar grid
-export {
-  generateCalendarGrid,
-  getDayNames,
-  getMonthNames,
-  getYearRange,
-  getMonths
-} from './calendar-grid'
+export { generateCalendarGrid, getYearRange, getMonths } from './calendar-grid'
 export type { CalendarDay } from './calendar-grid'
 
 // Calendar selection

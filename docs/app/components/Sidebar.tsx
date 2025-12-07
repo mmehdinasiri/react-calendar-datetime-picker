@@ -41,18 +41,80 @@ const navigation = [
     ]
   },
   {
-    title: 'EXAMPLES',
-    items: Object.entries(examples).map(([groupName, groupExamples]) => ({
-      name: groupName,
-      href: `/examples#${toKebabCase(groupName)}`,
-      subItems: Object.keys(groupExamples).map((exampleKey) => ({
-        name: groupExamples[exampleKey].title,
-        href: `/examples#${toKebabCase(groupName)}-${exampleKey}`
+    title: 'FEATURES',
+    items: Object.entries(examples)
+      .filter(
+        ([groupName]) =>
+          groupName !== 'Locales' && groupName !== 'Translation Customization'
+      )
+      .map(([groupName, groupExamples]) => ({
+        name: groupName,
+        href: `/examples#${toKebabCase(groupName)}`,
+        subItems: Object.keys(groupExamples).map((exampleKey) => ({
+          name: groupExamples[exampleKey].title,
+          href: `/examples#${toKebabCase(groupName)}-${toKebabCase(exampleKey)}`
+        }))
       }))
-    }))
   },
   {
-    title: 'CUSTOMIZATION',
+    title: 'INTERNATIONALIZATION',
+    items: [
+      {
+        name: 'Locales',
+        href: '/examples#locales',
+        subItems: [
+          {
+            name: 'Persian (fa)',
+            href: '/examples#locales-persiancalendar'
+          },
+          {
+            name: 'French (fr)',
+            href: '/examples#locales-frenchcalendar'
+          }
+        ]
+      },
+      {
+        name: 'Translation Customization',
+        href: '/examples#translation-customization',
+        subItems: [
+          {
+            name: 'Custom Button Labels',
+            href: '/examples#translation-customization-customlabels'
+          },
+          {
+            name: 'Custom Weekday Names',
+            href: '/examples#translation-customization-customweekdays'
+          },
+          {
+            name: 'Custom Month Names',
+            href: '/examples#translation-customization-custommonthnames'
+          },
+          {
+            name: 'Custom AM/PM Labels',
+            href: '/examples#translation-customization-customampm'
+          },
+          {
+            name: 'Custom Preset Range Labels',
+            href: '/examples#translation-customization-custompresetranges'
+          },
+          {
+            name: 'Custom Time Selector Labels',
+            href: '/examples#translation-customization-customtimelabels'
+          },
+          {
+            name: 'Custom Input Range Labels',
+            href: '/examples#translation-customization-custominputrangelabels'
+          },
+          {
+            name: 'Combined Customizations',
+            href: '/examples#translation-customization-combinedcustomizations'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'STYLE CUSTOMIZATION',
     items: [
       {
         name: 'Custom Trigger Elements',
@@ -113,24 +175,7 @@ const navigation = [
         ]
       },
       { name: 'Custom CSS Classes', href: '/customization#custom-classes' },
-      {
-        name: 'Custom Icons & Labels',
-        href: '/customization#icons-labels',
-        subItems: [
-          {
-            name: 'Custom Arrow Icons',
-            href: '/customization#customarrowicons'
-          },
-          {
-            name: 'French Month and Weekday Names',
-            href: '/customization#custommonthandweekdaynames'
-          },
-          {
-            name: 'Spanish Month and Weekday Names',
-            href: '/customization#customnamesspanish'
-          }
-        ]
-      },
+      { name: 'Custom Icons', href: '/customization#customarrowicons' },
       {
         name: 'Preset Date Ranges',
         href: '/customization#preset-ranges',
@@ -273,7 +318,7 @@ function CollapsibleItem({
 function CollapsibleSection({ section, pathname }: CollapsibleSectionProps) {
   return (
     <div>
-      <h3 className='text-xs font-semibold text-gray-400 dark:text-gray-400 uppercase tracking-wider mb-2 px-3'>
+      <h3 className='text-base font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2 px-3'>
         {section.title}
       </h3>
       <ul className='space-y-1'>

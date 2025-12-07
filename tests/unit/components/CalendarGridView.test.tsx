@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { CalendarGridView } from '@/components/CalendarGridView'
+import { enTranslations, faTranslations } from '@/utils/translations'
 import type { Day } from '@/types'
 
 // Mock child components to isolate CalendarGridView logic
@@ -48,6 +49,8 @@ describe('CalendarGridView', () => {
     selectedValue: null,
     displayMonth: { year: 2023, month: 1, day: 1 } as Day,
     calendarSystem: 'gregorian' as const,
+    locale: 'en' as const,
+    translations: enTranslations,
     type: 'single' as const,
     onDateSelect: vi.fn(),
     onTimeChange: vi.fn(),
@@ -163,10 +166,18 @@ describe('CalendarGridView', () => {
   })
 
   it('renders preset ranges when type is range and presetRanges provided', () => {
+    const customTranslations = {
+      ...enTranslations,
+      presetRanges: {
+        ...enTranslations.presetRanges,
+        last30days: 'Last 30'
+      }
+    }
+
     const presetRanges = {
       yesterday: true,
       last7days: true,
-      last30days: 'Last 30',
+      last30days: true,
       thisMonth: true,
       lastMonth: true,
       custom: [
@@ -183,6 +194,7 @@ describe('CalendarGridView', () => {
       <CalendarGridView
         {...defaultProps}
         type='range'
+        translations={customTranslations}
         presetRanges={presetRanges}
       />
     )
@@ -232,6 +244,8 @@ describe('CalendarGridView', () => {
       <CalendarGridView
         {...defaultProps}
         calendarSystem='jalali'
+        locale='fa'
+        translations={faTranslations}
         displayMonth={{ year: 1402, month: 1, day: 1 }}
         todayBtn={true}
       />
@@ -386,5 +400,135 @@ describe('CalendarGridView', () => {
     expect(defaultProps.onDateSelect).toHaveBeenCalledWith(
       expect.objectContaining({ day: 3 })
     )
+  })
+
+  describe('Translation Integration', () => {
+    it('renders weekday names from translations', () => {
+      render(<CalendarGridView {...defaultProps} />)
+
+      // English weekday abbreviations
+      expect(screen.getByText('Su')).toBeInTheDocument()
+      expect(screen.getByText('Mo')).toBeInTheDocument()
+      expect(screen.getByText('Tu')).toBeInTheDocument()
+      expect(screen.getByText('We')).toBeInTheDocument()
+      expect(screen.getByText('Th')).toBeInTheDocument()
+      expect(screen.getByText('Fr')).toBeInTheDocument()
+      expect(screen.getByText('Sa')).toBeInTheDocument()
+    })
+
+    it('renders Today button text from translations', () => {
+      render(<CalendarGridView {...defaultProps} todayBtn={true} />)
+
+      expect(screen.getByText('Today')).toBeInTheDocument()
+    })
+
+    it('renders From/To labels for range time selectors from translations', () => {
+      render(
+        <CalendarGridView
+          {...defaultProps}
+          type='range'
+          withTime={true}
+          selectedValue={{
+            from: { year: 2023, month: 1, day: 1 },
+            to: { year: 2023, month: 1, day: 2 }
+          }}
+        />
+      )
+
+      expect(screen.getByText('From')).toBeInTheDocument()
+      expect(screen.getByText('To')).toBeInTheDocument()
+    })
+
+    it('applies LTR direction for English translations', () => {
+      const { container } = render(<CalendarGridView {...defaultProps} />)
+
+      const calendarCore = container.querySelector('.calendar-core')
+      expect(calendarCore).toHaveAttribute('dir', 'ltr')
+    })
+
+    it('applies RTL direction for Persian translations', () => {
+      const { container } = render(
+        <CalendarGridView {...defaultProps} translations={faTranslations} />
+      )
+
+      const calendarCore = container.querySelector('.calendar-core')
+      expect(calendarCore).toHaveAttribute('dir', 'rtl')
+    })
+
+    it('renders Persian Today button text', () => {
+      render(
+        <CalendarGridView
+          {...defaultProps}
+          translations={faTranslations}
+          todayBtn={true}
+        />
+      )
+
+      expect(screen.getByText('امروز')).toBeInTheDocument()
+    })
+
+    it('renders custom translations correctly', () => {
+      const customTranslations = {
+        ...enTranslations,
+        labels: {
+          ...enTranslations.labels,
+          today: 'Pick Today!'
+        }
+      }
+
+      render(
+        <CalendarGridView
+          {...defaultProps}
+          translations={customTranslations}
+          todayBtn={true}
+        />
+      )
+
+      expect(screen.getByText('Pick Today!')).toBeInTheDocument()
+    })
+
+    it('renders preset range buttons with translated labels', () => {
+      render(
+        <CalendarGridView
+          {...defaultProps}
+          type='range'
+          presetRanges={{
+            yesterday: true,
+            last7days: true,
+            thisMonth: true
+          }}
+        />
+      )
+
+      expect(screen.getByText('Yesterday')).toBeInTheDocument()
+      expect(screen.getByText('Last 7 days')).toBeInTheDocument()
+      expect(screen.getByText('This month')).toBeInTheDocument()
+    })
+
+    it('renders custom preset range labels', () => {
+      const customTranslations = {
+        ...enTranslations,
+        presetRanges: {
+          ...enTranslations.presetRanges,
+          yesterday: 'Ayer',
+          last7days: 'Últimos 7 días'
+        }
+      }
+
+      render(
+        <CalendarGridView
+          {...defaultProps}
+          type='range'
+          translations={customTranslations}
+          presetRanges={{
+            yesterday: true,
+            last7days: true
+          }}
+        />
+      )
+
+      expect(screen.getByText('Ayer')).toBeInTheDocument()
+      expect(screen.getByText('Últimos 7 días')).toBeInTheDocument()
+    })
   })
 })

@@ -137,7 +137,7 @@ describe('DtPicker', () => {
     const initDate = { year: 2023, month: 1, day: 15 }
     render(<DtPicker {...defaultProps} initValue={initDate} clearBtn={true} />)
 
-    const clearBtn = screen.getByLabelText('Clear selection')
+    const clearBtn = screen.getByLabelText('Clear')
     expect(clearBtn).toBeInTheDocument()
   })
 
@@ -145,7 +145,7 @@ describe('DtPicker', () => {
     const initDate = { year: 2023, month: 1, day: 15 }
     render(<DtPicker {...defaultProps} initValue={initDate} clearBtn={false} />)
 
-    expect(screen.queryByLabelText('Clear selection')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('Clear')).not.toBeInTheDocument()
   })
 
   it('does not open when disabled', () => {

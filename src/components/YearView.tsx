@@ -4,10 +4,15 @@
  */
 
 import React, { useRef, useEffect } from 'react'
-import type { Day, CalendarLocale, CalendarListStyle } from '../types'
+import type {
+  Day,
+  CalendarLocale,
+  CalendarListStyle,
+  CalendarTranslations
+} from '../types'
 import type { CalendarCustomization } from '../types/calendar'
 import { getYearRange } from '../utils/calendar-grid'
-import { toPersianNumeral } from '../utils/formatting'
+import { formatNumber } from '../utils/formatting'
 import { CalendarHeader } from './CalendarHeader'
 
 export interface YearViewProps {
@@ -15,6 +20,10 @@ export interface YearViewProps {
   displayMonth: Day
   /** Calendar system */
   calendarSystem: CalendarLocale
+  /** Locale for internationalization */
+  locale: string
+  /** Translation object */
+  translations: CalendarTranslations
   /** Year list style */
   yearListStyle?: CalendarListStyle
   /** Customization options */
@@ -29,6 +38,8 @@ const YearViewInner: React.FC<YearViewProps> = (props) => {
   const {
     displayMonth,
     calendarSystem,
+    locale: _locale,
+    translations,
     yearListStyle = 'grid',
     customization = {},
     onYearSelect,
@@ -38,7 +49,7 @@ const YearViewInner: React.FC<YearViewProps> = (props) => {
   const { classes = {} } = customization
   const { years: yearsClass } = classes
 
-  const isRTL = calendarSystem === 'jalali'
+  const isRTL = translations.direction === 'rtl'
   const years = getYearRange(displayMonth.year, 12, calendarSystem)
   const isGrid = yearListStyle === 'grid'
 
@@ -88,6 +99,7 @@ const YearViewInner: React.FC<YearViewProps> = (props) => {
       <CalendarHeader
         displayMonth={displayMonth}
         calendarSystem={calendarSystem}
+        translations={translations}
         customization={customization}
         onPrevious={() => onViewChange('months')}
         onNext={() => {}}
@@ -103,9 +115,7 @@ const YearViewInner: React.FC<YearViewProps> = (props) => {
             isGrid ? 'calendar-years-grid' : 'calendar-years-list'
           }`}
           role='grid'
-          aria-label={
-            calendarSystem === 'jalali' ? 'انتخاب سال' : 'Select year'
-          }
+          aria-label={translations.labels.selectYear}
         >
           {years.map((year) => {
             const isCurrentYear = year === displayMonth.year
@@ -117,10 +127,7 @@ const YearViewInner: React.FC<YearViewProps> = (props) => {
               .filter(Boolean)
               .join(' ')
 
-            const yearLabel =
-              calendarSystem === 'jalali'
-                ? toPersianNumeral(year)
-                : year.toString()
+            const yearLabel = formatNumber(year, translations.numbers)
 
             return (
               <button
@@ -136,7 +143,7 @@ const YearViewInner: React.FC<YearViewProps> = (props) => {
                 aria-selected={isCurrentYear}
                 aria-current={isCurrentYear ? 'date' : undefined}
               >
-                {calendarSystem === 'jalali' ? toPersianNumeral(year) : year}
+                {formatNumber(year, translations.numbers)}
               </button>
             )
           })}

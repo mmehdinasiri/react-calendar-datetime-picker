@@ -1,16 +1,20 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { CalendarHeader } from '@/components/CalendarHeader'
-import { getMonthNames } from '@/utils/calendar-grid'
+import { enTranslations, faTranslations } from '@/utils/translations'
 import type { Day } from '@/types'
 
 // Mock utils
-vi.mock('@/utils/calendar-grid', () => ({
-  getMonthNames: vi.fn()
-}))
+vi.mock('@/utils/calendar-grid', () => ({}))
 
 vi.mock('@/utils/formatting', () => ({
-  toPersianNumeral: (val: any) => `P-${val}`
+  toPersianNumeral: (val: any) => `P-${val}`,
+  formatNumber: (val: any, numberSystem: 'latin' | 'persian') => {
+    if (numberSystem === 'persian') {
+      return `P-${val}`
+    }
+    return val.toString()
+  }
 }))
 
 describe('CalendarHeader', () => {
@@ -20,24 +24,9 @@ describe('CalendarHeader', () => {
   const mockOnYearClick = vi.fn()
 
   const defaultDisplayMonth: Day = { year: 2023, month: 1, day: 1 }
-  const mockEnglishMonths = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ]
 
   beforeEach(() => {
     vi.clearAllMocks()
-    vi.mocked(getMonthNames).mockReturnValue(mockEnglishMonths)
   })
 
   it('renders correctly', () => {
@@ -45,6 +34,7 @@ describe('CalendarHeader', () => {
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        translations={enTranslations}
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
       />
@@ -62,6 +52,7 @@ describe('CalendarHeader', () => {
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        translations={enTranslations}
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
       />
@@ -81,6 +72,7 @@ describe('CalendarHeader', () => {
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        translations={enTranslations}
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
         onMonthClick={mockOnMonthClick}
@@ -103,6 +95,7 @@ describe('CalendarHeader', () => {
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        translations={enTranslations}
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
         // No onMonthClick or onYearClick
@@ -123,6 +116,7 @@ describe('CalendarHeader', () => {
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        translations={enTranslations}
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
         showYear={false}
@@ -133,19 +127,17 @@ describe('CalendarHeader', () => {
   })
 
   it('handles Persian locale', () => {
-    const mockPersianMonths = ['Farvardin', 'Ordibehesht'] // Simplified for mock
-    vi.mocked(getMonthNames).mockReturnValue(mockPersianMonths)
-
     render(
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
         calendarSystem='jalali'
+        translations={faTranslations}
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
       />
     )
 
-    expect(screen.getByText('Farvardin')).toBeInTheDocument()
+    expect(screen.getByText('فروردین')).toBeInTheDocument()
     // Year should be converted to Persian numeral
     expect(screen.getByText('P-2023')).toBeInTheDocument()
   })
@@ -157,6 +149,7 @@ describe('CalendarHeader', () => {
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        translations={enTranslations}
         customization={{ classes: customClasses }}
         onPrevious={mockOnPrevious}
         onNext={mockOnNext}
@@ -175,6 +168,7 @@ describe('CalendarHeader', () => {
       <CalendarHeader
         displayMonth={defaultDisplayMonth}
         calendarSystem='gregorian'
+        translations={enTranslations}
         customization={{
           icons: { next: CustomNextIcon, previous: CustomPrevIcon }
         }}
@@ -187,34 +181,114 @@ describe('CalendarHeader', () => {
     expect(screen.getByTestId('custom-prev')).toBeInTheDocument()
   })
 
-  it('supports custom month names via customization', () => {
-    const customMonths = [
-      'M1',
-      'M2',
-      'M3',
-      'M4',
-      'M5',
-      'M6',
-      'M7',
-      'M8',
-      'M9',
-      'M10',
-      'M11',
-      'M12'
-    ]
-    vi.mocked(getMonthNames).mockReturnValue(customMonths)
+  describe('Translation Integration', () => {
+    it('renders month names from translations', () => {
+      render(
+        <CalendarHeader
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='gregorian'
+          translations={enTranslations}
+          onPrevious={mockOnPrevious}
+          onNext={mockOnNext}
+        />
+      )
 
-    render(
-      <CalendarHeader
-        displayMonth={defaultDisplayMonth}
-        calendarSystem='gregorian'
-        customization={{ monthNames: customMonths }}
-        onPrevious={mockOnPrevious}
-        onNext={mockOnNext}
-      />
-    )
+      // January should be rendered using translations
+      expect(screen.getByText('January')).toBeInTheDocument()
+    })
 
-    expect(getMonthNames).toHaveBeenCalledWith('gregorian', customMonths)
-    expect(screen.getByText('M1')).toBeInTheDocument()
+    it('renders Persian month names correctly', () => {
+      render(
+        <CalendarHeader
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='jalali'
+          translations={faTranslations}
+          onPrevious={mockOnPrevious}
+          onNext={mockOnNext}
+        />
+      )
+
+      // Persian month name for first month
+      expect(screen.getByText('فروردین')).toBeInTheDocument()
+    })
+
+    it('uses navigation button titles from translations', () => {
+      render(
+        <CalendarHeader
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='gregorian'
+          translations={enTranslations}
+          onPrevious={mockOnPrevious}
+          onNext={mockOnNext}
+        />
+      )
+
+      const prevButton = screen.getByRole('button', { name: /previous/i })
+      const nextButton = screen.getByRole('button', { name: /next/i })
+
+      expect(prevButton).toHaveAttribute('title', 'previous')
+      expect(nextButton).toHaveAttribute('title', 'next')
+    })
+
+    it('uses Persian navigation button titles', () => {
+      render(
+        <CalendarHeader
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='jalali'
+          translations={faTranslations}
+          onPrevious={mockOnPrevious}
+          onNext={mockOnNext}
+        />
+      )
+
+      const prevButton = screen.getByRole('button', { name: /قبلی/i })
+      const nextButton = screen.getByRole('button', { name: /بعدی/i })
+
+      expect(prevButton).toHaveAttribute('title', 'قبلی')
+      expect(nextButton).toHaveAttribute('title', 'بعدی')
+    })
+
+    it('overrides navigation titles with custom labels', () => {
+      render(
+        <CalendarHeader
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='gregorian'
+          translations={enTranslations}
+          previousTitle='Custom Previous'
+          nextTitle='Custom Next'
+          onPrevious={mockOnPrevious}
+          onNext={mockOnNext}
+        />
+      )
+
+      const prevButton = screen.getByRole('button', {
+        name: /custom previous/i
+      })
+      const nextButton = screen.getByRole('button', { name: /custom next/i })
+
+      expect(prevButton).toHaveAttribute('title', 'Custom Previous')
+      expect(nextButton).toHaveAttribute('title', 'Custom Next')
+    })
+
+    it('does not render accessibility labels when callbacks not provided', () => {
+      render(
+        <CalendarHeader
+          displayMonth={defaultDisplayMonth}
+          calendarSystem='gregorian'
+          translations={enTranslations}
+          onPrevious={mockOnPrevious}
+          onNext={mockOnNext}
+        />
+      )
+
+      // Month and year should be divs without aria-label when no callbacks
+      const monthElement = screen.getByText('January')
+      const yearElement = screen.getByText('2023')
+
+      expect(monthElement.tagName).toBe('DIV')
+      expect(yearElement.tagName).toBe('DIV')
+      expect(monthElement).not.toHaveAttribute('aria-label')
+      expect(yearElement).not.toHaveAttribute('aria-label')
+    })
   })
 })

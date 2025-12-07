@@ -186,66 +186,243 @@ export const examples: ExamplesConfig = {
         todayBtn: true
       },
       wrapper: 'calendar-container'
-    },
+    }
+  },
+  Locales: {
     PersianCalendar: {
-      title: 'Persian (Jalali) Calendar',
+      title: 'Persian Calendar',
       description:
         'Calendar with Persian locale (fa) - displays Jalali calendar with Persian month names and RTL layout',
       component: 'DtCalendar',
       props: {
         calendarSystem: 'jalali',
+        locale: 'fa',
         showWeekend: true,
         todayBtn: true
       },
       wrapper: 'calendar-container'
     },
-    PersianDatePicker: {
-      title: 'Persian Date Picker',
+    FrenchCalendar: {
+      title: 'French Calendar',
       description:
-        'Date picker with Persian locale - input field with Jalali calendar',
-      component: 'DtPicker',
-      props: {
-        calendarSystem: 'jalali',
-        placeholder: 'تاریخ را انتخاب کنید',
-        showWeekend: true,
-        todayBtn: true
-      },
-      wrapper: 'picker-container'
-    },
-    PersianDateRangeSelection: {
-      title: 'Persian Date Range Selection',
-      description: 'Select a range of dates with Persian (Jalali) calendar',
+        'Calendar with French locale (fr) - displays French month and weekday names',
       component: 'DtCalendar',
       props: {
-        type: 'range',
-        calendarSystem: 'jalali',
+        locale: 'fr',
         showWeekend: true,
         todayBtn: true
       },
       wrapper: 'calendar-container'
+    }
+  },
+  'Translation Customization': {
+    CustomLabels: {
+      title: 'Custom Button Labels',
+      description: 'Calendar with custom button labels and navigation text',
+      component: 'DtCalendar',
+      props: {
+        locale: 'en',
+        showWeekend: true,
+        todayBtn: true,
+        customization: {
+          translations: {
+            labels: {
+              today: 'Pick Today',
+              nextMonth: 'Next',
+              previousMonth: 'Previous'
+            }
+          }
+        }
+      },
+      wrapper: 'calendar-container'
     },
-    PersianDateRangePicker: {
-      title: 'Persian Date Range Picker',
-      description: 'Date range picker with Persian (Jalali) calendar',
+    CustomWeekdays: {
+      title: 'Custom Weekday Names',
+      description: 'Calendar with custom weekday abbreviations',
+      component: 'DtCalendar',
+      props: {
+        locale: 'en',
+        showWeekend: true,
+        todayBtn: true,
+        customization: {
+          translations: {
+            weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+          }
+        }
+      },
+      wrapper: 'calendar-container'
+    },
+    CustomMonthNames: {
+      title: 'Custom Month Names',
+      description: 'Calendar with custom month names',
+      component: 'DtCalendar',
+      props: {
+        locale: 'en',
+        showWeekend: true,
+        todayBtn: true,
+        customization: {
+          translations: {
+            months: [
+              '01',
+              '02',
+              '03',
+              '04',
+              '05',
+              '06',
+              '07',
+              '08',
+              '09',
+              '10',
+              '11',
+              '12'
+            ]
+          }
+        }
+      },
+      wrapper: 'calendar-container'
+    },
+    CustomAMPM: {
+      title: 'Custom AM/PM Labels',
+      description:
+        'Calendar with custom AM/PM indicators for 12-hour time format',
+      component: 'DtCalendar',
+      props: {
+        locale: 'en',
+        showWeekend: true,
+        todayBtn: true,
+        withTime: true,
+        timeFormat: '12',
+        customization: {
+          translations: {
+            labels: {
+              am: 'Morning',
+              pm: 'Evening'
+            }
+          }
+        }
+      },
+      wrapper: 'calendar-container'
+    },
+    CustomPresetRanges: {
+      title: 'Custom Preset Range Labels',
+      description:
+        'Calendar with custom labels for preset date ranges and custom "From" and "To" labels in the input field',
       component: 'DtPicker',
       props: {
+        locale: 'en',
         type: 'range',
-        calendarSystem: 'jalali',
-        placeholder: 'انتخاب بازه تاریخ',
         showWeekend: true,
-        todayBtn: true
+        clearBtn: true,
+        initValue: {
+          from: { year: 2024, month: 3, day: 1 },
+          to: { year: 2024, month: 3, day: 15 }
+        },
+        presetRanges: {
+          yesterday: true,
+          last7days: true,
+          last30days: true,
+          thisMonth: true,
+          lastMonth: true
+        },
+        customization: {
+          translations: {
+            labels: {
+              from: 'Start Date',
+              to: 'End Date',
+              clear: 'Clear Range'
+            },
+            presetRanges: {
+              yesterday: 'Yesterday',
+              last7days: 'Past Week',
+              last30days: 'Past Month',
+              thisMonth: 'Current Month',
+              lastMonth: 'Previous Month'
+            }
+          }
+        }
       },
       wrapper: 'picker-container'
     },
-    PersianWeekSelection: {
-      title: 'Persian Week Selection',
-      description: 'Week selection with Persian (Jalali) calendar',
+    CustomTimeLabels: {
+      title: 'Custom Time Selector Labels',
+      description:
+        'Date range picker with custom "From" and "To" labels for time selection',
+      component: 'DtPicker',
+      props: {
+        locale: 'en',
+        type: 'range',
+        withTime: true,
+        showWeekend: true,
+        customization: {
+          translations: {
+            labels: {
+              timeFrom: 'Start Time',
+              timeTo: 'End Time'
+            }
+          }
+        }
+      },
+      wrapper: 'picker-container'
+    },
+    CustomInputRangeLabels: {
+      title: 'Custom Input Range Labels',
+      description:
+        'Date range picker (DtPicker only) with custom "From" and "To" labels displayed in the input field. Note: This customization only applies to DtPicker component, not DtCalendar.',
+      component: 'DtPicker',
+      props: {
+        locale: 'en',
+        type: 'range',
+        showWeekend: true,
+        placeholder: 'Select date range',
+        customization: {
+          translations: {
+            labels: {
+              from: 'Start',
+              to: 'End'
+            }
+          }
+        }
+      },
+      wrapper: 'picker-container'
+    },
+    CombinedCustomizations: {
+      title: 'Combined Customizations',
+      description:
+        'Calendar with multiple translation customizations applied together',
       component: 'DtCalendar',
       props: {
-        type: 'week',
-        calendarSystem: 'jalali',
+        locale: 'en',
         showWeekend: true,
-        todayBtn: true
+        todayBtn: true,
+        withTime: true,
+        timeFormat: '12',
+        customization: {
+          translations: {
+            months: [
+              'Jan',
+              'Feb',
+              'Mar',
+              'Apr',
+              'May',
+              'Jun',
+              'Jul',
+              'Aug',
+              'Sep',
+              'Oct',
+              'Nov',
+              'Dec'
+            ],
+            weekdays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+            labels: {
+              today: 'Today',
+              ok: 'Confirm',
+              nextMonth: '→',
+              previousMonth: '←',
+              am: 'AM',
+              pm: 'PM'
+            }
+          }
+        }
       },
       wrapper: 'calendar-container'
     }
@@ -513,7 +690,7 @@ export const examples: ExamplesConfig = {
       }}`
     }
   },
-  Features: {
+  'Display Options': {
     ShowWeekendHighlighting: {
       title: 'Show Weekend Highlighting',
       description: 'Calendar with weekend days highlighted',
@@ -532,6 +709,17 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container'
     },
+    ClearButton: {
+      title: 'Clear Button',
+      description: 'Date picker with clear button to reset selection',
+      component: 'DtPicker',
+      props: {
+        clearBtn: true,
+        initValue: { year: 2024, month: 7, day: 17 },
+        placeholder: 'Select a date'
+      },
+      wrapper: 'picker-container'
+    },
     PresetRanges: {
       title: 'Preset Date Ranges',
       description:
@@ -545,41 +733,6 @@ export const examples: ExamplesConfig = {
           last30days: true,
           thisMonth: true,
           lastMonth: true
-        },
-        showWeekend: true,
-        todayBtn: true
-      },
-      wrapper: 'calendar-container'
-    },
-    RangeWithPresetRanges: {
-      title: 'Date Range with All Preset Buttons',
-      description: 'Range selection with all preset date range buttons',
-      component: 'DtCalendar',
-      props: {
-        type: 'range',
-        presetRanges: {
-          yesterday: true,
-          last7days: true,
-          last30days: true,
-          thisMonth: true,
-          lastMonth: true
-        },
-        showWeekend: true,
-        todayBtn: true
-      },
-      wrapper: 'calendar-container'
-    },
-    RangeWithCustomPresets: {
-      title: 'Date Range with Custom Preset Labels',
-      description: 'Range selection with custom preset button labels',
-      component: 'DtCalendar',
-      props: {
-        type: 'range',
-        presetRanges: {
-          yesterday: true,
-          last7days: 'Past Week',
-          last30days: true,
-          thisMonth: true
         },
         showWeekend: true,
         todayBtn: true
@@ -1125,6 +1278,38 @@ const backToGregorian = convertToGregorian(jalaliDate)`,
           'convertToGregorian(jalaliDate)': dayToString(backToGregorian, '/')
         }
       }
+    }
+  },
+  Customization: {
+    CustomTranslations: {
+      title: 'Custom Button Labels',
+      description: 'Customize Today button and navigation labels',
+      component: 'DtPicker',
+      props: {
+        locale: 'en',
+        customization: {
+          translations: {
+            labels: {
+              today: 'Pick Today',
+              nextMonth: 'Next',
+              previousMonth: 'Previous',
+              clear: 'Reset'
+            }
+          }
+        }
+      },
+      wrapper: 'picker-container'
+    },
+    PersianRTL: {
+      title: 'Persian RTL Layout',
+      description: 'Automatic RTL layout with Persian text and numbers',
+      component: 'DtPicker',
+      props: {
+        locale: 'fa',
+        withTime: true,
+        timeFormat: '12'
+      },
+      wrapper: 'picker-container'
     }
   }
 }

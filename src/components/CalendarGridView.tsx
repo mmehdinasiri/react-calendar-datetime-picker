@@ -10,7 +10,8 @@ import type {
   Multi,
   Week,
   CalendarLocale,
-  CalendarType
+  CalendarType,
+  CalendarTranslations
 } from '../types'
 import type {
   CalendarConstraints,
@@ -19,8 +20,6 @@ import type {
 } from '../types/calendar'
 import {
   generateCalendarGrid,
-  getDayNames,
-  getMonthNames,
   getWeekBounds,
   getMonthsToDisplay
 } from '../utils/calendar-grid'
@@ -31,7 +30,7 @@ import {
   isRangeStart,
   isRangeEnd
 } from '../utils/calendar-selection'
-import { toPersianNumeral } from '../utils/formatting'
+import { formatNumber } from '../utils/formatting'
 import { getToday } from '../utils/date-conversion'
 import {
   getPresetRangesFromConfig,
@@ -48,6 +47,10 @@ export interface CalendarGridViewProps {
   displayMonth: Day
   /** Calendar system */
   calendarSystem: CalendarLocale
+  /** Locale for internationalization */
+  locale: string
+  /** Translation object */
+  translations: CalendarTranslations
   /** Calendar selection type */
   type: CalendarType
   /** Enable time selection */
@@ -87,6 +90,8 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
     selectedValue,
     displayMonth,
     calendarSystem,
+    locale: _locale,
+    translations,
     type,
     withTime = false,
     timeFormat = '24',
@@ -109,16 +114,12 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
   const { classes = {}, labels = {} } = customization
 
   const { days: daysClass } = classes
-  const {
-    nextMonth: nextMonthBtnTitle = 'next',
-    previousMonth: previousMonthBtnTitle = 'previous'
-  } = labels
+  const { nextMonth: nextMonthBtnTitle, previousMonth: previousMonthBtnTitle } =
+    labels
 
-  const isRTL = calendarSystem === 'jalali'
-  const { monthNames: customMonthNames, weekdayNames: customWeekdayNames } =
-    customization || {}
-  const dayNames = getDayNames(calendarSystem, customWeekdayNames)
-  const monthNames = getMonthNames(calendarSystem, customMonthNames)
+  const isRTL = translations.direction === 'rtl'
+  const dayNames = translations.weekdays
+  const monthNames = translations.months
 
   // Get all months to display
   const monthsToDisplay = getMonthsToDisplay(
@@ -237,8 +238,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
     monthIndex: number
   ) => {
     const monthLabel = monthNames[month.month - 1]
-    const yearLabel =
-      calendarSystem === 'jalali' ? toPersianNumeral(month.year) : month.year
+    const yearLabel = formatNumber(month.year, translations.numbers)
 
     return (
       <div
@@ -422,20 +422,19 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                       focusedDate.day === day.day
 
                     // Create accessible label
-                    const dayLabel =
-                      calendarSystem === 'jalali'
-                        ? toPersianNumeral(calendarDay.day)
-                        : calendarDay.day
+                    const dayLabel = formatNumber(
+                      calendarDay.day,
+                      translations.numbers
+                    )
 
                     const monthLabel = monthNames[day.month - 1]
-                    const yearLabel =
-                      calendarSystem === 'jalali'
-                        ? toPersianNumeral(day.year)
-                        : day.year
+                    const yearLabel = formatNumber(
+                      day.year,
+                      translations.numbers
+                    )
 
                     const ariaLabel = `${dayLabel} ${monthLabel} ${yearLabel}`
-                    const todayLabel =
-                      calendarSystem === 'jalali' ? 'امروز' : 'Today'
+                    const todayLabel = translations.labels.today
                     const fullAriaLabel = calendarDay.isToday
                       ? `${ariaLabel}, ${todayLabel}`
                       : ariaLabel
@@ -456,9 +455,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                         aria-current={calendarDay.isToday ? 'date' : undefined}
                         tabIndex={isFocused ? 0 : -1}
                       >
-                        {calendarSystem === 'jalali'
-                          ? toPersianNumeral(calendarDay.day)
-                          : calendarDay.day}
+                        {formatNumber(calendarDay.day, translations.numbers)}
                       </button>
                     )
                   })}
@@ -479,6 +476,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
       <CalendarHeader
         displayMonth={displayMonth}
         calendarSystem={calendarSystem}
+        translations={translations}
         customization={customization}
         onPrevious={() => onMonthNavigate('prev')}
         onNext={() => onMonthNavigate('next')}
@@ -509,7 +507,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                 <TimeSelector
                   day={selectedValue as Day | null}
                   timeFormat={timeFormat}
-                  calendarSystem={calendarSystem}
+                  translations={translations}
                   disabled={!selectedValue}
                   onTimeChange={(hour, minute) => {
                     const day = selectedValue as Day | null
@@ -523,8 +521,8 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                   <TimeSelector
                     day={(selectedValue as Range | null)?.from || null}
                     timeFormat={timeFormat}
-                    calendarSystem={calendarSystem}
-                    label={calendarSystem === 'jalali' ? 'از' : 'From'}
+                    translations={translations}
+                    label={translations.labels.timeFrom}
                     disabled={!(selectedValue as Range | null)?.from}
                     onTimeChange={(hour, minute) => {
                       const range = selectedValue as Range | null
@@ -536,8 +534,8 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                   <TimeSelector
                     day={(selectedValue as Range | null)?.to || null}
                     timeFormat={timeFormat}
-                    calendarSystem={calendarSystem}
-                    label={calendarSystem === 'jalali' ? 'تا' : 'To'}
+                    translations={translations}
+                    label={translations.labels.timeTo}
                     disabled={!(selectedValue as Range | null)?.to}
                     onTimeChange={(hour, minute) => {
                       const range = selectedValue as Range | null
@@ -552,8 +550,8 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                   <TimeSelector
                     day={(selectedValue as Week | null)?.from || null}
                     timeFormat={timeFormat}
-                    calendarSystem={calendarSystem}
-                    label={calendarSystem === 'jalali' ? 'از' : 'From'}
+                    translations={translations}
+                    label={translations.labels.timeFrom}
                     disabled={!(selectedValue as Week | null)?.from}
                     onTimeChange={(hour, minute) => {
                       const week = selectedValue as Week | null
@@ -565,8 +563,8 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                   <TimeSelector
                     day={(selectedValue as Week | null)?.to || null}
                     timeFormat={timeFormat}
-                    calendarSystem={calendarSystem}
-                    label={calendarSystem === 'jalali' ? 'تا' : 'To'}
+                    translations={translations}
+                    label={translations.labels.timeTo}
                     disabled={!(selectedValue as Week | null)?.to}
                     onTimeChange={(hour, minute) => {
                       const week = selectedValue as Week | null
@@ -583,36 +581,38 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
           {/* Preset Range Buttons - Only for range mode */}
           {presetRanges && type === 'range' && (
             <div className='calendar-preset-ranges'>
-              {getPresetRangesFromConfig(presetRanges, calendarSystem).map(
-                (preset, index) => {
-                  const currentRange = selectedValue as Range | null
-                  const isActive = isPresetRangeActive(
-                    preset.range,
-                    currentRange,
-                    calendarSystem
-                  )
-                  return (
-                    <button
-                      key={
-                        preset.value === 'custom'
-                          ? `custom-${index}`
-                          : preset.value
+              {getPresetRangesFromConfig(
+                presetRanges,
+                calendarSystem,
+                translations.presetRanges
+              ).map((preset, index) => {
+                const currentRange = selectedValue as Range | null
+                const isActive = isPresetRangeActive(
+                  preset.range,
+                  currentRange,
+                  calendarSystem
+                )
+                return (
+                  <button
+                    key={
+                      preset.value === 'custom'
+                        ? `custom-${index}`
+                        : preset.value
+                    }
+                    type='button'
+                    onClick={() => {
+                      if (onPresetRangeSelect) {
+                        onPresetRangeSelect(preset.range)
                       }
-                      type='button'
-                      onClick={() => {
-                        if (onPresetRangeSelect) {
-                          onPresetRangeSelect(preset.range)
-                        }
-                      }}
-                      className={`calendar-preset-btn ${
-                        isActive ? 'calendar-preset-btn-active' : ''
-                      }`}
-                    >
-                      {preset.label}
-                    </button>
-                  )
-                }
-              )}
+                    }}
+                    className={`calendar-preset-btn ${
+                      isActive ? 'calendar-preset-btn-active' : ''
+                    }`}
+                  >
+                    {preset.label}
+                  </button>
+                )
+              })}
             </div>
           )}
 
@@ -627,7 +627,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
               }}
               className='calendar-today-btn'
             >
-              {calendarSystem === 'jalali' ? 'امروز' : 'Today'}
+              {translations.labels.today}
             </button>
           )}
         </div>

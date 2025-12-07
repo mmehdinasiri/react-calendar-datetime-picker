@@ -4,9 +4,8 @@
  */
 
 import React from 'react'
-import type { Day, CalendarLocale } from '../types'
+import type { Day, CalendarLocale, CalendarTranslations } from '../types'
 import type { CalendarCustomization } from '../types/calendar'
-import { getMonthNames } from '../utils/calendar-grid'
 import { CalendarHeader } from './CalendarHeader'
 
 export interface MonthViewProps {
@@ -14,6 +13,10 @@ export interface MonthViewProps {
   displayMonth: Day
   /** Calendar system */
   calendarSystem: CalendarLocale
+  /** Locale for internationalization */
+  locale: string
+  /** Translation object */
+  translations: CalendarTranslations
   /** Customization options */
   customization?: CalendarCustomization
   /** Callback when month is selected */
@@ -26,22 +29,25 @@ const MonthViewInner: React.FC<MonthViewProps> = (props) => {
   const {
     displayMonth,
     calendarSystem,
+    locale: _locale,
+    translations,
     customization = {},
     onMonthSelect,
     onViewChange
   } = props
 
-  const { classes = {}, monthNames: customMonthNames } = customization
+  const { classes = {} } = customization
   const { months: monthsClass } = classes
 
-  const isRTL = calendarSystem === 'jalali'
-  const monthNames = getMonthNames(calendarSystem, customMonthNames)
+  const isRTL = translations.direction === 'rtl'
+  const monthNames = translations.months
 
   return (
     <div className='calendar-core' dir={isRTL ? 'rtl' : 'ltr'}>
       <CalendarHeader
         displayMonth={displayMonth}
         calendarSystem={calendarSystem}
+        translations={translations}
         customization={customization}
         onPrevious={() => onViewChange('calendar')}
         onNext={() => onViewChange('years')}
@@ -52,7 +58,7 @@ const MonthViewInner: React.FC<MonthViewProps> = (props) => {
       <div
         className={`calendar-months ${monthsClass || ''}`}
         role='grid'
-        aria-label={calendarSystem === 'jalali' ? 'انتخاب ماه' : 'Select month'}
+        aria-label={translations.labels.selectMonth}
       >
         {monthNames.map((monthName, index) => {
           const month = index + 1

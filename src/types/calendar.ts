@@ -44,6 +44,78 @@ export type CalendarLocale = 'gregorian' | 'jalali'
 export type CalendarSystemInput = 'gregorian' | 'jalali' | 'ge' | 'ja'
 
 /**
+ * Supported UI locales for internationalization
+ */
+export type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr' | 'ar'
+
+/**
+ * Text direction for locale
+ */
+export type TextDirection = 'ltr' | 'rtl'
+
+/**
+ * Locales that use Persian/Arabic numerals (۰-۹)
+ * These numerals are also known as Eastern Arabic numerals or Indo-Arabic numerals
+ */
+export const persianArabicNumbers: CalendarUILocale[] = ['fa', 'ar']
+
+/**
+ * Locales that use Latin numerals (0-9)
+ */
+export const latinNumbers: CalendarUILocale[] = ['en', 'de', 'es', 'fr']
+
+/**
+ * Translation object containing all text strings for a locale
+ */
+export interface CalendarTranslations {
+  /** Month names (12 elements, index 0-11 for months 1-12) */
+  months: string[]
+  /** Weekday names (7 elements, starting from first day of week) */
+  weekdays: string[]
+  /** Text direction */
+  direction: TextDirection
+  /** Number system - automatically determined from locale */
+  numbers: 'latin' | 'persian'
+  /** Common labels */
+  labels: {
+    /** Today button text */
+    today: string
+    /** Clear button text - aria-label (accessibility only) - DtPicker only */
+    clear: string
+    /** OK/Confirm button text */
+    ok: string
+    /** Next month button title */
+    nextMonth: string
+    /** Previous month button title */
+    previousMonth: string
+    /** Month selection view label */
+    selectMonth: string
+    /** Year selection view label */
+    selectYear: string
+    /** Input field from label (for date range display in DtPicker) */
+    from: string
+    /** Input field to label (for date range display in DtPicker) */
+    to: string
+    /** Time selector from label (for time input in range selection) */
+    timeFrom: string
+    /** Time selector to label (for time input in range selection) */
+    timeTo: string
+    /** AM indicator */
+    am: string
+    /** PM indicator */
+    pm: string
+  }
+  /** Preset range labels */
+  presetRanges: {
+    yesterday: string
+    last7days: string
+    last30days: string
+    thisMonth: string
+    lastMonth: string
+  }
+}
+
+/**
  * Calendar selection type
  * - 'single': Select a single date
  * - 'range': Select a date range
@@ -161,16 +233,16 @@ export interface CustomPresetRange {
 }
 
 export interface PresetRangesConfig {
-  /** Show yesterday button with default or custom label */
-  yesterday?: boolean | string
-  /** Show last 7 days button with default or custom label */
-  last7days?: boolean | string
-  /** Show last 30 days button with default or custom label */
-  last30days?: boolean | string
-  /** Show this month button with default or custom label */
-  thisMonth?: boolean | string
-  /** Show last month button with default or custom label */
-  lastMonth?: boolean | string
+  /** Show yesterday button */
+  yesterday?: boolean
+  /** Show last 7 days button */
+  last7days?: boolean
+  /** Show last 30 days button */
+  last30days?: boolean
+  /** Show this month button */
+  thisMonth?: boolean
+  /** Show last month button */
+  lastMonth?: boolean
   /** Custom preset ranges (completely custom ranges with custom labels) */
   custom?: CustomPresetRange[]
 }
@@ -185,10 +257,8 @@ export interface CalendarCustomization {
   icons?: CalendarIcons
   /** Custom labels */
   labels?: CalendarLabels
-  /** Month names array (12 elements, index 0-11 for months 1-12) - overrides default month names */
-  monthNames?: string[]
-  /** Weekday names array (7 elements, starting from first day of week) - overrides default weekday names */
-  weekdayNames?: string[]
+  /** Custom translations - overrides default translations for the selected locale */
+  translations?: Partial<CalendarTranslations>
 }
 
 /**
@@ -218,6 +288,17 @@ export interface SharedCalendarProps {
    */
   calendarSystem?: CalendarSystemInput
   /**
+   * Locale for internationalization
+   * Controls language, text direction, and number system
+   * Number system is automatically determined from locale:
+   * - Persian numbers (fa, ar): use Persian numerals (۰-۹)
+   * - Latin numbers (en, de, es, fr): use Latin numerals (0-9)
+   * For jalali calendar, default locale is 'fa' (Persian numbers)
+   * For gregorian calendar, default locale is 'en' (Latin numbers)
+   * @default 'en'
+   */
+  locale?: CalendarUILocale
+  /**
    * Show weekend highlighting
    * @default false
    */
@@ -234,7 +315,7 @@ export interface SharedCalendarProps {
   presetRanges?: PresetRangesConfig
   /**
    * Date constraints (maxDate, minDate, disabledDates)
-   * Accepts Day objects, Date objects, date strings, or timestamps
+   * Accepts Day objects, Date objects, date strings, timestamps, or timestamps
    */
   constraints?: CalendarConstraintsInput
   /**

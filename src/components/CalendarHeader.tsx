@@ -4,10 +4,9 @@
  */
 
 import React from 'react'
-import type { Day, CalendarLocale } from '../types'
+import type { Day, CalendarLocale, CalendarTranslations } from '../types'
 import type { CalendarCustomization } from '../types/calendar'
-import { getMonthNames } from '../utils/calendar-grid'
-import { toPersianNumeral } from '../utils/formatting'
+import { formatNumber } from '../utils/formatting'
 
 // Default Chevron Icons
 const ChevronLeftIcon = ({ className }: { className?: string }) => (
@@ -53,6 +52,8 @@ export interface CalendarHeaderProps {
   displayMonth: Day
   /** Calendar system */
   calendarSystem: CalendarLocale
+  /** Translation object */
+  translations: CalendarTranslations
   /** Customization options */
   customization?: CalendarCustomization
   /** Callback when previous button is clicked */
@@ -74,33 +75,34 @@ export interface CalendarHeaderProps {
 export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
   const {
     displayMonth,
-    calendarSystem,
+    calendarSystem: _calendarSystem, // Kept for backward compatibility but not used
+    translations,
     customization = {},
     onPrevious,
     onNext,
     onMonthClick,
     onYearClick,
-    previousTitle = 'previous',
-    nextTitle = 'next',
+    previousTitle,
+    nextTitle,
     showYear = true
   } = props
 
-  const {
-    classes = {},
-    icons = {},
-    monthNames: customMonthNames
-  } = customization
+  const { classes = {}, icons = {} } = customization
   const { header: headerClass } = classes
   const { next: NextBtnIcon, previous: PreviousBtnIcon } = icons
 
-  const monthNames = getMonthNames(calendarSystem, customMonthNames)
+  const monthNames = translations.months
+
+  // Use translations for button titles if not provided
+  const actualPreviousTitle = previousTitle || translations.labels.previousMonth
+  const actualNextTitle = nextTitle || translations.labels.nextMonth
 
   return (
     <div className={`calendar-header ${headerClass || ''}`}>
       <button
         type='button'
         onClick={onPrevious}
-        title={previousTitle}
+        title={actualPreviousTitle}
         className='calendar-nav-btn calendar-nav-prev'
       >
         {PreviousBtnIcon ? (
@@ -131,15 +133,11 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
               onClick={onYearClick}
               className='calendar-year-btn'
             >
-              {calendarSystem === 'jalali'
-                ? toPersianNumeral(displayMonth.year)
-                : displayMonth.year}
+              {formatNumber(displayMonth.year, translations.numbers)}
             </button>
           ) : (
             <div className='calendar-year-btn' style={{ cursor: 'default' }}>
-              {calendarSystem === 'jalali'
-                ? toPersianNumeral(displayMonth.year)
-                : displayMonth.year}
+              {formatNumber(displayMonth.year, translations.numbers)}
             </div>
           ))}
       </div>
@@ -148,7 +146,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
         <button
           type='button'
           onClick={onNext}
-          title={nextTitle}
+          title={actualNextTitle}
           className='calendar-nav-btn calendar-nav-next'
         >
           {NextBtnIcon ? (

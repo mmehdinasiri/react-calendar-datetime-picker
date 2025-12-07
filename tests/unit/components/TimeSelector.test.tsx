@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { TimeSelector } from '@/components/TimeSelector'
+import { enTranslations, faTranslations } from '@/utils/translations'
 import type { Day } from '@/types'
 
 // Mock utils
@@ -21,7 +22,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay}
         timeFormat='24'
-        calendarSystem='gregorian'
+        translations={enTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -37,7 +38,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30
         timeFormat='24'
-        calendarSystem='gregorian'
+        translations={enTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -59,7 +60,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30 -> 2:30 PM
         timeFormat='12'
-        calendarSystem='gregorian'
+        translations={enTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -89,7 +90,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={midnightDay}
         timeFormat='12'
-        calendarSystem='gregorian'
+        translations={enTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -106,7 +107,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30
         timeFormat='24'
-        calendarSystem='gregorian'
+        translations={enTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -122,7 +123,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30
         timeFormat='24'
-        calendarSystem='gregorian'
+        translations={enTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -138,7 +139,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30 (2:30 PM)
         timeFormat='12'
-        calendarSystem='gregorian'
+        translations={enTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -155,7 +156,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay} // 14:30 (2:30 PM)
         timeFormat='12'
-        calendarSystem='gregorian'
+        translations={enTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -175,7 +176,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={amDay}
         timeFormat='12'
-        calendarSystem='gregorian'
+        translations={enTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -192,7 +193,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay}
         timeFormat='24'
-        calendarSystem='jalali'
+        translations={faTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -208,7 +209,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay}
         timeFormat='12'
-        calendarSystem='jalali'
+        translations={faTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -223,7 +224,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={defaultDay}
         timeFormat='24'
-        calendarSystem='gregorian'
+        translations={enTranslations}
         disabled={true}
         onTimeChange={mockOnTimeChange}
       />
@@ -238,7 +239,7 @@ describe('TimeSelector', () => {
       <TimeSelector
         day={null}
         timeFormat='24'
-        calendarSystem='gregorian'
+        translations={enTranslations}
         onTimeChange={mockOnTimeChange}
       />
     )
@@ -249,5 +250,168 @@ describe('TimeSelector', () => {
     // Should default to 00:00
     expect(hourSelect.value).toBe('0')
     expect(minuteSelect.value).toBe('0')
+  })
+
+  describe('Translation Integration', () => {
+    it('renders AM/PM options from English translations', () => {
+      render(
+        <TimeSelector
+          day={defaultDay}
+          timeFormat='12'
+          translations={enTranslations}
+          onTimeChange={mockOnTimeChange}
+        />
+      )
+
+      const amPmSelect = screen.getByLabelText('AM/PM') as HTMLSelectElement
+      expect(amPmSelect).toBeInTheDocument()
+
+      // Should have AM and PM options
+      expect(screen.getByRole('option', { name: 'AM' })).toBeInTheDocument()
+      expect(screen.getByRole('option', { name: 'PM' })).toBeInTheDocument()
+    })
+
+    it('renders Persian AM/PM options', () => {
+      render(
+        <TimeSelector
+          day={defaultDay}
+          timeFormat='12'
+          translations={faTranslations}
+          onTimeChange={mockOnTimeChange}
+        />
+      )
+
+      const amPmSelect = screen.getByLabelText('AM/PM') as HTMLSelectElement
+      expect(amPmSelect).toBeInTheDocument()
+
+      // Should have Persian AM/PM options
+      expect(screen.getByRole('option', { name: 'ق.ظ' })).toBeInTheDocument()
+      expect(screen.getByRole('option', { name: 'ب.ظ' })).toBeInTheDocument()
+    })
+
+    it('uses Persian numerals for Persian translations', () => {
+      render(
+        <TimeSelector
+          day={defaultDay} // 14:30
+          timeFormat='24'
+          translations={faTranslations}
+          onTimeChange={mockOnTimeChange}
+        />
+      )
+
+      // Check that Persian numerals are used (mocked to add P- prefix)
+      expect(screen.getByDisplayValue('P-14')).toBeInTheDocument()
+      expect(screen.getByDisplayValue('P-30')).toBeInTheDocument()
+    })
+
+    it('uses From/To labels for range time selectors', () => {
+      render(
+        <TimeSelector
+          day={defaultDay}
+          timeFormat='24'
+          translations={enTranslations}
+          label='From'
+          onTimeChange={mockOnTimeChange}
+        />
+      )
+
+      expect(screen.getByText('From')).toBeInTheDocument()
+    })
+
+    it('renders Persian From label', () => {
+      render(
+        <TimeSelector
+          day={defaultDay}
+          timeFormat='24'
+          translations={faTranslations}
+          label={faTranslations.labels.timeFrom}
+          onTimeChange={mockOnTimeChange}
+        />
+      )
+
+      // Persian "From" label
+      expect(screen.getByText('از')).toBeInTheDocument()
+    })
+
+    it('renders Persian To label', () => {
+      render(
+        <TimeSelector
+          day={defaultDay}
+          timeFormat='24'
+          translations={faTranslations}
+          label={faTranslations.labels.timeTo}
+          onTimeChange={mockOnTimeChange}
+        />
+      )
+
+      // Persian "To" label
+      expect(screen.getByText('تا')).toBeInTheDocument()
+    })
+
+    it('handles time change correctly with translations', () => {
+      render(
+        <TimeSelector
+          day={defaultDay}
+          timeFormat='12'
+          translations={enTranslations}
+          onTimeChange={mockOnTimeChange}
+        />
+      )
+
+      const hourSelect = screen.getByLabelText('Hour')
+      const amPmSelect = screen.getByLabelText('AM/PM')
+
+      fireEvent.change(hourSelect, { target: { value: '3' } })
+      fireEvent.change(amPmSelect, { target: { value: 'PM' } })
+
+      // Should be called with the final value (3 PM = 15 in 24h, minute stays 30)
+      expect(mockOnTimeChange).toHaveBeenCalledWith(15, 30)
+    })
+
+    it('shows correct 12-hour time values', () => {
+      const afternoonDay: Day = {
+        year: 2023,
+        month: 1,
+        day: 1,
+        hour: 15,
+        minute: 20
+      } // 3:20 PM
+
+      render(
+        <TimeSelector
+          day={afternoonDay}
+          timeFormat='12'
+          translations={enTranslations}
+          onTimeChange={mockOnTimeChange}
+        />
+      )
+
+      const hourSelect = screen.getByLabelText('Hour') as HTMLSelectElement
+      const minuteSelect = screen.getByLabelText('Minute') as HTMLSelectElement
+      const amPmSelect = screen.getByLabelText('AM/PM') as HTMLSelectElement
+
+      expect(hourSelect.value).toBe('3')
+      expect(minuteSelect.value).toBe('20')
+      expect(amPmSelect.value).toBe('PM')
+    })
+
+    it('converts 12-hour PM to 24-hour correctly', () => {
+      render(
+        <TimeSelector
+          day={defaultDay}
+          timeFormat='12'
+          translations={enTranslations}
+          onTimeChange={mockOnTimeChange}
+        />
+      )
+
+      const hourSelect = screen.getByLabelText('Hour')
+      const amPmSelect = screen.getByLabelText('AM/PM')
+
+      fireEvent.change(hourSelect, { target: { value: '2' } })
+      fireEvent.change(amPmSelect, { target: { value: 'PM' } })
+
+      expect(mockOnTimeChange).toHaveBeenCalledWith(14, 30) // 2 PM = 14 in 24h
+    })
   })
 })

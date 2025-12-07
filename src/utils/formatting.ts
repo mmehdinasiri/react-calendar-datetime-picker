@@ -27,6 +27,19 @@ export function toPersianNumeral(num: number | string): string {
 }
 
 /**
+ * Format a number according to the specified number system
+ */
+export function formatNumber(
+  num: number | string,
+  numberSystem: 'latin' | 'persian'
+): string {
+  if (numberSystem === 'persian') {
+    return toPersianNumeral(num)
+  }
+  return num.toString()
+}
+
+/**
  * Format a date according to a custom format string
  * Supports tokens:
  * - Date: YYYY (year), MM (month), DD (day)
@@ -37,7 +50,7 @@ export function toPersianNumeral(num: number | string): string {
 function formatDateWithCustomFormat(
   day: Day,
   format: string,
-  calendarSystem: CalendarLocale,
+  numberSystem: 'latin' | 'persian',
   timeFormat: '12' | '24' = '24'
 ): string {
   const year = day.year.toString()
@@ -112,9 +125,9 @@ function formatDateWithCustomFormat(
       .trim()
   }
 
-  // Convert to Persian numerals if locale is 'jalali'
+  // Convert to Persian numerals if number system is 'persian'
   // This only converts digits, leaving separators and text unchanged
-  if (calendarSystem === 'jalali') {
+  if (numberSystem === 'persian') {
     formatted = toPersianNumeral(formatted)
   }
 
@@ -126,7 +139,7 @@ function formatDateWithCustomFormat(
  */
 function formatDay(
   day: Day,
-  calendarSystem: CalendarLocale,
+  numberSystem: 'latin' | 'persian',
   showTime = false,
   dateFormat?: string,
   timeFormat: '12' | '24' = '24'
@@ -138,7 +151,7 @@ function formatDay(
     formatted = formatDateWithCustomFormat(
       day,
       dateFormat,
-      calendarSystem,
+      numberSystem,
       timeFormat
     )
   } else {
@@ -155,8 +168,8 @@ function formatDay(
       formatted += ` ${hour}:${minute}`
     }
 
-    // Convert to Persian numerals if locale is 'jalali'
-    if (calendarSystem === 'jalali') {
+    // Convert to Persian numerals if number system is 'persian'
+    if (numberSystem === 'persian') {
       formatted = toPersianNumeral(formatted)
     }
   }
@@ -169,7 +182,7 @@ function formatDay(
  */
 export function formatDateForInput(
   value: Day | Range | Multi | Week | null,
-  calendarSystem: CalendarLocale,
+  numberSystem: 'latin' | 'persian',
   type: CalendarType,
   showTime = false,
   fromLabel = 'from',
@@ -182,7 +195,7 @@ export function formatDateForInput(
   if (type === 'single' && 'year' in value) {
     return formatDay(
       value as Day,
-      calendarSystem,
+      numberSystem,
       showTime,
       dateFormat,
       timeFormat
@@ -193,7 +206,7 @@ export function formatDateForInput(
     const range = value as Range
     const fromStr = formatDay(
       range.from,
-      calendarSystem,
+      numberSystem,
       showTime,
       dateFormat,
       timeFormat
@@ -204,7 +217,7 @@ export function formatDateForInput(
     }
     const toStr = formatDay(
       range.to,
-      calendarSystem,
+      numberSystem,
       showTime,
       dateFormat,
       timeFormat
@@ -216,19 +229,19 @@ export function formatDateForInput(
     const week = value as Week
     const fromStr = formatDay(
       week.from,
-      calendarSystem,
+      numberSystem,
       showTime,
       dateFormat,
       timeFormat
     )
     const toStr = formatDay(
       week.to,
-      calendarSystem,
+      numberSystem,
       showTime,
       dateFormat,
       timeFormat
     )
-    const weekLabel = calendarSystem === 'jalali' ? 'هفته' : 'Week'
+    const weekLabel = numberSystem === 'persian' ? 'هفته' : 'Week'
     return `${weekLabel}: ${fromStr} - ${toStr}`
   }
 
@@ -236,13 +249,7 @@ export function formatDateForInput(
     const multi = value as Multi
     if (multi.length === 0) return ''
     if (multi.length === 1) {
-      return formatDay(
-        multi[0],
-        calendarSystem,
-        showTime,
-        dateFormat,
-        timeFormat
-      )
+      return formatDay(multi[0], numberSystem, showTime, dateFormat, timeFormat)
     }
     // Show count for multiple dates
     return `${multi.length} dates selected`

@@ -81,15 +81,25 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  padding: 0;
   font-size: 1.5rem;
   line-height: 1;
   color: var(--calendar-text-light);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.15s ease-in-out;
+  width: 1.75rem;
+  height: 1.75rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
   border-radius: 4px;
+
+  // Adjust vertical alignment of × character to account for visual weight
+  // The × character often appears visually high, so we add a small downward offset
+  span {
+    display: inline-block;
+    line-height: 1;
+    transform: translateY(-0.1em);
+  }
 
   &:hover {
     color: var(--calendar-danger);
