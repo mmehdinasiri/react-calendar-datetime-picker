@@ -255,8 +255,7 @@ export const types: Type[] = [
   },
   {
     name: 'CalendarSystem',
-    definition:
-      "type CalendarSystem = 'gregorian' | 'jalali' | 'ge' | 'ja'"
+    definition: "type CalendarSystem = 'gregorian' | 'jalali' | 'ge' | 'ja'"
   },
   {
     name: 'DateInput',

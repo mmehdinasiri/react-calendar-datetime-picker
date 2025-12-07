@@ -210,8 +210,8 @@ function App() {
   return (
     <DtCalendar
       calendarSystem={"jalali"}
-      {/* the default value for the calendarSystem={"jalali"} is fa */}
       locale={"fa"}
+      {/* the default value for the locale with calendarSystem={"jalali"} is fa */}
       showWeekend={true}
       todayBtn={true}
       onChange={setDate}

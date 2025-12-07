@@ -146,7 +146,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
     const rotated = [...translations.weekdays]
     const moved = rotated.splice(0, weekStart)
     return [...rotated, ...moved]
-  }, [translations.weekdays, weekStart, _locale, calendarSystem])
+  }, [translations.weekdays, weekStart, calendarSystem])
   const monthNames = translations.months
 
   // Get all months to display

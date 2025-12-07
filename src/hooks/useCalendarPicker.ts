@@ -120,7 +120,6 @@ export function useCalendarPicker(
     )
   }, [
     state.selectedValue,
-    calendarSystem,
     type,
     showTimeInput,
     withTime,
