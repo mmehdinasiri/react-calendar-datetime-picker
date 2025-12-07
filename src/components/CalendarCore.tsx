@@ -44,6 +44,8 @@ export interface CalendarCoreProps {
   timeFormat?: '12' | '24'
   /** Show weekend highlighting */
   showWeekend?: boolean
+  /** First day of the week (0 = Sunday, 6 = Saturday) */
+  weekStart?: number
   /** Show today button */
   todayBtn?: boolean
   /** Preset range buttons configuration */
@@ -88,6 +90,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     withTime = false,
     timeFormat = '24',
     showWeekend = false,
+    weekStart,
     todayBtn = false,
     presetRanges,
     enlargeSelectedDay = true,
@@ -118,6 +121,7 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
         withTime={withTime}
         timeFormat={timeFormat}
         showWeekend={showWeekend}
+        weekStart={weekStart}
         todayBtn={todayBtn}
         enlargeSelectedDay={enlargeSelectedDay}
         constraints={constraints}

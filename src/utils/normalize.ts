@@ -320,7 +320,13 @@ export function normalizeInitValueWithErrors(
         return { value: null, errors }
       }
       if (dayResult.value) {
-        const weekBounds = getWeekBounds(dayResult.value, calendarSystem)
+        // Use default weekStart based on calendar system (not available in normalize)
+        const defaultWeekStart = calendarSystem === 'jalali' ? 6 : 0
+        const weekBounds = getWeekBounds(
+          dayResult.value,
+          calendarSystem,
+          defaultWeekStart
+        )
         return { value: weekBounds, errors }
       }
     }

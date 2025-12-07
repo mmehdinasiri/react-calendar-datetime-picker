@@ -55,7 +55,8 @@ function calculateNewValue(
   currentValue: Day | Range | Multi | Week | null,
   selectedDay: Day,
   type: CalendarType,
-  calendarSystem: CalendarLocale = 'gregorian'
+  calendarSystem: CalendarLocale = 'gregorian',
+  weekStart?: number
 ): Day | Range | Multi | Week | null {
   if (type === 'single') {
     return selectedDay
@@ -63,7 +64,7 @@ function calculateNewValue(
 
   if (type === 'week') {
     // Calculate week bounds for the selected day
-    return getWeekBounds(selectedDay, calendarSystem)
+    return getWeekBounds(selectedDay, calendarSystem, weekStart)
   }
 
   if (type === 'range') {
@@ -173,7 +174,8 @@ function calendarReducer(
   type: CalendarType,
   calendarSystem: CalendarLocale,
   withTime: boolean = false,
-  numberOfMonths: number = 1
+  numberOfMonths: number = 1,
+  weekStart?: number
 ): CalendarState {
   switch (action.type) {
     case 'SELECT_DATE': {
@@ -183,7 +185,8 @@ function calendarReducer(
         state.selectedValue,
         dayWithTime,
         type,
-        calendarSystem
+        calendarSystem,
+        weekStart
       )
 
       // Ensure both from and to have time if withTime is enabled and it's a range
@@ -297,7 +300,11 @@ function calendarReducer(
 
     case 'SELECT_WEEK': {
       // Calculate week bounds for the selected day
-      const weekBounds = getWeekBounds(action.payload, calendarSystem)
+      const weekBounds = getWeekBounds(
+        action.payload,
+        calendarSystem,
+        weekStart
+      )
       const newValue: Week = {
         from: addSystemTimeIfNeeded(weekBounds.from, withTime),
         to: addSystemTimeIfNeeded(weekBounds.to, withTime)
@@ -337,7 +344,8 @@ function calendarReducer(
         state.selectedValue,
         action.payload,
         'multi',
-        calendarSystem
+        calendarSystem,
+        weekStart
       )
       return {
         ...state,
@@ -538,6 +546,8 @@ export interface UseCalendarStateOptions {
   withTime?: boolean
   /** Number of months displayed */
   numberOfMonths?: 1 | 2 | 3
+  /** First day of the week (0 = Sunday, 6 = Saturday) */
+  weekStart?: number
   /** Callback when value changes - accepts InitValueInput for compatibility with React's setState */
   onChange: (value: Day | Range | Multi | null) => void
   /** Callback when calendar value changes (requires initValue) */
@@ -554,6 +564,7 @@ export function useCalendarState(options: UseCalendarStateOptions) {
     type,
     withTime = false,
     numberOfMonths = 1,
+    weekStart,
     onChange,
     onCalenderChange
   } = options
@@ -568,7 +579,7 @@ export function useCalendarState(options: UseCalendarStateOptions) {
     currentView: 'calendar'
   }
 
-  // Reducer with type, calendarSystem, withTime, and numberOfMonths
+  // Reducer with type, calendarSystem, withTime, numberOfMonths, and weekStart
   const reducer = (state: CalendarState, action: CalendarAction) =>
     calendarReducer(
       state,
@@ -576,7 +587,8 @@ export function useCalendarState(options: UseCalendarStateOptions) {
       type,
       calendarSystem,
       withTime,
-      numberOfMonths
+      numberOfMonths,
+      weekStart
     )
 
   const [state, dispatch] = useReducer(reducer, initialState)

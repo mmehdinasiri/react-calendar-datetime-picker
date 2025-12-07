@@ -2,11 +2,14 @@ import { describe, it, expect } from 'vitest'
 import {
   getTranslations,
   mergeTranslations,
+  getMonthNamesByCalendarSystem,
   enTranslations,
   faTranslations,
   deTranslations,
   esTranslations,
-  frTranslations
+  frTranslations,
+  gregorianPersianMonths,
+  jalaliEnglishMonths
 } from '@/utils/translations'
 import type { CalendarTranslations, CalendarLocale } from '@/types'
 
@@ -514,6 +517,664 @@ describe('translations utils', () => {
       expect(frTranslations.labels.to).toBe('À')
       expect(frTranslations.labels.timeFrom).toBe('De')
       expect(frTranslations.labels.timeTo).toBe('À')
+    })
+  })
+
+  describe('Month names by calendar system and locale', () => {
+    describe('Gregorian calendar with Persian locale (calendarSystem="ge", locale="fa")', () => {
+      it('should return Persian translations of Gregorian month names', () => {
+        const result = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'gregorian'
+        )
+
+        expect(result.months).toEqual(gregorianPersianMonths)
+        expect(result.months).toHaveLength(12)
+        expect(result.months[0]).toBe('ژانویه') // January
+        expect(result.months[1]).toBe('فوریه') // February
+        expect(result.months[2]).toBe('مارس') // March
+        expect(result.months[5]).toBe('ژوئن') // June
+        expect(result.months[6]).toBe('ژوئیه') // July
+        expect(result.months[11]).toBe('دسامبر') // December
+      })
+
+      it('should use getMonthNamesByCalendarSystem correctly for Gregorian with Persian locale', () => {
+        const months = getMonthNamesByCalendarSystem('gregorian', 'fa')
+        expect(months).toEqual(gregorianPersianMonths)
+        expect(months).not.toEqual(faTranslations.months) // Should not be Jalali months
+      })
+
+      it('should preserve other translation properties when using Gregorian with Persian locale', () => {
+        const result = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'gregorian'
+        )
+
+        // Should use Persian Gregorian month names
+        expect(result.months).toEqual(gregorianPersianMonths)
+
+        // Should preserve Persian locale settings
+        expect(result.direction).toBe('rtl')
+        expect(result.numbers).toBe('persian')
+        expect(result.weekdays).toEqual(faTranslations.weekdays)
+        expect(result.labels.today).toBe(faTranslations.labels.today)
+      })
+    })
+
+    describe('Jalali calendar with English locale (calendarSystem="ja", locale="en")', () => {
+      it('should return English transliterations of Jalali month names', () => {
+        const result = mergeTranslations(
+          enTranslations,
+          undefined,
+          'en',
+          'jalali'
+        )
+
+        expect(result.months).toEqual(jalaliEnglishMonths)
+        expect(result.months).toHaveLength(12)
+        expect(result.months[0]).toBe('Farvardin')
+        expect(result.months[1]).toBe('Ordibehesht')
+        expect(result.months[2]).toBe('Khordad')
+        expect(result.months[6]).toBe('Mehr')
+        expect(result.months[11]).toBe('Esfand')
+      })
+
+      it('should use getMonthNamesByCalendarSystem correctly for Jalali with English locale', () => {
+        const months = getMonthNamesByCalendarSystem('jalali', 'en')
+        expect(months).toEqual(jalaliEnglishMonths)
+        expect(months).not.toEqual(enTranslations.months) // Should not be Gregorian months
+        expect(months).not.toEqual(faTranslations.months) // Should not be Persian Jalali months
+      })
+
+      it('should preserve other translation properties when using Jalali with English locale', () => {
+        const result = mergeTranslations(
+          enTranslations,
+          undefined,
+          'en',
+          'jalali'
+        )
+
+        // Should use English transliterated Jalali month names
+        expect(result.months).toEqual(jalaliEnglishMonths)
+
+        // Should preserve English locale settings
+        expect(result.direction).toBe('ltr')
+        expect(result.numbers).toBe('latin') // Latin numbers for Jalali with English locale
+        expect(result.weekdays).toEqual(enTranslations.weekdays)
+        expect(result.labels.today).toBe(enTranslations.labels.today)
+      })
+
+      it('should use Persian numbers for Jalali calendar with non-English locales', () => {
+        // Test with French locale
+        const resultFr = mergeTranslations(
+          frTranslations,
+          undefined,
+          'fr',
+          'jalali'
+        )
+        expect(resultFr.numbers).toBe('persian')
+
+        // Test with German locale
+        const resultDe = mergeTranslations(
+          deTranslations,
+          undefined,
+          'de',
+          'jalali'
+        )
+        expect(resultDe.numbers).toBe('persian')
+
+        // Test with Spanish locale
+        const resultEs = mergeTranslations(
+          esTranslations,
+          undefined,
+          'es',
+          'jalali'
+        )
+        expect(resultEs.numbers).toBe('persian')
+
+        // Test with Persian locale
+        const resultFa = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'jalali'
+        )
+        expect(resultFa.numbers).toBe('persian')
+      })
+
+      it('should use Latin numbers only for Jalali calendar with English locale', () => {
+        const result = mergeTranslations(
+          enTranslations,
+          undefined,
+          'en',
+          'jalali'
+        )
+        expect(result.numbers).toBe('latin')
+      })
+    })
+
+    describe('Weekday names by calendar system and locale', () => {
+      it('should use English weekday names for Jalali calendar with English locale', () => {
+        const result = mergeTranslations(
+          enTranslations,
+          undefined,
+          'en',
+          'jalali'
+        )
+        expect(result.weekdays).toEqual(enTranslations.weekdays)
+        expect(result.weekdays).toEqual([
+          'Su',
+          'Mo',
+          'Tu',
+          'We',
+          'Th',
+          'Fr',
+          'Sa'
+        ])
+      })
+
+      it('should use Persian weekday names for Jalali calendar with non-English locales', () => {
+        // Test with French locale
+        const resultFr = mergeTranslations(
+          frTranslations,
+          undefined,
+          'fr',
+          'jalali'
+        )
+        expect(resultFr.weekdays).toEqual(faTranslations.weekdays)
+        expect(resultFr.weekdays).toEqual(['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'])
+
+        // Test with German locale
+        const resultDe = mergeTranslations(
+          deTranslations,
+          undefined,
+          'de',
+          'jalali'
+        )
+        expect(resultDe.weekdays).toEqual(faTranslations.weekdays)
+
+        // Test with Spanish locale
+        const resultEs = mergeTranslations(
+          esTranslations,
+          undefined,
+          'es',
+          'jalali'
+        )
+        expect(resultEs.weekdays).toEqual(faTranslations.weekdays)
+
+        // Test with Persian locale
+        const resultFa = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'jalali'
+        )
+        expect(resultFa.weekdays).toEqual(faTranslations.weekdays)
+      })
+
+      it('should use locale-specific weekday names for Gregorian calendar', () => {
+        // Test with French locale
+        const resultFr = mergeTranslations(
+          frTranslations,
+          undefined,
+          'fr',
+          'gregorian'
+        )
+        expect(resultFr.weekdays).toEqual(frTranslations.weekdays)
+        expect(resultFr.weekdays).toEqual([
+          'Di',
+          'Lu',
+          'Ma',
+          'Me',
+          'Je',
+          'Ve',
+          'Sa'
+        ])
+
+        // Test with German locale
+        const resultDe = mergeTranslations(
+          deTranslations,
+          undefined,
+          'de',
+          'gregorian'
+        )
+        expect(resultDe.weekdays).toEqual(deTranslations.weekdays)
+        expect(resultDe.weekdays).toEqual([
+          'So',
+          'Mo',
+          'Di',
+          'Mi',
+          'Do',
+          'Fr',
+          'Sa'
+        ])
+
+        // Test with Spanish locale
+        const resultEs = mergeTranslations(
+          esTranslations,
+          undefined,
+          'es',
+          'gregorian'
+        )
+        expect(resultEs.weekdays).toEqual(esTranslations.weekdays)
+        expect(resultEs.weekdays).toEqual([
+          'Do',
+          'Lu',
+          'Ma',
+          'Mi',
+          'Ju',
+          'Vi',
+          'Sá'
+        ])
+
+        // Test with English locale
+        const resultEn = mergeTranslations(
+          enTranslations,
+          undefined,
+          'en',
+          'gregorian'
+        )
+        expect(resultEn.weekdays).toEqual(enTranslations.weekdays)
+      })
+    })
+
+    describe('getMonthNamesByCalendarSystem function', () => {
+      it('should return English Gregorian months for gregorian calendar with English locale', () => {
+        const months = getMonthNamesByCalendarSystem('gregorian', 'en')
+        expect(months).toEqual(enTranslations.months)
+      })
+
+      it('should return Persian Gregorian months for gregorian calendar with Persian locale', () => {
+        const months = getMonthNamesByCalendarSystem('gregorian', 'fa')
+        expect(months).toEqual(gregorianPersianMonths)
+      })
+
+      it('should return English transliterated Jalali months for jalali calendar with English locale', () => {
+        const months = getMonthNamesByCalendarSystem('jalali', 'en')
+        expect(months).toEqual(jalaliEnglishMonths)
+      })
+
+      it('should return Persian Jalali months for jalali calendar with Persian locale', () => {
+        const months = getMonthNamesByCalendarSystem('jalali', 'fa')
+        expect(months).toEqual(faTranslations.months)
+      })
+
+      it('should return English Gregorian months for gregorian calendar with other locales', () => {
+        const monthsDe = getMonthNamesByCalendarSystem('gregorian', 'de')
+        const monthsEs = getMonthNamesByCalendarSystem('gregorian', 'es')
+        const monthsFr = getMonthNamesByCalendarSystem('gregorian', 'fr')
+
+        expect(monthsDe).toEqual(enTranslations.months)
+        expect(monthsEs).toEqual(enTranslations.months)
+        expect(monthsFr).toEqual(enTranslations.months)
+      })
+
+      it('should return Persian Jalali months for jalali calendar with non-English locales', () => {
+        const months = getMonthNamesByCalendarSystem('jalali', 'de')
+        expect(months).toEqual(faTranslations.months)
+      })
+    })
+
+    describe('mergeTranslations month name logic (lines 399-405)', () => {
+      it('should prioritize custom month names over calendar system defaults', () => {
+        const customMonths = [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec'
+        ]
+        const customTranslations = { months: customMonths }
+
+        // Even with Gregorian + Persian locale, custom months should be used
+        const result = mergeTranslations(
+          faTranslations,
+          customTranslations,
+          'fa',
+          'gregorian'
+        )
+
+        expect(result.months).toEqual(customMonths)
+        expect(result.months).not.toEqual(gregorianPersianMonths)
+      })
+
+      it('should use calendar system specific months when no custom months provided', () => {
+        // Test case 1: Gregorian + Persian
+        const result1 = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'gregorian'
+        )
+        expect(result1.months).toEqual(gregorianPersianMonths)
+
+        // Test case 2: Jalali + English
+        const result2 = mergeTranslations(
+          enTranslations,
+          undefined,
+          'en',
+          'jalali'
+        )
+        expect(result2.months).toEqual(jalaliEnglishMonths)
+
+        // Test case 3: Jalali + Persian (default)
+        const result3 = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'jalali'
+        )
+        expect(result3.months).toEqual(faTranslations.months)
+
+        // Test case 4: Gregorian + English (default)
+        const result4 = mergeTranslations(
+          enTranslations,
+          undefined,
+          'en',
+          'gregorian'
+        )
+        expect(result4.months).toEqual(enTranslations.months)
+      })
+    })
+
+    describe('Direction (RTL/LTR) by calendar system and locale', () => {
+      it('should use LTR for Jalali calendar with English locale', () => {
+        const result = mergeTranslations(
+          enTranslations,
+          undefined,
+          'en',
+          'jalali'
+        )
+        expect(result.direction).toBe('ltr')
+      })
+
+      it('should use RTL for Jalali calendar with non-English locales', () => {
+        // Test with French locale
+        const resultFr = mergeTranslations(
+          frTranslations,
+          undefined,
+          'fr',
+          'jalali'
+        )
+        expect(resultFr.direction).toBe('rtl')
+
+        // Test with German locale
+        const resultDe = mergeTranslations(
+          deTranslations,
+          undefined,
+          'de',
+          'jalali'
+        )
+        expect(resultDe.direction).toBe('rtl')
+
+        // Test with Spanish locale
+        const resultEs = mergeTranslations(
+          esTranslations,
+          undefined,
+          'es',
+          'jalali'
+        )
+        expect(resultEs.direction).toBe('rtl')
+
+        // Test with Persian locale
+        const resultFa = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'jalali'
+        )
+        expect(resultFa.direction).toBe('rtl')
+      })
+
+      it('should use locale-based direction for Gregorian calendar', () => {
+        // Test with French locale (LTR)
+        const resultFr = mergeTranslations(
+          frTranslations,
+          undefined,
+          'fr',
+          'gregorian'
+        )
+        expect(resultFr.direction).toBe('ltr')
+
+        // Test with Persian locale (RTL)
+        const resultFa = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'gregorian'
+        )
+        expect(resultFa.direction).toBe('rtl')
+      })
+    })
+
+    describe('Labels (buttons) by calendar system and locale', () => {
+      it('should use English labels for Jalali calendar with English locale', () => {
+        const result = mergeTranslations(
+          enTranslations,
+          undefined,
+          'en',
+          'jalali'
+        )
+        expect(result.labels.today).toBe(enTranslations.labels.today)
+        expect(result.labels.ok).toBe(enTranslations.labels.ok)
+        expect(result.labels.clear).toBe(enTranslations.labels.clear)
+        expect(result.labels.nextMonth).toBe(enTranslations.labels.nextMonth)
+        expect(result.labels.previousMonth).toBe(
+          enTranslations.labels.previousMonth
+        )
+      })
+
+      it('should use Persian labels for Jalali calendar with non-English locales', () => {
+        // Test with French locale
+        const resultFr = mergeTranslations(
+          frTranslations,
+          undefined,
+          'fr',
+          'jalali'
+        )
+        expect(resultFr.labels.today).toBe(faTranslations.labels.today)
+        expect(resultFr.labels.ok).toBe(faTranslations.labels.ok)
+        expect(resultFr.labels.clear).toBe(faTranslations.labels.clear)
+
+        // Test with German locale
+        const resultDe = mergeTranslations(
+          deTranslations,
+          undefined,
+          'de',
+          'jalali'
+        )
+        expect(resultDe.labels.today).toBe(faTranslations.labels.today)
+        expect(resultDe.labels.ok).toBe(faTranslations.labels.ok)
+
+        // Test with Spanish locale
+        const resultEs = mergeTranslations(
+          esTranslations,
+          undefined,
+          'es',
+          'jalali'
+        )
+        expect(resultEs.labels.today).toBe(faTranslations.labels.today)
+
+        // Test with Persian locale
+        const resultFa = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'jalali'
+        )
+        expect(resultFa.labels.today).toBe(faTranslations.labels.today)
+        expect(resultFa.labels.ok).toBe(faTranslations.labels.ok)
+      })
+
+      it('should use locale-based labels for Gregorian calendar', () => {
+        // Test with French locale
+        const resultFr = mergeTranslations(
+          frTranslations,
+          undefined,
+          'fr',
+          'gregorian'
+        )
+        expect(resultFr.labels.today).toBe(frTranslations.labels.today)
+        expect(resultFr.labels.ok).toBe(frTranslations.labels.ok)
+
+        // Test with German locale
+        const resultDe = mergeTranslations(
+          deTranslations,
+          undefined,
+          'de',
+          'gregorian'
+        )
+        expect(resultDe.labels.today).toBe(deTranslations.labels.today)
+        expect(resultDe.labels.ok).toBe(deTranslations.labels.ok)
+
+        // Test with Persian locale
+        const resultFa = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'gregorian'
+        )
+        expect(resultFa.labels.today).toBe(faTranslations.labels.today)
+        expect(resultFa.labels.ok).toBe(faTranslations.labels.ok)
+      })
+    })
+
+    describe('Preset ranges by calendar system and locale', () => {
+      it('should use English preset ranges for Jalali calendar with English locale', () => {
+        const result = mergeTranslations(
+          enTranslations,
+          undefined,
+          'en',
+          'jalali'
+        )
+        expect(result.presetRanges.yesterday).toBe(
+          enTranslations.presetRanges.yesterday
+        )
+        expect(result.presetRanges.last7days).toBe(
+          enTranslations.presetRanges.last7days
+        )
+        expect(result.presetRanges.thisMonth).toBe(
+          enTranslations.presetRanges.thisMonth
+        )
+      })
+
+      it('should use Persian preset ranges for Jalali calendar with non-English locales', () => {
+        // Test with French locale
+        const resultFr = mergeTranslations(
+          frTranslations,
+          undefined,
+          'fr',
+          'jalali'
+        )
+        expect(resultFr.presetRanges.yesterday).toBe(
+          faTranslations.presetRanges.yesterday
+        )
+        expect(resultFr.presetRanges.last7days).toBe(
+          faTranslations.presetRanges.last7days
+        )
+
+        // Test with German locale
+        const resultDe = mergeTranslations(
+          deTranslations,
+          undefined,
+          'de',
+          'jalali'
+        )
+        expect(resultDe.presetRanges.yesterday).toBe(
+          faTranslations.presetRanges.yesterday
+        )
+
+        // Test with Persian locale
+        const resultFa = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'jalali'
+        )
+        expect(resultFa.presetRanges.yesterday).toBe(
+          faTranslations.presetRanges.yesterday
+        )
+        expect(resultFa.presetRanges.last7days).toBe(
+          faTranslations.presetRanges.last7days
+        )
+      })
+
+      it('should use locale-based preset ranges for Gregorian calendar', () => {
+        // Test with French locale
+        const resultFr = mergeTranslations(
+          frTranslations,
+          undefined,
+          'fr',
+          'gregorian'
+        )
+        expect(resultFr.presetRanges.yesterday).toBe(
+          frTranslations.presetRanges.yesterday
+        )
+        expect(resultFr.presetRanges.last7days).toBe(
+          frTranslations.presetRanges.last7days
+        )
+
+        // Test with Persian locale
+        const resultFa = mergeTranslations(
+          faTranslations,
+          undefined,
+          'fa',
+          'gregorian'
+        )
+        expect(resultFa.presetRanges.yesterday).toBe(
+          faTranslations.presetRanges.yesterday
+        )
+      })
+    })
+
+    describe('Complete translation consistency for Jalali calendar', () => {
+      it('should use all English translations for Jalali calendar with English locale', () => {
+        const result = mergeTranslations(
+          enTranslations,
+          undefined,
+          'en',
+          'jalali'
+        )
+
+        // All should be English
+        expect(result.months).toEqual(jalaliEnglishMonths)
+        expect(result.weekdays).toEqual(enTranslations.weekdays)
+        expect(result.direction).toBe('ltr')
+        expect(result.numbers).toBe('latin')
+        expect(result.labels.today).toBe(enTranslations.labels.today)
+        expect(result.presetRanges.yesterday).toBe(
+          enTranslations.presetRanges.yesterday
+        )
+      })
+
+      it('should use all Persian translations for Jalali calendar with non-English locales', () => {
+        const result = mergeTranslations(
+          frTranslations,
+          undefined,
+          'fr',
+          'jalali'
+        )
+
+        // All should be Persian (except months which come from French translations)
+        expect(result.weekdays).toEqual(faTranslations.weekdays)
+        expect(result.direction).toBe('rtl')
+        expect(result.numbers).toBe('persian')
+        expect(result.labels.today).toBe(faTranslations.labels.today)
+        expect(result.presetRanges.yesterday).toBe(
+          faTranslations.presetRanges.yesterday
+        )
+      })
     })
   })
 })

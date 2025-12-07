@@ -200,7 +200,24 @@ export const examples: ExamplesConfig = {
         showWeekend: true,
         todayBtn: true
       },
-      wrapper: 'calendar-container'
+      wrapper: 'calendar-container',
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      calendarSystem={"jalali"}
+      {/* the default value for the calendarSystem={"jalali"} is fa */}
+      locale={"fa"}
+      showWeekend={true}
+      todayBtn={true}
+      onChange={setDate}
+    />
+  )
+}`
     },
     FrenchCalendar: {
       title: 'French Calendar',
@@ -217,7 +234,7 @@ export const examples: ExamplesConfig = {
     JalaliWithEnglishLocale: {
       title: 'Jalali Calendar with English Locale',
       description:
-        'Jalali calendar system (ja) with English locale (en) - displays Jalali dates with English month names and LTR layout',
+        'Jalali calendar system (ja) with English locale (en) - displays Jalali dates with English transliterated month names (Farvardin, Ordibehesht, Khordad, etc.) and LTR layout',
       component: 'DtCalendar',
       props: {
         calendarSystem: 'ja',

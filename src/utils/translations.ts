@@ -242,18 +242,65 @@ export const translations: Record<string, CalendarTranslations> = {
 }
 
 /**
- * Get month names based on calendar system
+ * English transliterations of Jalali month names
+ */
+export const jalaliEnglishMonths: string[] = [
+  'Farvardin',
+  'Ordibehesht',
+  'Khordad',
+  'Tir',
+  'Mordad',
+  'Shahrivar',
+  'Mehr',
+  'Aban',
+  'Azar',
+  'Dey',
+  'Bahman',
+  'Esfand'
+]
+
+/**
+ * Persian translations of Gregorian month names
+ */
+export const gregorianPersianMonths: string[] = [
+  'ژانویه',
+  'فوریه',
+  'مارس',
+  'آوریل',
+  'مه',
+  'ژوئن',
+  'ژوئیه',
+  'اوت',
+  'سپتامبر',
+  'اکتبر',
+  'نوامبر',
+  'دسامبر'
+]
+
+/**
+ * Get month names based on calendar system and locale
  * @param calendarSystem - The calendar system ('gregorian' or 'jalali')
+ * @param locale - The locale code (optional, defaults to 'en' for gregorian, 'fa' for jalali)
  * @returns Array of month names for the calendar system
  */
 export function getMonthNamesByCalendarSystem(
-  calendarSystem: 'gregorian' | 'jalali'
+  calendarSystem: 'gregorian' | 'jalali',
+  locale?: string
 ): string[] {
   if (calendarSystem === 'jalali') {
-    // Return Jalali month names (Persian)
+    // For Jalali calendar, use English transliterations if locale is English
+    if (locale === 'en') {
+      return jalaliEnglishMonths
+    }
+    // Otherwise return Jalali month names (Persian)
     return faTranslations.months
   }
-  // Return Gregorian month names (English as default)
+  // For Gregorian calendar
+  if (locale === 'fa') {
+    // Use Persian translations of Gregorian month names
+    return gregorianPersianMonths
+  }
+  // Return Gregorian month names (English as default, or locale-specific)
   return enTranslations.months
 }
 
@@ -336,40 +383,98 @@ export function mergeTranslations(
   locale?: string,
   calendarSystem?: 'gregorian' | 'jalali'
 ): CalendarTranslations {
-  // Use custom direction if provided, otherwise use default from translations,
-  // or fallback to locale-based direction
+  // Direction: use custom if provided, otherwise determine from calendar system and locale
+  // For Jalali calendar: use LTR only when locale is 'en', otherwise use RTL
+  // For Gregorian calendar: use locale-based direction
   const direction =
     customTranslations?.direction !== undefined
       ? customTranslations.direction
-      : defaultTranslations.direction ||
-        (locale ? getTextDirection(locale) : 'ltr')
+      : calendarSystem === 'jalali'
+        ? locale === 'en'
+          ? 'ltr'
+          : 'rtl'
+        : defaultTranslations.direction ||
+          (locale ? getTextDirection(locale) : 'ltr')
 
-  // Month names: custom translations override, otherwise use locale-specific months
-  // For Jalali calendar, always use Persian month names regardless of locale
-  // For Gregorian calendar, use locale-specific month names (French, German, etc.)
+  // Month names: custom translations override, otherwise use calendar system and locale-specific months
+  // For Jalali calendar with English locale, use English transliterations of Jalali months
+  // For Jalali calendar with other locales, use Persian month names
+  // For Gregorian calendar with Persian locale, use Persian translations of Gregorian months
+  // For Gregorian calendar with other locales, use locale-specific month names (French, German, etc.)
   const months =
     customTranslations?.months ||
     (calendarSystem === 'jalali'
-      ? getMonthNamesByCalendarSystem(calendarSystem)
-      : defaultTranslations.months)
+      ? getMonthNamesByCalendarSystem(calendarSystem, locale)
+      : calendarSystem === 'gregorian' && locale === 'fa'
+        ? getMonthNamesByCalendarSystem(calendarSystem, locale)
+        : defaultTranslations.months)
 
-  // Number system: use custom if provided, otherwise determine from locale
+  // Number system: use custom if provided, otherwise determine from locale and calendar system
+  // For Jalali calendar: use Latin numbers only when locale is 'en', otherwise use Persian numbers
+  // For Gregorian calendar: use locale-based number system
   const numbers =
     customTranslations?.numbers ||
-    (locale ? getNumberSystem(locale) : defaultTranslations.numbers)
+    (calendarSystem === 'jalali'
+      ? locale === 'en'
+        ? 'latin'
+        : 'persian'
+      : locale
+        ? getNumberSystem(locale)
+        : defaultTranslations.numbers)
+
+  // Weekday names: use custom if provided, otherwise determine from calendar system and locale
+  // For Jalali calendar: use English weekday names only when locale is 'en', otherwise use Persian weekday names
+  // For Gregorian calendar: use locale-based weekday names
+  const weekdays =
+    customTranslations?.weekdays ||
+    (calendarSystem === 'jalali'
+      ? locale === 'en'
+        ? enTranslations.weekdays
+        : faTranslations.weekdays
+      : defaultTranslations.weekdays)
+
+  // Labels: use custom if provided, otherwise determine from calendar system and locale
+  // For Jalali calendar: use English labels only when locale is 'en', otherwise use Persian labels
+  // For Gregorian calendar: use locale-based labels
+  const labels = customTranslations?.labels
+    ? {
+        ...(calendarSystem === 'jalali'
+          ? locale === 'en'
+            ? enTranslations.labels
+            : faTranslations.labels
+          : defaultTranslations.labels),
+        ...customTranslations.labels
+      }
+    : calendarSystem === 'jalali'
+      ? locale === 'en'
+        ? enTranslations.labels
+        : faTranslations.labels
+      : defaultTranslations.labels
+
+  // Preset ranges: use custom if provided, otherwise determine from calendar system and locale
+  // For Jalali calendar: use English preset ranges only when locale is 'en', otherwise use Persian preset ranges
+  // For Gregorian calendar: use locale-based preset ranges
+  const presetRanges = customTranslations?.presetRanges
+    ? {
+        ...(calendarSystem === 'jalali'
+          ? locale === 'en'
+            ? enTranslations.presetRanges
+            : faTranslations.presetRanges
+          : defaultTranslations.presetRanges),
+        ...customTranslations.presetRanges
+      }
+    : calendarSystem === 'jalali'
+      ? locale === 'en'
+        ? enTranslations.presetRanges
+        : faTranslations.presetRanges
+      : defaultTranslations.presetRanges
 
   return {
     months,
-    weekdays: customTranslations?.weekdays || defaultTranslations.weekdays,
+    weekdays,
     direction,
     numbers,
-    labels: {
-      ...defaultTranslations.labels,
-      ...customTranslations?.labels
-    },
-    presetRanges: {
-      ...defaultTranslations.presetRanges,
-      ...customTranslations?.presetRanges
-    }
+    labels,
+    presetRanges
   }
 }

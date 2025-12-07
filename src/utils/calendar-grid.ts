@@ -31,17 +31,28 @@ export interface CalendarDay {
 }
 
 /**
- * Get the first day of the week for a given locale
- * Gregorian: Sunday (0), Jalali: Saturday (0)
- * Note: Both use 0 as the first day, but the day names arrays are different
+ * Get the first day of the week for a given calendar system
+ * @param calendarSystem - The calendar system ('gregorian' or 'jalali')
+ * @param weekStart - Optional explicit week start day (0-6). If provided, uses this value.
+ * @returns The first day of the week (0 = Sunday, 6 = Saturday)
  */
-function getFirstDayOfWeek(_calendarSystem: CalendarLocale): number {
-  return 0 // Both calendars start at index 0, but with different day names
+function getFirstDayOfWeek(
+  calendarSystem: CalendarLocale,
+  weekStart?: number
+): number {
+  // If weekStart is explicitly provided, use it
+  if (weekStart !== undefined) {
+    return weekStart
+  }
+  // Otherwise, default based on calendar system
+  // Gregorian: Sunday (0), Jalali: Saturday (6)
+  return calendarSystem === 'jalali' ? 6 : 0
 }
 
 /**
- * Get the day of week for a given date (0 = Sunday, 6 = Saturday for Gregorian)
- * For Jalali: 0 = Saturday, 6 = Friday
+ * Get the day of week for a given date
+ * Always returns in Gregorian format: 0 = Sunday, 6 = Saturday
+ * This ensures consistency regardless of calendar system or locale
  */
 function getDayOfWeek(
   year: number,
@@ -58,19 +69,9 @@ function getDayOfWeek(
       gregorianDay.month - 1,
       gregorianDay.day
     )
-    // Jalali calendar starts on Saturday, so we adjust
-    const gregorianDayOfWeek = date.getDay() // 0 = Sunday, 6 = Saturday
-    // Convert Gregorian day of week to Jalali day of week
-    // Jalali week: Saturday=0, Sunday=1, Monday=2, Tuesday=3, Wednesday=4, Thursday=5, Friday=6
-    // Gregorian week: Sunday=0, Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5, Saturday=6
-    // Mapping: Saturday (6) -> 0, Sunday (0) -> 1, Monday (1) -> 2, etc.
-    // The correct formula: (gregorianDayOfWeek + 1) % 7
-    // But if there's an off-by-one error showing Friday instead of Thursday,
-    // we might need to check if the issue is elsewhere. Let's verify the formula is correct.
-    // Actually, the formula (d+1)%7 should work: Thursday (4) -> (4+1)%7 = 5 (Thursday) ✓
-    // If it's showing as Friday (6), maybe we need: (d+2)%7? But that would be wrong.
-    // Let me use the mathematically correct formula: (gregorianDayOfWeek + 1) % 7
-    return (gregorianDayOfWeek + 1) % 7
+    // Return in Gregorian format (0 = Sunday, 6 = Saturday)
+    // The grid generation will handle weekStart alignment
+    return date.getDay() // 0 = Sunday, 6 = Saturday
   } else {
     // Gregorian: use JavaScript Date directly
     const date = new Date(year, month - 1, day)
@@ -81,13 +82,17 @@ function getDayOfWeek(
 /**
  * Generate calendar grid for a given month
  * Returns a 6x7 grid (6 weeks × 7 days)
+ * @param month - The month to generate grid for
+ * @param calendarSystem - The calendar system ('gregorian' or 'jalali')
+ * @param weekStart - Optional first day of the week (0-6). If not provided, defaults based on calendar system.
  */
 export function generateCalendarGrid(
   month: Day,
-  calendarSystem: CalendarLocale
+  calendarSystem: CalendarLocale,
+  weekStart?: number
 ): CalendarDay[][] {
   const { year, month: monthNum } = month
-  const firstDayOfWeek = getFirstDayOfWeek(calendarSystem)
+  const firstDayOfWeek = getFirstDayOfWeek(calendarSystem, weekStart)
   const daysInMonth = getDaysInMonth(year, monthNum, calendarSystem)
 
   // Get the first day of the month's day of week
@@ -281,14 +286,18 @@ export function getMonths(): number[] {
 
 /**
  * Get the start and end dates of a week containing the given date
- * Week starts on Sunday for Gregorian, Saturday for Jalali
+ * Week starts on Sunday for Gregorian, Saturday for Jalali (unless weekStart is specified)
+ * @param day - The day to get week bounds for
+ * @param calendarSystem - The calendar system ('gregorian' or 'jalali')
+ * @param weekStart - Optional first day of the week (0-6). If not provided, defaults based on calendar system.
  */
 export function getWeekBounds(
   day: Day,
-  calendarSystem: CalendarLocale
+  calendarSystem: CalendarLocale,
+  weekStart?: number
 ): { from: Day; to: Day } {
   const dayOfWeek = getDayOfWeek(day.year, day.month, day.day, calendarSystem)
-  const firstDayOfWeek = getFirstDayOfWeek(calendarSystem)
+  const firstDayOfWeek = getFirstDayOfWeek(calendarSystem, weekStart)
 
   // Calculate days to subtract to get to the start of the week
   const daysToSubtract = (dayOfWeek - firstDayOfWeek + 7) % 7
@@ -347,9 +356,15 @@ export function getWeekNumber(
 ): number {
   if (calendarSystem === 'jalali') {
     // For Jalali, calculate week number from start of year
+    // Note: weekStart is not available here, so we use default (Saturday for Jalali)
+    const defaultWeekStart = 6
     const yearStart: Day = { year: day.year, month: 1, day: 1 }
-    const yearStartWeek = getWeekBounds(yearStart, calendarSystem)
-    const currentWeek = getWeekBounds(day, calendarSystem)
+    const yearStartWeek = getWeekBounds(
+      yearStart,
+      calendarSystem,
+      defaultWeekStart
+    )
+    const currentWeek = getWeekBounds(day, calendarSystem, defaultWeekStart)
 
     // Calculate difference in days
     const startDate = dayToDate(yearStartWeek.from, calendarSystem)

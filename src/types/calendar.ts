@@ -299,6 +299,14 @@ export interface SharedCalendarProps {
    */
   showWeekend?: boolean
   /**
+   * First day of the week (0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday)
+   * If not provided, defaults based on calendar system:
+   * - Gregorian: Sunday (0)
+   * - Jalali: Saturday (6)
+   * @default undefined (auto-determined by calendar system)
+   */
+  weekStart?: 0 | 1 | 2 | 3 | 4 | 5 | 6
+  /**
    * Show today button
    * @default false
    */

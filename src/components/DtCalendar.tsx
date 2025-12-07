@@ -88,6 +88,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     timeFormat = '24',
     calendarSystem = 'gregorian',
     showWeekend = false,
+    weekStart,
     todayBtn = false,
     presetRanges,
     enlargeSelectedDay = true,
@@ -141,6 +142,20 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     effectiveLocale,
     normalizedCalendarSystem
   ])
+
+  // Auto-determine weekStart: if calendarSystem is 'jalali' and locale is 'en', use Saturday (6)
+  // Otherwise use provided weekStart or default based on calendar system
+  const effectiveWeekStart = useMemo(() => {
+    if (weekStart !== undefined) {
+      return weekStart
+    }
+    // For Jalali calendar with English locale, use Saturday (6) as week start
+    if (normalizedCalendarSystem === 'jalali' && effectiveLocale === 'en') {
+      return 6
+    }
+    // Default: Gregorian uses Sunday (0), Jalali uses Saturday (6)
+    return normalizedCalendarSystem === 'jalali' ? 6 : 0
+  }, [weekStart, normalizedCalendarSystem, effectiveLocale])
 
   // Normalize constraints props with error tracking
   const constraintsResult = useMemo(
@@ -231,7 +246,8 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     onChange: onChange as (date: Day | Range | Multi | null) => void,
     onCalenderChange,
     withTime,
-    numberOfMonths
+    numberOfMonths,
+    weekStart: effectiveWeekStart
   })
 
   // 🟢 Memoize callback functions to prevent React.memo bypass in child components
@@ -309,6 +325,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         withTime={withTime}
         timeFormat={timeFormat}
         showWeekend={showWeekend}
+        weekStart={effectiveWeekStart}
         todayBtn={todayBtn}
         enlargeSelectedDay={enlargeSelectedDay}
         constraints={constraints}

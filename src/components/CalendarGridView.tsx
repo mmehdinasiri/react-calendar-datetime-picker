@@ -59,6 +59,8 @@ export interface CalendarGridViewProps {
   timeFormat?: '12' | '24'
   /** Show weekend highlighting */
   showWeekend?: boolean
+  /** First day of the week (0 = Sunday, 6 = Saturday) */
+  weekStart?: number
   /** Show today button */
   todayBtn?: boolean
   /** Preset range buttons configuration */
@@ -96,6 +98,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
     withTime = false,
     timeFormat = '24',
     showWeekend = false,
+    weekStart,
     todayBtn = false,
     presetRanges,
     enlargeSelectedDay = true,
@@ -118,7 +121,32 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
     labels
 
   const isRTL = translations.direction === 'rtl'
-  const dayNames = translations.weekdays
+  // Rotate weekday names based on weekStart
+  // For Persian locale with Jalali calendar, weekdays already start with Saturday, so no rotation needed
+  // For English locale with Jalali calendar, we need to rotate to start with Saturday
+  const dayNames = useMemo(() => {
+    // If weekStart is undefined or 0 (Sunday), no rotation needed
+    if (weekStart === undefined || weekStart === 0) {
+      return translations.weekdays
+    }
+
+    // For Jalali calendar with weekStart = 6 (Saturday), check if weekdays already start with Saturday
+    // Persian weekday array is: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'] (Saturday to Friday)
+    // If the first weekday is 'ش' (Saturday in Persian), the array is already in the correct order
+    if (
+      calendarSystem === 'jalali' &&
+      weekStart === 6 &&
+      translations.weekdays[0] === 'ش'
+    ) {
+      return translations.weekdays
+    }
+
+    // For other cases (e.g., English locale with Jalali), rotate the array
+    // Rotate array: move first weekStart elements to the end
+    const rotated = [...translations.weekdays]
+    const moved = rotated.splice(0, weekStart)
+    return [...rotated, ...moved]
+  }, [translations.weekdays, weekStart, _locale, calendarSystem])
   const monthNames = translations.months
 
   // Get all months to display
@@ -131,9 +159,9 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
   // 🟢 Memoize expensive calendar grid generation - only recompute when dependencies change
   const calendarGrids = useMemo(() => {
     return monthsToDisplay.map((month) =>
-      generateCalendarGrid(month, calendarSystem)
+      generateCalendarGrid(month, calendarSystem, weekStart)
     )
-  }, [monthsToDisplay, calendarSystem])
+  }, [monthsToDisplay, calendarSystem, weekStart])
 
   // Refs for keyboard navigation
   const gridRef = useRef<HTMLDivElement>(null)
@@ -258,11 +286,38 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
         {(monthIndex === 0 || numberOfMonths > 1) && (
           <div className='calendar-day-names' role='row'>
             {dayNames.map((name, index) => {
+              // Calculate the actual day of week (0-6 in Gregorian format) for weekend detection
+              // 0 = Sunday, 6 = Saturday
+              let actualDayOfWeek: number
+
+              // For Persian locale with Jalali calendar, weekdays are not rotated
+              // The array is: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'] (Saturday to Friday)
+              // Map directly: index 0 = Saturday (6), index 1 = Sunday (0), etc.
+              if (
+                _locale === 'fa' &&
+                calendarSystem === 'jalali' &&
+                (weekStart === undefined || weekStart === 6)
+              ) {
+                // Persian weekday order: Saturday=0, Sunday=1, Monday=2, Tuesday=3, Wednesday=4, Thursday=5, Friday=6
+                // Convert to Gregorian: Saturday=6, Sunday=0, Monday=1, Tuesday=2, Wednesday=3, Thursday=4, Friday=5
+                const persianToGregorian = [6, 0, 1, 2, 3, 4, 5]
+                actualDayOfWeek = persianToGregorian[index]
+              } else {
+                // For rotated arrays or other cases, calculate based on weekStart
+                const defaultWeekStart =
+                  weekStart !== undefined
+                    ? weekStart
+                    : calendarSystem === 'jalali'
+                      ? 6
+                      : 0
+                actualDayOfWeek = (defaultWeekStart + index) % 7
+              }
+
               const isWeekendDay =
                 showWeekend &&
                 (calendarSystem === 'jalali'
-                  ? index === 6 || index === 5
-                  : index === 0 || index === 6)
+                  ? actualDayOfWeek === 4 || actualDayOfWeek === 5 // Thursday (4) and Friday (5) in Gregorian
+                  : actualDayOfWeek === 0 || actualDayOfWeek === 6) // Sunday (0) and Saturday (6)
 
               const dayNameClassNames = [
                 'calendar-day-name',
@@ -406,7 +461,11 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                       if (isSelectable) {
                         // For week type, select the entire week containing this day
                         if (type === 'week') {
-                          const weekBounds = getWeekBounds(day, calendarSystem)
+                          const weekBounds = getWeekBounds(
+                            day,
+                            calendarSystem,
+                            weekStart
+                          )
                           // Select the first day of the week (the week selection logic will handle the rest)
                           onDateSelect(weekBounds.from)
                         } else {

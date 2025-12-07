@@ -114,6 +114,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     showTimeInput = false,
     calendarSystem = 'gregorian',
     showWeekend = false,
+    weekStart,
     clearBtn = false,
     isRequired = false,
     todayBtn = false,
@@ -182,6 +183,20 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     effectiveLocale,
     normalizedCalendarSystem
   ])
+
+  // Auto-determine weekStart: if calendarSystem is 'jalali' and locale is 'en', use Saturday (6)
+  // Otherwise use provided weekStart or default based on calendar system
+  const effectiveWeekStart = useMemo(() => {
+    if (weekStart !== undefined) {
+      return weekStart
+    }
+    // For Jalali calendar with English locale, use Saturday (6) as week start
+    if (normalizedCalendarSystem === 'jalali' && effectiveLocale === 'en') {
+      return 6
+    }
+    // Default: Gregorian uses Sunday (0), Jalali uses Saturday (6)
+    return normalizedCalendarSystem === 'jalali' ? 6 : 0
+  }, [weekStart, normalizedCalendarSystem, effectiveLocale])
 
   // Use calendar picker hook for shared calendar logic
   const { state, actions, constraints, displayValue } = useCalendarPicker(
@@ -406,6 +421,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
             withTime={withTime}
             timeFormat={timeFormat}
             showWeekend={showWeekend}
+            weekStart={effectiveWeekStart}
             todayBtn={todayBtn}
             enlargeSelectedDay={true}
             constraints={constraints}
