@@ -686,7 +686,7 @@ describe('translations utils', () => {
           'jalali'
         )
         expect(resultFr.weekdays).toEqual(faTranslations.weekdays)
-        expect(resultFr.weekdays).toEqual(['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'])
+        expect(resultFr.weekdays).toEqual(['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'])
 
         // Test with German locale
         const resultDe = mergeTranslations(
@@ -803,14 +803,14 @@ describe('translations utils', () => {
         expect(months).toEqual(faTranslations.months)
       })
 
-      it('should return English Gregorian months for gregorian calendar with other locales', () => {
+      it('should return localized Gregorian months for gregorian calendar with other locales', () => {
         const monthsDe = getMonthNamesByCalendarSystem('gregorian', 'de')
         const monthsEs = getMonthNamesByCalendarSystem('gregorian', 'es')
         const monthsFr = getMonthNamesByCalendarSystem('gregorian', 'fr')
 
-        expect(monthsDe).toEqual(enTranslations.months)
-        expect(monthsEs).toEqual(enTranslations.months)
-        expect(monthsFr).toEqual(enTranslations.months)
+        expect(monthsDe).toEqual(deTranslations.months)
+        expect(monthsEs).toEqual(esTranslations.months)
+        expect(monthsFr).toEqual(frTranslations.months)
       })
 
       it('should return Persian Jalali months for jalali calendar with non-English locales', () => {
