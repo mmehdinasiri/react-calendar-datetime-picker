@@ -40,6 +40,17 @@ export { normalizeConstraintsProps } from './constraints'
 export { generateCalendarGrid, getYearRange, getMonths } from './calendar-grid'
 export type { CalendarDay } from './calendar-grid'
 
+// Weekday utilities
+export {
+  getEffectiveWeekStart,
+  rotateArray,
+  getGregorianDayOfWeek,
+  isWeekendDay,
+  getWeekendPositions,
+  getRotatedWeekdayNames,
+  getWeekendConfig
+} from './weekday-utils'
+
 // Calendar selection
 export {
   isDaySelected,

@@ -313,6 +313,98 @@ const dateOnly: Day = {
           </div>
         </div>
 
+        <h2 id='presetrangesconfig'>PresetRangesConfig</h2>
+
+        <p>
+          The <code>PresetRangesConfig</code> interface configures preset date
+          range buttons that appear in the calendar footer when{' '}
+          <code>type='range'</code>. These buttons allow users to quickly select
+          common date ranges.
+        </p>
+
+        <div className='rounded-lg overflow-hidden border border-border mb-4'>
+          <SyntaxHighlighter
+            language='typescript'
+            style={vscDarkPlus}
+            customStyle={{
+              margin: 0,
+              borderRadius: '0.5rem',
+              fontSize: '0.875rem',
+              lineHeight: '1.5'
+            }}
+          >
+            {`interface PresetRangesConfig {
+  yesterday?: boolean      // Show "Yesterday" button
+  last7days?: boolean      // Show "Last 7 days" button
+  last30days?: boolean     // Show "Last 30 days" button
+  thisMonth?: boolean      // Show "This month" button
+  lastMonth?: boolean      // Show "Last month" button
+  custom?: CustomPresetRange[]  // Array of custom preset ranges
+}
+
+interface CustomPresetRange {
+  label: string  // Button label text
+  range: Range   // Date range (from and to dates)
+}`}
+          </SyntaxHighlighter>
+        </div>
+
+        <h3>Example</h3>
+
+        <div className='rounded-lg overflow-hidden border border-border mb-4'>
+          <SyntaxHighlighter
+            language='typescript'
+            style={vscDarkPlus}
+            customStyle={{
+              margin: 0,
+              borderRadius: '0.5rem',
+              fontSize: '0.875rem',
+              lineHeight: '1.5'
+            }}
+          >
+            {`import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { PresetRangesConfig } from 'react-calendar-datetime-picker'
+
+const presetRanges: PresetRangesConfig = {
+  yesterday: true,
+  last7days: true,
+  last30days: true,
+  thisMonth: true,
+  lastMonth: true,
+  custom: [
+    {
+      label: 'Last 14 days',
+      range: {
+        from: { year: 2025, month: 11, day: 20 },
+        to: { year: 2025, month: 12, day: 3 }
+      }
+    }
+  ]
+}
+
+<DtCalendar type="range" presetRanges={presetRanges} />`}
+          </SyntaxHighlighter>
+        </div>
+
+        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-4'>
+          <div className='flex'>
+            <div className='ml-3'>
+              <p className='text-sm text-gray-200'>
+                <strong>Note:</strong> Preset ranges are only available when{' '}
+                <code>type='range'</code>. To customize the labels of preset
+                range buttons, see the{' '}
+                <Link
+                  href='/customization#preset-ranges'
+                  className='text-accent-light hover:text-accent-light-hover'
+                >
+                  Customization
+                </Link>{' '}
+                documentation.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <h2 id='locale'>Locale</h2>
 
         <p>

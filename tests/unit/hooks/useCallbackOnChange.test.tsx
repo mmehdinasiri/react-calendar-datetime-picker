@@ -129,13 +129,13 @@ describe('useCallbackOnChange', () => {
     const callback = vi.fn()
 
     const { rerender } = renderHook(
-      ({ value }) => useCallbackOnChange(value, callback),
+      ({ value }: { value: any }) => useCallbackOnChange(value, callback),
       { initialProps: { value: undefined } }
     )
 
     expect(callback).not.toHaveBeenCalled()
 
-    rerender({ value: 'defined' })
+    rerender({ value: 'defined' as any })
 
     expect(callback).toHaveBeenCalledWith('defined')
     expect(callback).toHaveBeenCalledTimes(1)
@@ -145,14 +145,14 @@ describe('useCallbackOnChange', () => {
     const callback = vi.fn()
 
     const { rerender } = renderHook(
-      ({ value }) => useCallbackOnChange(value, callback),
+      ({ value }: { value: any }) => useCallbackOnChange(value, callback),
       { initialProps: { value: null } }
     )
 
     expect(callback).toHaveBeenCalledWith(null)
     expect(callback).toHaveBeenCalledTimes(1)
 
-    rerender({ value: 'not-null' })
+    rerender({ value: 'not-null' as any })
 
     expect(callback).toHaveBeenCalledWith('not-null')
     expect(callback).toHaveBeenCalledTimes(2)
@@ -162,20 +162,20 @@ describe('useCallbackOnChange', () => {
     const callback = vi.fn()
 
     const { rerender } = renderHook(
-      ({ value }) => useCallbackOnChange(value, callback),
+      ({ value }: { value: any }) => useCallbackOnChange(value, callback),
       { initialProps: { value: 'string' } }
     )
 
     expect(callback).toHaveBeenCalledWith('string')
     expect(callback).toHaveBeenCalledTimes(1)
 
-    rerender({ value: 'different-string' })
+    rerender({ value: 'different-string' as any })
     expect(callback).toHaveBeenCalledWith('different-string')
 
-    rerender({ value: 42 })
+    rerender({ value: 42 as any })
     expect(callback).toHaveBeenCalledWith(42)
 
-    rerender({ value: true })
+    rerender({ value: true as any })
     expect(callback).toHaveBeenCalledWith(true)
 
     expect(callback).toHaveBeenCalledTimes(4)

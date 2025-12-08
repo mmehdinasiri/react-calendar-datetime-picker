@@ -87,6 +87,16 @@ const navigation = [
         href: '/internationalization#translation-customization',
         subItems: [
           {
+            name: 'Preset Date Ranges',
+            href: '/internationalization#preset-ranges',
+            subItems: [
+              {
+                name: 'Custom Preset Labels',
+                href: '/internationalization#preset-ranges'
+              }
+            ]
+          },
+          {
             name: 'Custom Button Labels',
             href: '/internationalization#translation-customization-customlabels'
           },
@@ -103,16 +113,8 @@ const navigation = [
             href: '/internationalization#translation-customization-customampm'
           },
           {
-            name: 'Custom Preset Range Labels',
-            href: '/internationalization#translation-customization-custompresetranges'
-          },
-          {
-            name: 'Custom Time Selector Labels',
-            href: '/internationalization#translation-customization-customtimelabels'
-          },
-          {
-            name: 'Custom Input Range Labels',
-            href: '/internationalization#translation-customization-custominputrangelabels'
+            name: 'Custom Time & Input Range Labels',
+            href: '/internationalization#translation-customization-customtimeandinputlabels'
           },
           {
             name: 'Combined Customizations',
@@ -184,17 +186,7 @@ const navigation = [
         ]
       },
       { name: 'Custom CSS Classes', href: '/customization#custom-classes' },
-      { name: 'Custom Icons', href: '/customization#customarrowicons' },
-      {
-        name: 'Preset Date Ranges',
-        href: '/customization#preset-ranges',
-        subItems: [
-          {
-            name: 'Custom Preset Labels',
-            href: '/customization#preset-ranges'
-          }
-        ]
-      }
+      { name: 'Custom Icons', href: '/customization#icons-labels' }
     ]
   },
   {

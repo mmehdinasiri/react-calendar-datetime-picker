@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { useCalendarSetup } from '@/hooks/useCalendarSetup'
 import type { CalendarTranslations, SharedCalendarProps } from '@/types'
+import type { CalendarSystem } from '@/types/calendar'
 
 // Mock the utility functions
 vi.mock('@/utils/date-conversion', () => ({
@@ -112,8 +113,53 @@ describe('useCalendarSetup', () => {
 
   describe('translations management', () => {
     const baseTranslations: CalendarTranslations = {
-      months: ['January', 'February'],
-      weekdays: ['Sunday', 'Monday']
+      months: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ],
+      weekdays: [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+      ],
+      direction: 'ltr',
+      numbers: 'latin',
+      labels: {
+        today: 'Today',
+        clear: 'Clear',
+        ok: 'OK',
+        nextMonth: 'Next month',
+        previousMonth: 'Previous month',
+        selectMonth: 'Select month',
+        selectYear: 'Select year',
+        from: 'From',
+        to: 'To',
+        timeFrom: 'From',
+        timeTo: 'To',
+        am: 'AM',
+        pm: 'PM'
+      },
+      presetRanges: {
+        yesterday: 'Yesterday',
+        last7days: 'Last 7 days',
+        last30days: 'Last 30 days',
+        thisMonth: 'This month',
+        lastMonth: 'Last month'
+      }
     }
 
     const customTranslations: Partial<CalendarTranslations> = {
@@ -130,10 +176,56 @@ describe('useCalendarSetup', () => {
 
     it('merges default and custom translations', () => {
       const mergedTranslations: CalendarTranslations = {
-        months: ['Custom January', 'Custom February'],
-        weekdays: ['Sunday', 'Monday']
+        months: [
+          'Custom January',
+          'Custom February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December'
+        ],
+        weekdays: [
+          'Sunday',
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday'
+        ],
+        direction: 'ltr',
+        numbers: 'latin',
+        labels: {
+          today: 'Today',
+          clear: 'Clear',
+          ok: 'OK',
+          nextMonth: 'Next month',
+          previousMonth: 'Previous month',
+          selectMonth: 'Select month',
+          selectYear: 'Select year',
+          from: 'From',
+          to: 'To',
+          timeFrom: 'From',
+          timeTo: 'To',
+          am: 'AM',
+          pm: 'PM'
+        },
+        presetRanges: {
+          yesterday: 'Yesterday',
+          last7days: 'Last 7 days',
+          last30days: 'Last 30 days',
+          thisMonth: 'This month',
+          lastMonth: 'Last month'
+        }
       }
 
+      mockGetTranslations.mockReturnValue(baseTranslations)
       mockMergeTranslations.mockReturnValue(mergedTranslations)
 
       const customization: SharedCalendarProps['customization'] = {
@@ -154,6 +246,7 @@ describe('useCalendarSetup', () => {
     })
 
     it('handles undefined customization', () => {
+      mockGetTranslations.mockReturnValue(baseTranslations)
       mockMergeTranslations.mockReturnValue(baseTranslations)
 
       const { result } = renderHook(() => useCalendarSetup('gregorian', 'en'))
@@ -269,7 +362,7 @@ describe('useCalendarSetup', () => {
     })
 
     it('re-calculates when dependencies change', () => {
-      let calendarSystem = 'gregorian'
+      let calendarSystem: CalendarSystem = 'gregorian'
       const { result, rerender } = renderHook(() =>
         useCalendarSetup(calendarSystem, 'en')
       )

@@ -8,11 +8,14 @@ export const useExampleValue = (
   locale: 'en' | 'fa',
   type: 'single' | 'range' | 'multi' | 'week'
 ) => {
+  // Map locale to calendar system
+  const calendarSystem = locale === 'fa' ? 'jalali' : 'gregorian'
+
   const [selectedValue, setSelectedValue] = useState<
     Day | Range | Multi | null
   >(() => {
     if (initValue) {
-      return normalizeInitValue(initValue, locale, type) as
+      return normalizeInitValue(initValue, calendarSystem, type) as
         | Day
         | Range
         | Multi
@@ -24,7 +27,7 @@ export const useExampleValue = (
   // Update selectedValue when initValue prop changes
   useEffect(() => {
     if (initValue) {
-      const normalized = normalizeInitValue(initValue, locale, type) as
+      const normalized = normalizeInitValue(initValue, calendarSystem, type) as
         | Day
         | Range
         | Multi
@@ -33,7 +36,7 @@ export const useExampleValue = (
     } else {
       setSelectedValue(null)
     }
-  }, [initValue, locale, type])
+  }, [initValue, calendarSystem, type])
 
   const handleChange = (date: unknown) => {
     setSelectedValue(date as Day | Range | Multi | null)

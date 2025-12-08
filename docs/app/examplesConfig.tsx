@@ -346,82 +346,26 @@ function App() {
       },
       wrapper: 'calendar-container'
     },
-    CustomPresetRanges: {
-      title: 'Custom Preset Range Labels',
+    CustomTimeAndInputLabels: {
+      title: 'Custom Time & Input Range Labels',
       description:
-        'Calendar with custom labels for preset date ranges and custom "From" and "To" labels in the input field',
-      component: 'DtPicker',
-      props: {
-        locale: 'en',
-        type: 'range',
-        showWeekend: true,
-        clearBtn: true,
-        initValue: {
-          from: { year: 2024, month: 3, day: 1 },
-          to: { year: 2024, month: 3, day: 15 }
-        },
-        presetRanges: {
-          yesterday: true,
-          last7days: true,
-          last30days: true,
-          thisMonth: true,
-          lastMonth: true
-        },
-        customization: {
-          translations: {
-            labels: {
-              from: 'Start Date',
-              to: 'End Date',
-              clear: 'Clear Range'
-            },
-            presetRanges: {
-              yesterday: 'Yesterday',
-              last7days: 'Past Week',
-              last30days: 'Past Month',
-              thisMonth: 'Current Month',
-              lastMonth: 'Previous Month'
-            }
-          }
-        }
-      },
-      wrapper: 'picker-container'
-    },
-    CustomTimeLabels: {
-      title: 'Custom Time Selector Labels',
-      description:
-        'Date range picker with custom "From" and "To" labels for time selection',
+        'Date range picker with custom labels for time selection (timeFrom/timeTo), input field display (from/to), and clear button. Note: Input field labels (from/to) only apply to DtPicker component, not DtCalendar.',
       component: 'DtPicker',
       props: {
         locale: 'en',
         type: 'range',
         withTime: true,
         showWeekend: true,
-        customization: {
-          translations: {
-            labels: {
-              timeFrom: 'Start Time',
-              timeTo: 'End Time'
-            }
-          }
-        }
-      },
-      wrapper: 'picker-container'
-    },
-    CustomInputRangeLabels: {
-      title: 'Custom Input Range Labels',
-      description:
-        'Date range picker (DtPicker only) with custom "From" and "To" labels displayed in the input field. Note: This customization only applies to DtPicker component, not DtCalendar.',
-      component: 'DtPicker',
-      props: {
-        locale: 'en',
-        type: 'range',
-        showWeekend: true,
+        clearBtn: true,
         placeholder: 'Select date range',
         customization: {
           translations: {
             labels: {
+              timeFrom: 'Start Time',
+              timeTo: 'End Time',
               from: 'Start',
-              to: 'End'
+              to: 'End',
+              clear: 'Clear Range'
             }
           }
         }
@@ -861,6 +805,130 @@ function App() {
     />
   )
 }`
+    }
+  },
+  'Week Settings': {
+    WeekSettingsOverview: {
+      title: 'Week Settings Overview',
+      description:
+        'Configure week start day and weekend highlighting. Control which day the week begins with and whether weekends are visually highlighted.',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    DefaultWeekStart: {
+      title: 'Default Week Start (Sunday)',
+      description:
+        'Calendar with default week start (Sunday for Gregorian calendar)',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    WeekStartMonday: {
+      title: 'Week Starting on Monday',
+      description:
+        'Calendar with week starting on Monday (common in Europe and many countries)',
+      component: 'DtCalendar',
+      props: {
+        weekStart: 1,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    WeekStartSaturday: {
+      title: 'Week Starting on Saturday',
+      description:
+        'Calendar with week starting on Saturday (Jalali/Persian default)',
+      component: 'DtCalendar',
+      props: {
+        weekStart: 6,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    GermanCalendarMondayStart: {
+      title: 'German Calendar - Monday Start',
+      description:
+        'German calendar with week starting on Monday (common German convention)',
+      component: 'DtCalendar',
+      props: {
+        locale: 'de',
+        weekStart: 1,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    JalaliCalendarSaturdayStart: {
+      title: 'Jalali Calendar - Saturday Start',
+      description:
+        'Persian (Jalali) calendar with week starting on Saturday (traditional Persian week)',
+      component: 'DtCalendar',
+      props: {
+        calendarSystem: 'jalali',
+        weekStart: 6,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    DatePickerWithMondayStart: {
+      title: 'Date Picker - Monday Start',
+      description: 'Date picker with week starting on Monday',
+      component: 'DtPicker',
+      props: {
+        weekStart: 1,
+        placeholder: 'Select a date (Monday start)',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    RangePickerTuesdayStart: {
+      title: 'Range Picker - Tuesday Start',
+      description: 'Date range picker with week starting on Tuesday',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        weekStart: 2,
+        placeholder: 'Select date range (Tuesday start)',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    WednesdayStartWithWeekendHighlighting: {
+      title: 'Wednesday Start with Weekend Highlighting',
+      description:
+        'Calendar starting on Wednesday with weekend days clearly highlighted',
+      component: 'DtCalendar',
+      props: {
+        weekStart: 3,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    JalaliWithoutWeekendHighlighting: {
+      title: 'Jalali Calendar without Weekend Highlighting',
+      description:
+        'Persian calendar without weekend highlighting - all days look the same',
+      component: 'DtCalendar',
+      props: {
+        calendarSystem: 'jalali',
+        weekStart: 1,
+        showWeekend: false,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
     }
   },
   Callbacks: {

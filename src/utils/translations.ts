@@ -488,13 +488,31 @@ export function mergeTranslations(
   // 🎯 Determine weekdays based on calendar system
   // For Jalali calendar: use English weekday names only when locale is 'en', otherwise use Persian
   // For Gregorian calendar: use locale-based weekday names
-  const defaultWeekdays =
+  let defaultWeekdays =
     calendar === 'jalali'
       ? effectiveLocale === 'en'
         ? weekdayNames.en
         : weekdayNames.fa
       : weekdayNames[effectiveLocale as keyof typeof weekdayNames] ||
         weekdayNames.en
+
+  // 🎯 Special case: For any calendar with Persian locale,
+  // rotate Persian weekdays to start with Sunday (یکشنبه) instead of Saturday (شنبه)
+  // This ensures all weekday arrays are in Gregorian order (Sunday first)
+  if (effectiveLocale === 'fa') {
+    // Persian Jalali weekdays: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'] (Saturday first)
+    // Rotate to: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'] (Sunday first)
+    const persianJalali = weekdayNames.fa
+    defaultWeekdays = [
+      persianJalali[1], // Sunday (یکشنبه)
+      persianJalali[2], // Monday (دوشنبه)
+      persianJalali[3], // Tuesday (سه‌شنبه)
+      persianJalali[4], // Wednesday (چهارشنبه)
+      persianJalali[5], // Thursday (پنج‌شنبه)
+      persianJalali[6], // Friday (جمعه)
+      persianJalali[0] // Saturday (شنبه)
+    ]
+  }
 
   // Get labels and presetRanges based on calendar system and locale
   const labels = isJalaliNonEnglish

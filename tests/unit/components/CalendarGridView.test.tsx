@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { CalendarGridView } from '@/components/CalendarGridView'
 import { enTranslations, faTranslations } from '@/utils/translations'
-import type { Day } from '@/types'
+import type { Day, CalendarLocale, CalendarUILocale } from '@/types'
 
 // Mock child components to isolate CalendarGridView logic
 vi.mock('@/components/CalendarHeader', () => ({
@@ -296,6 +296,265 @@ describe('CalendarGridView', () => {
     const day4 = document.getElementById('day-1402-1-4')
     expect(day4).toBeInTheDocument()
     expect(day4).toHaveClass('calendar-day-weekend')
+  })
+
+  it('highlights weekends correctly when weekStart is Monday', () => {
+    // When weekStart is 1 (Monday), the grid shifts:
+    // Mon(0), Tue(1), Wed(2), Thu(3), Fri(4), Sat(5), Sun(6)
+    // So weekends should be Sat(5) and Sun(6) columns
+    render(
+      <CalendarGridView {...defaultProps} showWeekend={true} weekStart={1} />
+    )
+
+    // 1 Jan 2023 is Sunday, so it should be in the last column (Sun = 6)
+    // and should be highlighted as weekend
+    const sunday = screen.getByRole('gridcell', { name: /^1 January 2023$/i })
+    expect(sunday).toHaveClass('calendar-day-weekend')
+
+    // 7 Jan 2023 is Saturday, so it should be in column 5 and highlighted as weekend
+    const saturday = screen.getByRole('gridcell', { name: /^7 January 2023$/i })
+    expect(saturday).toHaveClass('calendar-day-weekend')
+
+    // 3 Jan 2023 is Monday, should NOT be highlighted as weekend
+    const monday = screen.getByRole('gridcell', { name: /^2 January 2023$/i })
+    expect(monday).not.toHaveClass('calendar-day-weekend')
+  })
+
+  it('highlights weekends correctly for Jalali calendar when weekStart is Monday', () => {
+    render(
+      <CalendarGridView
+        {...defaultProps}
+        calendarSystem='jalali'
+        displayMonth={{ year: 1402, month: 1, day: 1 }}
+        showWeekend={true}
+        weekStart={1}
+      />
+    )
+
+    // In Jalali calendar, weekends are Thursday and Friday (Gregorian days 4 and 5)
+    // With weekStart = 1 (Monday), the grid is: Mon, Tue, Wed, Thu, Fri, Sat, Sun
+    // So Thursday should be at column 3, Friday at column 4
+
+    // Check day names have correct weekend highlighting
+    const dayNames = document.querySelectorAll('.calendar-day-name')
+    expect(dayNames.length).toBe(7)
+
+    // Thursday (index 3) should be weekend
+    expect(dayNames[3]).toHaveClass('calendar-weekend')
+    // Friday (index 4) should be weekend
+    expect(dayNames[4]).toHaveClass('calendar-weekend')
+    // Monday (index 0) should NOT be weekend
+    expect(dayNames[0]).not.toHaveClass('calendar-weekend')
+  })
+
+  it('highlights weekends correctly for Jalali calendar with English locale', () => {
+    render(
+      <CalendarGridView
+        {...defaultProps}
+        calendarSystem='jalali'
+        locale='en'
+        displayMonth={{ year: 1402, month: 1, day: 1 }}
+        showWeekend={true}
+      />
+    )
+
+    // In Jalali calendar, weekends are Thursday and Friday
+    // With default weekStart = 6 (Saturday), and English locale,
+    // the day names should be rotated to start with Saturday
+
+    // Check day names are in correct order: Sat, Sun, Mon, Tue, Wed, Thu, Fri
+    const dayNames = document.querySelectorAll('.calendar-day-name')
+    expect(dayNames.length).toBe(7)
+    expect(dayNames[0]).toHaveTextContent('Sa') // Saturday
+    expect(dayNames[1]).toHaveTextContent('Su') // Sunday
+    expect(dayNames[2]).toHaveTextContent('Mo') // Monday
+    expect(dayNames[5]).toHaveTextContent('Th') // Thursday
+    expect(dayNames[6]).toHaveTextContent('Fr') // Friday
+
+    // Thursday (index 5) should be weekend
+    expect(dayNames[5]).toHaveClass('calendar-weekend')
+    // Friday (index 6) should be weekend
+    expect(dayNames[6]).toHaveClass('calendar-weekend')
+    // Saturday (index 0) should NOT be weekend in Jalali calendar
+    expect(dayNames[0]).not.toHaveClass('calendar-weekend')
+  })
+
+  describe('comprehensive calendar system, locale, weekStart, and showWeekend combinations', () => {
+    const testCases = [
+      // Gregorian calendar tests
+      {
+        name: 'Gregorian + English + default weekStart + showWeekend=true',
+        props: {
+          calendarSystem: 'gregorian' as const,
+          locale: 'en' as const,
+          showWeekend: true
+        },
+        expectedWeekdays: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+        weekendIndices: [0, 6], // Sunday and Saturday
+        firstDayIndex: 0
+      },
+      {
+        name: 'Gregorian + English + weekStart=1 + showWeekend=true',
+        props: {
+          calendarSystem: 'gregorian',
+          locale: 'en',
+          weekStart: 1,
+          showWeekend: true
+        },
+        expectedWeekdays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+        weekendIndices: [5, 6], // Saturday and Sunday (shifted by 1)
+        firstDayIndex: 0
+      },
+      {
+        name: 'Gregorian + Persian + default weekStart + showWeekend=true',
+        props: {
+          calendarSystem: 'gregorian' as const,
+          locale: 'fa' as const,
+          showWeekend: true
+        },
+        expectedWeekdays: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'],
+        weekendIndices: [0, 6], // Sunday (یکشنبه) and Saturday (شنبه)
+        firstDayIndex: 0
+      },
+      {
+        name: 'Gregorian + Persian + weekStart=1 + showWeekend=true',
+        props: {
+          calendarSystem: 'gregorian',
+          locale: 'fa',
+          weekStart: 1,
+          showWeekend: true
+        },
+        expectedWeekdays: ['د', 'س', 'چ', 'پ', 'ج', 'ش', 'ی'],
+        weekendIndices: [5, 6], // Saturday and Sunday (shifted by 1)
+        firstDayIndex: 0
+      },
+
+      // Jalali calendar tests
+      {
+        name: 'Jalali + Persian + default weekStart + showWeekend=true',
+        props: {
+          calendarSystem: 'jalali' as const,
+          locale: 'fa' as const,
+          showWeekend: true
+        },
+        expectedWeekdays: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'], // Rotated by 6 from Sunday-first Persian
+        weekendIndices: [5, 6], // Thursday (پنج‌شنبه) and Friday (جمعه)
+        firstDayIndex: 0
+      },
+      {
+        name: 'Jalali + Persian + weekStart=1 + showWeekend=true',
+        props: {
+          calendarSystem: 'jalali',
+          locale: 'fa',
+          weekStart: 1,
+          showWeekend: true
+        },
+        expectedWeekdays: ['د', 'س', 'چ', 'پ', 'ج', 'ش', 'ی'], // Rotated by 1 from Sunday-first Persian
+        weekendIndices: [3, 4], // Thursday and Friday (shifted positions)
+        firstDayIndex: 0
+      },
+      {
+        name: 'Jalali + English + default weekStart + showWeekend=true',
+        props: {
+          calendarSystem: 'jalali' as const,
+          locale: 'en' as const,
+          showWeekend: true
+        },
+        expectedWeekdays: ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'],
+        weekendIndices: [5, 6], // Thursday and Friday
+        firstDayIndex: 0
+      },
+      {
+        name: 'Jalali + English + weekStart=1 + showWeekend=true',
+        props: {
+          calendarSystem: 'jalali',
+          locale: 'en',
+          weekStart: 1,
+          showWeekend: true
+        },
+        expectedWeekdays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+        weekendIndices: [3, 4], // Thursday and Friday (shifted positions)
+        firstDayIndex: 0
+      },
+
+      // Tests with showWeekend=false
+      {
+        name: 'Gregorian + English + default weekStart + showWeekend=false',
+        props: {
+          calendarSystem: 'gregorian' as const,
+          locale: 'en' as const,
+          showWeekend: false
+        },
+        expectedWeekdays: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+        weekendIndices: [], // No weekends highlighted
+        firstDayIndex: 0
+      },
+      {
+        name: 'Jalali + Persian + default weekStart + showWeekend=false',
+        props: {
+          calendarSystem: 'jalali' as const,
+          locale: 'fa' as const,
+          showWeekend: false
+        },
+        expectedWeekdays: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
+        weekendIndices: [], // No weekends highlighted
+        firstDayIndex: 0
+      }
+    ]
+
+    testCases.forEach((testCase: (typeof testCases)[0]) => {
+      const { name, props, expectedWeekdays, weekendIndices, firstDayIndex } =
+        testCase
+      it(name, () => {
+        // Create mock translations that simulate what mergeTranslations would produce
+        let mockTranslations =
+          props.locale === 'fa' ? { ...faTranslations } : { ...enTranslations }
+
+        // For any calendar + Persian locale, mergeTranslations rotates the weekdays to start with Sunday
+        if (props.locale === 'fa') {
+          mockTranslations = {
+            ...faTranslations,
+            weekdays: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'] // Persian weekdays rotated to Sunday first
+          }
+        }
+
+        render(
+          <CalendarGridView
+            {...defaultProps}
+            displayMonth={{
+              year: props.calendarSystem === 'jalali' ? 1402 : 2023,
+              month: 1,
+              day: 1
+            }}
+            translations={mockTranslations}
+            calendarSystem={props.calendarSystem as CalendarLocale}
+            locale={props.locale as CalendarUILocale}
+            showWeekend={props.showWeekend}
+            weekStart={props.weekStart}
+          />
+        )
+
+        const dayNames = document.querySelectorAll('.calendar-day-name')
+        expect(dayNames.length).toBe(7)
+
+        // Check weekday names are in correct order
+        expectedWeekdays.forEach((expected, index) => {
+          expect(dayNames[index]).toHaveTextContent(expected)
+        })
+
+        // Check weekend highlighting
+        dayNames.forEach((dayName, index) => {
+          if (weekendIndices.includes(index)) {
+            expect(dayName).toHaveClass('calendar-weekend')
+          } else {
+            expect(dayName).not.toHaveClass('calendar-weekend')
+          }
+        })
+
+        // Verify first day positioning
+        expect(dayNames[firstDayIndex]).toHaveTextContent(expectedWeekdays[0])
+      })
+    })
   })
 
   it('renders range selection styles correctly', () => {

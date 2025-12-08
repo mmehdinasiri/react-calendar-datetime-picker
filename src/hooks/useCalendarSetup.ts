@@ -93,19 +93,14 @@ export function useCalendarSetup(
   ])
 
   // Auto-determine weekStart with smart defaults
-  // If calendarSystem is 'jalali' and locale is 'en', use Saturday (6)
-  // Otherwise use provided weekStart or default based on calendar system
+  // Calendar system determines week start, locale only affects translations
   const effectiveWeekStart = useMemo(() => {
     if (weekStart !== undefined) {
       return weekStart
     }
-    // For Jalali calendar with English locale, use Saturday (6) as week start
-    if (normalizedCalendarSystem === 'jalali' && effectiveLocale === 'en') {
-      return 6
-    }
     // Default: Gregorian uses Sunday (0), Jalali uses Saturday (6)
     return normalizedCalendarSystem === 'jalali' ? 6 : 0
-  }, [weekStart, normalizedCalendarSystem, effectiveLocale])
+  }, [weekStart, normalizedCalendarSystem])
 
   return {
     normalizedCalendarSystem,

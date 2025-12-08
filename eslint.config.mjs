@@ -7,7 +7,16 @@ import prettierConfig from 'eslint-config-prettier'
 import globals from 'globals'
 
 export default [
-  { ignores: ['dist', 'node_modules', 'coverage', 'docs', '**/.next/**'] },
+  {
+    ignores: [
+      'dist',
+      'node_modules',
+      'coverage',
+      'docs',
+      '**/.next/**',
+      'examples/dist/**'
+    ]
+  },
   js.configs.recommended,
   {
     files: ['**/*.{ts,tsx}'],

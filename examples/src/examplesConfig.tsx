@@ -822,6 +822,218 @@ export const examples: ExamplesConfig = {
       wrapper: 'calendar-container'
     }
   },
+  'Display Options': {
+    ShowWeekendHighlighting: {
+      title: 'Show Weekend Highlighting',
+      description: 'Calendar with weekend days highlighted',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true
+      },
+      wrapper: 'calendar-container'
+    },
+    TodayButton: {
+      title: 'Today Button',
+      description: 'Calendar with Today button in footer',
+      component: 'DtCalendar',
+      props: {
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    ClearButton: {
+      title: 'Clear Button',
+      description: 'Date picker with clear button to reset selection',
+      component: 'DtPicker',
+      props: {
+        clearBtn: true,
+        initValue: { year: 2024, month: 7, day: 17 },
+        placeholder: 'Select a date'
+      },
+      wrapper: 'picker-container'
+    },
+    PresetRanges: {
+      title: 'Preset Date Ranges',
+      description:
+        'Calendar with all preset date range buttons (Yesterday, Last 7 days, etc.)',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          last7days: true,
+          last30days: true,
+          thisMonth: true,
+          lastMonth: true
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    RangeWithCustomPresetRanges: {
+      title: 'Date Range with Custom Preset Ranges',
+      description: 'Range selection with completely custom preset ranges',
+      component: 'DtCalendar',
+      props: {
+        type: 'range',
+        presetRanges: {
+          yesterday: true,
+          custom: [
+            {
+              label: 'Last 14 days',
+              range: (() => {
+                const today = getToday('gregorian') // { year: 2024, month: 12, day: 19 }
+                const fourteenDaysAgo = subtractDays(today, 13, 'gregorian') // { year: 2024, month: 12, day: 6 }
+                return {
+                  from: fourteenDaysAgo,
+                  to: today
+                }
+              })()
+            },
+            {
+              label: 'Next 7 days',
+              range: (() => {
+                const today = getToday('gregorian') // { year: 2024, month: 12, day: 19 }
+                const sevenDaysLater = addDays(today, 7, 'gregorian') // { year: 2024, month: 12, day: 26 }
+                return {
+                  from: today,
+                  to: sevenDaysLater
+                }
+              })()
+            }
+          ]
+        },
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    }
+  },
+  'Week Settings': {
+    WeekSettingsOverview: {
+      title: 'Week Settings Overview',
+      description:
+        'Configure week start day and weekend highlighting. Control which day the week begins with and whether weekends are visually highlighted.',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    DefaultWeekStart: {
+      title: 'Default Week Start (Sunday)',
+      description:
+        'Calendar with default week start (Sunday for Gregorian calendar)',
+      component: 'DtCalendar',
+      props: {
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    WeekStartMonday: {
+      title: 'Week Starting on Monday',
+      description:
+        'Calendar with week starting on Monday (common in Europe and many countries)',
+      component: 'DtCalendar',
+      props: {
+        weekStart: 1,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    WeekStartSaturday: {
+      title: 'Week Starting on Saturday',
+      description:
+        'Calendar with week starting on Saturday (Jalali/Persian default)',
+      component: 'DtCalendar',
+      props: {
+        weekStart: 6,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    GermanCalendarMondayStart: {
+      title: 'German Calendar - Monday Start',
+      description:
+        'German calendar with week starting on Monday (common German convention)',
+      component: 'DtCalendar',
+      props: {
+        locale: 'de',
+        weekStart: 1,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    JalaliCalendarSaturdayStart: {
+      title: 'Jalali Calendar - Saturday Start',
+      description:
+        'Persian (Jalali) calendar with week starting on Saturday (traditional Persian week)',
+      component: 'DtCalendar',
+      props: {
+        calendarSystem: 'jalali',
+        weekStart: 6,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    DatePickerWithMondayStart: {
+      title: 'Date Picker - Monday Start',
+      description: 'Date picker with week starting on Monday',
+      component: 'DtPicker',
+      props: {
+        weekStart: 1,
+        placeholder: 'Select a date (Monday start)',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    RangePickerTuesdayStart: {
+      title: 'Range Picker - Tuesday Start',
+      description: 'Date range picker with week starting on Tuesday',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        weekStart: 2,
+        placeholder: 'Select date range (Tuesday start)',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
+    WednesdayStartWithWeekendHighlighting: {
+      title: 'Wednesday Start with Weekend Highlighting',
+      description:
+        'Calendar starting on Wednesday with weekend days clearly highlighted',
+      component: 'DtCalendar',
+      props: {
+        weekStart: 3,
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    },
+    JalaliWithoutWeekendHighlighting: {
+      title: 'Jalali Calendar without Weekend Highlighting',
+      description:
+        'Persian calendar without weekend highlighting - all days look the same',
+      component: 'DtCalendar',
+      props: {
+        calendarSystem: 'jalali',
+        weekStart: 1,
+        showWeekend: false,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container'
+    }
+  },
   Features: {
     ShowWeekendHighlighting: {
       title: 'Show Weekend Highlighting',
@@ -1800,8 +2012,8 @@ export const examples: ExamplesConfig = {
 const today = getToday('gregorian')
 const selectedDate = // Select a date in the calendar
 
-isBefore(selectedDate, today, 'en')
-isBefore(today, selectedDate, 'en')`,
+isBefore(selectedDate, today, 'gregorian')
+isBefore(today, selectedDate, 'gregorian')`,
       getUtilityResults: (selectedDate?: Day | null) => {
         if (!selectedDate) {
           return {
@@ -1810,15 +2022,15 @@ isBefore(today, selectedDate, 'en')`,
         }
         const today = getToday('gregorian')
         return {
-          'isBefore(selectedDate, today, "en")': isBefore(
+          'isBefore(selectedDate, today, "gregorian")': isBefore(
             selectedDate,
             today,
-            'en'
+            'gregorian'
           ),
-          'isBefore(today, selectedDate, "en")': isBefore(
+          'isBefore(today, selectedDate, "gregorian")': isBefore(
             today,
             selectedDate,
-            'en'
+            'gregorian'
           ),
           selectedDate: dayToString(selectedDate, '/'),
           today: dayToString(today, '/')
@@ -1840,8 +2052,8 @@ isBefore(today, selectedDate, 'en')`,
 const today = getToday('gregorian')
 const selectedDate = // Select a date in the calendar
 
-isAfter(selectedDate, today, 'en')
-isAfter(today, selectedDate, 'en')`,
+isAfter(selectedDate, today, 'gregorian')
+isAfter(today, selectedDate, 'gregorian')`,
       getUtilityResults: (selectedDate?: Day | null) => {
         if (!selectedDate) {
           return {
@@ -1850,15 +2062,15 @@ isAfter(today, selectedDate, 'en')`,
         }
         const today = getToday('gregorian')
         return {
-          'isAfter(selectedDate, today, "en")': isAfter(
+          'isAfter(selectedDate, today, "gregorian")': isAfter(
             selectedDate,
             today,
-            'en'
+            'gregorian'
           ),
-          'isAfter(today, selectedDate, "en")': isAfter(
+          'isAfter(today, selectedDate, "gregorian")': isAfter(
             today,
             selectedDate,
-            'en'
+            'gregorian'
           ),
           selectedDate: dayToString(selectedDate, '/'),
           today: dayToString(today, '/')
@@ -1881,19 +2093,23 @@ const today = getToday('gregorian')
 const todayWithTime = { ...today, hour: 14, minute: 30 }
 const tomorrow = { ...today, day: today.day + 1 }
 
-isSameDay(today, todayWithTime, 'en') // ignores time
-isSameDay(today, tomorrow, 'en')`,
+isSameDay(today, todayWithTime, 'gregorian') // ignores time
+isSameDay(today, tomorrow, 'gregorian')`,
       getUtilityResults: () => {
         const today = getToday('gregorian')
         const todayWithTime = { ...today, hour: 14, minute: 30 }
         const tomorrow = { ...today, day: today.day + 1 }
         return {
-          'isSameDay(today, todayWithTime, "en")': isSameDay(
+          'isSameDay(today, todayWithTime, "gregorian")': isSameDay(
             today,
             todayWithTime,
-            'en'
+            'gregorian'
           ),
-          'isSameDay(today, tomorrow, "en")': isSameDay(today, tomorrow, 'en')
+          'isSameDay(today, tomorrow, "gregorian")': isSameDay(
+            today,
+            tomorrow,
+            'gregorian'
+          )
         }
       }
     },
@@ -1910,11 +2126,11 @@ isSameDay(today, tomorrow, 'en')`,
       utilityCode: `import { isBetween, getToday, addDays } from 'react-calendar-datetime-picker'
 
 const today = getToday('gregorian')
-const start = addDays(today, -5, 'en')
-const end = addDays(today, 5, 'en')
+const start = addDays(today, -5, 'gregorian')
+const end = addDays(today, 5, 'gregorian')
 const selectedDate = // Select a date in the calendar
 
-isBetween(selectedDate, start, end, 'en')`,
+isBetween(selectedDate, start, end, 'gregorian')`,
       getUtilityResults: (selectedDate?: Day | null) => {
         if (!selectedDate) {
           return {
@@ -1922,14 +2138,14 @@ isBetween(selectedDate, start, end, 'en')`,
           }
         }
         const today = getToday('gregorian')
-        const start = addDays(today, -5, 'en')
-        const end = addDays(today, 5, 'en')
+        const start = addDays(today, -5, 'gregorian')
+        const end = addDays(today, 5, 'gregorian')
         return {
-          'isBetween(selectedDate, start, end, "en")': isBetween(
+          'isBetween(selectedDate, start, end, "gregorian")': isBetween(
             selectedDate,
             start,
             end,
-            'en'
+            'gregorian'
           ),
           selectedDate: dayToString(selectedDate, '/'),
           'start (5 days ago)': dayToString(start, '/'),
@@ -1950,9 +2166,9 @@ isBetween(selectedDate, start, end, 'en')`,
       utilityCode: `import { addDays, subtractDays, dayToString } from 'react-calendar-datetime-picker'
 
 const selectedDate = // Select a date in the calendar
-const tomorrow = addDays(selectedDate, 1, 'en')
-const nextWeek = addDays(selectedDate, 7, 'en')
-const yesterday = subtractDays(selectedDate, 1, 'en')
+const tomorrow = addDays(selectedDate, 1, 'gregorian')
+const nextWeek = addDays(selectedDate, 7, 'gregorian')
+const yesterday = subtractDays(selectedDate, 1, 'gregorian')
 
 dayToString(selectedDate, '/')
 dayToString(tomorrow, '/')
@@ -1964,14 +2180,17 @@ dayToString(yesterday, '/')`,
             'Select a date in the calendar to see results': null
           }
         }
-        const tomorrow = addDays(selectedDate, 1, 'en')
-        const nextWeek = addDays(selectedDate, 7, 'en')
-        const yesterday = subtractDays(selectedDate, 1, 'en')
+        const tomorrow = addDays(selectedDate, 1, 'gregorian')
+        const nextWeek = addDays(selectedDate, 7, 'gregorian')
+        const yesterday = subtractDays(selectedDate, 1, 'gregorian')
         return {
           selectedDate: dayToString(selectedDate, '/'),
-          'addDays(selectedDate, 1, "en")': dayToString(tomorrow, '/'),
-          'addDays(selectedDate, 7, "en")': dayToString(nextWeek, '/'),
-          'subtractDays(selectedDate, 1, "en")': dayToString(yesterday, '/')
+          'addDays(selectedDate, 1, "gregorian")': dayToString(tomorrow, '/'),
+          'addDays(selectedDate, 7, "gregorian")': dayToString(nextWeek, '/'),
+          'subtractDays(selectedDate, 1, "gregorian")': dayToString(
+            yesterday,
+            '/'
+          )
         }
       }
     },
@@ -1988,9 +2207,9 @@ dayToString(yesterday, '/')`,
       utilityCode: `import { addMonths, subtractMonths, dayToString } from 'react-calendar-datetime-picker'
 
 const selectedDate = // Select a date in the calendar
-const nextMonth = addMonths(selectedDate, 1, 'en')
-const nextYear = addMonths(selectedDate, 12, 'en')
-const lastMonth = subtractMonths(selectedDate, 1, 'en')
+const nextMonth = addMonths(selectedDate, 1, 'gregorian')
+const nextYear = addMonths(selectedDate, 12, 'gregorian')
+const lastMonth = subtractMonths(selectedDate, 1, 'gregorian')
 
 dayToString(selectedDate, '/')
 dayToString(nextMonth, '/')
@@ -2002,14 +2221,23 @@ dayToString(lastMonth, '/')`,
             'Select a date in the calendar to see results': null
           }
         }
-        const nextMonth = addMonths(selectedDate, 1, 'en')
-        const nextYear = addMonths(selectedDate, 12, 'en')
-        const lastMonth = subtractMonths(selectedDate, 1, 'en')
+        const nextMonth = addMonths(selectedDate, 1, 'gregorian')
+        const nextYear = addMonths(selectedDate, 12, 'gregorian')
+        const lastMonth = subtractMonths(selectedDate, 1, 'gregorian')
         return {
           selectedDate: dayToString(selectedDate, '/'),
-          'addMonths(selectedDate, 1, "en")': dayToString(nextMonth, '/'),
-          'addMonths(selectedDate, 12, "en")': dayToString(nextYear, '/'),
-          'subtractMonths(selectedDate, 1, "en")': dayToString(lastMonth, '/')
+          'addMonths(selectedDate, 1, "gregorian")': dayToString(
+            nextMonth,
+            '/'
+          ),
+          'addMonths(selectedDate, 12, "gregorian")': dayToString(
+            nextYear,
+            '/'
+          ),
+          'subtractMonths(selectedDate, 1, "gregorian")': dayToString(
+            lastMonth,
+            '/'
+          )
         }
       }
     },
@@ -2026,9 +2254,9 @@ dayToString(lastMonth, '/')`,
       utilityCode: `import { addYears, subtractYears, dayToString } from 'react-calendar-datetime-picker'
 
 const selectedDate = // Select a date in the calendar
-const nextYear = addYears(selectedDate, 1, 'en')
-const fiveYearsLater = addYears(selectedDate, 5, 'en')
-const lastYear = subtractYears(selectedDate, 1, 'en')
+const nextYear = addYears(selectedDate, 1, 'gregorian')
+const fiveYearsLater = addYears(selectedDate, 5, 'gregorian')
+const lastYear = subtractYears(selectedDate, 1, 'gregorian')
 
 dayToString(selectedDate, '/')
 dayToString(nextYear, '/')
@@ -2040,14 +2268,20 @@ dayToString(lastYear, '/')`,
             'Select a date in the calendar to see results': null
           }
         }
-        const nextYear = addYears(selectedDate, 1, 'en')
-        const fiveYearsLater = addYears(selectedDate, 5, 'en')
-        const lastYear = subtractYears(selectedDate, 1, 'en')
+        const nextYear = addYears(selectedDate, 1, 'gregorian')
+        const fiveYearsLater = addYears(selectedDate, 5, 'gregorian')
+        const lastYear = subtractYears(selectedDate, 1, 'gregorian')
         return {
           selectedDate: dayToString(selectedDate, '/'),
-          'addYears(selectedDate, 1, "en")': dayToString(nextYear, '/'),
-          'addYears(selectedDate, 5, "en")': dayToString(fiveYearsLater, '/'),
-          'subtractYears(selectedDate, 1, "en")': dayToString(lastYear, '/')
+          'addYears(selectedDate, 1, "gregorian")': dayToString(nextYear, '/'),
+          'addYears(selectedDate, 5, "gregorian")': dayToString(
+            fiveYearsLater,
+            '/'
+          ),
+          'subtractYears(selectedDate, 1, "gregorian")': dayToString(
+            lastYear,
+            '/'
+          )
         }
       }
     },
@@ -2071,9 +2305,9 @@ dayToString(lastYear, '/')`,
 const today = getToday('gregorian')
 const selectedDate = // Select a date in the calendar
 
-getDifferenceInDays(selectedDate, today, 'en')
-getDifferenceInMonths(selectedDate, today, 'en')
-getDifferenceInYears(selectedDate, today, 'en')`,
+getDifferenceInDays(selectedDate, today, 'gregorian')
+getDifferenceInMonths(selectedDate, today, 'gregorian')
+getDifferenceInYears(selectedDate, today, 'gregorian')`,
       getUtilityResults: (selectedDate?: Day | null) => {
         if (!selectedDate) {
           return {
@@ -2082,15 +2316,12 @@ getDifferenceInYears(selectedDate, today, 'en')`,
         }
         const today = getToday('gregorian')
         return {
-          'getDifferenceInDays(selectedDate, today, "en")': getDifferenceInDays(
-            selectedDate,
-            today,
-            'en'
-          ),
-          'getDifferenceInMonths(selectedDate, today, "en")':
-            getDifferenceInMonths(selectedDate, today, 'en'),
-          'getDifferenceInYears(selectedDate, today, "en")':
-            getDifferenceInYears(selectedDate, today, 'en'),
+          'getDifferenceInDays(selectedDate, today, "gregorian")':
+            getDifferenceInDays(selectedDate, today, 'gregorian'),
+          'getDifferenceInMonths(selectedDate, today, "gregorian")':
+            getDifferenceInMonths(selectedDate, today, 'gregorian'),
+          'getDifferenceInYears(selectedDate, today, "gregorian")':
+            getDifferenceInYears(selectedDate, today, 'gregorian'),
           selectedDate: dayToString(selectedDate, '/'),
           today: dayToString(today, '/')
         }
@@ -2157,10 +2388,10 @@ const selectedWithTime = { ...selectedDate, hour: 14, minute: 30 }
 
 startOfDay(selectedWithTime)
 endOfDay(selectedWithTime)
-startOfMonth(selectedDate, 'en')
-endOfMonth(selectedDate, 'en')
+startOfMonth(selectedDate, 'gregorian')
+endOfMonth(selectedDate, 'gregorian')
 startOfYear(selectedDate)
-endOfYear(selectedDate, 'en')`,
+endOfYear(selectedDate, 'gregorian')`,
       getUtilityResults: (selectedDate?: Day | null) => {
         if (!selectedDate) {
           return {
@@ -2170,10 +2401,10 @@ endOfYear(selectedDate, 'en')`,
         const selectedWithTime = { ...selectedDate, hour: 14, minute: 30 }
         const startDay = startOfDay(selectedWithTime)
         const endDay = endOfDay(selectedWithTime)
-        const startMonth = startOfMonth(selectedDate, 'en')
-        const endMonth = endOfMonth(selectedDate, 'en')
+        const startMonth = startOfMonth(selectedDate, 'gregorian')
+        const endMonth = endOfMonth(selectedDate, 'gregorian')
         const startYear = startOfYear(selectedDate)
-        const endYear = endOfYear(selectedDate, 'en')
+        const endYear = endOfYear(selectedDate, 'gregorian')
         return {
           selectedDate: dayToString(selectedDate, '/'),
           'startOfDay(selectedWithTime)': `${dayToString(startDay, '/')} ${startDay.hour}:${String(startDay.minute).padStart(2, '0')}`,
@@ -2202,13 +2433,13 @@ endOfYear(selectedDate, 'en')`,
 
 const today = getToday('jalali')  // Persian calendar
 const selectedDate = // Select a date in the calendar
-const tomorrow = addDays(selectedDate, 1, 'fa')
-const nextMonth = addMonths(selectedDate, 1, 'fa')
+const tomorrow = addDays(selectedDate, 1, 'jalali')
+const nextMonth = addMonths(selectedDate, 1, 'jalali')
 
 dayToString(selectedDate, '/')
 dayToString(tomorrow, '/')
 dayToString(nextMonth, '/')
-isBefore(selectedDate, today, 'fa')`,
+isBefore(selectedDate, today, 'jalali')`,
       getUtilityResults: (selectedDate?: Day | null) => {
         if (!selectedDate) {
           return {
@@ -2216,16 +2447,16 @@ isBefore(selectedDate, today, 'fa')`,
           }
         }
         const today = getToday('jalali')
-        const tomorrow = addDays(selectedDate, 1, 'fa')
-        const nextMonth = addMonths(selectedDate, 1, 'fa')
+        const tomorrow = addDays(selectedDate, 1, 'jalali')
+        const nextMonth = addMonths(selectedDate, 1, 'jalali')
         return {
           selectedDate: dayToString(selectedDate, '/'),
-          'addDays(selectedDate, 1, "fa")': dayToString(tomorrow, '/'),
-          'addMonths(selectedDate, 1, "fa")': dayToString(nextMonth, '/'),
-          'isBefore(selectedDate, today, "fa")': isBefore(
+          'addDays(selectedDate, 1, "jalali")': dayToString(tomorrow, '/'),
+          'addMonths(selectedDate, 1, "jalali")': dayToString(nextMonth, '/'),
+          'isBefore(selectedDate, today, "jalali")': isBefore(
             selectedDate,
             today,
-            'fa'
+            'jalali'
           ),
           today: dayToString(today, '/')
         }

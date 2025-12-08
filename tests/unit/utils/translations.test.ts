@@ -560,7 +560,10 @@ describe('translations utils', () => {
         // Should preserve Persian locale settings
         expect(result.direction).toBe('rtl')
         expect(result.numbers).toBe('persian')
-        expect(result.weekdays).toEqual(faTranslations.weekdays)
+        // For Gregorian calendar with Persian locale, weekdays should be rotated to start with Sunday
+        // Original Persian (Jalali): ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'] (Saturday first)
+        // Gregorian Persian: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'] (Sunday first)
+        expect(result.weekdays).toEqual(['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'])
         expect(result.labels.today).toBe(faTranslations.labels.today)
       })
     })
@@ -706,14 +709,14 @@ describe('translations utils', () => {
         )
         expect(resultEs.weekdays).toEqual(faTranslations.weekdays)
 
-        // Test with Persian locale
+        // Test with Persian locale - should be rotated to Sunday first
         const resultFa = mergeTranslations(
           faTranslations,
           undefined,
           'fa',
           'jalali'
         )
-        expect(resultFa.weekdays).toEqual(faTranslations.weekdays)
+        expect(resultFa.weekdays).toEqual(['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'])
       })
 
       it('should use locale-specific weekday names for Gregorian calendar', () => {

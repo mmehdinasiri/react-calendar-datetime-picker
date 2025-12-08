@@ -484,6 +484,79 @@ customization?: {
                 </div>
               </div>
             )}
+            {groupName === 'Translation Customization' && (
+              <section
+                id='preset-ranges'
+                className='bg-bg-secondary rounded-lg border border-border p-8 mt-8'
+              >
+                <ExampleRenderer
+                  config={{
+                    title: 'Custom Preset Labels',
+                    description:
+                      'Preset ranges with custom labels for localization or branding',
+                    component: 'DtCalendar',
+                    props: {
+                      type: 'range',
+                      presetRanges: {
+                        yesterday: true,
+                        last7days: true,
+                        last30days: true,
+                        thisMonth: true,
+                        lastMonth: true
+                      },
+                      customization: {
+                        translations: {
+                          presetRanges: {
+                            yesterday: 'Yesterday',
+                            last7days: 'Past Week',
+                            last30days: 'Past Month',
+                            thisMonth: 'Current Month',
+                            lastMonth: 'Previous Month'
+                          }
+                        }
+                      },
+                      showWeekend: true,
+                      todayBtn: true
+                    },
+                    wrapper: 'calendar-container',
+                    customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [range, setRange] = useState(null)
+
+  return (
+    <DtCalendar
+      type="range"
+      presetRanges={{
+        yesterday: true,
+        last7days: true,
+        last30days: true,
+        thisMonth: true,
+        lastMonth: true
+      }}
+      customization={{
+        translations: {
+          presetRanges: {
+            yesterday: 'Yesterday',
+            last7days: 'Past Week',
+            last30days: 'Past Month',
+            thisMonth: 'Current Month',
+            lastMonth: 'Previous Month'
+          }
+        }
+      }}
+      showWeekend={true}
+      todayBtn={true}
+      onChange={setRange}
+    />
+  )
+}`
+                  }}
+                  exampleKey='CustomPresetLabels'
+                />
+              </section>
+            )}
             <div className='space-y-8'>
               {Object.entries(groupExamples).map(([exampleKey, config]) => (
                 <ExampleRenderer

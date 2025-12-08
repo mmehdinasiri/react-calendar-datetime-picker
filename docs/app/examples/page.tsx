@@ -288,6 +288,135 @@ timeFormat?: '12' | '24'`}
                   </div>
                 </div>
               )}
+              {groupName === 'Week Settings' && (
+                <div className='mb-8 space-y-4'>
+                  <p className='text-gray-600 dark:text-gray-400 text-lg'>
+                    The calendar component supports week configuration through
+                    the{' '}
+                    <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                      weekStart
+                    </code>{' '}
+                    and{' '}
+                    <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                      showWeekend
+                    </code>{' '}
+                    props. Control which day the week begins with and whether
+                    weekends are visually highlighted. Weekend days differ by
+                    calendar system: Saturday and Sunday for Gregorian, Thursday
+                    and Friday for Jalali.
+                  </p>
+                  <div>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Type Definitions:
+                    </p>
+                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                      <SyntaxHighlighter
+                        language='typescript'
+                        style={vscDarkPlus}
+                        customStyle={{
+                          margin: 0,
+                          borderRadius: '0.5rem',
+                          fontSize: '0.875rem',
+                          lineHeight: '1.5'
+                        }}
+                      >
+                        {`weekStart?: number // 0-6 (0 = Sunday, 6 = Saturday)
+showWeekend?: boolean`}
+                      </SyntaxHighlighter>
+                    </div>
+                  </div>
+                  <div className='text-gray-600 dark:text-gray-400'>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Props:
+                    </p>
+                    <ul className='list-disc list-inside space-y-1 ml-4'>
+                      <li>
+                        <strong>weekStart</strong> - Determines the first day of
+                        the week:
+                        <ul className='list-disc list-inside space-y-1 ml-6 mt-1'>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              0
+                            </code>{' '}
+                            - Sunday (default for Gregorian calendar)
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              1
+                            </code>{' '}
+                            - Monday (common in Europe)
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              2
+                            </code>{' '}
+                            - Tuesday
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              3
+                            </code>{' '}
+                            - Wednesday
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              4
+                            </code>{' '}
+                            - Thursday
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              5
+                            </code>{' '}
+                            - Friday
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              6
+                            </code>{' '}
+                            - Saturday (default for Jalali calendar)
+                          </li>
+                        </ul>
+                        <p className='mt-2'>
+                          If not specified, defaults to{' '}
+                          <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                            0
+                          </code>{' '}
+                          (Sunday) for Gregorian calendar and{' '}
+                          <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                            6
+                          </code>{' '}
+                          (Saturday) for Jalali calendar.
+                        </p>
+                      </li>
+                      <li>
+                        <strong>showWeekend</strong> - When set to{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          true
+                        </code>
+                        , visually highlights weekend days:
+                        <ul className='list-disc list-inside space-y-1 ml-6 mt-1'>
+                          <li>
+                            <strong>Gregorian calendar:</strong> Saturday (6)
+                            and Sunday (0) are highlighted
+                          </li>
+                          <li>
+                            <strong>Jalali calendar:</strong> Thursday (4) and
+                            Friday (5) are highlighted
+                          </li>
+                        </ul>
+                        <p className='mt-2'>
+                          Defaults to{' '}
+                          <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                            false
+                          </code>
+                          .
+                        </p>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
               {groupName === 'Callbacks' && (
                 <div className='mb-8 space-y-4'>
                   <p className='text-gray-600 dark:text-gray-400 text-lg'>
@@ -420,6 +549,109 @@ onGoToToday?: () => void`}
                   </div>
                 </div>
               )}
+              {groupName === 'Constraints' && (
+                <div className='mb-8 space-y-4'>
+                  <p className='text-gray-600 dark:text-gray-400 text-lg'>
+                    The calendar component supports date constraints through the{' '}
+                    <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                      constraints
+                    </code>{' '}
+                    prop. You can restrict date selection by setting minimum and
+                    maximum dates, disabling specific dates, or using a custom
+                    validation function.
+                  </p>
+                  <div>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Type Definition:
+                    </p>
+                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                      <SyntaxHighlighter
+                        language='typescript'
+                        style={vscDarkPlus}
+                        customStyle={{
+                          margin: 0,
+                          borderRadius: '0.5rem',
+                          fontSize: '0.875rem',
+                          lineHeight: '1.5'
+                        }}
+                      >
+                        {`interface CalendarConstraints {
+  minDate?: Day | Date | string | number
+  maxDate?: Day | Date | string | number
+  disabledDates?: (Day | Date | string | number)[]
+  isDateDisabled?: (date: Day) => boolean
+}`}
+                      </SyntaxHighlighter>
+                    </div>
+                  </div>
+                  <div className='text-gray-600 dark:text-gray-400'>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Props:
+                    </p>
+                    <ul className='list-disc list-inside space-y-1 ml-4'>
+                      <li>
+                        <strong>minDate</strong> - Sets the minimum selectable
+                        date. Dates before this date will be disabled. Accepts{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Day
+                        </code>
+                        ,{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Date
+                        </code>
+                        , date string, or timestamp.
+                      </li>
+                      <li>
+                        <strong>maxDate</strong> - Sets the maximum selectable
+                        date. Dates after this date will be disabled. Accepts{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Day
+                        </code>
+                        ,{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Date
+                        </code>
+                        , date string, or timestamp.
+                      </li>
+                      <li>
+                        <strong>disabledDates</strong> - Array of specific dates
+                        to disable. Each date can be a{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Day
+                        </code>
+                        ,{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Date
+                        </code>
+                        , date string, or timestamp.
+                      </li>
+                      <li>
+                        <strong>isDateDisabled</strong> - Custom function to
+                        determine if a date should be disabled. Receives a{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Day
+                        </code>{' '}
+                        object and returns{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          true
+                        </code>{' '}
+                        if the date should be disabled. Useful for complex
+                        validation logic like disabling weekends, specific days
+                        of the week, or custom business rules.
+                      </li>
+                    </ul>
+                    <p className='mt-4'>
+                      <strong>Note:</strong> All date inputs are automatically
+                      normalized to{' '}
+                      <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                        Day
+                      </code>{' '}
+                      objects based on the calendar system. Disabled dates are
+                      visually distinct and cannot be selected.
+                    </p>
+                  </div>
+                </div>
+              )}
               {groupName === 'Date Formatting' && (
                 <div className='mb-8 space-y-4'>
                   <p className='text-gray-600 dark:text-gray-400 text-lg'>
@@ -509,6 +741,161 @@ onGoToToday?: () => void`}
                           "YYYY년 MM월 DD일"
                         </code>{' '}
                         - Custom format with text (e.g., 2025년 12월 25일)
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+              {groupName === 'Display Options' && (
+                <div className='mb-8 space-y-4'>
+                  <p className='text-gray-600 dark:text-gray-400 text-lg'>
+                    The calendar component provides various display options to
+                    customize the user interface. Control visual elements like
+                    weekend highlighting, buttons, and preset range selections.
+                  </p>
+                  <div>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Type Definitions:
+                    </p>
+                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
+                      <SyntaxHighlighter
+                        language='typescript'
+                        style={vscDarkPlus}
+                        customStyle={{
+                          margin: 0,
+                          borderRadius: '0.5rem',
+                          fontSize: '0.875rem',
+                          lineHeight: '1.5'
+                        }}
+                      >
+                        {`showWeekend?: boolean
+todayBtn?: boolean
+clearBtn?: boolean
+presetRanges?: PresetRangesConfig
+
+interface PresetRangesConfig {
+  yesterday?: boolean      // Show "Yesterday" button
+  last7days?: boolean      // Show "Last 7 days" button
+  last30days?: boolean     // Show "Last 30 days" button
+  thisMonth?: boolean      // Show "This month" button
+  lastMonth?: boolean      // Show "Last month" button
+  custom?: CustomPresetRange[]  // Array of custom preset ranges
+}
+
+interface CustomPresetRange {
+  label: string  // Button label text
+  range: Range   // Date range (from and to dates)
+}`}
+                      </SyntaxHighlighter>
+                    </div>
+                  </div>
+                  <div className='text-gray-600 dark:text-gray-400'>
+                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
+                      Props:
+                    </p>
+                    <ul className='list-disc list-inside space-y-1 ml-4'>
+                      <li>
+                        <strong>showWeekend</strong> - When set to{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          true
+                        </code>
+                        , visually highlights weekend days. Weekend days differ
+                        by calendar system: Saturday and Sunday for Gregorian,
+                        Thursday and Friday for Jalali. Defaults to{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          false
+                        </code>
+                        .
+                      </li>
+                      <li>
+                        <strong>todayBtn</strong> - When set to{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          true
+                        </code>
+                        , displays a "Today" button in the calendar footer that
+                        navigates to and selects today's date. Defaults to{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          false
+                        </code>
+                        .
+                      </li>
+                      <li>
+                        <strong>clearBtn</strong> - When set to{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          true
+                        </code>
+                        , displays a "Clear" button in the{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          DtPicker
+                        </code>{' '}
+                        input field that resets the selection. Only available
+                        for{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          DtPicker
+                        </code>
+                        . Defaults to{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          false
+                        </code>
+                        .
+                      </li>
+                      <li>
+                        <strong>presetRanges</strong> - Configuration object for
+                        preset date range buttons (only available when{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          type='range'
+                        </code>
+                        ). Options include:
+                        <ul className='list-disc list-inside space-y-1 ml-6 mt-1'>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              yesterday
+                            </code>{' '}
+                            - Show "Yesterday" button
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              last7days
+                            </code>{' '}
+                            - Show "Last 7 days" button
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              last30days
+                            </code>{' '}
+                            - Show "Last 30 days" button
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              thisMonth
+                            </code>{' '}
+                            - Show "This month" button
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              lastMonth
+                            </code>{' '}
+                            - Show "Last month" button
+                          </li>
+                          <li>
+                            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                              custom
+                            </code>{' '}
+                            - Array of custom preset ranges with custom labels
+                            and date ranges
+                          </li>
+                        </ul>
+                        <p className='mt-2'>
+                          <strong>Note:</strong> To customize the labels of
+                          preset range buttons, see{' '}
+                          <a
+                            href='/internationalization#preset-ranges'
+                            className='text-blue-600 dark:text-blue-400 hover:underline'
+                          >
+                            Internationalization - Preset Ranges
+                          </a>
+                          .
+                        </p>
                       </li>
                     </ul>
                   </div>

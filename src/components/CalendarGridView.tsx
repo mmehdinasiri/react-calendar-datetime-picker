@@ -36,6 +36,10 @@ import {
   getPresetRangesFromConfig,
   isPresetRangeActive
 } from '../utils/preset-ranges'
+import {
+  getRotatedWeekdayNames,
+  getWeekendConfig
+} from '../utils/weekday-utils'
 import { CalendarHeader } from './CalendarHeader'
 import { TimeSelector } from './TimeSelector'
 import { useKeyboardNavigation, useFocusManagement } from '../hooks'
@@ -121,21 +125,12 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
     labels
 
   const isRTL = translations.direction === 'rtl'
-  // Rotate weekday names based on weekStart
-  // Weekday arrays follow JavaScript Date.getDay() order: [Sunday(0), Monday(1), ..., Saturday(6)]
-  // For Farsi: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'] (Sunday to Saturday)
-  const dayNames = useMemo(() => {
-    // If weekStart is undefined or 0 (Sunday), no rotation needed
-    if (weekStart === undefined || weekStart === 0) {
-      return translations.weekdays
-    }
-
-    // Rotate array: move first weekStart elements to the end
-    // This puts the desired weekStart day at the beginning
-    const rotated = [...translations.weekdays]
-    const moved = rotated.splice(0, weekStart)
-    return [...rotated, ...moved]
-  }, [translations.weekdays, weekStart])
+  // Rotate weekday names based on weekStart and calendar system
+  const dayNames = useMemo(
+    () =>
+      getRotatedWeekdayNames(translations.weekdays, calendarSystem, weekStart),
+    [translations.weekdays, calendarSystem, weekStart]
+  )
   const monthNames = translations.months
 
   // Get all months to display
@@ -275,23 +270,8 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
         {(monthIndex === 0 || numberOfMonths > 1) && (
           <div className='calendar-day-names' role='row'>
             {dayNames.map((name, index) => {
-              // Calculate the actual day of week (0-6 in Gregorian format) for weekend detection
-              // 0 = Sunday, 6 = Saturday
-              // Weekday arrays follow JavaScript Date.getDay() order: [Sunday(0), Monday(1), ..., Saturday(6)]
-              // After rotation, index 0 corresponds to weekStart, so we calculate: (weekStart + index) % 7
-              const defaultWeekStart =
-                weekStart !== undefined
-                  ? weekStart
-                  : calendarSystem === 'jalali'
-                    ? 6
-                    : 0
-              const actualDayOfWeek = (defaultWeekStart + index) % 7
-
-              const isWeekendDay =
-                showWeekend &&
-                (calendarSystem === 'jalali'
-                  ? actualDayOfWeek === 4 || actualDayOfWeek === 5 // Thursday (4) and Friday (5) in Gregorian
-                  : actualDayOfWeek === 0 || actualDayOfWeek === 6) // Sunday (0) and Saturday (6)
+              const weekendConfig = getWeekendConfig(calendarSystem, weekStart)
+              const isWeekendDay = showWeekend && weekendConfig.isWeekend(index)
 
               const dayNameClassNames = [
                 'calendar-day-name',
@@ -382,11 +362,14 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                       isDateDisabled,
                       calendarSystem
                     })
+
+                    // Calculate if this day is a weekend
+                    const weekendConfig = getWeekendConfig(
+                      calendarSystem,
+                      weekStart
+                    )
                     const isWeekend =
-                      showWeekend &&
-                      (calendarSystem === 'jalali'
-                        ? dayIndex === 6 || dayIndex === 5
-                        : dayIndex === 0 || dayIndex === 6)
+                      showWeekend && weekendConfig.isWeekend(dayIndex)
 
                     // Determine if this is from previous month or next month
                     const isPrevMonth =
