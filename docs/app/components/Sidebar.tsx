@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { examples } from '../examplesConfig'
+import { examples } from '../examples/examplesConfig'
 
 // Helper function to convert example key to URL-friendly format
 const toKebabCase = (str: string) =>

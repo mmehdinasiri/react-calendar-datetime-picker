@@ -22,6 +22,7 @@ export type {
   Time,
   TimeRange,
   CalendarLocale,
+  CalendarSystem,
   CalendarType,
   CalendarListStyle,
   DateInput,

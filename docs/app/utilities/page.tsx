@@ -26,6 +26,7 @@ import {
 import type { Day } from '../../../src/types'
 import '../../../src/styles/index.scss'
 import Link from 'next/link'
+import { utilitiesContent } from './utilitiesContent'
 
 // Type links mapping
 const typeLinks: Record<string, string> = {
@@ -65,128 +66,75 @@ function renderTypeWithLinks(typeString: string) {
 export default function Utilities() {
   const [selectedDate, setSelectedDate] = useState<Day | null>(null)
 
+  const content = utilitiesContent
+
   return (
     <div className='max-w-6xl mx-auto px-6 py-12'>
       <div className='prose prose-lg max-w-none mb-12'>
-        <h1>Utility Functions</h1>
+        <h1>{content.title}</h1>
 
-        <p>
-          React Calendar DateTime Picker provides a comprehensive set of utility
-          functions for date manipulation, comparison, and formatting. All
-          utilities work with both Gregorian and Jalali calendar systems.
-        </p>
+        <p>{content.intro}</p>
 
-        <h2>Utilities</h2>
+        <h2>{content.utilitiesOverview.title}</h2>
 
-        <p>
-          The library exports various utility functions for date manipulation
-          and formatting:
-        </p>
+        <p>{content.utilitiesOverview.description}</p>
 
         <div className='space-y-6 mb-8'>
           <div>
-            <h3>Date Conversion</h3>
+            <h3>{content.utilitiesOverview.categories.dateConversion.title}</h3>
             <ul className='list-disc list-inside space-y-1'>
-              <li>
-                <code>gregorianToJalali(date: Day): Day</code> - Convert
-                Gregorian to Jalali date
-              </li>
-              <li>
-                <code>jalaliToGregorian(date: Day): Day</code> - Convert Jalali
-                to Gregorian date
-              </li>
-              <li>
-                <code>getToday(locale?: CalendarLocale): Day</code> - Get
-                today's date
-              </li>
+              {content.utilitiesOverview.categories.dateConversion.items.map(
+                (item, idx) => (
+                  <li key={idx}>
+                    <code>{item.code}</code>
+                    {item.description && ` - ${item.description}`}
+                  </li>
+                )
+              )}
             </ul>
           </div>
 
           <div>
-            <h3>Date Comparison</h3>
+            <h3>{content.utilitiesOverview.categories.dateComparison.title}</h3>
             <ul className='list-disc list-inside space-y-1'>
-              <li>
-                <code>
-                  isBefore(date: Day, compareDate: Day, locale?:
-                  CalendarLocale): boolean
-                </code>
-              </li>
-              <li>
-                <code>
-                  isAfter(date: Day, compareDate: Day, locale?: CalendarLocale):
-                  boolean
-                </code>
-              </li>
-              <li>
-                <code>
-                  isSameDay(date: Day, compareDate: Day, locale?:
-                  CalendarLocale): boolean
-                </code>
-              </li>
-              <li>
-                <code>
-                  isBetween(date: Day, startDate: Day, endDate: Day, locale?:
-                  CalendarLocale): boolean
-                </code>
-              </li>
+              {content.utilitiesOverview.categories.dateComparison.items.map(
+                (item, idx) => (
+                  <li key={idx}>
+                    <code>{item.code}</code>
+                    {item.description && ` - ${item.description}`}
+                  </li>
+                )
+              )}
             </ul>
           </div>
 
           <div>
-            <h3>Date Manipulation</h3>
+            <h3>
+              {content.utilitiesOverview.categories.dateManipulation.title}
+            </h3>
             <ul className='list-disc list-inside space-y-1'>
-              <li>
-                <code>
-                  addDays(date: Day, days: number, locale?: CalendarLocale): Day
-                </code>
-              </li>
-              <li>
-                <code>
-                  addMonths(date: Day, months: number, locale?: CalendarLocale):
-                  Day
-                </code>
-              </li>
-              <li>
-                <code>
-                  addYears(date: Day, years: number, locale?: CalendarLocale):
-                  Day
-                </code>
-              </li>
-              <li>
-                <code>
-                  subtractDays(date: Day, days: number, locale?:
-                  CalendarLocale): Day
-                </code>
-              </li>
-              <li>
-                <code>
-                  subtractMonths(date: Day, months: number, locale?:
-                  CalendarLocale): Day
-                </code>
-              </li>
-              <li>
-                <code>
-                  subtractYears(date: Day, years: number, locale?:
-                  CalendarLocale): Day
-                </code>
-              </li>
+              {content.utilitiesOverview.categories.dateManipulation.items.map(
+                (item, idx) => (
+                  <li key={idx}>
+                    <code>{item.code}</code>
+                    {item.description && ` - ${item.description}`}
+                  </li>
+                )
+              )}
             </ul>
           </div>
 
           <div>
-            <h3>Formatting</h3>
+            <h3>{content.utilitiesOverview.categories.formatting.title}</h3>
             <ul className='list-disc list-inside space-y-1'>
-              <li>
-                <code>
-                  formatDateForInput(date: Day | null, format?: string): string
-                </code>
-              </li>
-              <li>
-                <code>dayToString(date: Day, divider?: string): string</code>
-              </li>
-              <li>
-                <code>toPersianNumeral(num: number): string</code>
-              </li>
+              {content.utilitiesOverview.categories.formatting.items.map(
+                (item, idx) => (
+                  <li key={idx}>
+                    <code>{item.code}</code>
+                    {item.description && ` - ${item.description}`}
+                  </li>
+                )
+              )}
             </ul>
           </div>
         </div>
@@ -203,18 +151,15 @@ export default function Utilities() {
       <div className='bg-bg-secondary rounded-lg border border-border p-8 mb-12'>
         <div className='mb-6'>
           <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-            Interactive Demo
+            {content.interactiveDemo.title}
           </h2>
           <p className='text-gray-700 dark:text-gray-300 mb-4'>
-            Select a date in the calendar below to see utility function results
-            in real-time. All examples on this page use the date you select
-            here.
+            {content.interactiveDemo.description}
           </p>
           {!selectedDate && (
             <InfoBox>
               <p className='text-sm text-gray-200'>
-                <strong>💡 Tip:</strong> Select a date in the calendar to see
-                all utility functions in action.
+                <strong>{content.interactiveDemo.tip}</strong>
               </p>
             </InfoBox>
           )}
@@ -223,7 +168,7 @@ export default function Utilities() {
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
           <div>
             <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-              Select a Date
+              {content.interactiveDemo.selectDateTitle}
             </h3>
             <DtCalendar
               dark={true}
@@ -235,7 +180,7 @@ export default function Utilities() {
           </div>
           <div>
             <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-              Selected Date
+              {content.interactiveDemo.selectedDateTitle}
             </h3>
             <div className='bg-bg-tertiary p-4 rounded-lg'>
               {selectedDate ? (
@@ -258,7 +203,7 @@ export default function Utilities() {
                 </>
               ) : (
                 <p className='text-sm text-gray-700 dark:text-gray-200'>
-                  No date selected. Please select a date in the calendar.
+                  {content.interactiveDemo.noDateSelected}
                 </p>
               )}
             </div>
@@ -270,26 +215,33 @@ export default function Utilities() {
         {/* Date Comparison */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader>Date Comparison</SectionHeader>
+            <SectionHeader>
+              {content.sections.dateComparison.title}
+            </SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
-              Functions for comparing dates, checking relationships, and
-              determining date positions.
+              {content.sections.dateComparison.description}
             </p>
           </div>
 
           <div className='space-y-6'>
             <div>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Basic Comparisons
+                {content.sections.dateComparison.basicComparisons.title}
               </h3>
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
                 <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                    isBefore
+                    {
+                      content.sections.dateComparison.basicComparisons.isBefore
+                        .title
+                    }
                   </h4>
                   <CodeBlock
                     language='typescript'
-                    code='isBefore(date1, date2, locale?)'
+                    code={
+                      content.sections.dateComparison.basicComparisons.isBefore
+                        .code
+                    }
                     customStyle={{
                       borderRadius: '0.25rem',
                       fontSize: '0.75rem',
@@ -299,9 +251,10 @@ export default function Utilities() {
                     className='mb-2'
                   />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                    Returns <code className='text-xs'>true</code> if{' '}
-                    <code className='text-xs'>date1</code> is before{' '}
-                    <code className='text-xs'>date2</code>
+                    {
+                      content.sections.dateComparison.basicComparisons.isBefore
+                        .description
+                    }
                   </p>
                   {selectedDate ? (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -309,7 +262,10 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          isBefore(selectedDate, today, 'gregorian')
+                          {
+                            content.sections.dateComparison.basicComparisons
+                              .isBefore.functionCall
+                          }
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -348,18 +304,27 @@ export default function Utilities() {
                     </div>
                   ) : (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                      Select a date to see the result
+                      {
+                        content.sections.dateComparison.basicComparisons
+                          .isBefore.noDateMessage
+                      }
                     </div>
                   )}
                 </div>
 
                 <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                    isAfter
+                    {
+                      content.sections.dateComparison.basicComparisons.isAfter
+                        .title
+                    }
                   </h4>
                   <CodeBlock
                     language='typescript'
-                    code='isAfter(date1, date2, locale?)'
+                    code={
+                      content.sections.dateComparison.basicComparisons.isAfter
+                        .code
+                    }
                     customStyle={{
                       borderRadius: '0.25rem',
                       fontSize: '0.75rem',
@@ -369,9 +334,10 @@ export default function Utilities() {
                     className='mb-2'
                   />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                    Returns <code className='text-xs'>true</code> if{' '}
-                    <code className='text-xs'>date1</code> is after{' '}
-                    <code className='text-xs'>date2</code>
+                    {
+                      content.sections.dateComparison.basicComparisons.isAfter
+                        .description
+                    }
                   </p>
                   {selectedDate ? (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -379,7 +345,10 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          isAfter(selectedDate, today, 'gregorian')
+                          {
+                            content.sections.dateComparison.basicComparisons
+                              .isAfter.functionCall
+                          }
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -418,18 +387,27 @@ export default function Utilities() {
                     </div>
                   ) : (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                      Select a date to see the result
+                      {
+                        content.sections.dateComparison.basicComparisons.isAfter
+                          .noDateMessage
+                      }
                     </div>
                   )}
                 </div>
 
                 <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                    isSameDay
+                    {
+                      content.sections.dateComparison.basicComparisons.isSameDay
+                        .title
+                    }
                   </h4>
                   <CodeBlock
                     language='typescript'
-                    code='isSameDay(date1, date2, locale?)'
+                    code={
+                      content.sections.dateComparison.basicComparisons.isSameDay
+                        .code
+                    }
                     customStyle={{
                       borderRadius: '0.25rem',
                       fontSize: '0.75rem',
@@ -439,8 +417,10 @@ export default function Utilities() {
                     className='mb-2'
                   />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                    Returns <code className='text-xs'>true</code> if both dates
-                    represent the same day
+                    {
+                      content.sections.dateComparison.basicComparisons.isSameDay
+                        .description
+                    }
                   </p>
                   {selectedDate ? (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -448,7 +428,10 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          isSameDay(selectedDate, today, 'gregorian')
+                          {
+                            content.sections.dateComparison.basicComparisons
+                              .isSameDay.functionCall
+                          }
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -487,7 +470,10 @@ export default function Utilities() {
                     </div>
                   ) : (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                      Select a date to see the result
+                      {
+                        content.sections.dateComparison.basicComparisons
+                          .isSameDay.noDateMessage
+                      }
                     </div>
                   )}
                 </div>
@@ -496,13 +482,20 @@ export default function Utilities() {
 
             <div>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Range Checking
+                {content.sections.dateComparison.rangeChecking.title}
               </h3>
               <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
-                <h4 className='font-medium text-white mb-2'>isBetween</h4>
+                <h4 className='font-medium text-white mb-2'>
+                  {
+                    content.sections.dateComparison.rangeChecking.isBetween
+                      .title
+                  }
+                </h4>
                 <CodeBlock
                   language='typescript'
-                  code='isBetween(date, startDate, endDate, locale?)'
+                  code={
+                    content.sections.dateComparison.rangeChecking.isBetween.code
+                  }
                   customStyle={{
                     borderRadius: '0.25rem',
                     fontSize: '0.75rem',
@@ -512,10 +505,10 @@ export default function Utilities() {
                   className='mb-2'
                 />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                  Returns <code className='text-xs'>true</code> if{' '}
-                  <code className='text-xs'>date</code> falls between{' '}
-                  <code className='text-xs'>startDate</code> and{' '}
-                  <code className='text-xs'>endDate</code> (inclusive)
+                  {
+                    content.sections.dateComparison.rangeChecking.isBetween
+                      .description
+                  }
                 </p>
                 {selectedDate ? (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -523,8 +516,10 @@ export default function Utilities() {
                       <strong>Function call:</strong>
                       <br />
                       <code className='text-xs'>
-                        isBetween(selectedDate, weekAgo, weekFromNow,
-                        'gregorian')
+                        {
+                          content.sections.dateComparison.rangeChecking
+                            .isBetween.functionCall
+                        }
                       </code>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
@@ -590,7 +585,10 @@ export default function Utilities() {
                   </div>
                 ) : (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                    Select a date to see the result
+                    {
+                      content.sections.dateComparison.rangeChecking.isBetween
+                        .noDateMessage
+                    }
                   </div>
                 )}
               </div>
@@ -601,26 +599,33 @@ export default function Utilities() {
         {/* Date Manipulation */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader>Date Manipulation</SectionHeader>
+            <SectionHeader>
+              {content.sections.dateManipulation.title}
+            </SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
-              Functions for adding/subtracting time periods and calculating
-              differences.
+              {content.sections.dateManipulation.description}
             </p>
           </div>
 
           <div className='space-y-6'>
             <div>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Adding Time Periods
+                {content.sections.dateManipulation.addingTimePeriods.title}
               </h3>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                    addDays
+                    {
+                      content.sections.dateManipulation.addingTimePeriods
+                        .addDays.title
+                    }
                   </h4>
                   <CodeBlock
                     language='typescript'
-                    code='addDays(date, days, locale?)'
+                    code={
+                      content.sections.dateManipulation.addingTimePeriods
+                        .addDays.code
+                    }
                     customStyle={{
                       borderRadius: '0.25rem',
                       fontSize: '0.75rem',
@@ -630,7 +635,10 @@ export default function Utilities() {
                     className='mb-2'
                   />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                    Adds the specified number of days to the given date
+                    {
+                      content.sections.dateManipulation.addingTimePeriods
+                        .addDays.description
+                    }
                   </p>
                   {selectedDate ? (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -638,7 +646,10 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          addDays(selectedDate, 1, 'gregorian')
+                          {
+                            content.sections.dateManipulation.addingTimePeriods
+                              .addDays.functionCall
+                          }
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -651,7 +662,12 @@ export default function Utilities() {
                         </span>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
-                        <strong>Result (Tomorrow):</strong>{' '}
+                        <strong>
+                          {
+                            content.sections.dateManipulation.addingTimePeriods
+                              .addDays.resultLabel
+                          }
+                        </strong>{' '}
                         {dayToString(
                           addDays(selectedDate, 1, 'gregorian'),
                           '/'
@@ -660,18 +676,27 @@ export default function Utilities() {
                     </div>
                   ) : (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                      Select a date to see the result
+                      {
+                        content.sections.dateManipulation.addingTimePeriods
+                          .addDays.noDateMessage
+                      }
                     </div>
                   )}
                 </div>
 
                 <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                    addMonths
+                    {
+                      content.sections.dateManipulation.addingTimePeriods
+                        .addMonths.title
+                    }
                   </h4>
                   <CodeBlock
                     language='typescript'
-                    code='addMonths(date, months, locale?)'
+                    code={
+                      content.sections.dateManipulation.addingTimePeriods
+                        .addMonths.code
+                    }
                     customStyle={{
                       borderRadius: '0.25rem',
                       fontSize: '0.75rem',
@@ -681,7 +706,10 @@ export default function Utilities() {
                     className='mb-2'
                   />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                    Adds the specified number of months to the given date
+                    {
+                      content.sections.dateManipulation.addingTimePeriods
+                        .addMonths.description
+                    }
                   </p>
                   {selectedDate ? (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -689,7 +717,10 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          addMonths(selectedDate, 1, 'gregorian')
+                          {
+                            content.sections.dateManipulation.addingTimePeriods
+                              .addMonths.functionCall
+                          }
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -702,7 +733,12 @@ export default function Utilities() {
                         </span>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
-                        <strong>Result (Next Month):</strong>{' '}
+                        <strong>
+                          {
+                            content.sections.dateManipulation.addingTimePeriods
+                              .addMonths.resultLabel
+                          }
+                        </strong>{' '}
                         {dayToString(
                           addMonths(selectedDate, 1, 'gregorian'),
                           '/'
@@ -711,18 +747,27 @@ export default function Utilities() {
                     </div>
                   ) : (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                      Select a date to see the result
+                      {
+                        content.sections.dateManipulation.addingTimePeriods
+                          .addMonths.noDateMessage
+                      }
                     </div>
                   )}
                 </div>
 
                 <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                    addYears
+                    {
+                      content.sections.dateManipulation.addingTimePeriods
+                        .addYears.title
+                    }
                   </h4>
                   <CodeBlock
                     language='typescript'
-                    code='addYears(date, years, locale?)'
+                    code={
+                      content.sections.dateManipulation.addingTimePeriods
+                        .addYears.code
+                    }
                     customStyle={{
                       borderRadius: '0.25rem',
                       fontSize: '0.75rem',
@@ -732,7 +777,10 @@ export default function Utilities() {
                     className='mb-2'
                   />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                    Adds the specified number of years to the given date
+                    {
+                      content.sections.dateManipulation.addingTimePeriods
+                        .addYears.description
+                    }
                   </p>
                   {selectedDate ? (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -740,7 +788,10 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          addYears(selectedDate, 1, 'gregorian')
+                          {
+                            content.sections.dateManipulation.addingTimePeriods
+                              .addYears.functionCall
+                          }
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -753,7 +804,12 @@ export default function Utilities() {
                         </span>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
-                        <strong>Result (Next Year):</strong>{' '}
+                        <strong>
+                          {
+                            content.sections.dateManipulation.addingTimePeriods
+                              .addYears.resultLabel
+                          }
+                        </strong>{' '}
                         {dayToString(
                           addYears(selectedDate, 1, 'gregorian'),
                           '/'
@@ -762,18 +818,27 @@ export default function Utilities() {
                     </div>
                   ) : (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                      Select a date to see the result
+                      {
+                        content.sections.dateManipulation.addingTimePeriods
+                          .addYears.noDateMessage
+                      }
                     </div>
                   )}
                 </div>
 
                 <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                    getDifferenceInDays
+                    {
+                      content.sections.dateManipulation.addingTimePeriods
+                        .getDifferenceInDays.title
+                    }
                   </h4>
                   <CodeBlock
                     language='typescript'
-                    code='getDifferenceInDays(date1, date2, locale?)'
+                    code={
+                      content.sections.dateManipulation.addingTimePeriods
+                        .getDifferenceInDays.code
+                    }
                     customStyle={{
                       borderRadius: '0.25rem',
                       fontSize: '0.75rem',
@@ -783,12 +848,10 @@ export default function Utilities() {
                     className='mb-2'
                   />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                    Calculates the number of days between two dates. Returns a
-                    positive number if <code className='text-xs'>date1</code> is
-                    after <code className='text-xs'>date2</code>, negative if{' '}
-                    <code className='text-xs'>date1</code> is before{' '}
-                    <code className='text-xs'>date2</code>, or 0 if they're the
-                    same day.
+                    {
+                      content.sections.dateManipulation.addingTimePeriods
+                        .getDifferenceInDays.description
+                    }
                   </p>
                   {selectedDate ? (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -796,7 +859,10 @@ export default function Utilities() {
                         <strong>Function call:</strong>
                         <br />
                         <code className='text-xs'>
-                          getDifferenceInDays(selectedDate, today, 'gregorian')
+                          {
+                            content.sections.dateManipulation.addingTimePeriods
+                              .getDifferenceInDays.functionCall
+                          }
                         </code>
                       </div>
                       <div className='mt-2 pt-2 border-t border-border'>
@@ -839,7 +905,10 @@ export default function Utilities() {
                     </div>
                   ) : (
                     <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                      Select a date to see the result
+                      {
+                        content.sections.dateManipulation.addingTimePeriods
+                          .getDifferenceInDays.noDateMessage
+                      }
                     </div>
                   )}
                 </div>
@@ -851,9 +920,11 @@ export default function Utilities() {
         {/* Calendar Conversion */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader>Calendar Conversion</SectionHeader>
+            <SectionHeader>
+              {content.sections.calendarConversion.title}
+            </SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
-              Convert dates between Gregorian and Jalali calendar systems.
+              {content.sections.calendarConversion.description}
             </p>
           </div>
 
@@ -861,11 +932,13 @@ export default function Utilities() {
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
               <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                  convertToJalali
+                  {content.sections.calendarConversion.convertToJalali.title}
                 </h4>
                 <CodeBlock
                   language='typescript'
-                  code='convertToJalali(gregorianDate)'
+                  code={
+                    content.sections.calendarConversion.convertToJalali.code
+                  }
                   customStyle={{
                     borderRadius: '0.25rem',
                     fontSize: '0.75rem',
@@ -875,7 +948,10 @@ export default function Utilities() {
                   className='mb-2'
                 />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                  Convert Gregorian date to Jalali (Persian)
+                  {
+                    content.sections.calendarConversion.convertToJalali
+                      .description
+                  }
                 </p>
                 {selectedDate ? (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -883,7 +959,10 @@ export default function Utilities() {
                       <strong>Function call:</strong>
                       <br />
                       <code className='text-xs'>
-                        convertToJalali(selectedDate)
+                        {
+                          content.sections.calendarConversion.convertToJalali
+                            .functionCall
+                        }
                       </code>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
@@ -895,24 +974,34 @@ export default function Utilities() {
                       </span>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
-                      <strong>Result (Jalali):</strong>{' '}
+                      <strong>
+                        {
+                          content.sections.calendarConversion.convertToJalali
+                            .resultLabel
+                        }
+                      </strong>{' '}
                       {dayToString(convertToJalali(selectedDate), '/')}
                     </div>
                   </div>
                 ) : (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                    Select a date to see the result
+                    {
+                      content.sections.calendarConversion.convertToJalali
+                        .noDateMessage
+                    }
                   </div>
                 )}
               </div>
 
               <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                  convertToGregorian
+                  {content.sections.calendarConversion.convertToGregorian.title}
                 </h4>
                 <CodeBlock
                   language='typescript'
-                  code='convertToGregorian(jalaliDate)'
+                  code={
+                    content.sections.calendarConversion.convertToGregorian.code
+                  }
                   customStyle={{
                     borderRadius: '0.25rem',
                     fontSize: '0.75rem',
@@ -922,7 +1011,10 @@ export default function Utilities() {
                   className='mb-2'
                 />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                  Convert Jalali date to Gregorian
+                  {
+                    content.sections.calendarConversion.convertToGregorian
+                      .description
+                  }
                 </p>
                 {selectedDate ? (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -930,7 +1022,10 @@ export default function Utilities() {
                       <strong>Function call:</strong>
                       <br />
                       <code className='text-xs'>
-                        convertToGregorian(jalaliDate)
+                        {
+                          content.sections.calendarConversion.convertToGregorian
+                            .functionCall
+                        }
                       </code>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
@@ -947,7 +1042,12 @@ export default function Utilities() {
                       </span>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
-                      <strong>Result (Gregorian):</strong>{' '}
+                      <strong>
+                        {
+                          content.sections.calendarConversion.convertToGregorian
+                            .resultLabel
+                        }
+                      </strong>{' '}
                       {dayToString(
                         convertToGregorian(convertToJalali(selectedDate)),
                         '/'
@@ -956,7 +1056,10 @@ export default function Utilities() {
                   </div>
                 ) : (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                    Select a date to see the result
+                    {
+                      content.sections.calendarConversion.convertToGregorian
+                        .noDateMessage
+                    }
                   </div>
                 )}
               </div>
@@ -967,19 +1070,15 @@ export default function Utilities() {
         {/* Date Boundaries */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader>Date Boundaries</SectionHeader>
+            <SectionHeader>
+              {content.sections.dateBoundaries.title}
+            </SectionHeader>
             <p className='text-gray-700 dark:text-gray-300 mb-4'>
-              These functions return boundary dates for a given time period.
-              They help you get the first or last day of a day, month, or year.
-              Useful for date range queries, filtering, and calculations.
+              {content.sections.dateBoundaries.description}
             </p>
             <InfoBox>
               <p className='text-sm text-gray-200'>
-                <strong>Example:</strong> If you have a date like{' '}
-                <code>December 15, 2024</code>, <code>startOfMonth</code>{' '}
-                returns <code>December 1, 2024</code> (first day of that month),
-                and <code>endOfMonth</code> returns{' '}
-                <code>December 31, 2024</code> (last day of that month).
+                <strong>{content.sections.dateBoundaries.example}</strong>
               </p>
             </InfoBox>
           </div>
@@ -988,11 +1087,11 @@ export default function Utilities() {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
               <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                  startOfDay
+                  {content.sections.dateBoundaries.startOfDay.title}
                 </h4>
                 <CodeBlock
                   language='typescript'
-                  code='startOfDay(date)'
+                  code={content.sections.dateBoundaries.startOfDay.code}
                   customStyle={{
                     borderRadius: '0.25rem',
                     fontSize: '0.75rem',
@@ -1002,111 +1101,7 @@ export default function Utilities() {
                   className='mb-2'
                 />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                  Returns the same date but at the start of the day (00:00:00).
-                  Useful for date range queries where you want to include the
-                  entire day.
-                </p>
-                {selectedDate ? (
-                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
-                    <div>
-                      <strong>Function call:</strong>
-                      <br />
-                      <code className='text-xs'>startOfDay(selectedDate)</code>
-                    </div>
-                    <div className='mt-2 pt-2 border-t border-border'>
-                      <strong>Input value:</strong>
-                      <br />
-                      <span className='text-gray-700 dark:text-gray-300'>
-                        date (selectedDate) = {dayToString(selectedDate, '/')}
-                      </span>
-                    </div>
-                    <div className='mt-2 pt-2 border-t border-border'>
-                      <strong>Result:</strong>{' '}
-                      {dayToString(startOfDay(selectedDate), '/')} 00:00:00
-                      <br />
-                      <span className='text-gray-700 dark:text-gray-300 text-xs'>
-                        Same date, start of day
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                    Select a date to see the result
-                  </div>
-                )}
-              </div>
-
-              <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
-                <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                  endOfDay
-                </h4>
-                <CodeBlock
-                  language='typescript'
-                  code='endOfDay(date)'
-                  customStyle={{
-                    borderRadius: '0.25rem',
-                    fontSize: '0.75rem',
-                    lineHeight: '1.5',
-                    padding: '0.5rem'
-                  }}
-                  className='mb-2'
-                />
-                <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                  Returns the same date but at the end of the day (23:59:59).
-                  Useful for inclusive date range queries.
-                </p>
-                {selectedDate ? (
-                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
-                    <div>
-                      <strong>Function call:</strong>
-                      <br />
-                      <code className='text-xs'>endOfDay(selectedDate)</code>
-                    </div>
-                    <div className='mt-2 pt-2 border-t border-border'>
-                      <strong>Input value:</strong>
-                      <br />
-                      <span className='text-gray-700 dark:text-gray-300'>
-                        date (selectedDate) = {dayToString(selectedDate, '/')}
-                      </span>
-                    </div>
-                    <div className='mt-2 pt-2 border-t border-border'>
-                      <strong>Result:</strong>{' '}
-                      {dayToString(endOfDay(selectedDate), '/')} 23:59:59
-                      <br />
-                      <span className='text-gray-700 dark:text-gray-300 text-xs'>
-                        Same date, end of day
-                      </span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                    Select a date to see the result
-                  </div>
-                )}
-              </div>
-
-              <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
-                <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                  startOfMonth
-                </h4>
-                <CodeBlock
-                  language='typescript'
-                  code='startOfMonth(date, locale?)'
-                  customStyle={{
-                    borderRadius: '0.25rem',
-                    fontSize: '0.75rem',
-                    lineHeight: '1.5',
-                    padding: '0.5rem'
-                  }}
-                  className='mb-2'
-                />
-                <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                  Returns the first day of the month for the given date.
-                  Example:{' '}
-                  <code className='text-xs'>
-                    startOfMonth(December 15, 2024)
-                  </code>{' '}
-                  returns <code className='text-xs'>December 1, 2024</code>.
+                  {content.sections.dateBoundaries.startOfDay.description}
                 </p>
                 {selectedDate ? (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -1114,7 +1109,10 @@ export default function Utilities() {
                       <strong>Function call:</strong>
                       <br />
                       <code className='text-xs'>
-                        startOfMonth(selectedDate, 'gregorian')
+                        {
+                          content.sections.dateBoundaries.startOfDay
+                            .functionCall
+                        }
                       </code>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
@@ -1125,7 +1123,119 @@ export default function Utilities() {
                       </span>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
-                      <strong>Result (First day of month):</strong>{' '}
+                      <strong>
+                        {content.sections.dateBoundaries.startOfDay.resultLabel}
+                      </strong>{' '}
+                      {dayToString(startOfDay(selectedDate), '/')} 00:00:00
+                      <br />
+                      <span className='text-gray-700 dark:text-gray-300 text-xs'>
+                        {content.sections.dateBoundaries.startOfDay.resultNote}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
+                    {content.sections.dateBoundaries.startOfDay.noDateMessage}
+                  </div>
+                )}
+              </div>
+
+              <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
+                <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                  {content.sections.dateBoundaries.endOfDay.title}
+                </h4>
+                <CodeBlock
+                  language='typescript'
+                  code={content.sections.dateBoundaries.endOfDay.code}
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
+                <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
+                  {content.sections.dateBoundaries.endOfDay.description}
+                </p>
+                {selectedDate ? (
+                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
+                    <div>
+                      <strong>Function call:</strong>
+                      <br />
+                      <code className='text-xs'>
+                        {content.sections.dateBoundaries.endOfDay.functionCall}
+                      </code>
+                    </div>
+                    <div className='mt-2 pt-2 border-t border-border'>
+                      <strong>Input value:</strong>
+                      <br />
+                      <span className='text-gray-700 dark:text-gray-300'>
+                        date (selectedDate) = {dayToString(selectedDate, '/')}
+                      </span>
+                    </div>
+                    <div className='mt-2 pt-2 border-t border-border'>
+                      <strong>
+                        {content.sections.dateBoundaries.endOfDay.resultLabel}
+                      </strong>{' '}
+                      {dayToString(endOfDay(selectedDate), '/')} 23:59:59
+                      <br />
+                      <span className='text-gray-700 dark:text-gray-300 text-xs'>
+                        {content.sections.dateBoundaries.endOfDay.resultNote}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
+                    {content.sections.dateBoundaries.endOfDay.noDateMessage}
+                  </div>
+                )}
+              </div>
+
+              <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
+                <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                  {content.sections.dateBoundaries.startOfMonth.title}
+                </h4>
+                <CodeBlock
+                  language='typescript'
+                  code={content.sections.dateBoundaries.startOfMonth.code}
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
+                <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
+                  {content.sections.dateBoundaries.startOfMonth.description}
+                </p>
+                {selectedDate ? (
+                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
+                    <div>
+                      <strong>Function call:</strong>
+                      <br />
+                      <code className='text-xs'>
+                        {
+                          content.sections.dateBoundaries.startOfMonth
+                            .functionCall
+                        }
+                      </code>
+                    </div>
+                    <div className='mt-2 pt-2 border-t border-border'>
+                      <strong>Input value:</strong>
+                      <br />
+                      <span className='text-gray-700 dark:text-gray-300'>
+                        date (selectedDate) = {dayToString(selectedDate, '/')}
+                      </span>
+                    </div>
+                    <div className='mt-2 pt-2 border-t border-border'>
+                      <strong>
+                        {
+                          content.sections.dateBoundaries.startOfMonth
+                            .resultLabel
+                        }
+                      </strong>{' '}
                       {dayToString(
                         startOfMonth(selectedDate, 'gregorian'),
                         '/'
@@ -1134,18 +1244,18 @@ export default function Utilities() {
                   </div>
                 ) : (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                    Select a date to see the result
+                    {content.sections.dateBoundaries.startOfMonth.noDateMessage}
                   </div>
                 )}
               </div>
 
               <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                  endOfMonth
+                  {content.sections.dateBoundaries.endOfMonth.title}
                 </h4>
                 <CodeBlock
                   language='typescript'
-                  code='endOfMonth(date, locale?)'
+                  code={content.sections.dateBoundaries.endOfMonth.code}
                   customStyle={{
                     borderRadius: '0.25rem',
                     fontSize: '0.75rem',
@@ -1155,9 +1265,7 @@ export default function Utilities() {
                   className='mb-2'
                 />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                  Returns the last day of the month for the given date. Example:{' '}
-                  <code className='text-xs'>endOfMonth(December 15, 2024)</code>{' '}
-                  returns <code className='text-xs'>December 31, 2024</code>.
+                  {content.sections.dateBoundaries.endOfMonth.description}
                 </p>
                 {selectedDate ? (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -1165,7 +1273,10 @@ export default function Utilities() {
                       <strong>Function call:</strong>
                       <br />
                       <code className='text-xs'>
-                        endOfMonth(selectedDate, 'gregorian')
+                        {
+                          content.sections.dateBoundaries.endOfMonth
+                            .functionCall
+                        }
                       </code>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
@@ -1176,24 +1287,26 @@ export default function Utilities() {
                       </span>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
-                      <strong>Result (Last day of month):</strong>{' '}
+                      <strong>
+                        {content.sections.dateBoundaries.endOfMonth.resultLabel}
+                      </strong>{' '}
                       {dayToString(endOfMonth(selectedDate, 'gregorian'), '/')}
                     </div>
                   </div>
                 ) : (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                    Select a date to see the result
+                    {content.sections.dateBoundaries.endOfMonth.noDateMessage}
                   </div>
                 )}
               </div>
 
               <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                  startOfYear
+                  {content.sections.dateBoundaries.startOfYear.title}
                 </h4>
                 <CodeBlock
                   language='typescript'
-                  code='startOfYear(date)'
+                  code={content.sections.dateBoundaries.startOfYear.code}
                   customStyle={{
                     borderRadius: '0.25rem',
                     fontSize: '0.75rem',
@@ -1203,57 +1316,7 @@ export default function Utilities() {
                   className='mb-2'
                 />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                  Returns the first day of the year for the given date. Example:{' '}
-                  <code className='text-xs'>
-                    startOfYear(December 15, 2024)
-                  </code>{' '}
-                  returns <code className='text-xs'>January 1, 2024</code>.
-                </p>
-                {selectedDate ? (
-                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
-                    <div>
-                      <strong>Function call:</strong>
-                      <br />
-                      <code className='text-xs'>startOfYear(selectedDate)</code>
-                    </div>
-                    <div className='mt-2 pt-2 border-t border-border'>
-                      <strong>Input value:</strong>
-                      <br />
-                      <span className='text-gray-700 dark:text-gray-300'>
-                        date (selectedDate) = {dayToString(selectedDate, '/')}
-                      </span>
-                    </div>
-                    <div className='mt-2 pt-2 border-t border-border'>
-                      <strong>Result (First day of year):</strong>{' '}
-                      {dayToString(startOfYear(selectedDate), '/')}
-                    </div>
-                  </div>
-                ) : (
-                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                    Select a date to see the result
-                  </div>
-                )}
-              </div>
-
-              <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
-                <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                  endOfYear
-                </h4>
-                <CodeBlock
-                  language='typescript'
-                  code='endOfYear(date, locale?)'
-                  customStyle={{
-                    borderRadius: '0.25rem',
-                    fontSize: '0.75rem',
-                    lineHeight: '1.5',
-                    padding: '0.5rem'
-                  }}
-                  className='mb-2'
-                />
-                <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
-                  Returns the last day of the year for the given date. Example:{' '}
-                  <code className='text-xs'>endOfYear(December 15, 2024)</code>{' '}
-                  returns <code className='text-xs'>December 31, 2024</code>.
+                  {content.sections.dateBoundaries.startOfYear.description}
                 </p>
                 {selectedDate ? (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
@@ -1261,7 +1324,10 @@ export default function Utilities() {
                       <strong>Function call:</strong>
                       <br />
                       <code className='text-xs'>
-                        endOfYear(selectedDate, 'gregorian')
+                        {
+                          content.sections.dateBoundaries.startOfYear
+                            .functionCall
+                        }
                       </code>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
@@ -1272,13 +1338,66 @@ export default function Utilities() {
                       </span>
                     </div>
                     <div className='mt-2 pt-2 border-t border-border'>
-                      <strong>Result (Last day of year):</strong>{' '}
+                      <strong>
+                        {
+                          content.sections.dateBoundaries.startOfYear
+                            .resultLabel
+                        }
+                      </strong>{' '}
+                      {dayToString(startOfYear(selectedDate), '/')}
+                    </div>
+                  </div>
+                ) : (
+                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
+                    {content.sections.dateBoundaries.startOfYear.noDateMessage}
+                  </div>
+                )}
+              </div>
+
+              <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
+                <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                  {content.sections.dateBoundaries.endOfYear.title}
+                </h4>
+                <CodeBlock
+                  language='typescript'
+                  code={content.sections.dateBoundaries.endOfYear.code}
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
+                <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
+                  {content.sections.dateBoundaries.endOfYear.description}
+                </p>
+                {selectedDate ? (
+                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
+                    <div>
+                      <strong>Function call:</strong>
+                      <br />
+                      <code className='text-xs'>
+                        {content.sections.dateBoundaries.endOfYear.functionCall}
+                      </code>
+                    </div>
+                    <div className='mt-2 pt-2 border-t border-border'>
+                      <strong>Input value:</strong>
+                      <br />
+                      <span className='text-gray-700 dark:text-gray-300'>
+                        date (selectedDate) = {dayToString(selectedDate, '/')}
+                      </span>
+                    </div>
+                    <div className='mt-2 pt-2 border-t border-border'>
+                      <strong>
+                        {content.sections.dateBoundaries.endOfYear.resultLabel}
+                      </strong>{' '}
                       {dayToString(endOfYear(selectedDate, 'gregorian'), '/')}
                     </div>
                   </div>
                 ) : (
                   <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
-                    Select a date to see the result
+                    {content.sections.dateBoundaries.endOfYear.noDateMessage}
                   </div>
                 )}
               </div>
@@ -1289,82 +1408,42 @@ export default function Utilities() {
         {/* Usage Examples */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader>Usage Examples</SectionHeader>
+            <SectionHeader>
+              {content.sections.usageExamples.title}
+            </SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
-              Common patterns and real-world usage examples.
+              {content.sections.usageExamples.description}
             </p>
           </div>
 
           <div className='space-y-6'>
             <div>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Date Range Validation
+                {content.sections.usageExamples.dateRangeValidation.title}
               </h3>
               <CodeBlock
                 language='typescript'
-                code={`import { isBefore, isAfter, addDays } from 'react-calendar-datetime-picker'
-
-function validateBookingDates(checkIn, checkOut) {
-  const today = getToday('gregorian')
-  const maxStay = addDays(checkIn, 30, 'gregorian')
-
-  // Check-in must be today or later
-  if (isBefore(checkIn, today, 'gregorian')) {
-    return 'Check-in date cannot be in the past'
-  }
-
-  // Check-out must be after check-in
-  if (!isAfter(checkOut, checkIn, 'gregorian')) {
-    return 'Check-out must be after check-in'
-  }
-
-  // Maximum stay is 30 days
-  if (isAfter(checkOut, maxStay, 'gregorian')) {
-    return 'Maximum stay is 30 days'
-  }
-
-  return null // Valid
-}`}
+                code={content.sections.usageExamples.dateRangeValidation.code}
               />
             </div>
 
             <div>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Calendar Conversion
+                {content.sections.usageExamples.calendarConversion.title}
               </h3>
               <CodeBlock
                 language='typescript'
-                code={`import { convertToJalali, convertToGregorian, dayToString } from 'react-calendar-datetime-picker'
-
-// Gregorian to Jalali
-const gregorianDate = { year: 2024, month: 12, day: 25 }
-const jalaliDate = convertToJalali(gregorianDate)
-console.log(dayToString(jalaliDate, '/')) // "1403/10/5"
-
-// Jalali to Gregorian
-const persianDate = { year: 1403, month: 10, day: 5 }
-const gregorian = convertToGregorian(persianDate)
-console.log(dayToString(gregorian, '/')) // "2024/12/25"`}
+                code={content.sections.usageExamples.calendarConversion.code}
               />
             </div>
 
             <div>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Age Calculation
+                {content.sections.usageExamples.ageCalculation.title}
               </h3>
               <CodeBlock
                 language='typescript'
-                code={`import { getDifferenceInYears, getToday } from 'react-calendar-datetime-picker'
-
-function calculateAge(birthDate) {
-  const today = getToday('gregorian')
-  return getDifferenceInYears(today, birthDate, 'gregorian')
-}
-
-// Usage
-const birthDate = { year: 1990, month: 5, day: 15 }
-const age = calculateAge(birthDate)
-console.log(\`Age: \${age}\`) // "Age: 34"`}
+                code={content.sections.usageExamples.ageCalculation.code}
               />
             </div>
           </div>
@@ -1373,9 +1452,11 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
         {/* Function Reference */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader>Function Reference</SectionHeader>
+            <SectionHeader>
+              {content.sections.functionReference.title}
+            </SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
-              Complete list of all available utility functions.
+              {content.sections.functionReference.description}
             </p>
           </div>
 

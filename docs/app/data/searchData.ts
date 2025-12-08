@@ -87,8 +87,12 @@ import {
   dtPickerOnlyProps,
   dtCalendarOnlyProps,
   types,
-  utilityCategories
-} from './apiReference'
+  utilityCategories,
+  type Prop,
+  type Type,
+  type UtilityCategory,
+  type Utility
+} from '../api-reference/apiReference'
 
 // API reference items
 const apiItems: SearchItem[] = [
@@ -111,7 +115,7 @@ const apiItems: SearchItem[] = [
     tags: ['component', 'picker', 'input', 'dropdown']
   },
   // Props - shared
-  ...sharedProps.map((prop) => ({
+  ...sharedProps.map((prop: Prop) => ({
     id: `shared-${prop.name}`,
     title: prop.name,
     description: prop.description,
@@ -120,7 +124,7 @@ const apiItems: SearchItem[] = [
     tags: ['prop', 'shared', prop.type.toLowerCase()]
   })),
   // Props - DtPicker only
-  ...dtPickerOnlyProps.map((prop) => ({
+  ...dtPickerOnlyProps.map((prop: Prop) => ({
     id: `picker-${prop.name}`,
     title: prop.name,
     description: prop.description,
@@ -129,7 +133,7 @@ const apiItems: SearchItem[] = [
     tags: ['prop', 'picker', 'dtpicker']
   })),
   // Props - DtCalendar only
-  ...dtCalendarOnlyProps.map((prop) => ({
+  ...dtCalendarOnlyProps.map((prop: Prop) => ({
     id: `calendar-${prop.name}`,
     title: prop.name,
     description: prop.description,
@@ -138,7 +142,7 @@ const apiItems: SearchItem[] = [
     tags: ['prop', 'calendar', 'dtcalendar']
   })),
   // Types
-  ...types.map((type) => {
+  ...types.map((type: Type) => {
     // Generate tags based on type definition content
     const tags = ['type', 'typescript', 'interface']
 
@@ -163,8 +167,8 @@ const apiItems: SearchItem[] = [
     }
   }),
   // Utilities
-  ...utilityCategories.flatMap((category) =>
-    category.utilities.map((utility) => ({
+  ...utilityCategories.flatMap((category: UtilityCategory) =>
+    category.utilities.map((utility: Utility) => ({
       id: `util-${utility.name}`,
       title: utility.name,
       description: utility.signature,
@@ -176,7 +180,7 @@ const apiItems: SearchItem[] = [
 ]
 
 // Import examples data
-import { examples } from '../examplesConfig'
+import { examples } from '../examples/examplesConfig'
 
 // Example items
 const exampleItems: SearchItem[] = [

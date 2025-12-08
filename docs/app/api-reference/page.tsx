@@ -3,8 +3,10 @@ import {
   dtPickerOnlyProps,
   dtCalendarOnlyProps,
   types
-} from '../data/apiReference'
+} from './apiReference'
 import { CodeBlock, PropsTable } from '../components'
+import { CategoryContentDisplay } from '../components/CategoryContentDisplay'
+import { apiReferenceContent } from './apiReferenceContent'
 
 // Type links mapping
 const typeLinks: Record<string, string> = {
@@ -36,36 +38,37 @@ export default function APIReference() {
 
         <h2>Components</h2>
 
-        <p>
-          Both <code>DtCalendar</code> and <code>DtPicker</code> share most of
-          their API. The props are organized into shared props (available in
-          both components) and component-specific props.
-        </p>
+        <CategoryContentDisplay
+          categoryName='Components'
+          source='examples'
+          examplesContent={apiReferenceContent}
+          internationalizationContent={{}}
+        />
 
         <h3>Shared Props</h3>
-        <p>
-          These props are available in both <code>DtCalendar</code> and{' '}
-          <code>DtPicker</code>:
-        </p>
+        <p>{apiReferenceContent.Components.details[0].content}</p>
         <PropsTable props={sharedProps} typeLinks={typeLinks} />
 
         <h3>DtPicker Only</h3>
-        <p>
-          These props are only available in <code>DtPicker</code>:
-        </p>
+        <p>{apiReferenceContent.Components.details[1].content}</p>
         <PropsTable props={dtPickerOnlyProps} typeLinks={typeLinks} />
 
         {dtCalendarOnlyProps.length > 0 && (
           <>
             <h3>DtCalendar Only</h3>
-            <p>
-              These props are only available in <code>DtCalendar</code>:
-            </p>
+            <p>{apiReferenceContent.Components.details[2].content}</p>
             <PropsTable props={dtCalendarOnlyProps} typeLinks={typeLinks} />
           </>
         )}
 
         <h2>Types</h2>
+
+        <CategoryContentDisplay
+          categoryName='Types'
+          source='examples'
+          examplesContent={apiReferenceContent}
+          internationalizationContent={{}}
+        />
 
         {types.map((type) => (
           <div key={type.name}>

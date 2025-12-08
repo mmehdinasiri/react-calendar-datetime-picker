@@ -77,6 +77,7 @@ export type {
   DateInput,
   InitValueInput,
   CalendarLocale,
+  CalendarSystem,
   CalendarUILocale,
   CalendarType,
   CalendarConstraints,
