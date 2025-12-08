@@ -15,4 +15,3 @@ export function Note({ children, className = '' }: NoteProps) {
     </InfoBox>
   )
 }
-

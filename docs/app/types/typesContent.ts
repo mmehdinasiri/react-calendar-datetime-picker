@@ -230,4 +230,3 @@ function App() {
     ]
   }
 }
-

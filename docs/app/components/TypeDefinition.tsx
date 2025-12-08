@@ -22,4 +22,3 @@ export function TypeDefinition({
     </div>
   )
 }
-

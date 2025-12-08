@@ -67,4 +67,3 @@ export const Table: React.FC<TableProps> = ({
     </div>
   )
 }
-

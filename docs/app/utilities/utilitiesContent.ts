@@ -337,4 +337,3 @@ console.log(\`Age: \${age}\`) // "Age: 34"`
     }
   }
 }
-

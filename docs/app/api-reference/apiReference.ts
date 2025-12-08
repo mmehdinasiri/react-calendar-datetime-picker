@@ -425,4 +425,3 @@ export const utilityCategories: UtilityCategory[] = [
     ]
   }
 ]
-

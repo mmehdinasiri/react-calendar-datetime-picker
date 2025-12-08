@@ -33,4 +33,3 @@ export function NextSteps({ steps, className = '' }: NextStepsProps) {
     </div>
   )
 }
-
