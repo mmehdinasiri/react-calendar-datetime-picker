@@ -24,8 +24,8 @@ export default function Examples() {
   useEffect(() => {
     if (categoryParam && exampleParam) {
       // Scroll to the specific example after a brief delay to ensure DOM is rendered
-      const timer = setTimeout(() => {
-        const elementId = `${toKebabCase(categoryParam)}-${exampleParam}`
+      const scrollToElement = () => {
+        const elementId = `${toKebabCase(categoryParam)}-${toKebabCase(exampleParam)}`
         const element = document.getElementById(elementId)
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -34,8 +34,24 @@ export default function Examples() {
           setTimeout(() => {
             element.classList.remove('ring-2', 'ring-accent', 'ring-opacity-50')
           }, 2000)
+          return true
         }
-      }, 100)
+        return false
+      }
+
+      // Try immediately, then retry with increasing delays if element not found
+      let attempts = 0
+      const maxAttempts = 5
+      const attemptScroll = () => {
+        if (scrollToElement() || attempts >= maxAttempts) {
+          return
+        }
+        attempts++
+        setTimeout(attemptScroll, 200 * attempts)
+      }
+
+      // Initial delay to ensure DOM is rendered
+      const timer = setTimeout(attemptScroll, 100)
 
       return () => clearTimeout(timer)
     }

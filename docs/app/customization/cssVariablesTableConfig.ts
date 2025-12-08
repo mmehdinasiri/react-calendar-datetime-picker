@@ -159,3 +159,4 @@ export const otherVariablesTableConfig = {
     { header: 'Description', key: 'description' }
   ]
 }
+

@@ -88,3 +88,4 @@ export function PropsTable({ props, typeLinks = {} }: PropsTableProps) {
     </div>
   )
 }
+

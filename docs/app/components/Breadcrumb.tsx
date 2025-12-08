@@ -16,3 +16,4 @@ export function Breadcrumb({ children, className = '' }: BreadcrumbProps) {
     </div>
   )
 }
+

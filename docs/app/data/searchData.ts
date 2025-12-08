@@ -531,8 +531,11 @@ export function getGroupInfo(item: SearchItem): {
         if (category) {
           // Decode and format the category name
           const decodedCategory = decodeURIComponent(category)
+          // Map "Types" to "Calendar Modes" for display consistency
+          const displayCategory =
+            decodedCategory === 'Types' ? 'Calendar Modes' : decodedCategory
           return {
-            label: `Examples - ${decodedCategory}`,
+            label: `Examples - ${displayCategory}`,
             color: 'text-purple-600 dark:text-purple-400'
           }
         }

@@ -42,3 +42,4 @@ export const KeyboardShortcutsCard: React.FC<KeyboardShortcutsCardProps> = ({
     </div>
   )
 }
+
