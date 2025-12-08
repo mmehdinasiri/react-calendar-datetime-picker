@@ -56,12 +56,22 @@ export default function Accessibility() {
             >
               <div className='mb-6'>
                 <SectionHeader>{sectionName}</SectionHeader>
-                <CategoryContentDisplay
-                  categoryName={sectionName}
-                  source='accessibility'
-                  examplesContent={{}}
-                  internationalizationContent={accessibilityContent}
-                />
+                {/* Skip CategoryContentDisplay for ARIA Support section - we render it custom below */}
+                {sectionName !== 'ARIA Support and Screen Readers' && (
+                  <CategoryContentDisplay
+                    categoryName={sectionName}
+                    source='accessibility'
+                    examplesContent={{}}
+                    internationalizationContent={accessibilityContent}
+                  />
+                )}
+                {/* Show only intro for ARIA Support section */}
+                {sectionName === 'ARIA Support and Screen Readers' &&
+                  accessibilityContent[sectionName]?.intro && (
+                    <p className='text-gray-600 dark:text-gray-400 text-lg mb-6'>
+                      {accessibilityContent[sectionName].intro}
+                    </p>
+                  )}
               </div>
 
               {/* Keyboard Navigation section has special layout */}
@@ -121,22 +131,96 @@ export default function Accessibility() {
               {/* ARIA Support section has additional table content */}
               {sectionName === 'ARIA Support and Screen Readers' &&
                 accessibilityContent[sectionName]?.ariaAttributesTable && (
-                  <div className='space-y-6 mb-8'>
-                    <div>
-                      <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                        ARIA Attributes
-                      </h3>
+                  <div className='space-y-8 mb-8'>
+                    {/* ARIA Attributes and Screen Reader Announcements Cards */}
+                    {accessibilityContent[sectionName]?.details && (
+                      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+                        {accessibilityContent[sectionName].details.map(
+                          (detail, index) => {
+                            // Parse bullet points from content
+                            const lines = detail.content
+                              .split('\n')
+                              .filter((line) => line.trim().startsWith('•'))
+                            const items = lines.map((line) =>
+                              line.replace(/^•\s*/, '').trim()
+                            )
+
+                            return (
+                              <div
+                                key={index}
+                                className='bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-900/10 dark:to-indigo-900/10 rounded-xl border border-blue-200/50 dark:border-blue-800/50 p-6 shadow-sm'
+                              >
+                                <div className='flex items-center gap-3 mb-4'>
+                                  <div className='w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center'>
+                                    <svg
+                                      className='w-6 h-6 text-blue-600 dark:text-blue-400'
+                                      fill='none'
+                                      stroke='currentColor'
+                                      viewBox='0 0 24 24'
+                                    >
+                                      <path
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
+                                        strokeWidth={2}
+                                        d='M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z'
+                                      />
+                                    </svg>
+                                  </div>
+                                  <h3 className='text-xl font-bold text-gray-900 dark:text-white'>
+                                    {detail.title}
+                                  </h3>
+                                </div>
+                                <ul className='space-y-2.5'>
+                                  {items.map((item, itemIndex) => (
+                                    <li
+                                      key={itemIndex}
+                                      className='flex items-start gap-2.5 text-blue-800 dark:text-blue-200 text-sm'
+                                    >
+                                      <span className='mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-blue-400' />
+                                      <span>{item}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )
+                          }
+                        )}
+                      </div>
+                    )}
+
+                    {/* ARIA Attributes Table */}
+                    <div className='bg-bg-secondary rounded-xl border border-border p-6 shadow-sm'>
+                      <div className='flex items-center gap-3 mb-6'>
+                        <div className='w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center'>
+                          <svg
+                            className='w-6 h-6 text-purple-600 dark:text-purple-400'
+                            fill='none'
+                            stroke='currentColor'
+                            viewBox='0 0 24 24'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth={2}
+                              d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+                            />
+                          </svg>
+                        </div>
+                        <h3 className='text-xl font-bold text-gray-900 dark:text-white'>
+                          ARIA Attributes Reference
+                        </h3>
+                      </div>
                       <div className='overflow-x-auto'>
-                        <table className='min-w-full divide-y divide-border border border-border rounded-lg'>
-                          <thead className='bg-bg-tertiary'>
-                            <tr>
-                              <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                        <table className='min-w-full divide-y divide-border'>
+                          <thead>
+                            <tr className='bg-bg-tertiary'>
+                              <th className='px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
                                 Element
                               </th>
-                              <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                              <th className='px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
                                 ARIA Attribute
                               </th>
-                              <th className='px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
+                              <th className='px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider'>
                                 Description
                               </th>
                             </tr>
@@ -147,15 +231,15 @@ export default function Accessibility() {
                             ].ariaAttributesTable.map((row, index) => (
                               <tr
                                 key={index}
-                                className={
-                                  index % 2 === 1 ? 'bg-bg-tertiary' : ''
-                                }
+                                className='hover:bg-bg-tertiary/50 transition-colors'
                               >
                                 <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
                                   {row.element}
                                 </td>
-                                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
-                                  <code>{row.attribute}</code>
+                                <td className='px-6 py-4 whitespace-nowrap text-sm'>
+                                  <code className='px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs font-mono'>
+                                    {row.attribute}
+                                  </code>
                                 </td>
                                 <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                                   {row.description}
@@ -304,57 +388,167 @@ export default function Accessibility() {
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
             <SectionHeader>Testing Accessibility</SectionHeader>
-            <CategoryContentDisplay
-              categoryName='Testing Accessibility'
-              source='accessibility'
-              examplesContent={{}}
-              internationalizationContent={accessibilityContent}
-            />
+            {/* Show only intro for Testing Accessibility section */}
+            {accessibilityContent['Testing Accessibility']?.intro && (
+              <p className='text-gray-600 dark:text-gray-400 text-lg mb-6'>
+                {accessibilityContent['Testing Accessibility'].intro}
+              </p>
+            )}
           </div>
 
-          <div className='space-y-6'>
-            <div>
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Recommended Testing Tools
-              </h3>
+          <div className='space-y-8'>
+            {/* Recommended Testing Tools */}
+            <div className='bg-gradient-to-br from-green-50/50 to-emerald-50/50 dark:from-green-900/10 dark:to-emerald-900/10 rounded-xl border border-green-200/50 dark:border-green-800/50 p-6 shadow-sm'>
+              <div className='flex items-center gap-3 mb-6'>
+                <div className='w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center'>
+                  <svg
+                    className='w-6 h-6 text-green-600 dark:text-green-400'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+                    />
+                  </svg>
+                </div>
+                <h3 className='text-xl font-bold text-gray-900 dark:text-white'>
+                  Recommended Testing Tools
+                </h3>
+              </div>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                <div>
-                  <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                    Automated Tools
-                  </h4>
-                  <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
-                    <li>• axe-core (Chrome extension)</li>
-                    <li>• WAVE (Web Accessibility Evaluation Tool)</li>
-                    <li>• Lighthouse (Chrome DevTools)</li>
-                    <li>• axe DevTools</li>
+                <div className='bg-white/50 dark:bg-gray-800/30 rounded-lg p-4 border border-green-200/30 dark:border-green-800/30'>
+                  <div className='flex items-center gap-2 mb-3'>
+                    <svg
+                      className='w-5 h-5 text-green-600 dark:text-green-400'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4'
+                      />
+                    </svg>
+                    <h4 className='font-semibold text-gray-900 dark:text-white'>
+                      Automated Tools
+                    </h4>
+                  </div>
+                  <ul className='space-y-2.5'>
+                    {[
+                      'axe-core (Chrome extension)',
+                      'WAVE (Web Accessibility Evaluation Tool)',
+                      'Lighthouse (Chrome DevTools)',
+                      'axe DevTools'
+                    ].map((tool, index) => (
+                      <li
+                        key={index}
+                        className='flex items-start gap-2.5 text-green-800 dark:text-green-200 text-sm'
+                      >
+                        <span className='mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-green-500 dark:bg-green-400' />
+                        <span>{tool}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
-                <div>
-                  <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
-                    Manual Testing
-                  </h4>
-                  <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
-                    <li>• Keyboard-only navigation</li>
-                    <li>• Screen reader testing (NVDA, JAWS, VoiceOver)</li>
-                    <li>• High contrast mode</li>
-                    <li>• Zoomed viewing (200%+)</li>
+                <div className='bg-white/50 dark:bg-gray-800/30 rounded-lg p-4 border border-green-200/30 dark:border-green-800/30'>
+                  <div className='flex items-center gap-2 mb-3'>
+                    <svg
+                      className='w-5 h-5 text-green-600 dark:text-green-400'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4'
+                      />
+                    </svg>
+                    <h4 className='font-semibold text-gray-900 dark:text-white'>
+                      Manual Testing
+                    </h4>
+                  </div>
+                  <ul className='space-y-2.5'>
+                    {[
+                      'Keyboard-only navigation',
+                      'Screen reader testing (NVDA, JAWS, VoiceOver)',
+                      'High contrast mode',
+                      'Zoomed viewing (200%+)'
+                    ].map((method, index) => (
+                      <li
+                        key={index}
+                        className='flex items-start gap-2.5 text-green-800 dark:text-green-200 text-sm'
+                      >
+                        <span className='mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-green-500 dark:bg-green-400' />
+                        <span>{method}</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
             </div>
 
-            <div>
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
-                Keyboard Testing Checklist
-              </h3>
-              <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
-                <li>Tab order follows logical sequence</li>
-                <li>All interactive elements are keyboard accessible</li>
-                <li>Focus indicators are visible</li>
-                <li>Escape key closes modals</li>
-                <li>Enter/Space activate buttons</li>
-                <li>Arrow keys navigate dates appropriately</li>
-              </ul>
+            {/* Keyboard Testing Checklist */}
+            <div className='bg-gradient-to-br from-amber-50/50 to-orange-50/50 dark:from-amber-900/10 dark:to-orange-900/10 rounded-xl border border-amber-200/50 dark:border-amber-800/50 p-6 shadow-sm'>
+              <div className='flex items-center gap-3 mb-6'>
+                <div className='w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center'>
+                  <svg
+                    className='w-6 h-6 text-amber-600 dark:text-amber-400'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2'
+                    />
+                  </svg>
+                </div>
+                <h3 className='text-xl font-bold text-gray-900 dark:text-white'>
+                  Keyboard Testing Checklist
+                </h3>
+              </div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                {[
+                  'Tab order follows logical sequence',
+                  'All interactive elements are keyboard accessible',
+                  'Focus indicators are visible',
+                  'Escape key closes modals',
+                  'Enter/Space activate buttons',
+                  'Arrow keys navigate dates appropriately'
+                ].map((item, index) => (
+                  <div
+                    key={index}
+                    className='flex items-start gap-3 bg-white/50 dark:bg-gray-800/30 rounded-lg p-3 border border-amber-200/30 dark:border-amber-800/30'
+                  >
+                    <svg
+                      className='w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+                      />
+                    </svg>
+                    <span className='text-amber-800 dark:text-amber-200 text-sm'>
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
