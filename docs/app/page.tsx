@@ -14,62 +14,87 @@ const features = [
   {
     title: 'Improved Accessibility',
     description:
-      'Better keyboard navigation, ARIA labels, and screen reader support for inclusive user experiences.'
+      'Full keyboard navigation, ARIA labels, focus management, and screen reader support for WCAG 2.1 Level AA compliance.'
   },
   {
     title: 'CSS Variables Support',
     description:
-      'Easy theming with CSS custom properties for colors and styling, enabling seamless theme integration.'
+      'Easy theming with CSS custom properties for colors and styling, enabling seamless theme integration and customization.'
   },
   {
     title: 'Better Performance',
     description:
-      'Optimized rendering and reduced bundle size for faster loading and smoother interactions.'
+      'Optimized rendering, memoization, and reduced bundle size for faster loading and smoother interactions.'
   },
   {
     title: 'Extended Utility Functions',
     description:
-      'More date manipulation utilities for complex use cases and advanced date operations.'
+      'Comprehensive date manipulation utilities for complex use cases, calendar conversions, and advanced date operations.'
   },
   {
     title: 'Enhanced Customization',
     description:
-      'More options for icons, labels, and component styling to match your design requirements.'
+      'Custom icons, labels, translations, CSS classes, and component styling to match your exact design requirements.'
   },
   {
     title: 'Time Selection Support',
     description:
-      'Full time picker integration with date selection, supporting hours and minutes for precise datetime input.'
+      'Full time picker integration with 12-hour and 24-hour formats, supporting hours and minutes for precise datetime input.'
   },
   {
     title: 'Dual Calendar Support',
     description:
-      'Native support for both Gregorian and Jalali (Persian) calendars with automatic locale handling.'
+      'Native support for both Gregorian and Jalali (Persian) calendars with automatic locale handling and seamless switching.'
   },
   {
     title: 'Internationalization (i18n)',
     description:
-      'Full locale support with translations for English, Persian, German, Spanish, and French. Includes RTL support, custom translations, and localized date formatting.'
+      'Full locale support for English, Persian, German, Spanish, and French with RTL support, custom translations, and localized formatting.'
   },
   {
     title: 'Flexible Selection Modes',
     description:
-      'Single date, date range, and multi-date selection modes to accommodate various use cases.'
+      'Single date, date range, multi-date, and week selection modes to accommodate various use cases and workflows.'
+  },
+  {
+    title: 'Preset Date Ranges',
+    description:
+      'Built-in preset buttons for common ranges (Yesterday, Last 7/30 days, This/Last month) with support for custom presets.'
   },
   {
     title: 'Advanced Constraints',
     description:
-      'Set minimum and maximum dates, disable specific dates, and control selectable date ranges.'
+      'Set minimum and maximum dates, disable specific dates, and use custom validation functions for precise date control.'
   },
   {
     title: 'Rich Event System',
     description:
-      'Comprehensive callback system for open, close, and change events with full control over user interactions.'
+      'Comprehensive callback system for date selection, month/year navigation, view changes, and user interactions.'
+  },
+  {
+    title: 'Week Customization',
+    description:
+      'Customize week start day (Sunday-Saturday), weekend highlighting, and weekday names for different regional preferences.'
+  },
+  {
+    title: 'Multiple Months Display',
+    description:
+      'Display multiple calendar months side by side for better range selection and improved user experience.'
+  },
+  {
+    title: 'Custom Trigger Elements',
+    description:
+      'Use any React element as a trigger for the date picker, enabling complete control over input styling and behavior.'
+  },
+  {
+    title: 'Dark Mode Support',
+    description:
+      'Built-in dark theme with automatic detection and seamless integration with your application theme.'
   },
   {
     title: 'Input-less Mode',
     description:
-      'Display calendars without input fields for embedded or custom input scenarios.'
+      'Display standalone calendars without input fields for embedded scenarios, dashboards, and custom UI designs.'
   }
 ]
 

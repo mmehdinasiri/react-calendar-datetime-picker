@@ -9,6 +9,7 @@ import '../../../src/styles/index.scss'
 import { ExampleRenderer } from '../components/ExampleRenderer'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { useTheme } from '../contexts/ThemeContext'
 import {
   cssVariables,
   getColorValue,
@@ -57,11 +58,13 @@ const ArrowRightIcon = ({ className }: { className?: string }) => (
 
 // Custom component that displays the selected date in the input
 function DatePickerWithValueDisplay({ onChange, ...props }: any) {
+  const { theme } = useTheme()
   const [selectedDate, setSelectedDate] = useState<Day | null>(null)
 
   return (
     <DtPicker
       {...props}
+      dark={props.dark !== undefined ? props.dark : theme === 'dark'}
       onChange={(date) => {
         setSelectedDate(date)
         onChange?.(date)
@@ -92,6 +95,7 @@ function DatePickerWithValueDisplay({ onChange, ...props }: any) {
 
 // React Hook Form integration example component
 function ReactHookFormExample() {
+  const { theme } = useTheme()
   const { control, handleSubmit, watch } = useForm<{
     birthDate: Day | null
   }>({
@@ -122,6 +126,7 @@ function ReactHookFormExample() {
             <DtPicker
               calendarSystem='gregorian'
               initValue={field.value}
+              dark={theme === 'dark'}
               onChange={(date) => {
                 field.onChange(date)
                 field.onBlur() // Trigger validation on change
@@ -160,11 +165,17 @@ function ReactHookFormExample() {
 }
 
 export default function Customization() {
+  const { theme } = useTheme()
   const [customDate, setCustomDate] = useState<any>(null)
   const [darkDate, setDarkDate] = useState<Day | null>(null)
   const [styledInputDate, setStyledInputDate] = useState<Day | null>(null)
   const [smallCalendarDate, setSmallCalendarDate] = useState<Day | null>(null)
   const [largeCalendarDate, setLargeCalendarDate] = useState<Day | null>(null)
+
+  // Helper to get dark prop - use theme unless explicitly overridden
+  const getDarkProp = (explicitDark?: boolean) => {
+    return explicitDark !== undefined ? explicitDark : theme === 'dark'
+  }
 
   return (
     <div className='max-w-6xl mx-auto px-6 py-12'>
@@ -1134,6 +1145,7 @@ import { Controller } from 'react-hook-form'
                       initValue={customDate}
                       onChange={setCustomDate}
                       showWeekend={true}
+                      dark={theme === 'dark'}
                       todayBtn={true}
                       calenderModalClass='calendar-blue-theme'
                     />
@@ -1348,6 +1360,7 @@ function App() {
                       initValue={smallCalendarDate}
                       onChange={setSmallCalendarDate}
                       showWeekend={true}
+                      dark={theme === 'dark'}
                       todayBtn={true}
                       calenderModalClass='calendar-small-size'
                     />
@@ -1404,6 +1417,7 @@ function App() {
       showWeekend={true}
       todayBtn={true}
       calenderModalClass="calendar-small-size"
+      dark={theme === 'dark'}
       onChange={setDate}
     />
   )
@@ -1452,6 +1466,7 @@ function App() {
                       onChange={setLargeCalendarDate}
                       showWeekend={true}
                       todayBtn={true}
+                      dark={theme === 'dark'}
                       calenderModalClass='calendar-large-size'
                     />
                   </div>
@@ -1505,6 +1520,7 @@ function App() {
       showWeekend={true}
       todayBtn={true}
       calenderModalClass="calendar-large-size"
+      dark={theme === 'dark'}
       onChange={setDate}
     />
   )
@@ -1785,8 +1801,10 @@ const CustomNextIcon = ({ className }) => (
 )
 
 function App() {
+  const { theme } = useTheme()
   return (
     <DtCalendar
+      dark={theme === 'dark'}
       customization={{
         icons: {
           previous: CustomPrevIcon,

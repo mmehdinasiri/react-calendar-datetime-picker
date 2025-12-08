@@ -83,6 +83,16 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
     }
   })
 
+  // Automatically apply theme from context unless:
+  // 1. The example explicitly sets the dark prop (allows override)
+  // 2. It's a theme example with custom theme classes
+  if (
+    !isThemeExample &&
+    !Object.prototype.hasOwnProperty.call(config.props || {}, 'dark')
+  ) {
+    componentProps.dark = theme === 'dark'
+  }
+
   // Inject callbacks for examples that need them
   if (config.showConsoleLog) {
     if (config.title === 'View & Navigation Callbacks') {

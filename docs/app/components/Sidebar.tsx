@@ -49,7 +49,7 @@ const navigation = [
           groupName !== 'Date Utilities'
       )
       .map(([groupName, groupExamples]) => ({
-        name: groupName,
+        name: groupName === 'Types' ? 'Calendar Modes' : groupName,
         href: `/examples#${toKebabCase(groupName)}`,
         subItems: Object.keys(groupExamples).map((exampleKey) => ({
           name: groupExamples[exampleKey].title,
