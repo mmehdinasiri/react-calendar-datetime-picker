@@ -2,8 +2,7 @@
 
 import { useState } from 'react'
 import { DtCalendar } from '../../../src/components/DtCalendar'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { CodeBlock, InfoBox, SectionHeader } from '../components'
 import {
   isBefore,
   isAfter,
@@ -192,17 +191,12 @@ export default function Utilities() {
           </div>
         </div>
 
-        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-6'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Interactive Examples:</strong> Select a date in the
-                calendar below to see how the utility functions work with real
-                data.
-              </p>
-            </div>
-          </div>
-        </div>
+        <InfoBox>
+          <p className='text-sm text-gray-200'>
+            <strong>Interactive Examples:</strong> Select a date in the calendar
+            below to see how the utility functions work with real data.
+          </p>
+        </InfoBox>
       </div>
 
       {/* Interactive Demo */}
@@ -217,12 +211,12 @@ export default function Utilities() {
             here.
           </p>
           {!selectedDate && (
-            <div className='bg-bg-tertiary border-l-4 border-accent p-4'>
-              <p className='text-sm text-gray-700 dark:text-gray-200'>
+            <InfoBox>
+              <p className='text-sm text-gray-200'>
                 <strong>💡 Tip:</strong> Select a date in the calendar to see
                 all utility functions in action.
               </p>
-            </div>
+            </InfoBox>
           )}
         </div>
 
@@ -250,21 +244,17 @@ export default function Utilities() {
                     <strong>Selected Date:</strong>{' '}
                     {dayToString(selectedDate, '/')}
                   </p>
-                  <div className='mt-2 rounded overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='json'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.25rem',
-                        fontSize: '0.75rem',
-                        lineHeight: '1.5',
-                        padding: '0.5rem'
-                      }}
-                    >
-                      {JSON.stringify(selectedDate, null, 2)}
-                    </SyntaxHighlighter>
-                  </div>
+                  <CodeBlock
+                    language='json'
+                    code={JSON.stringify(selectedDate, null, 2)}
+                    customStyle={{
+                      borderRadius: '0.25rem',
+                      fontSize: '0.75rem',
+                      lineHeight: '1.5',
+                      padding: '0.5rem'
+                    }}
+                    className='mt-2'
+                  />
                 </>
               ) : (
                 <p className='text-sm text-gray-700 dark:text-gray-200'>
@@ -280,9 +270,7 @@ export default function Utilities() {
         {/* Date Comparison */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Date Comparison
-            </h2>
+            <SectionHeader>Date Comparison</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               Functions for comparing dates, checking relationships, and
               determining date positions.
@@ -299,21 +287,17 @@ export default function Utilities() {
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                     isBefore
                   </h4>
-                  <div className='mb-2 rounded overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='typescript'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.25rem',
-                        fontSize: '0.75rem',
-                        lineHeight: '1.5',
-                        padding: '0.5rem'
-                      }}
-                    >
-                      {`isBefore(date1, date2, locale?)`}
-                    </SyntaxHighlighter>
-                  </div>
+                  <CodeBlock
+                    language='typescript'
+                    code='isBefore(date1, date2, locale?)'
+                    customStyle={{
+                      borderRadius: '0.25rem',
+                      fontSize: '0.75rem',
+                      lineHeight: '1.5',
+                      padding: '0.5rem'
+                    }}
+                    className='mb-2'
+                  />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                     Returns <code className='text-xs'>true</code> if{' '}
                     <code className='text-xs'>date1</code> is before{' '}
@@ -373,21 +357,17 @@ export default function Utilities() {
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                     isAfter
                   </h4>
-                  <div className='mb-2 rounded overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='typescript'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.25rem',
-                        fontSize: '0.75rem',
-                        lineHeight: '1.5',
-                        padding: '0.5rem'
-                      }}
-                    >
-                      {`isAfter(date1, date2, locale?)`}
-                    </SyntaxHighlighter>
-                  </div>
+                  <CodeBlock
+                    language='typescript'
+                    code='isAfter(date1, date2, locale?)'
+                    customStyle={{
+                      borderRadius: '0.25rem',
+                      fontSize: '0.75rem',
+                      lineHeight: '1.5',
+                      padding: '0.5rem'
+                    }}
+                    className='mb-2'
+                  />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                     Returns <code className='text-xs'>true</code> if{' '}
                     <code className='text-xs'>date1</code> is after{' '}
@@ -447,21 +427,17 @@ export default function Utilities() {
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                     isSameDay
                   </h4>
-                  <div className='mb-2 rounded overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='typescript'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.25rem',
-                        fontSize: '0.75rem',
-                        lineHeight: '1.5',
-                        padding: '0.5rem'
-                      }}
-                    >
-                      {`isSameDay(date1, date2, locale?)`}
-                    </SyntaxHighlighter>
-                  </div>
+                  <CodeBlock
+                    language='typescript'
+                    code='isSameDay(date1, date2, locale?)'
+                    customStyle={{
+                      borderRadius: '0.25rem',
+                      fontSize: '0.75rem',
+                      lineHeight: '1.5',
+                      padding: '0.5rem'
+                    }}
+                    className='mb-2'
+                  />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                     Returns <code className='text-xs'>true</code> if both dates
                     represent the same day
@@ -524,21 +500,17 @@ export default function Utilities() {
               </h3>
               <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
                 <h4 className='font-medium text-white mb-2'>isBetween</h4>
-                <div className='mb-2 rounded overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='typescript'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.25rem',
-                      fontSize: '0.75rem',
-                      lineHeight: '1.5',
-                      padding: '0.5rem'
-                    }}
-                  >
-                    {`isBetween(date, startDate, endDate, locale?)`}
-                  </SyntaxHighlighter>
-                </div>
+                <CodeBlock
+                  language='typescript'
+                  code='isBetween(date, startDate, endDate, locale?)'
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                   Returns <code className='text-xs'>true</code> if{' '}
                   <code className='text-xs'>date</code> falls between{' '}
@@ -629,9 +601,7 @@ export default function Utilities() {
         {/* Date Manipulation */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Date Manipulation
-            </h2>
+            <SectionHeader>Date Manipulation</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               Functions for adding/subtracting time periods and calculating
               differences.
@@ -648,21 +618,17 @@ export default function Utilities() {
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                     addDays
                   </h4>
-                  <div className='mb-2 rounded overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='typescript'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.25rem',
-                        fontSize: '0.75rem',
-                        lineHeight: '1.5',
-                        padding: '0.5rem'
-                      }}
-                    >
-                      {`addDays(date, days, locale?)`}
-                    </SyntaxHighlighter>
-                  </div>
+                  <CodeBlock
+                    language='typescript'
+                    code='addDays(date, days, locale?)'
+                    customStyle={{
+                      borderRadius: '0.25rem',
+                      fontSize: '0.75rem',
+                      lineHeight: '1.5',
+                      padding: '0.5rem'
+                    }}
+                    className='mb-2'
+                  />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                     Adds the specified number of days to the given date
                   </p>
@@ -703,21 +669,17 @@ export default function Utilities() {
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                     addMonths
                   </h4>
-                  <div className='mb-2 rounded overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='typescript'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.25rem',
-                        fontSize: '0.75rem',
-                        lineHeight: '1.5',
-                        padding: '0.5rem'
-                      }}
-                    >
-                      {`addMonths(date, months, locale?)`}
-                    </SyntaxHighlighter>
-                  </div>
+                  <CodeBlock
+                    language='typescript'
+                    code='addMonths(date, months, locale?)'
+                    customStyle={{
+                      borderRadius: '0.25rem',
+                      fontSize: '0.75rem',
+                      lineHeight: '1.5',
+                      padding: '0.5rem'
+                    }}
+                    className='mb-2'
+                  />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                     Adds the specified number of months to the given date
                   </p>
@@ -758,21 +720,17 @@ export default function Utilities() {
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                     addYears
                   </h4>
-                  <div className='mb-2 rounded overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='typescript'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.25rem',
-                        fontSize: '0.75rem',
-                        lineHeight: '1.5',
-                        padding: '0.5rem'
-                      }}
-                    >
-                      {`addYears(date, years, locale?)`}
-                    </SyntaxHighlighter>
-                  </div>
+                  <CodeBlock
+                    language='typescript'
+                    code='addYears(date, years, locale?)'
+                    customStyle={{
+                      borderRadius: '0.25rem',
+                      fontSize: '0.75rem',
+                      lineHeight: '1.5',
+                      padding: '0.5rem'
+                    }}
+                    className='mb-2'
+                  />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                     Adds the specified number of years to the given date
                   </p>
@@ -813,21 +771,17 @@ export default function Utilities() {
                   <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                     getDifferenceInDays
                   </h4>
-                  <div className='mb-2 rounded overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='typescript'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.25rem',
-                        fontSize: '0.75rem',
-                        lineHeight: '1.5',
-                        padding: '0.5rem'
-                      }}
-                    >
-                      {`getDifferenceInDays(date1, date2, locale?)`}
-                    </SyntaxHighlighter>
-                  </div>
+                  <CodeBlock
+                    language='typescript'
+                    code='getDifferenceInDays(date1, date2, locale?)'
+                    customStyle={{
+                      borderRadius: '0.25rem',
+                      fontSize: '0.75rem',
+                      lineHeight: '1.5',
+                      padding: '0.5rem'
+                    }}
+                    className='mb-2'
+                  />
                   <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                     Calculates the number of days between two dates. Returns a
                     positive number if <code className='text-xs'>date1</code> is
@@ -897,9 +851,7 @@ export default function Utilities() {
         {/* Calendar Conversion */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Calendar Conversion
-            </h2>
+            <SectionHeader>Calendar Conversion</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               Convert dates between Gregorian and Jalali calendar systems.
             </p>
@@ -911,21 +863,17 @@ export default function Utilities() {
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                   convertToJalali
                 </h4>
-                <div className='mb-2 rounded overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='typescript'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.25rem',
-                      fontSize: '0.75rem',
-                      lineHeight: '1.5',
-                      padding: '0.5rem'
-                    }}
-                  >
-                    {`convertToJalali(gregorianDate)`}
-                  </SyntaxHighlighter>
-                </div>
+                <CodeBlock
+                  language='typescript'
+                  code='convertToJalali(gregorianDate)'
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                   Convert Gregorian date to Jalali (Persian)
                 </p>
@@ -962,21 +910,17 @@ export default function Utilities() {
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                   convertToGregorian
                 </h4>
-                <div className='mb-2 rounded overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='typescript'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.25rem',
-                      fontSize: '0.75rem',
-                      lineHeight: '1.5',
-                      padding: '0.5rem'
-                    }}
-                  >
-                    {`convertToGregorian(jalaliDate)`}
-                  </SyntaxHighlighter>
-                </div>
+                <CodeBlock
+                  language='typescript'
+                  code='convertToGregorian(jalaliDate)'
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                   Convert Jalali date to Gregorian
                 </p>
@@ -1023,15 +967,13 @@ export default function Utilities() {
         {/* Date Boundaries */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Date Boundaries
-            </h2>
+            <SectionHeader>Date Boundaries</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300 mb-4'>
               These functions return boundary dates for a given time period.
               They help you get the first or last day of a day, month, or year.
               Useful for date range queries, filtering, and calculations.
             </p>
-            <div className='bg-bg-tertiary border-l-4 border-accent p-4'>
+            <InfoBox>
               <p className='text-sm text-gray-200'>
                 <strong>Example:</strong> If you have a date like{' '}
                 <code>December 15, 2024</code>, <code>startOfMonth</code>{' '}
@@ -1039,7 +981,7 @@ export default function Utilities() {
                 and <code>endOfMonth</code> returns{' '}
                 <code>December 31, 2024</code> (last day of that month).
               </p>
-            </div>
+            </InfoBox>
           </div>
 
           <div className='space-y-6'>
@@ -1048,21 +990,17 @@ export default function Utilities() {
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                   startOfDay
                 </h4>
-                <div className='mb-2 rounded overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='typescript'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.25rem',
-                      fontSize: '0.75rem',
-                      lineHeight: '1.5',
-                      padding: '0.5rem'
-                    }}
-                  >
-                    {`startOfDay(date)`}
-                  </SyntaxHighlighter>
-                </div>
+                <CodeBlock
+                  language='typescript'
+                  code='startOfDay(date)'
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                   Returns the same date but at the start of the day (00:00:00).
                   Useful for date range queries where you want to include the
@@ -1102,21 +1040,17 @@ export default function Utilities() {
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                   endOfDay
                 </h4>
-                <div className='mb-2 rounded overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='typescript'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.25rem',
-                      fontSize: '0.75rem',
-                      lineHeight: '1.5',
-                      padding: '0.5rem'
-                    }}
-                  >
-                    {`endOfDay(date)`}
-                  </SyntaxHighlighter>
-                </div>
+                <CodeBlock
+                  language='typescript'
+                  code='endOfDay(date)'
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                   Returns the same date but at the end of the day (23:59:59).
                   Useful for inclusive date range queries.
@@ -1155,21 +1089,17 @@ export default function Utilities() {
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                   startOfMonth
                 </h4>
-                <div className='mb-2 rounded overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='typescript'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.25rem',
-                      fontSize: '0.75rem',
-                      lineHeight: '1.5',
-                      padding: '0.5rem'
-                    }}
-                  >
-                    {`startOfMonth(date, locale?)`}
-                  </SyntaxHighlighter>
-                </div>
+                <CodeBlock
+                  language='typescript'
+                  code='startOfMonth(date, locale?)'
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                   Returns the first day of the month for the given date.
                   Example:{' '}
@@ -1213,21 +1143,17 @@ export default function Utilities() {
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                   endOfMonth
                 </h4>
-                <div className='mb-2 rounded overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='typescript'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.25rem',
-                      fontSize: '0.75rem',
-                      lineHeight: '1.5',
-                      padding: '0.5rem'
-                    }}
-                  >
-                    {`endOfMonth(date, locale?)`}
-                  </SyntaxHighlighter>
-                </div>
+                <CodeBlock
+                  language='typescript'
+                  code='endOfMonth(date, locale?)'
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                   Returns the last day of the month for the given date. Example:{' '}
                   <code className='text-xs'>endOfMonth(December 15, 2024)</code>{' '}
@@ -1265,21 +1191,17 @@ export default function Utilities() {
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                   startOfYear
                 </h4>
-                <div className='mb-2 rounded overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='typescript'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.25rem',
-                      fontSize: '0.75rem',
-                      lineHeight: '1.5',
-                      padding: '0.5rem'
-                    }}
-                  >
-                    {`startOfYear(date)`}
-                  </SyntaxHighlighter>
-                </div>
+                <CodeBlock
+                  language='typescript'
+                  code='startOfYear(date)'
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                   Returns the first day of the year for the given date. Example:{' '}
                   <code className='text-xs'>
@@ -1317,21 +1239,17 @@ export default function Utilities() {
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                   endOfYear
                 </h4>
-                <div className='mb-2 rounded overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='typescript'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.25rem',
-                      fontSize: '0.75rem',
-                      lineHeight: '1.5',
-                      padding: '0.5rem'
-                    }}
-                  >
-                    {`endOfYear(date, locale?)`}
-                  </SyntaxHighlighter>
-                </div>
+                <CodeBlock
+                  language='typescript'
+                  code='endOfYear(date, locale?)'
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
                 <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
                   Returns the last day of the year for the given date. Example:{' '}
                   <code className='text-xs'>endOfYear(December 15, 2024)</code>{' '}
@@ -1371,9 +1289,7 @@ export default function Utilities() {
         {/* Usage Examples */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Usage Examples
-            </h2>
+            <SectionHeader>Usage Examples</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               Common patterns and real-world usage examples.
             </p>
@@ -1384,18 +1300,9 @@ export default function Utilities() {
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Date Range Validation
               </h3>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='typescript'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`import { isBefore, isAfter, addDays } from 'react-calendar-datetime-picker'
+              <CodeBlock
+                language='typescript'
+                code={`import { isBefore, isAfter, addDays } from 'react-calendar-datetime-picker'
 
 function validateBookingDates(checkIn, checkOut) {
   const today = getToday('gregorian')
@@ -1418,26 +1325,16 @@ function validateBookingDates(checkIn, checkOut) {
 
   return null // Valid
 }`}
-                </SyntaxHighlighter>
-              </div>
+              />
             </div>
 
             <div>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Calendar Conversion
               </h3>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='typescript'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`import { convertToJalali, convertToGregorian, dayToString } from 'react-calendar-datetime-picker'
+              <CodeBlock
+                language='typescript'
+                code={`import { convertToJalali, convertToGregorian, dayToString } from 'react-calendar-datetime-picker'
 
 // Gregorian to Jalali
 const gregorianDate = { year: 2024, month: 12, day: 25 }
@@ -1448,26 +1345,16 @@ console.log(dayToString(jalaliDate, '/')) // "1403/10/5"
 const persianDate = { year: 1403, month: 10, day: 5 }
 const gregorian = convertToGregorian(persianDate)
 console.log(dayToString(gregorian, '/')) // "2024/12/25"`}
-                </SyntaxHighlighter>
-              </div>
+              />
             </div>
 
             <div>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Age Calculation
               </h3>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='typescript'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`import { getDifferenceInYears, getToday } from 'react-calendar-datetime-picker'
+              <CodeBlock
+                language='typescript'
+                code={`import { getDifferenceInYears, getToday } from 'react-calendar-datetime-picker'
 
 function calculateAge(birthDate) {
   const today = getToday('gregorian')
@@ -1478,8 +1365,7 @@ function calculateAge(birthDate) {
 const birthDate = { year: 1990, month: 5, day: 15 }
 const age = calculateAge(birthDate)
 console.log(\`Age: \${age}\`) // "Age: 34"`}
-                </SyntaxHighlighter>
-              </div>
+              />
             </div>
           </div>
         </section>
@@ -1487,9 +1373,7 @@ console.log(\`Age: \${age}\`) // "Age: 34"`}
         {/* Function Reference */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Function Reference
-            </h2>
+            <SectionHeader>Function Reference</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               Complete list of all available utility functions.
             </p>

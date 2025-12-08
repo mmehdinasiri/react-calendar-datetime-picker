@@ -1,7 +1,6 @@
 'use client'
 
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { CodeBlock, InfoBox, SectionHeader } from '../components'
 
 export default function MigrationGuide() {
   return (
@@ -16,27 +15,22 @@ export default function MigrationGuide() {
           compatibility where possible.
         </p>
 
-        <div className='bg-bg-tertiary border-l-4 border-yellow-500 p-4 my-6'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Minimal Breaking Changes:</strong> Version 2.x
-                introduces minimal breaking changes. Most existing code will
-                continue to work without modification, with only minor CSS class
-                name updates.
-              </p>
-            </div>
-          </div>
-        </div>
+        <InfoBox variant='warning'>
+          <p className='text-sm text-gray-200'>
+            <strong>Minimal Breaking Changes:</strong> Version 2.x introduces
+            minimal breaking changes. Most existing code will continue to work
+            without modification, with only minor CSS class name updates.
+          </p>
+        </InfoBox>
       </div>
 
       <div className='space-y-12'>
         {/* Quick Migration */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <SectionHeader className='text-white mb-2'>
               Quick Migration Checklist
-            </h2>
+            </SectionHeader>
             <p className='text-gray-300'>
               Follow these steps to migrate your application to v2.x.
             </p>
@@ -53,21 +47,17 @@ export default function MigrationGuide() {
                 <h3 className='text-lg font-medium text-white'>
                   Update Package Version
                 </h3>
-                <div className='mt-2 rounded overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='bash'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.25rem',
-                      fontSize: '0.875rem',
-                      lineHeight: '1.5',
-                      padding: '0.75rem'
-                    }}
-                  >
-                    {`npm install react-calendar-datetime-picker@latest`}
-                  </SyntaxHighlighter>
-                </div>
+                <CodeBlock
+                  language='bash'
+                  code='npm install react-calendar-datetime-picker@latest'
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.875rem',
+                    lineHeight: '1.5',
+                    padding: '0.75rem'
+                  }}
+                  className='mt-2'
+                />
               </div>
             </div>
 
@@ -128,9 +118,9 @@ export default function MigrationGuide() {
         {/* Breaking Changes */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <SectionHeader className='text-white mb-2'>
               Breaking Changes
-            </h2>
+            </SectionHeader>
             <p className='text-gray-300'>
               Changes that may require updates to your existing code.
             </p>
@@ -224,9 +214,9 @@ export default function MigrationGuide() {
         {/* What's New in v2.x */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <SectionHeader className='text-white mb-2'>
               What's New in v2.x
-            </h2>
+            </SectionHeader>
             <p className='text-gray-300 mb-4'>
               Version 2.x brings significant improvements and new capabilities.
               Check out the comprehensive list of features on the homepage.
@@ -245,9 +235,9 @@ export default function MigrationGuide() {
         {/* Migration Examples */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <SectionHeader className='text-white mb-2'>
               Migration Examples
-            </h2>
+            </SectionHeader>
             <p className='text-gray-300'>
               Before and after examples showing how to migrate your code.
             </p>
@@ -261,18 +251,9 @@ export default function MigrationGuide() {
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                 <div>
                   <h4 className='font-medium text-white mb-2'>Before (v1.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`import { DtPicker } from 'react-calendar-datetime-picker'
+                  <CodeBlock
+                    language='tsx'
+                    code={`import { DtPicker } from 'react-calendar-datetime-picker'
 
 function App() {
   const [date, setDate] = useState(null)
@@ -286,23 +267,13 @@ function App() {
     />
   )
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                  />
                 </div>
                 <div>
                   <h4 className='font-medium text-white mb-2'>After (v2.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-accent'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`import { DtPicker } from 'react-calendar-datetime-picker'
+                  <CodeBlock
+                    language='tsx'
+                    code={`import { DtPicker } from 'react-calendar-datetime-picker'
 
 function App() {
   const [date, setDate] = useState(null)
@@ -316,8 +287,8 @@ function App() {
     />
   )
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='border-accent'
+                  />
                 </div>
               </div>
             </div>
@@ -329,18 +300,9 @@ function App() {
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                 <div>
                   <h4 className='font-medium text-white mb-2'>Before (v1.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-red-500'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
+                  <CodeBlock
+                    language='tsx'
+                    code={`import { DtCalendar } from 'react-calendar-datetime-picker'
 
 <DtCalendar
   initValue={date}
@@ -348,23 +310,14 @@ function App() {
   local="fa"
   showWeekend={true}
 />`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='border-red-500'
+                  />
                 </div>
                 <div>
                   <h4 className='font-medium text-white mb-2'>After (v2.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-accent'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
+                  <CodeBlock
+                    language='tsx'
+                    code={`import { DtCalendar } from 'react-calendar-datetime-picker'
 
 <DtCalendar
   initValue={date}
@@ -372,8 +325,8 @@ function App() {
   calendarSystem="jalali"
   showWeekend={true}
 />`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='border-accent'
+                  />
                 </div>
               </div>
             </div>
@@ -385,49 +338,31 @@ function App() {
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                 <div>
                   <h4 className='font-medium text-white mb-2'>Before (v1.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-red-500'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`<DtPicker
+                  <CodeBlock
+                    language='tsx'
+                    code={`<DtPicker
   initValue={range}
   onChange={setRange}
   type="range"
   withTime={true}
   local="en"
 />`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='border-red-500'
+                  />
                 </div>
                 <div>
                   <h4 className='font-medium text-white mb-2'>After (v2.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-accent'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`<DtPicker
+                  <CodeBlock
+                    language='tsx'
+                    code={`<DtPicker
   initValue={range}
   onChange={setRange}
   type="range"
   withTime={true}
   calendarSystem="gregorian"
 />`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='border-accent'
+                  />
                 </div>
               </div>
             </div>
@@ -437,9 +372,9 @@ function App() {
         {/* Enhanced initValue Support */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <SectionHeader className='text-white mb-2'>
               Enhanced initValue Support
-            </h2>
+            </SectionHeader>
             <p className='text-gray-300'>
               Version 2.x supports more flexible initValue formats and better
               type safety for initialization.
@@ -454,39 +389,20 @@ function App() {
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                 <div>
                   <h4 className='font-medium text-white mb-2'>Before (v1.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`// Only Day object format
+                  <CodeBlock
+                    language='tsx'
+                    code={`// Only Day object format
 <DtPicker
   initValue={{ year: 2023, month: 12, day: 25 }}
   onChange={setDate}
 />`}
-                    </SyntaxHighlighter>
-                  </div>
+                  />
                 </div>
                 <div>
                   <h4 className='font-medium text-white mb-2'>After (v2.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-accent'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`// Multiple formats supported
+                  <CodeBlock
+                    language='tsx'
+                    code={`// Multiple formats supported
 <DtPicker
   initValue="2023-12-25"  // ISO string
   onChange={setDate}
@@ -501,8 +417,8 @@ function App() {
   initValue={1703452800000}  // Timestamp
   onChange={setDate}
 />`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='border-accent'
+                  />
                 </div>
               </div>
             </div>
@@ -514,18 +430,9 @@ function App() {
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                 <div>
                   <h4 className='font-medium text-white mb-2'>Before (v1.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-red-500'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`// Limited to specific object format
+                  <CodeBlock
+                    language='tsx'
+                    code={`// Limited to specific object format
 <DtPicker
   initValue={{
     from: { year: 2023, month: 12, day: 1 },
@@ -534,23 +441,14 @@ function App() {
   onChange={setRange}
   type="range"
 />`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='border-red-500'
+                  />
                 </div>
                 <div>
                   <h4 className='font-medium text-white mb-2'>After (v2.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-accent'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`// Flexible range initialization
+                  <CodeBlock
+                    language='tsx'
+                    code={`// Flexible range initialization
 <DtPicker
   initValue={{
     from: "2023-12-01",
@@ -568,8 +466,8 @@ function App() {
   onChange={setRange}
   type="range"
 />`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='border-accent'
+                  />
                 </div>
               </div>
             </div>
@@ -581,18 +479,9 @@ function App() {
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                 <div>
                   <h4 className='font-medium text-white mb-2'>Before (v1.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-red-500'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`// Complex object array format
+                  <CodeBlock
+                    language='tsx'
+                    code={`// Complex object array format
 <DtPicker
   initValue={[
     { year: 2023, month: 12, day: 1 },
@@ -602,23 +491,14 @@ function App() {
   onChange={setMulti}
   type="multi"
 />`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='border-red-500'
+                  />
                 </div>
                 <div>
                   <h4 className='font-medium text-white mb-2'>After (v2.x)</h4>
-                  <div className='rounded-lg overflow-hidden border border-accent'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`// Mixed format array support
+                  <CodeBlock
+                    language='tsx'
+                    code={`// Mixed format array support
 <DtPicker
   initValue={[
     "2023-12-01",
@@ -638,8 +518,8 @@ function App() {
   onChange={setMulti}
   type="multi"
 />`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='border-accent'
+                  />
                 </div>
               </div>
             </div>
@@ -649,9 +529,9 @@ function App() {
         {/* Utility Functions */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-white mb-2'>
+            <SectionHeader className='text-white mb-2'>
               Utility Functions Update
-            </h2>
+            </SectionHeader>
             <p className='text-gray-300'>
               Utility functions have been enhanced and some function signatures
               have changed.
@@ -667,23 +547,13 @@ function App() {
                 All comparison functions now accept an optional locale
                 parameter:
               </p>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='typescript'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`// v2.x - locale parameter is now optional
+              <CodeBlock
+                language='typescript'
+                code={`// v2.x - locale parameter is now optional
 isBefore(date1, date2, 'gregorian')  // Gregorian
 isBefore(date1, date2, 'jalali')  // Jalali
 isBefore(date1, date2)        // Uses default locale`}
-                </SyntaxHighlighter>
-              </div>
+              />
             </div>
 
             <div>

@@ -1,16 +1,20 @@
 'use client'
 
 import Link from 'next/link'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import {
+  CodeBlock,
+  InfoBox,
+  Breadcrumb,
+  FeatureList,
+  Note,
+  Important
+} from '../components'
 
 export default function Installation() {
   return (
     <div className='max-w-4xl mx-auto px-6 py-12'>
       <div className='prose prose-lg max-w-none'>
-        <div className='mb-4 text-sm text-gray-400 uppercase tracking-wider'>
-          GET STARTED &gt;
-        </div>
+        <Breadcrumb>GET STARTED &gt;</Breadcrumb>
         <h1>Installation</h1>
 
         <p>
@@ -22,50 +26,23 @@ export default function Installation() {
 
         <p>Install the package using npm, yarn, or pnpm:</p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='bash'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`npm install react-calendar-datetime-picker`}
-          </SyntaxHighlighter>
-        </div>
+        <CodeBlock
+          language='bash'
+          code='npm install react-calendar-datetime-picker'
+          className='mb-4'
+        />
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='bash'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`yarn add react-calendar-datetime-picker`}
-          </SyntaxHighlighter>
-        </div>
+        <CodeBlock
+          language='bash'
+          code='yarn add react-calendar-datetime-picker'
+          className='mb-4'
+        />
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='bash'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`pnpm add react-calendar-datetime-picker`}
-          </SyntaxHighlighter>
-        </div>
+        <CodeBlock
+          language='bash'
+          code='pnpm add react-calendar-datetime-picker'
+          className='mb-4'
+        />
 
         <h2>Import Styles</h2>
 
@@ -74,32 +51,19 @@ export default function Installation() {
           import it in your main entry file or component:
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`import 'react-calendar-datetime-picker/dist/style.css'`}
-          </SyntaxHighlighter>
-        </div>
+        <CodeBlock
+          language='tsx'
+          code="import 'react-calendar-datetime-picker/dist/style.css'"
+          className='mb-4'
+        />
 
-        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-6'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Note:</strong> If you're using a bundler that supports
-                CSS imports, you can also import the styles directly in your
-                component files.
-              </p>
-            </div>
-          </div>
-        </div>
+        <Note>
+          <p className='text-sm text-gray-200'>
+            <strong>Note:</strong> If you're using a bundler that supports CSS
+            imports, you can also import the styles directly in your component
+            files.
+          </p>
+        </Note>
 
         <h2>Understanding Date Values</h2>
 
@@ -116,26 +80,17 @@ export default function Installation() {
           <code>Day</code> object with the following structure:
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`interface Day {
+        <CodeBlock
+          language='typescript'
+          code={`interface Day {
   year: number      // e.g., 2025
   month: number     // 1-12 (not 0-11 like JavaScript Date)
   day: number       // 1-31
   hour?: number     // Optional: 0-23 (for time selection)
   minute?: number   // Optional: 0-59 (for time selection)
 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Example: Single Date</h3>
 
@@ -144,18 +99,9 @@ export default function Installation() {
           not a formatted string:
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`import { useState } from 'react'
+        <CodeBlock
+          language='tsx'
+          code={`import { useState } from 'react'
 import { DtPicker } from 'react-calendar-datetime-picker'
 
 function App() {
@@ -167,22 +113,18 @@ function App() {
 // After selecting December 2, 2025:
 // date = { year: 2025, month: 12, day: 2 }
 // NOT "2025/12/02" (that's just the display format)`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
-        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-6'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Important:</strong> The input field displays{' '}
-                <code>"2025/12/02"</code> as a formatted string, but the actual
-                value in your state is the <code>Day</code> object{' '}
-                <code>{`{ year: 2025, month: 12, day: 2 }`}</code>. The
-                formatted string is only for display purposes.
-              </p>
-            </div>
-          </div>
-        </div>
+        <Important>
+          <p className='text-sm text-gray-200'>
+            <strong>Important:</strong> The input field displays{' '}
+            <code>"2025/12/02"</code> as a formatted string, but the actual
+            value in your state is the <code>Day</code> object{' '}
+            <code>{`{ year: 2025, month: 12, day: 2 }`}</code>. The formatted
+            string is only for display purposes.
+          </p>
+        </Important>
 
         <h3>Date Range Format</h3>
 
@@ -190,18 +132,9 @@ function App() {
           For range selection, the value is a <code>Range</code> object:
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`interface Range {
+        <CodeBlock
+          language='typescript'
+          code={`interface Range {
   from: Day  // Start date
   to: Day    // End date
 }
@@ -211,8 +144,8 @@ function App() {
   from: { year: 2025, month: 12, day: 1 },
   to: { year: 2025, month: 12, day: 15 }
 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Multiple Dates Format</h3>
 
@@ -221,18 +154,9 @@ function App() {
           objects:
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`type Multi = Day[]
+        <CodeBlock
+          language='typescript'
+          code={`type Multi = Day[]
 
 // Example value:
 [
@@ -240,8 +164,8 @@ function App() {
   { year: 2025, month: 12, day: 5 },
   { year: 2025, month: 12, day: 10 }
 ]`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Custom Display Format</h3>
 
@@ -251,76 +175,54 @@ function App() {
           <code>Day</code> object:
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`<DtPicker
+        <CodeBlock
+          language='tsx'
+          code={`<DtPicker
   onChange={setDate}
   dateFormat="DD/MM/YYYY"  // Display format
 />
 
 // Input shows: "02/12/2025"
 // State value: { year: 2025, month: 12, day: 2 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
-        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-6'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Tip:</strong> For more information about data types and
-                their structures, see the{' '}
-                <Link
-                  href='/types'
-                  className='text-accent-light hover:text-accent-light-hover underline'
-                >
-                  Types
-                </Link>{' '}
-                documentation.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <h2>Next Steps</h2>
-
-        <ul>
-          <li>
-            <Link
-              href='/getting-started'
-              className='text-accent-light hover:text-accent-light-hover'
-            >
-              Read the Quick Start guide
-            </Link>{' '}
-            to learn basic usage
-          </li>
-          <li>
+        <InfoBox variant='tip'>
+          <p className='text-sm text-gray-200'>
+            <strong>Tip:</strong> For more information about data types and
+            their structures, see the{' '}
             <Link
               href='/types'
-              className='text-accent-light hover:text-accent-light-hover'
+              className='text-accent-light hover:text-accent-light-hover underline'
             >
-              Learn about data types
+              Types
             </Link>{' '}
-            and their structures
-          </li>
-          <li>
-            <Link
-              href='/examples'
-              className='text-accent-light hover:text-accent-light-hover'
-            >
-              View interactive examples
-            </Link>{' '}
-            to see the component in action
-          </li>
-        </ul>
+            documentation.
+          </p>
+        </InfoBox>
+
+        <FeatureList
+          title='Next Steps'
+          items={[
+            {
+              href: '/getting-started',
+              text: 'Read the Quick Start guide',
+              description: 'to learn basic usage'
+            },
+            {
+              href: '/types',
+              text: 'Learn about data types',
+              description: 'and their structures'
+            },
+            {
+              href: '/examples',
+              text: 'View interactive examples',
+              description: 'to see the component in action'
+            }
+          ]}
+          variant='next-steps'
+          headingLevel={2}
+        />
       </div>
     </div>
   )

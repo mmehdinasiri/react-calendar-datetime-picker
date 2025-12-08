@@ -5,8 +5,7 @@ import { examples } from '../examplesConfig'
 import { ExampleRenderer } from '../components/ExampleRenderer'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { TypeDefinition, Note } from '../components'
 
 // Helper function to convert string to kebab case for IDs
 const toKebabCase = (str: string) =>
@@ -137,25 +136,9 @@ export default function Examples() {
                     component. You can choose from four different selection
                     types, each with its own use case and return value format.
                   </p>
-                  <div>
-                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                      Type Definition:
-                    </p>
-                    <div className='rounded-lg overflow-hidden border border-border'>
-                      <SyntaxHighlighter
-                        language='typescript'
-                        style={vscDarkPlus}
-                        customStyle={{
-                          margin: 0,
-                          borderRadius: '0.5rem',
-                          fontSize: '0.875rem',
-                          lineHeight: '1.5'
-                        }}
-                      >
-                        {`type CalendarType = 'single' | 'range' | 'multi' | 'week'`}
-                      </SyntaxHighlighter>
-                    </div>
-                  </div>
+                  <TypeDefinition
+                    definition={`type CalendarType = 'single' | 'range' | 'multi' | 'week'`}
+                  />
                   <div className='text-gray-600 dark:text-gray-400'>
                     <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                       Selection Types:
@@ -222,26 +205,11 @@ export default function Examples() {
                     prop allows you to choose between 12-hour (AM/PM) and
                     24-hour time formats.
                   </p>
-                  <div>
-                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                      Type Definitions:
-                    </p>
-                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                      <SyntaxHighlighter
-                        language='typescript'
-                        style={vscDarkPlus}
-                        customStyle={{
-                          margin: 0,
-                          borderRadius: '0.5rem',
-                          fontSize: '0.875rem',
-                          lineHeight: '1.5'
-                        }}
-                      >
-                        {`withTime?: boolean
+                  <TypeDefinition
+                    definition={`withTime?: boolean
 timeFormat?: '12' | '24'`}
-                      </SyntaxHighlighter>
-                    </div>
-                  </div>
+                    className='mb-4'
+                  />
                   <div className='text-gray-600 dark:text-gray-400'>
                     <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                       Props:
@@ -305,26 +273,11 @@ timeFormat?: '12' | '24'`}
                     calendar system: Saturday and Sunday for Gregorian, Thursday
                     and Friday for Jalali.
                   </p>
-                  <div>
-                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                      Type Definitions:
-                    </p>
-                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                      <SyntaxHighlighter
-                        language='typescript'
-                        style={vscDarkPlus}
-                        customStyle={{
-                          margin: 0,
-                          borderRadius: '0.5rem',
-                          fontSize: '0.875rem',
-                          lineHeight: '1.5'
-                        }}
-                      >
-                        {`weekStart?: number // 0-6 (0 = Sunday, 6 = Saturday)
+                  <TypeDefinition
+                    definition={`weekStart?: number // 0-6 (0 = Sunday, 6 = Saturday)
 showWeekend?: boolean`}
-                      </SyntaxHighlighter>
-                    </div>
-                  </div>
+                    className='mb-4'
+                  />
                   <div className='text-gray-600 dark:text-gray-400'>
                     <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                       Props:
@@ -425,22 +378,8 @@ showWeekend?: boolean`}
                     changes. These callbacks enable you to track date
                     selections, view changes, navigation events, and more.
                   </p>
-                  <div>
-                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                      Callback Type Definitions:
-                    </p>
-                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                      <SyntaxHighlighter
-                        language='typescript'
-                        style={vscDarkPlus}
-                        customStyle={{
-                          margin: 0,
-                          borderRadius: '0.5rem',
-                          fontSize: '0.875rem',
-                          lineHeight: '1.5'
-                        }}
-                      >
-                        {`// Main callback - type depends on selection type
+                  <TypeDefinition
+                    definition={`// Main callback - type depends on selection type
 onChange: (date: Day | Range | Multi | null) => void
 
 // Event-specific callbacks
@@ -450,9 +389,8 @@ onYearSelect?: (year: number) => void
 onViewChange?: (view: 'calendar' | 'months' | 'years') => void
 onMonthNavigate?: (direction: 'prev' | 'next') => void
 onGoToToday?: () => void`}
-                      </SyntaxHighlighter>
-                    </div>
-                  </div>
+                    className='mb-4'
+                  />
                   <div className='text-gray-600 dark:text-gray-400'>
                     <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                       Callbacks:
@@ -560,30 +498,15 @@ onGoToToday?: () => void`}
                     maximum dates, disabling specific dates, or using a custom
                     validation function.
                   </p>
-                  <div>
-                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                      Type Definition:
-                    </p>
-                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                      <SyntaxHighlighter
-                        language='typescript'
-                        style={vscDarkPlus}
-                        customStyle={{
-                          margin: 0,
-                          borderRadius: '0.5rem',
-                          fontSize: '0.875rem',
-                          lineHeight: '1.5'
-                        }}
-                      >
-                        {`interface CalendarConstraints {
+                  <TypeDefinition
+                    definition={`interface CalendarConstraints {
   minDate?: Day | Date | string | number
   maxDate?: Day | Date | string | number
   disabledDates?: (Day | Date | string | number)[]
   isDateDisabled?: (date: Day) => boolean
 }`}
-                      </SyntaxHighlighter>
-                    </div>
-                  </div>
+                    className='mb-4'
+                  />
                   <div className='text-gray-600 dark:text-gray-400'>
                     <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                       Props:
@@ -640,15 +563,17 @@ onGoToToday?: () => void`}
                         of the week, or custom business rules.
                       </li>
                     </ul>
-                    <p className='mt-4'>
-                      <strong>Note:</strong> All date inputs are automatically
-                      normalized to{' '}
-                      <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
-                        Day
-                      </code>{' '}
-                      objects based on the calendar system. Disabled dates are
-                      visually distinct and cannot be selected.
-                    </p>
+                    <Note>
+                      <p className='text-sm text-gray-200'>
+                        <strong>Note:</strong> All date inputs are automatically
+                        normalized to{' '}
+                        <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+                          Day
+                        </code>{' '}
+                        objects based on the calendar system. Disabled dates are
+                        visually distinct and cannot be selected.
+                      </p>
+                    </Note>
                   </div>
                 </div>
               )}
@@ -671,25 +596,10 @@ onGoToToday?: () => void`}
                     </code>{' '}
                     objects.
                   </p>
-                  <div>
-                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                      Type Definition:
-                    </p>
-                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                      <SyntaxHighlighter
-                        language='typescript'
-                        style={vscDarkPlus}
-                        customStyle={{
-                          margin: 0,
-                          borderRadius: '0.5rem',
-                          fontSize: '0.875rem',
-                          lineHeight: '1.5'
-                        }}
-                      >
-                        {`dateFormat?: string`}
-                      </SyntaxHighlighter>
-                    </div>
-                  </div>
+                  <TypeDefinition
+                    definition='dateFormat?: string'
+                    className='mb-4'
+                  />
                   <div className='text-gray-600 dark:text-gray-400'>
                     <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                       Format Tokens:
@@ -753,22 +663,8 @@ onGoToToday?: () => void`}
                     customize the user interface. Control visual elements like
                     weekend highlighting, buttons, and preset range selections.
                   </p>
-                  <div>
-                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                      Type Definitions:
-                    </p>
-                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                      <SyntaxHighlighter
-                        language='typescript'
-                        style={vscDarkPlus}
-                        customStyle={{
-                          margin: 0,
-                          borderRadius: '0.5rem',
-                          fontSize: '0.875rem',
-                          lineHeight: '1.5'
-                        }}
-                      >
-                        {`showWeekend?: boolean
+                  <TypeDefinition
+                    definition={`showWeekend?: boolean
 todayBtn?: boolean
 clearBtn?: boolean
 presetRanges?: PresetRangesConfig
@@ -786,9 +682,8 @@ interface CustomPresetRange {
   label: string  // Button label text
   range: Range   // Date range (from and to dates)
 }`}
-                      </SyntaxHighlighter>
-                    </div>
-                  </div>
+                    className='mb-4'
+                  />
                   <div className='text-gray-600 dark:text-gray-400'>
                     <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                       Props:
@@ -885,17 +780,19 @@ interface CustomPresetRange {
                             and date ranges
                           </li>
                         </ul>
-                        <p className='mt-2'>
-                          <strong>Note:</strong> To customize the labels of
-                          preset range buttons, see{' '}
-                          <a
-                            href='/internationalization#preset-ranges'
-                            className='text-blue-600 dark:text-blue-400 hover:underline'
-                          >
-                            Internationalization - Preset Ranges
-                          </a>
-                          .
-                        </p>
+                        <Note>
+                          <p className='text-sm text-gray-200'>
+                            <strong>Note:</strong> To customize the labels of
+                            preset range buttons, see{' '}
+                            <a
+                              href='/internationalization#preset-ranges'
+                              className='text-blue-600 dark:text-blue-400 hover:underline'
+                            >
+                              Internationalization - Preset Ranges
+                            </a>
+                            .
+                          </p>
+                        </Note>
                       </li>
                     </ul>
                   </div>
@@ -913,25 +810,10 @@ interface CustomPresetRange {
                     allowing users to see a wider date range at once and select
                     start and end dates more easily.
                   </p>
-                  <div>
-                    <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                      Type Definition:
-                    </p>
-                    <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                      <SyntaxHighlighter
-                        language='typescript'
-                        style={vscDarkPlus}
-                        customStyle={{
-                          margin: 0,
-                          borderRadius: '0.5rem',
-                          fontSize: '0.875rem',
-                          lineHeight: '1.5'
-                        }}
-                      >
-                        {`numberOfMonths?: 1 | 2 | 3`}
-                      </SyntaxHighlighter>
-                    </div>
-                  </div>
+                  <TypeDefinition
+                    definition='numberOfMonths?: 1 | 2 | 3'
+                    className='mb-4'
+                  />
                   <div className='text-gray-600 dark:text-gray-400'>
                     <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                       Options:
@@ -956,11 +838,13 @@ interface CustomPresetRange {
                         - Display three months side by side
                       </li>
                     </ul>
-                    <p className='mt-4'>
-                      <strong>Note:</strong> Multiple months are especially
-                      useful for range selection, as users can easily see and
-                      select dates across month boundaries.
-                    </p>
+                    <Note>
+                      <p className='text-sm text-gray-200'>
+                        <strong>Note:</strong> Multiple months are especially
+                        useful for range selection, as users can easily see and
+                        select dates across month boundaries.
+                      </p>
+                    </Note>
                   </div>
                 </div>
               )}

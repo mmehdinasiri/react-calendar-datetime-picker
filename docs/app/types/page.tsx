@@ -1,16 +1,20 @@
 'use client'
 
 import Link from 'next/link'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import {
+  CodeBlock,
+  InfoBox,
+  Breadcrumb,
+  FeatureList,
+  Note,
+  Important
+} from '../components'
 
 export default function Types() {
   return (
     <div className='max-w-4xl mx-auto px-6 py-12'>
       <div className='prose prose-lg max-w-none'>
-        <div className='mb-4 text-sm text-gray-400 uppercase tracking-wider'>
-          LEARN REACT CALENDAR &gt;
-        </div>
+        <Breadcrumb>LEARN REACT CALENDAR &gt;</Breadcrumb>
         <h1>Data Types</h1>
 
         <p>
@@ -19,21 +23,17 @@ export default function Types() {
           essential for working with the library effectively.
         </p>
 
-        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-6'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Important:</strong> The library stores dates as{' '}
-                <code>Day</code> objects, not strings or JavaScript{' '}
-                <code>Date</code> objects, because <code>Day</code> objects
-                provide better type safety, easier manipulation, and consistent
-                behavior across different calendar systems (Gregorian and
-                Jalali). The formatted string you see in the input field is only
-                for display purposes.
-              </p>
-            </div>
-          </div>
-        </div>
+        <Important>
+          <p className='text-sm text-gray-200'>
+            <strong>Important:</strong> The library stores dates as{' '}
+            <code>Day</code> objects, not strings or JavaScript{' '}
+            <code>Date</code> objects, because <code>Day</code> objects provide
+            better type safety, easier manipulation, and consistent behavior
+            across different calendar systems (Gregorian and Jalali). The
+            formatted string you see in the input field is only for display
+            purposes.
+          </p>
+        </Important>
 
         <h2 id='day'>Day</h2>
 
@@ -42,41 +42,23 @@ export default function Types() {
           fundamental type used throughout the library.
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`interface Day {
+        <CodeBlock
+          language='typescript'
+          code={`interface Day {
   year: number      // Year (e.g., 2025)
   month: number     // Month (1-12, not 0-11 like JavaScript Date)
   day: number       // Day of month (1-31)
   hour?: number     // Optional: Hour (0-23) for time selection
   minute?: number   // Optional: Minute (0-59) for time selection
 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Example</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`// December 2, 2025 at 3:30 PM
+        <CodeBlock
+          language='typescript'
+          code={`// December 2, 2025 at 3:30 PM
 const date: Day = {
   year: 2025,
   month: 12,
@@ -91,20 +73,16 @@ const dateOnly: Day = {
   month: 12,
   day: 2
 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
-        <div className='bg-bg-tertiary border-l-4 border-yellow-500 p-4 my-4'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Note:</strong> Unlike JavaScript's <code>Date</code>{' '}
-                object where months are 0-indexed (0-11), the <code>Day</code>{' '}
-                interface uses 1-indexed months (1-12), which is more intuitive.
-              </p>
-            </div>
-          </div>
-        </div>
+        <InfoBox variant='warning'>
+          <p className='text-sm text-gray-200'>
+            <strong>Note:</strong> Unlike JavaScript's <code>Date</code> object
+            where months are 0-indexed (0-11), the <code>Day</code> interface
+            uses 1-indexed months (1-12), which is more intuitive.
+          </p>
+        </InfoBox>
 
         <h2 id='range'>Range</h2>
 
@@ -113,43 +91,25 @@ const dateOnly: Day = {
           and end date. Used for range selection type.
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`interface Range {
+        <CodeBlock
+          language='typescript'
+          code={`interface Range {
   from: Day  // Start date (inclusive)
   to: Day    // End date (inclusive)
 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Example</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`const dateRange: Range = {
+        <CodeBlock
+          language='typescript'
+          code={`const dateRange: Range = {
   from: { year: 2025, month: 12, day: 1 },
   to: { year: 2025, month: 12, day: 15 }
 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h2 id='multi'>Multi</h2>
 
@@ -159,42 +119,24 @@ const dateOnly: Day = {
           type.
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`type Multi = Day[]`}
-          </SyntaxHighlighter>
-        </div>
+        <CodeBlock
+          language='typescript'
+          code='type Multi = Day[]'
+          className='mb-4'
+        />
 
         <h3>Example</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`const multipleDates: Multi = [
+        <CodeBlock
+          language='typescript'
+          code={`const multipleDates: Multi = [
   { year: 2025, month: 12, day: 1 },
   { year: 2025, month: 12, day: 5 },
   { year: 2025, month: 12, day: 10 },
   { year: 2025, month: 12, day: 15 }
 ]`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h2 id='week'>Week</h2>
 
@@ -203,43 +145,25 @@ const dateOnly: Day = {
           and end dates. Used for week selection type.
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`interface Week {
+        <CodeBlock
+          language='typescript'
+          code={`interface Week {
   from: Day  // Start date of the week
   to: Day    // End date of the week
 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Example</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`const week: Week = {
+        <CodeBlock
+          language='typescript'
+          code={`const week: Week = {
   from: { year: 2025, month: 12, day: 1 },   // Monday
   to: { year: 2025, month: 12, day: 7 }     // Sunday
 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h2 id='calendarsystem'>CalendarSystem</h2>
 
@@ -250,18 +174,9 @@ const dateOnly: Day = {
           shorthand aliases.
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`type CalendarSystem = 'gregorian' | 'jalali' | 'ge' | 'ja'
+        <CodeBlock
+          language='typescript'
+          code={`type CalendarSystem = 'gregorian' | 'jalali' | 'ge' | 'ja'
 
 // Full names:
 // 'gregorian' - Gregorian calendar
@@ -270,23 +185,14 @@ const dateOnly: Day = {
 // Shorthand aliases:
 // 'ge' - Alias for 'gregorian'
 // 'ja' - Alias for 'jalali'`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Example Usage</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`// All of these are valid:
+        <CodeBlock
+          language='tsx'
+          code={`// All of these are valid:
 <DtPicker calendarSystem="gregorian" onChange={setDate} />
 <DtPicker calendarSystem="ge" onChange={setDate} />
 <DtPicker calendarSystem="jalali" onChange={setDate} />
@@ -296,22 +202,18 @@ const dateOnly: Day = {
 <DtCalendar calendarSystem="ge" onChange={setDate} />
 <DtCalendar calendarSystem="jalali" onChange={setDate} />
 <DtCalendar calendarSystem="ja" onChange={setDate} />`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
-        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-4'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Note:</strong> The shorthand aliases (<code>'ge'</code>{' '}
-                and <code>'ja'</code>) are automatically normalized to their
-                full names internally. The library always works with{' '}
-                <code>CalendarLocale</code> internally, but accepts{' '}
-                <code>CalendarSystem</code> as a convenience for users.
-              </p>
-            </div>
-          </div>
-        </div>
+        <Note>
+          <p className='text-sm text-gray-200'>
+            <strong>Note:</strong> The shorthand aliases (<code>'ge'</code> and{' '}
+            <code>'ja'</code>) are automatically normalized to their full names
+            internally. The library always works with{' '}
+            <code>CalendarLocale</code> internally, but accepts{' '}
+            <code>CalendarSystem</code> as a convenience for users.
+          </p>
+        </Note>
 
         <h2 id='presetrangesconfig'>PresetRangesConfig</h2>
 
@@ -322,18 +224,9 @@ const dateOnly: Day = {
           common date ranges.
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`interface PresetRangesConfig {
+        <CodeBlock
+          language='typescript'
+          code={`interface PresetRangesConfig {
   yesterday?: boolean      // Show "Yesterday" button
   last7days?: boolean      // Show "Last 7 days" button
   last30days?: boolean     // Show "Last 30 days" button
@@ -346,23 +239,14 @@ interface CustomPresetRange {
   label: string  // Button label text
   range: Range   // Date range (from and to dates)
 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Example</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`import { DtCalendar } from 'react-calendar-datetime-picker'
+        <CodeBlock
+          language='typescript'
+          code={`import { DtCalendar } from 'react-calendar-datetime-picker'
 import type { PresetRangesConfig } from 'react-calendar-datetime-picker'
 
 const presetRanges: PresetRangesConfig = {
@@ -383,27 +267,23 @@ const presetRanges: PresetRangesConfig = {
 }
 
 <DtCalendar type="range" presetRanges={presetRanges} />`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
-        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-4'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Note:</strong> Preset ranges are only available when{' '}
-                <code>type='range'</code>. To customize the labels of preset
-                range buttons, see the{' '}
-                <Link
-                  href='/customization#preset-ranges'
-                  className='text-accent-light hover:text-accent-light-hover'
-                >
-                  Customization
-                </Link>{' '}
-                documentation.
-              </p>
-            </div>
-          </div>
-        </div>
+        <Note>
+          <p className='text-sm text-gray-200'>
+            <strong>Note:</strong> Preset ranges are only available when{' '}
+            <code>type='range'</code>. To customize the labels of preset range
+            buttons, see the{' '}
+            <Link
+              href='/customization#preset-ranges'
+              className='text-accent-light hover:text-accent-light-hover'
+            >
+              Customization
+            </Link>{' '}
+            documentation.
+          </p>
+        </Note>
 
         <h2 id='locale'>Locale</h2>
 
@@ -414,18 +294,9 @@ const presetRanges: PresetRangesConfig = {
           the number system (Latin vs Persian numerals).
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'
+        <CodeBlock
+          language='typescript'
+          code={`type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'
 
 // Language locales:
 // 'en' - English (Latin numerals, LTR)
@@ -433,21 +304,17 @@ const presetRanges: PresetRangesConfig = {
 // 'de' - German (Latin numerals, LTR)
 // 'es' - Spanish (Latin numerals, LTR)
 // 'fr' - French (Latin numerals, LTR)`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
-        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-4'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Note:</strong> The number system (Latin vs Persian
-                numerals) is automatically determined from the locale. Persian (
-                <code>'fa'</code>) locale uses Persian numerals (۰-۹), while all
-                other locales use Latin numerals (0-9).
-              </p>
-            </div>
-          </div>
-        </div>
+        <Note>
+          <p className='text-sm text-gray-200'>
+            <strong>Note:</strong> The number system (Latin vs Persian numerals)
+            is automatically determined from the locale. Persian (
+            <code>'fa'</code>) locale uses Persian numerals (۰-۹), while all
+            other locales use Latin numerals (0-9).
+          </p>
+        </Note>
 
         <h2>Type Safety</h2>
 
@@ -456,18 +323,9 @@ const presetRanges: PresetRangesConfig = {
           checking and autocomplete support:
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='typescript'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`import { DtPicker } from 'react-calendar-datetime-picker'
+        <CodeBlock
+          language='typescript'
+          code={`import { DtPicker } from 'react-calendar-datetime-picker'
 import type { Day } from 'react-calendar-datetime-picker'
 
 function App() {
@@ -477,43 +335,31 @@ function App() {
 }
 
 // TypeScript will ensure 'date' is always a Day object or null`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
-        <h2>Next Steps</h2>
-
-        <ul>
-          <li>
-            Learn how to use these types in the{' '}
-            <Link
-              href='/getting-started'
-              className='text-accent-light hover:text-accent-light-hover'
-            >
-              Quick Start
-            </Link>{' '}
-            guide
-          </li>
-          <li>
-            See{' '}
-            <Link
-              href='/examples'
-              className='text-accent-light hover:text-accent-light-hover'
-            >
-              interactive examples
-            </Link>{' '}
-            demonstrating these types in action
-          </li>
-          <li>
-            Check the{' '}
-            <Link
-              href='/api-reference'
-              className='text-accent-light hover:text-accent-light-hover'
-            >
-              API Reference
-            </Link>{' '}
-            for detailed type definitions
-          </li>
-        </ul>
+        <FeatureList
+          title='Next Steps'
+          items={[
+            {
+              href: '/getting-started',
+              text: 'Learn how to use these types in the Quick Start',
+              description: 'guide'
+            },
+            {
+              href: '/examples',
+              text: 'See interactive examples',
+              description: 'demonstrating these types in action'
+            },
+            {
+              href: '/api-reference',
+              text: 'Check the API Reference',
+              description: 'for detailed type definitions'
+            }
+          ]}
+          variant='next-steps'
+          headingLevel={2}
+        />
       </div>
     </div>
   )

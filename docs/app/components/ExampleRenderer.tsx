@@ -7,6 +7,7 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import type { ExampleConfig } from '../examplesConfig'
 import type { InitValueInput } from '../../../src/types'
 import { useTheme } from '../contexts/ThemeContext'
+import { Note } from './Note'
 
 interface ExampleRendererProps {
   config: ExampleConfig
@@ -362,12 +363,12 @@ ${propsCode ? propsCode + '\n' : ''}      onChange={setDate}
           </div>
 
           {config.showConsoleLog && (
-            <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
-              <p className='text-sm text-gray-700 dark:text-gray-200'>
+            <Note>
+              <p className='text-sm text-gray-200'>
                 <strong>Note:</strong> Check the browser console to see onChange
                 logs
               </p>
-            </div>
+            </Note>
           )}
         </div>
       </div>

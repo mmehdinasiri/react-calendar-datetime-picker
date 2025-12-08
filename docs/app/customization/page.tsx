@@ -7,8 +7,13 @@ import { dayToString } from 'react-calendar-datetime-picker'
 import type { Day } from 'react-calendar-datetime-picker'
 import '../../../src/styles/index.scss'
 import { ExampleRenderer } from '../components/ExampleRenderer'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import {
+  CodeBlock,
+  InfoBox,
+  SectionHeader,
+  TypeDefinition,
+  FeatureList
+} from '../components'
 import { useTheme } from '../contexts/ThemeContext'
 import {
   cssVariables,
@@ -196,9 +201,7 @@ export default function Customization() {
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Custom Trigger Elements
-            </h2>
+            <SectionHeader>Custom Trigger Elements</SectionHeader>
             <p className='text-gray-600 dark:text-gray-400 text-lg mb-4'>
               Bind the calendar modal to any HTML element instead of just input
               fields. Use the{' '}
@@ -209,25 +212,7 @@ export default function Customization() {
               interactive element. When provided, the default input field will
               not be rendered.
             </p>
-            <div className='mb-4'>
-              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                Type Definition:
-              </p>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='typescript'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`triggerElement?: ReactNode`}
-                </SyntaxHighlighter>
-              </div>
-            </div>
+            <TypeDefinition definition='triggerElement?: ReactNode' />
             <div className='text-gray-600 dark:text-gray-400'>
               <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                 Props:
@@ -402,9 +387,7 @@ function App() {
               className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
             >
               <div className='mb-6'>
-                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-                  Custom Styled Input
-                </h2>
+                <SectionHeader>Custom Styled Input</SectionHeader>
                 <p className='text-gray-700 dark:text-gray-300'>
                   Calendar triggered by a custom styled input field that
                   displays the selected date
@@ -427,18 +410,9 @@ function App() {
                   <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                     Code
                   </h3>
-                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`import { DtPicker, dayToString } from 'react-calendar-datetime-picker'
+                  <CodeBlock
+                    language='tsx'
+                    code={`import { DtPicker, dayToString } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
@@ -470,8 +444,8 @@ function App() {
     />
   )
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='mb-4'
+                  />
                   <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
                     <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-2'>
                       Result
@@ -494,9 +468,7 @@ function App() {
               className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
             >
               <div className='mb-6'>
-                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-                  React Hook Form Integration
-                </h2>
+                <SectionHeader>React Hook Form Integration</SectionHeader>
                 <p className='text-gray-700 dark:text-gray-300'>
                   Integrate DtPicker with React Hook Form using the Controller
                   component. The custom trigger element displays the selected
@@ -517,18 +489,9 @@ function App() {
                   <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                     Code
                   </h3>
-                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`import { DtPicker, dayToString } from 'react-calendar-datetime-picker'
+                  <CodeBlock
+                    language='tsx'
+                    code={`import { DtPicker, dayToString } from 'react-calendar-datetime-picker'
 import { useForm, Controller } from 'react-hook-form'
 import React from 'react'
 
@@ -582,35 +545,19 @@ function App() {
     </form>
   )
 }`}
-                    </SyntaxHighlighter>
-                  </div>
-                  <div className='bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4'>
-                    <h4 className='text-md font-semibold text-blue-900 dark:text-blue-100 mb-2'>
-                      Key Points
-                    </h4>
-                    <ul className='text-sm text-blue-800 dark:text-blue-200 space-y-1'>
-                      <li>
-                        • Use <code>Controller</code> to integrate with React
-                        Hook Form
-                      </li>
-                      <li>
-                        • Use <code>field.value</code> to get the current form
-                        value (no need for <code>watch</code>)
-                      </li>
-                      <li>
-                        • Pass <code>initValue=&#123;field.value&#125;</code> to
-                        make DtPicker a controlled component
-                      </li>
-                      <li>
-                        • Call <code>field.onChange</code> and{' '}
-                        <code>field.onBlur</code> for proper form validation
-                      </li>
-                      <li>
-                        • Format the date using <code>dayToString</code> in the
-                        input value
-                      </li>
-                    </ul>
-                  </div>
+                    className='mb-4'
+                  />
+                  <FeatureList
+                    title='Key Points'
+                    items={[
+                      '• Use <code>Controller</code> to integrate with React Hook Form',
+                      '• Use <code>field.value</code> to get the current form value (no need for <code>watch</code>)',
+                      '• Pass <code>initValue={field.value}</code> to make DtPicker a controlled component',
+                      '• Call <code>field.onChange</code> and <code>field.onBlur</code> for proper form validation',
+                      '• Format the date using <code>dayToString</code> in the input value'
+                    ]}
+                    variant='info'
+                  />
                 </div>
               </div>
             </section>
@@ -626,18 +573,9 @@ function App() {
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                   Basic Button Trigger
                 </h4>
-                <div className='rounded-lg overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='tsx'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.5rem',
-                      fontSize: '0.875rem',
-                      lineHeight: '1.5'
-                    }}
-                  >
-                    {`import { DtPicker } from 'react-calendar-datetime-picker'
+                <CodeBlock
+                  language='tsx'
+                  code={`import { DtPicker } from 'react-calendar-datetime-picker'
 
 function App() {
   return (
@@ -660,26 +598,16 @@ function App() {
     />
   )
 }`}
-                  </SyntaxHighlighter>
-                </div>
+                />
               </div>
 
               <div>
                 <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                   Form Integration
                 </h4>
-                <div className='rounded-lg overflow-hidden border border-border'>
-                  <SyntaxHighlighter
-                    language='tsx'
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      borderRadius: '0.5rem',
-                      fontSize: '0.875rem',
-                      lineHeight: '1.5'
-                    }}
-                  >
-                    {`// React Hook Form Integration
+                <CodeBlock
+                  language='tsx'
+                  code={`// React Hook Form Integration
 import { Controller } from 'react-hook-form'
 
 <Controller
@@ -701,36 +629,22 @@ import { Controller } from 'react-hook-form'
     />
   )}
 />`}
-                  </SyntaxHighlighter>
-                </div>
+                />
               </div>
             </div>
           </div>
 
           <div className='mt-6'>
-            <div className='bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4'>
-              <h4 className='text-md font-semibold text-blue-900 dark:text-blue-100 mb-2'>
-                Key Benefits
-              </h4>
-              <ul className='text-sm text-blue-800 dark:text-blue-200 space-y-1'>
-                <li>
-                  • <strong>Flexible Design:</strong> Use any HTML element as a
-                  trigger
-                </li>
-                <li>
-                  • <strong>Backward Compatible:</strong> Default input behavior
-                  unchanged
-                </li>
-                <li>
-                  • <strong>Accessible:</strong> Proper ARIA attributes and
-                  keyboard navigation
-                </li>
-                <li>
-                  • <strong>Framework Integration:</strong> Works with React
-                  Hook Form, Formik, etc.
-                </li>
-              </ul>
-            </div>
+            <FeatureList
+              title='Key Benefits'
+              items={[
+                '• <strong>Flexible Design:</strong> Use any HTML element as a trigger',
+                '• <strong>Backward Compatible:</strong> Default input behavior unchanged',
+                '• <strong>Accessible:</strong> Proper ARIA attributes and keyboard navigation',
+                '• <strong>Framework Integration:</strong> Works with React Hook Form, Formik, etc.'
+              ]}
+              variant='info'
+            />
           </div>
         </section>
 
@@ -740,9 +654,7 @@ import { Controller } from 'react-hook-form'
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Themes
-            </h2>
+            <SectionHeader>Themes</SectionHeader>
             <p className='text-gray-600 dark:text-gray-400 text-lg mb-4'>
               The calendar supports light and dark themes, as well as custom
               themes using CSS variables. The{' '}
@@ -752,25 +664,7 @@ import { Controller } from 'react-hook-form'
               prop enables the dark theme for both DtPicker and DtCalendar
               components.
             </p>
-            <div className='mb-4'>
-              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                Type Definition:
-              </p>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='typescript'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`dark?: boolean`}
-                </SyntaxHighlighter>
-              </div>
-            </div>
+            <TypeDefinition definition='dark?: boolean' />
             <div className='text-gray-600 dark:text-gray-400'>
               <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                 Props:
@@ -830,9 +724,7 @@ import { Controller } from 'react-hook-form'
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              CSS Variables (Recommended)
-            </h2>
+            <SectionHeader>CSS Variables (Recommended)</SectionHeader>
             <p className='text-gray-600 dark:text-gray-400 text-lg mb-4'>
               The easiest way to customize the calendar appearance is by
               overriding CSS variables. Apply custom variables using the{' '}
@@ -842,25 +734,7 @@ import { Controller } from 'react-hook-form'
               prop. This class is applied to the calendar component, allowing
               you to override any CSS variable.
             </p>
-            <div className='mb-4'>
-              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                Type Definition:
-              </p>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='typescript'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`calenderModalClass?: string`}
-                </SyntaxHighlighter>
-              </div>
-            </div>
+            <TypeDefinition definition='calenderModalClass?: string' />
             <div className='text-gray-600 dark:text-gray-400'>
               <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                 Props:
@@ -1110,12 +984,12 @@ import { Controller } from 'react-hook-form'
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Using calenderModalClass Prop
               </h3>
-              <div className='bg-bg-tertiary border-l-4 border-accent p-4'>
+              <InfoBox variant='tip'>
                 <p className='text-sm text-gray-200'>
                   <strong>Tip:</strong> This approach applies the class directly
                   to the calendar component, making it cleaner and more direct.
                 </p>
-              </div>
+              </InfoBox>
             </div>
           </div>
 
@@ -1155,18 +1029,9 @@ import { Controller } from 'react-hook-form'
                   <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                     CSS Styles
                   </h3>
-                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                    <SyntaxHighlighter
-                      language='css'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`/* styles.css */
+                  <CodeBlock
+                    language='css'
+                    code={`/* styles.css */
 .calendar-blue-theme {
   --calendar-bg: #eff6ff;
   --calendar-text: #1e40af;
@@ -1181,23 +1046,14 @@ import { Controller } from 'react-hook-form'
   --calendar-primary: #2563eb;
   --calendar-header-bg: #2563eb;
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='mb-4'
+                  />
                   <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                     Code
                   </h3>
-                  <div className='rounded-lg overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
+                  <CodeBlock
+                    language='tsx'
+                    code={`import { DtCalendar } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
@@ -1212,8 +1068,7 @@ function App() {
     />
   )
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                  />
                   <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
                     <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-2'>
                       Result
@@ -1237,9 +1092,7 @@ function App() {
               className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
             >
               <div className='mb-6'>
-                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-                  Brown Example
-                </h2>
+                <SectionHeader>Brown Example</SectionHeader>
                 <p className='text-gray-700 dark:text-gray-300'>
                   Custom brown dark theme using CSS variables with
                   calenderModalClass prop
@@ -1265,18 +1118,9 @@ function App() {
                   <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                     CSS Styles
                   </h3>
-                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                    <SyntaxHighlighter
-                      language='css'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`/* styles.css */
+                  <CodeBlock
+                    language='css'
+                    code={`/* styles.css */
 .react-calendar-datetime-picker.calendar-dark-custom-theme[data-theme='dark'],
 .calendar-dark-custom-theme[data-theme='dark'] {
   /* Override only background colors - primary colors remain default dark theme green */
@@ -1287,23 +1131,14 @@ function App() {
   --calendar-header-bg: #2c1810;
   --calendar-border: #4a2e1f;
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='mb-4'
+                  />
                   <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                     Code
                   </h3>
-                  <div className='rounded-lg overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
+                  <CodeBlock
+                    language='tsx'
+                    code={`import { DtCalendar } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
@@ -1319,8 +1154,7 @@ function App() {
     />
   )
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                  />
                   <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
                     <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-2'>
                       Result
@@ -1342,9 +1176,7 @@ function App() {
               className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
             >
               <div className='mb-6'>
-                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-                  Smaller Calendar Example
-                </h2>
+                <SectionHeader>Smaller Calendar Example</SectionHeader>
                 <p className='text-gray-700 dark:text-gray-300'>
                   Make the calendar grid smaller by reducing the cell size.
                   Header and footer remain unchanged.
@@ -1370,18 +1202,9 @@ function App() {
                   <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                     CSS Styles
                   </h3>
-                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                    <SyntaxHighlighter
-                      language='css'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`/* styles.css */
+                  <CodeBlock
+                    language='css'
+                    code={`/* styles.css */
 .calendar-small-size {
   /* Smaller grid cells - calendar width = 35px * 7 = 245px */
   --calendar-cell-size: 35px;
@@ -1390,23 +1213,14 @@ function App() {
   --calendar-year-view-font-size: 12px;
   --calendar-year-view-font-size-selected: 16px;
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='mb-4'
+                  />
                   <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                     Code
                   </h3>
-                  <div className='rounded-lg overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
+                  <CodeBlock
+                    language='tsx'
+                    code={`import { DtCalendar } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
@@ -1422,8 +1236,7 @@ function App() {
     />
   )
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                  />
                   <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
                     <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-2'>
                       Result
@@ -1447,9 +1260,7 @@ function App() {
               className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
             >
               <div className='mb-6'>
-                <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-                  Larger Calendar Example
-                </h2>
+                <SectionHeader>Larger Calendar Example</SectionHeader>
                 <p className='text-gray-700 dark:text-gray-300'>
                   Make the calendar grid larger by increasing the cell size.
                   Header and footer remain unchanged.
@@ -1475,41 +1286,23 @@ function App() {
                   <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                     CSS Styles
                   </h3>
-                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                    <SyntaxHighlighter
-                      language='css'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`/* styles.css */
+                  <CodeBlock
+                    language='css'
+                    code={`/* styles.css */
 .calendar-large-size {
   /* Larger grid cells - calendar width = 50px * 7 = 350px */
   --calendar-cell-size: 50px;
   --calendar-cell-font-size: 16px;
   --calendar-cell-font-size-selected: 20px;
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='mb-4'
+                  />
                   <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                     Code
                   </h3>
-                  <div className='rounded-lg overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='tsx'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`import { DtCalendar } from 'react-calendar-datetime-picker'
+                  <CodeBlock
+                    language='tsx'
+                    code={`import { DtCalendar } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
@@ -1525,8 +1318,7 @@ function App() {
     />
   )
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                  />
                   <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
                     <h4 className='text-md font-semibold text-gray-900 dark:text-white mb-2'>
                       Result
@@ -1552,9 +1344,7 @@ function App() {
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Custom CSS Classes
-            </h2>
+            <SectionHeader>Custom CSS Classes</SectionHeader>
             <p className='text-gray-600 dark:text-gray-400 text-lg mb-4'>
               Override specific calendar elements using the{' '}
               <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
@@ -1567,22 +1357,8 @@ function App() {
               property. This allows you to add custom CSS classes to specific
               calendar components.
             </p>
-            <div className='mb-4'>
-              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                Type Definition:
-              </p>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='typescript'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`interface CalendarClasses {
+            <TypeDefinition
+              definition={`interface CalendarClasses {
   header?: string
   days?: string
   months?: string
@@ -1592,9 +1368,7 @@ function App() {
 customization?: {
   classes?: CalendarClasses
 }`}
-                </SyntaxHighlighter>
-              </div>
-            </div>
+            />
             <div className='text-gray-600 dark:text-gray-400'>
               <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                 Properties:
@@ -1621,23 +1395,13 @@ customization?: {
           </div>
 
           <div className='space-y-6'>
-            <div className='rounded-lg overflow-hidden border border-border'>
-              <SyntaxHighlighter
-                language='tsx'
-                style={vscDarkPlus}
-                customStyle={{
-                  margin: 0,
-                  borderRadius: '0.5rem',
-                  fontSize: '0.875rem',
-                  lineHeight: '1.5'
-                }}
-              >
-                {`<DtCalendar
+            <CodeBlock
+              language='tsx'
+              code={`<DtCalendar
   calenderModalClass="my-custom-calendar"
   // ... other props
 />`}
-              </SyntaxHighlighter>
-            </div>
+            />
 
             <div>
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
@@ -1700,9 +1464,7 @@ customization?: {
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Custom Icons
-            </h2>
+            <SectionHeader>Custom Icons</SectionHeader>
             <p className='text-gray-600 dark:text-gray-400 text-lg mb-4'>
               Customize navigation icons using the{' '}
               <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
@@ -1715,22 +1477,8 @@ customization?: {
               property. Replace the default chevron icons with your own React
               components.
             </p>
-            <div className='mb-4'>
-              <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                Type Definition:
-              </p>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='typescript'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`interface CalendarIcons {
+            <TypeDefinition
+              definition={`interface CalendarIcons {
   next?: React.ComponentType<{ className?: string }>
   previous?: React.ComponentType<{ className?: string }>
 }
@@ -1738,9 +1486,7 @@ customization?: {
 customization?: {
   icons?: CalendarIcons
 }`}
-                </SyntaxHighlighter>
-              </div>
-            </div>
+            />
             <div className='text-gray-600 dark:text-gray-400'>
               <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
                 Properties:
@@ -1826,9 +1572,7 @@ function App() {
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Internationalization (i18n)
-            </h2>
+            <SectionHeader>Internationalization (i18n)</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               Full internationalization support with locale-based translations,
               RTL support, and customizable text.
@@ -1903,12 +1647,9 @@ function App() {
               </div>
 
               <div className='bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-6'>
-                <SyntaxHighlighter
+                <CodeBlock
                   language='typescript'
-                  style={vscDarkPlus}
-                  className='rounded-md'
-                >
-                  {`// Basic locale usage
+                  code={`// Basic locale usage
 <DtPicker locale="fa" onChange={setDate} />
 
 // German locale
@@ -1916,7 +1657,8 @@ function App() {
 
 // French locale
 <DtPicker locale="fr" onChange={setDate} />`}
-                </SyntaxHighlighter>
+                  className='bg-transparent border-0'
+                />
               </div>
             </div>
 
@@ -1965,12 +1707,9 @@ function App() {
                   CalendarTranslations Interface
                 </h4>
                 <div className='bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden'>
-                  <SyntaxHighlighter
+                  <CodeBlock
                     language='typescript'
-                    style={vscDarkPlus}
-                    className='rounded-md'
-                  >
-                    {`export interface CalendarTranslations {
+                    code={`export interface CalendarTranslations {
   /** Month names (12 elements, index 0-11 for months 1-12) */
   months: string[]
 
@@ -2020,17 +1759,15 @@ function App() {
     lastMonth: string
   }
 }`}
-                  </SyntaxHighlighter>
+                    className='bg-transparent border-0'
+                  />
                 </div>
               </div>
 
               <div className='bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mt-6'>
-                <SyntaxHighlighter
+                <CodeBlock
                   language='typescript'
-                  style={vscDarkPlus}
-                  className='rounded-md'
-                >
-                  {`// Complete custom translations example
+                  code={`// Complete custom translations example
 <DtPicker
   locale="en"
   customization={{
@@ -2067,7 +1804,8 @@ function App() {
   }}
   onChange={setDate}
 />`}
-                </SyntaxHighlighter>
+                  className='bg-transparent border-0'
+                />
               </div>
             </div>
 
@@ -2110,18 +1848,18 @@ function App() {
                 exampleKey='PersianRTL'
               />
 
-              <div className='bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mt-4'>
-                <h4 className='text-blue-900 dark:text-blue-100 font-semibold mb-2'>
-                  RTL Features:
-                </h4>
-                <ul className='text-blue-800 dark:text-blue-200 text-sm space-y-1'>
-                  <li>• Automatic text direction detection</li>
-                  <li>• Persian/Arabic numerals in dates and times</li>
-                  <li>• RTL calendar layout</li>
-                  <li>• Localized month and weekday names</li>
-                  <li>• RTL time picker interface</li>
-                </ul>
-              </div>
+              <FeatureList
+                title='RTL Features:'
+                items={[
+                  '• Automatic text direction detection',
+                  '• Persian/Arabic numerals in dates and times',
+                  '• RTL calendar layout',
+                  '• Localized month and weekday names',
+                  '• RTL time picker interface'
+                ]}
+                variant='info'
+                className='mt-4'
+              />
             </div>
           </div>
         </section>

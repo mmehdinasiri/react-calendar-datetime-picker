@@ -1,16 +1,19 @@
 'use client'
 
-import Link from 'next/link'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import {
+  CodeBlock,
+  InfoBox,
+  Breadcrumb,
+  FeatureList,
+  Note,
+  Important
+} from '../components'
 
 export default function GettingStarted() {
   return (
     <div className='max-w-4xl mx-auto px-6 py-12'>
       <div className='prose prose-lg max-w-none'>
-        <div className='mb-4 text-sm text-gray-400 uppercase tracking-wider'>
-          LEARN REACT CALENDAR &gt;
-        </div>
+        <Breadcrumb>LEARN REACT CALENDAR &gt;</Breadcrumb>
         <h1>Quick Start</h1>
 
         <p>
@@ -34,18 +37,9 @@ export default function GettingStarted() {
           modal when clicked:
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`import React, { useState } from 'react'
+        <CodeBlock
+          language='tsx'
+          code={`import React, { useState } from 'react'
 import { DtPicker } from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/style.css'
 
@@ -60,8 +54,8 @@ function App() {
     />
   )
 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Standalone Calendar (DtCalendar)</h3>
 
@@ -69,18 +63,9 @@ function App() {
           The DtCalendar component provides a calendar without an input field:
         </p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`import React, { useState } from 'react'
+        <CodeBlock
+          language='tsx'
+          code={`import React, { useState } from 'react'
 import { DtCalendar } from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/style.css'
 
@@ -94,8 +79,8 @@ function App() {
     />
   )
 }`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h2>Calendar Types</h2>
 
@@ -103,83 +88,47 @@ function App() {
 
         <h3>Single Date Selection</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`<DtPicker
+        <CodeBlock
+          language='tsx'
+          code={`<DtPicker
   type="single"
   onChange={setDate}
 />`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Date Range Selection</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`<DtPicker
+        <CodeBlock
+          language='tsx'
+          code={`<DtPicker
   type="range"
   onChange={setDateRange}
 />`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Multiple Date Selection</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`<DtPicker
+        <CodeBlock
+          language='tsx'
+          code={`<DtPicker
   type="multi"
   onChange={setMultipleDates}
 />`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Week Selection</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`<DtPicker
+        <CodeBlock
+          language='tsx'
+          code={`<DtPicker
   type="week"
   onChange={setWeek}
 />`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h2>Calendar Locales</h2>
 
@@ -189,94 +138,54 @@ function App() {
 
         <h3>Gregorian Calendar</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`<DtPicker
+        <CodeBlock
+          language='tsx'
+          code={`<DtPicker
   calendarSystem="gregorian"
   onChange={setDate}
 />`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h3>Jalali (Persian) Calendar</h3>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`<DtPicker
+        <CodeBlock
+          language='tsx'
+          code={`<DtPicker
   calendarSystem="jalali"
   onChange={setDate}
 />`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
-        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-6'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Note:</strong> When using Persian locale (fa), make sure
-                to include the Persian fonts in your project for proper display.
-              </p>
-            </div>
-          </div>
-        </div>
+        <Note>
+          <p className='text-sm text-gray-200'>
+            <strong>Note:</strong> When using Persian locale (fa), make sure to
+            include the Persian fonts in your project for proper display.
+          </p>
+        </Note>
 
         <h2>Time Selection</h2>
 
         <p>Enable time selection with customizable format:</p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`<DtPicker
+        <CodeBlock
+          language='tsx'
+          code={`<DtPicker
   withTime={true}
   timeFormat="24"
   onChange={setDateTime}
 />`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
         <h2>Date Constraints</h2>
 
         <p>Restrict selectable dates using constraints:</p>
 
-        <div className='rounded-lg overflow-hidden border border-border mb-4'>
-          <SyntaxHighlighter
-            language='tsx'
-            style={vscDarkPlus}
-            customStyle={{
-              margin: 0,
-              borderRadius: '0.5rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5'
-            }}
-          >
-            {`<DtPicker
+        <CodeBlock
+          language='tsx'
+          code={`<DtPicker
   constraints={{
     minDate: new Date(),
     maxDate: new Date(2025, 11, 31),
@@ -287,93 +196,64 @@ function App() {
   }}
   onChange={setDate}
 />`}
-          </SyntaxHighlighter>
-        </div>
+          className='mb-4'
+        />
 
-        <div className='bg-bg-tertiary border-l-4 border-yellow-500 p-4 my-4'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Important:</strong> When using JavaScript's{' '}
-                <code>Date</code> object (e.g., in constraints), remember that
-                months are 0-indexed (January is 0, December is 11). However,
-                the library's <code>Day</code> object uses 1-indexed months
-                (January is 1, December is 12).
-              </p>
-            </div>
-          </div>
-        </div>
+        <Important>
+          <p className='text-sm text-gray-200'>
+            <strong>Important:</strong> When using JavaScript's{' '}
+            <code>Date</code> object (e.g., in constraints), remember that
+            months are 0-indexed (January is 0, December is 11). However, the
+            library's <code>Day</code> object uses 1-indexed months (January is
+            1, December is 12).
+          </p>
+        </Important>
 
-        <h2>Next Steps</h2>
+        <FeatureList
+          title='Next Steps'
+          items={[
+            {
+              href: '/installation',
+              text: 'Install the package',
+              description: 'and learn about date value formats'
+            },
+            {
+              href: '/types',
+              text: 'Understand data types',
+              description: 'and how dates are structured'
+            },
+            {
+              href: '/examples',
+              text: 'View interactive examples',
+              description: 'to see the component in action'
+            },
+            {
+              href: '/api-reference',
+              text: 'Check the API reference',
+              description: 'for detailed prop documentation'
+            },
+            {
+              href: '/customization',
+              text: 'Learn about customization options',
+              description: 'for theming and styling'
+            },
+            {
+              href: '/accessibility',
+              text: 'Read about accessibility features',
+              description: 'for inclusive design'
+            }
+          ]}
+          variant='next-steps'
+          headingLevel={2}
+        />
 
-        <ul>
-          <li>
-            <Link
-              href='/installation'
-              className='text-accent-light hover:text-accent-light-hover'
-            >
-              Install the package
-            </Link>{' '}
-            and learn about date value formats
-          </li>
-          <li>
-            <Link
-              href='/types'
-              className='text-accent-light hover:text-accent-light-hover'
-            >
-              Understand data types
-            </Link>{' '}
-            and how dates are structured
-          </li>
-          <li>
-            <Link
-              href='/examples'
-              className='text-accent-light hover:text-accent-light-hover'
-            >
-              View interactive examples
-            </Link>{' '}
-            to see the component in action
-          </li>
-          <li>
-            <Link
-              href='/api-reference'
-              className='text-accent-light hover:text-accent-light-hover'
-            >
-              Check the API reference
-            </Link>{' '}
-            for detailed prop documentation
-          </li>
-          <li>
-            <Link
-              href='/customization'
-              className='text-accent-light hover:text-accent-light-hover'
-            >
-              Learn about customization options
-            </Link>{' '}
-            for theming and styling
-          </li>
-          <li>
-            <Link
-              href='/accessibility'
-              className='text-accent-light hover:text-accent-light-hover'
-            >
-              Read about accessibility features
-            </Link>{' '}
-            for inclusive design
-          </li>
-        </ul>
-
-        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-6'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>Tip:</strong> All examples in this documentation are
-                interactive. You can modify the props and see the changes in
-                real-time.
-              </p>
-            </div>
-          </div>
-        </div>
+        <InfoBox variant='tip'>
+          <p className='text-sm text-gray-200'>
+            <strong>Tip:</strong> All examples in this documentation are
+            interactive. You can modify the props and see the changes in
+            real-time.
+          </p>
+        </InfoBox>
       </div>
     </div>
   )

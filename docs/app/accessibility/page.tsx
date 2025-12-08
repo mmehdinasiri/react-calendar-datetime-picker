@@ -5,8 +5,7 @@ import { DtPicker } from '../../../src/components/DtPicker'
 import type { InitValueInput } from '../../../src/types'
 import '../../../src/styles/index.scss'
 import { ExampleRenderer } from '../components/ExampleRenderer'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { CodeBlock, InfoBox, SectionHeader } from '../components'
 
 export default function Accessibility() {
   const [accessibleDate, setAccessibleDate] = useState<
@@ -24,17 +23,12 @@ export default function Accessibility() {
           navigation and screen reader support.
         </p>
 
-        <div className='bg-bg-tertiary border-l-4 border-accent p-4 my-6'>
-          <div className='flex'>
-            <div className='ml-3'>
-              <p className='text-sm text-gray-200'>
-                <strong>✓ WCAG 2.1 AA Compliant</strong> - Full keyboard
-                navigation, ARIA labels, focus management, and screen reader
-                support.
-              </p>
-            </div>
-          </div>
-        </div>
+        <InfoBox>
+          <p className='text-sm text-gray-200'>
+            <strong>✓ WCAG 2.1 AA Compliant</strong> - Full keyboard navigation,
+            ARIA labels, focus management, and screen reader support.
+          </p>
+        </InfoBox>
       </div>
 
       <div className='space-y-12'>
@@ -44,9 +38,7 @@ export default function Accessibility() {
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Keyboard Navigation
-            </h2>
+            <SectionHeader>Keyboard Navigation</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               Full keyboard support allows users to navigate and interact with
               the calendar without using a mouse.
@@ -234,9 +226,7 @@ export default function Accessibility() {
           className='bg-bg-secondary rounded-lg border border-border p-8'
         >
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              ARIA Support and Screen Readers
-            </h2>
+            <SectionHeader>ARIA Support and Screen Readers</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               Comprehensive ARIA attributes ensure screen readers can properly
               announce the calendar state, selected dates, and available
@@ -406,9 +396,7 @@ export default function Accessibility() {
         {/* Focus Management */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Focus Management
-            </h2>
+            <SectionHeader>Focus Management</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               Proper focus management ensures keyboard users can navigate
               naturally through the interface.
@@ -425,25 +413,15 @@ export default function Accessibility() {
                 calendar. Users can tab through interactive elements and use
                 Escape to close.
               </p>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='tsx'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`// Focus trap is automatically enabled
+              <CodeBlock
+                language='tsx'
+                code={`// Focus trap is automatically enabled
 <DtPicker
   showWeekend={true}
   todayBtn={true}
   clearBtn={true}
 />`}
-                </SyntaxHighlighter>
-              </div>
+              />
             </div>
 
             <div>
@@ -461,9 +439,7 @@ export default function Accessibility() {
         {/* RTL Support */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              RTL (Right-to-Left) Support
-            </h2>
+            <SectionHeader>RTL (Right-to-Left) Support</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               Full RTL support for Persian and other right-to-left languages,
               including proper keyboard navigation.
@@ -475,23 +451,13 @@ export default function Accessibility() {
               <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                 Persian Calendar (RTL)
               </h3>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='tsx'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`<DtPicker
+              <CodeBlock
+                language='tsx'
+                code={`<DtPicker
   calendarSystem="jalali"
   placeholder="تاریخ را انتخاب کنید"
 />`}
-                </SyntaxHighlighter>
-              </div>
+              />
               <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
                 <p className='text-sm text-gray-200'>
                   <strong>RTL Navigation:</strong> In RTL mode, arrow keys are
@@ -507,9 +473,7 @@ export default function Accessibility() {
         {/* High Contrast Support */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              High Contrast Mode
-            </h2>
+            <SectionHeader>High Contrast Mode</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               The calendar respects system high contrast settings and works well
               with high contrast themes.
@@ -525,18 +489,9 @@ export default function Accessibility() {
                 Use CSS variables to ensure proper contrast ratios in different
                 themes:
               </p>
-              <div className='rounded-lg overflow-hidden border border-border'>
-                <SyntaxHighlighter
-                  language='css'
-                  style={vscDarkPlus}
-                  customStyle={{
-                    margin: 0,
-                    borderRadius: '0.5rem',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5'
-                  }}
-                >
-                  {`/* High contrast theme */
+              <CodeBlock
+                language='css'
+                code={`/* High contrast theme */
 .calendar-high-contrast {
   --calendar-bg: white;
   --calendar-text: black;
@@ -544,8 +499,7 @@ export default function Accessibility() {
   --calendar-selected: black;
   --calendar-selected-text: white;
 }`}
-                </SyntaxHighlighter>
-              </div>
+              />
             </div>
           </div>
         </section>
@@ -553,9 +507,7 @@ export default function Accessibility() {
         {/* Testing */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
-              Testing Accessibility
-            </h2>
+            <SectionHeader>Testing Accessibility</SectionHeader>
             <p className='text-gray-700 dark:text-gray-300'>
               Tools and methods for testing the calendar's accessibility
               features.

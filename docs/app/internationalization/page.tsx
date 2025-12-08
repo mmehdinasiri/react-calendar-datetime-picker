@@ -5,8 +5,7 @@ import { examples } from '../examplesConfig'
 import { ExampleRenderer } from '../components/ExampleRenderer'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { TypeDefinition } from '../components'
 
 // Helper function to convert string to kebab case for IDs
 const toKebabCase = (str: string) =>
@@ -108,23 +107,9 @@ export default function Internationalization() {
                   </ul>
                 </div>
                 <div className='mt-6'>
-                  <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                    Type Definition:
-                  </p>
-                  <div className='rounded-lg overflow-hidden border border-border'>
-                    <SyntaxHighlighter
-                      language='typescript'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'`}
-                    </SyntaxHighlighter>
-                  </div>
+                  <TypeDefinition
+                    definition={`type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'`}
+                  />
                 </div>
               </div>
             )}
@@ -147,21 +132,8 @@ export default function Internationalization() {
                   defaults intact.
                 </p>
                 <div className='mt-6'>
-                  <p className='font-semibold mb-2 text-gray-900 dark:text-gray-100'>
-                    Type Definition:
-                  </p>
-                  <div className='rounded-lg overflow-hidden border border-border mb-4'>
-                    <SyntaxHighlighter
-                      language='typescript'
-                      style={vscDarkPlus}
-                      customStyle={{
-                        margin: 0,
-                        borderRadius: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}
-                    >
-                      {`interface CalendarTranslations {
+                  <TypeDefinition
+                    definition={`interface CalendarTranslations {
   months: string[]
   weekdays: string[]
   direction: 'ltr' | 'rtl'
@@ -194,8 +166,8 @@ export default function Internationalization() {
 customization?: {
   translations?: Partial<CalendarTranslations>
 }`}
-                    </SyntaxHighlighter>
-                  </div>
+                    className='mb-4'
+                  />
                 </div>
                 <p className='text-gray-600 dark:text-gray-400 text-lg'>
                   The{' '}
