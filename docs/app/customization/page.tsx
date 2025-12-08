@@ -2059,8 +2059,21 @@ function App() {
                 RTL Support
               </h3>
               <p className='text-gray-700 dark:text-gray-300 mb-4'>
-                Automatic right-to-left layout support for RTL languages like
-                Persian and Arabic.
+                Automatic right-to-left layout support for RTL languages. RTL
+                support is tied to the{' '}
+                <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                  locale
+                </code>{' '}
+                prop, not the calendar system. Currently, the{' '}
+                <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                  fa
+                </code>{' '}
+                (Persian) locale is the only locale that provides RTL support,
+                even when used with the Gregorian calendar system (
+                <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded'>
+                  calendarSystem="ge"
+                </code>
+                ).
               </p>
 
               <ExampleRenderer
