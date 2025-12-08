@@ -7,55 +7,21 @@ import type { InitValueInput } from 'react-calendar-datetime-picker'
 
 const features = [
   {
-    title: 'Enhanced TypeScript Support',
-    description:
-      'Better type definitions, improved IntelliSense, and stricter type checking for a more robust development experience.'
-  },
-  {
-    title: 'Improved Accessibility',
-    description:
-      'Full keyboard navigation, ARIA labels, focus management, and screen reader support for WCAG 2.1 Level AA compliance.'
-  },
-  {
-    title: 'CSS Variables Support',
-    description:
-      'Easy theming with CSS custom properties for colors and styling, enabling seamless theme integration and customization.'
-  },
-  {
-    title: 'Better Performance',
-    description:
-      'Optimized rendering, memoization, and reduced bundle size for faster loading and smoother interactions.'
-  },
-  {
-    title: 'Extended Utility Functions',
-    description:
-      'Comprehensive date manipulation utilities for complex use cases, calendar conversions, and advanced date operations.'
-  },
-  {
-    title: 'Enhanced Customization',
-    description:
-      'Custom icons, labels, translations, CSS classes, and component styling to match your exact design requirements.'
-  },
-  {
-    title: 'Time Selection Support',
-    description:
-      'Full time picker integration with 12-hour and 24-hour formats, supporting hours and minutes for precise datetime input.'
-  },
-  {
     title: 'Dual Calendar Support',
     description:
       'Native support for both Gregorian and Jalali (Persian) calendars with automatic locale handling and seamless switching.'
-  },
-  {
-    title: 'Internationalization (i18n)',
-    description:
-      'Full locale support for English, Persian, German, Spanish, and French with RTL support, custom translations, and localized formatting.'
   },
   {
     title: 'Flexible Selection Modes',
     description:
       'Single date, date range, multi-date, and week selection modes to accommodate various use cases and workflows.'
   },
+  {
+    title: 'Time Selection Support',
+    description:
+      'Full time picker integration with 12-hour and 24-hour formats, supporting hours and minutes for precise datetime input.'
+  },
+
   {
     title: 'Preset Date Ranges',
     description:
@@ -67,29 +33,69 @@ const features = [
       'Set minimum and maximum dates, disable specific dates, and use custom validation functions for precise date control.'
   },
   {
-    title: 'Rich Event System',
+    title: 'Multiple Months Display',
     description:
-      'Comprehensive callback system for date selection, month/year navigation, view changes, and user interactions.'
+      'Display multiple calendar months side by side for better range selection and improved user experience.'
   },
   {
     title: 'Week Customization',
     description:
       'Customize week start day (Sunday-Saturday), weekend highlighting, and weekday names for different regional preferences.'
   },
+
   {
-    title: 'Multiple Months Display',
+    title: 'Enhanced TypeScript Support',
     description:
-      'Display multiple calendar months side by side for better range selection and improved user experience.'
+      'Better type definitions, improved IntelliSense, and stricter type checking for a more robust development experience.'
   },
   {
-    title: 'Custom Trigger Elements',
+    title: 'CSS Variables Support',
     description:
-      'Use any React element as a trigger for the date picker, enabling complete control over input styling and behavior.'
+      'Easy theming with CSS custom properties for colors and styling, enabling seamless theme integration and customization.'
   },
   {
     title: 'Dark Mode Support',
     description:
       'Built-in dark theme with automatic detection and seamless integration with your application theme.'
+  },
+
+  {
+    title: 'Internationalization (i18n)',
+    description:
+      'Full locale support for English, Persian, German, Spanish, and French with RTL support, custom translations, and localized formatting.'
+  },
+  {
+    title: 'Extended Utility Functions',
+    description:
+      'Comprehensive date manipulation utilities for complex use cases, calendar conversions, and advanced date operations.'
+  },
+  {
+    title: 'Better Performance',
+    description:
+      'Optimized rendering, memoization, and reduced bundle size for faster loading and smoother interactions.'
+  },
+  {
+    title: 'Enhanced Customization',
+    description:
+      'Custom icons, labels, translations, CSS classes, and component styling to match your exact design requirements.'
+  },
+
+  {
+    title: 'Rich Event System',
+    description:
+      'Comprehensive callback system for date selection, month/year navigation, view changes, and user interactions.'
+  },
+
+  {
+    title: 'Custom Trigger Elements',
+    description:
+      'Use any React element as a trigger for the date picker, enabling complete control over input styling and behavior.'
+  },
+
+  {
+    title: 'Improved Accessibility',
+    description:
+      'Full keyboard navigation, ARIA labels, focus management, and screen reader support for WCAG 2.1 Level AA compliance.'
   },
   {
     title: 'Input-less Mode',
