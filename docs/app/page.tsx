@@ -114,7 +114,7 @@ export default function Home() {
   return (
     <div className='min-h-screen bg-bg-primary'>
       {/* Hero Section */}
-      <div className='flex flex-col items-center justify-center min-h-[50vh] px-4 pb-8'>
+      <div className='flex flex-col items-center justify-center min-h-[42vh] px-4 pb-6'>
         <div className='text-center max-w-3xl'>
           {/* Logo */}
           <div className='mb-8 flex justify-center'>
@@ -162,7 +162,7 @@ export default function Home() {
       </div>
 
       {/* Examples Section */}
-      <div className='max-w-6xl mx-auto px-6 pt-8 pb-8 home-page-calendar-container'>
+      <div className='max-w-6xl mx-auto px-6 pb-10 home-page-calendar-container'>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
           {/* Example 1: Basic Light Calendar with EN locale */}
           <div className='bg-bg-secondary rounded-lg border border-border p-6'>
