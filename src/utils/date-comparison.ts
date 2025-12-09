@@ -506,13 +506,18 @@ export function getDaysInRange(
 ): Day[] {
   const { from, to } = range
 
+  // If to is null, return only the from date
+  if (!to) {
+    return [{ ...from }]
+  }
+
   // Determine which date is earlier
   const comparison = compareDays(from, to, calendarSystem)
   const start = comparison <= 0 ? from : to
   const end = comparison <= 0 ? to : from
 
   const days: Day[] = []
-  let current = { ...start }
+  let current: Day = { ...start }
 
   // Add days until we reach the end date (inclusive)
   while (compareDays(current, end, calendarSystem) <= 0) {
@@ -521,28 +526,4 @@ export function getDaysInRange(
   }
 
   return days
-}
-
-export function isJalaliLeapYear(year: number): boolean {
-  const a = year - (year > 0 ? 474 : 473)
-  const b = a % 2820
-  return ((b + 474) * 682) % 2816 < 682
-}
-
-/**
- * Check if a year is a leap year
- * @param year - Year to check
- * @param calendarSystem - Calendar system ('gregorian' or 'jalali')
- * @returns true if the year is a leap year in the specified calendar system
- */
-export function isLeapYear(
-  year: number,
-  calendarSystem: CalendarLocale = 'gregorian'
-): boolean {
-  if (calendarSystem === 'jalali') {
-    return isJalaliLeapYear(year)
-  } else {
-    // Gregorian leap year: divisible by 4, but not by 100 unless also divisible by 400
-    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
-  }
 }

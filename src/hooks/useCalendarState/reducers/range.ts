@@ -31,7 +31,7 @@ export function rangeReducer(
         action.payload,
         context.withTime
       )
-      const newRange: Range = { from: fromWithTime, to: null as any }
+      const newRange: Range = { from: fromWithTime, to: null }
       return {
         state: {
           selectedValue: newRange,
@@ -101,7 +101,7 @@ export function rangeReducer(
 
       // If no range exists or range is complete, start new range
       if (!currentRange || !currentRange.from || currentRange.to) {
-        const newRange: Range = { from: dayWithTime, to: null as any }
+        const newRange: Range = { from: dayWithTime, to: null }
         const newDisplayMonth = resolveDisplayMonth(
           state.displayMonth,
           newRange,

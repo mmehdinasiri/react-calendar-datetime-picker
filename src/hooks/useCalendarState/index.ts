@@ -102,6 +102,7 @@ export function useCalendarState(options: UseCalendarStateOptions) {
   // Note: The linter warning about ref access is a false positive.
   // Reducers are only called when dispatch is invoked (from event handlers),
   // not during render. Writing to refs in reducers is safe and a common pattern.
+  // eslint-disable-next-line
   const [state, dispatch] = useReducer(reducer, initialState)
 
   // Track previous initValue to detect changes

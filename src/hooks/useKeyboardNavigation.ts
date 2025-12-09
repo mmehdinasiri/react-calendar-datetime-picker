@@ -343,7 +343,8 @@ export const useKeyboardNavigation = (
       handleHomeEnd,
       handlePageUpDown,
       onDateSelect,
-      onGoToToday
+      onGoToToday,
+      onMonthNavigate
     ]
   )
 

@@ -59,17 +59,18 @@ Additional context passed to all reducers:
 
 ```typescript
 export interface ReducerContext {
-  type: CalendarType              // 'single' | 'range' | 'multi' | 'week'
-  calendarSystem: CalendarLocale   // 'gregorian' | 'jalali'
-  withTime: boolean                // Whether time selection is enabled
-  numberOfMonths: number           // 1 | 2 | 3
-  weekStart?: number               // First day of week (0-6)
+  type: CalendarType // 'single' | 'range' | 'multi' | 'week'
+  calendarSystem: CalendarLocale // 'gregorian' | 'jalali'
+  withTime: boolean // Whether time selection is enabled
+  numberOfMonths: number // 1 | 2 | 3
+  weekStart?: number // First day of week (0-6)
 }
 ```
 
 ### ReducerResult
 
 Each reducer returns a result that can include:
+
 - State updates (partial `CalendarState`)
 - Emitted value (for callbacks)
 
@@ -87,12 +88,14 @@ export interface ReducerResult {
 **Handles**: `SELECT_DATE` action for single date selection
 
 **Responsibilities**:
+
 - Adds system time if `withTime` is enabled
 - Updates `selectedValue` with the selected day
 - Resolves display month based on selection
 - Returns emitted value for callbacks
 
 **Example**:
+
 ```typescript
 // Action
 { type: 'SELECT_DATE', payload: { year: 2024, month: 12, day: 25 } }
@@ -110,19 +113,22 @@ export interface ReducerResult {
 
 ### 2. Range Reducer (`range.ts`)
 
-**Handles**: 
+**Handles**:
+
 - `SELECT_RANGE_START` - Start a new range
 - `SELECT_RANGE_END` - Complete a range
 - `SELECT_RANGE_DIRECT` - Set a complete range (for preset ranges)
 - `SELECT_DATE` - Handle date selection for range type
 
 **Responsibilities**:
+
 - Manages range state (from/to)
 - Handles range completion logic
 - Swaps from/to if end date is before start date
 - Updates display month appropriately
 
 **Key Logic**:
+
 ```typescript
 // If no range exists or range is complete, start new range
 if (!currentRange || !currentRange.from || currentRange.to) {
@@ -143,11 +149,13 @@ if (isBefore(selectedDay, currentRange.from)) {
 **Handles**: `SELECT_WEEK` and `SELECT_DATE` actions for week type
 
 **Responsibilities**:
+
 - Calculates week bounds using `getWeekBounds()`
 - Updates both `from` and `to` dates of the week
 - Resolves display month
 
 **Example**:
+
 ```typescript
 // Selecting June 7, 2023 (Wednesday)
 // Results in week from June 4 (Sunday) to June 10 (Saturday)
@@ -162,11 +170,13 @@ if (isBefore(selectedDay, currentRange.from)) {
 **Handles**: `TOGGLE_MULTI_DATE` and `SELECT_DATE` actions for multi type
 
 **Responsibilities**:
+
 - Toggles dates in/out of selection array
 - Maintains array of selected dates
 - Uses `isSameDay` helper to check if date is already selected
 
 **Logic**:
+
 ```typescript
 const isSelected = currentMulti.some((day) => isSameDay(day, action.payload))
 
@@ -184,12 +194,14 @@ if (isSelected) {
 **Handles**: `UPDATE_TIME` action
 
 **Responsibilities**:
+
 - Updates time (hour/minute) for selected dates
 - Handles time updates for single, range, and week types
 - Identifies which date in range/week to update (from or to)
 - Multi type doesn't support time selection
 
 **Key Logic**:
+
 ```typescript
 // For range/week, check if updating 'from' or 'to'
 const isStartDate = currentRange.from && isSameDay(currentRange.from, day)
@@ -205,6 +217,7 @@ if (isStartDate) {
 ### 6. Navigation Reducer (`navigation.ts`)
 
 **Handles**:
+
 - `NAVIGATE_MONTH` - Navigate to previous/next month
 - `SET_VIEW` - Change view (calendar/months/years)
 - `SELECT_MONTH` - Select a month from month view
@@ -213,6 +226,7 @@ if (isStartDate) {
 - `SET_DISPLAY_MONTH` - Directly set display month
 
 **Responsibilities**:
+
 - Manages calendar navigation
 - Handles month/year boundaries
 - Updates `currentView` state
@@ -227,6 +241,7 @@ if (isStartDate) {
 ### Time Helpers (`helpers/time.ts`)
 
 **Functions**:
+
 - `addSystemTimeIfNeeded(day: Day, withTime: boolean): Day` - Add current system time if time is missing
 - `addSystemTimeToRange(range, withTime): Range` - Add system time to both from and to
 
@@ -237,11 +252,13 @@ if (isStartDate) {
 **Function**: `resolveDisplayMonth(prevDisplay, newValue, numberOfMonths, calendarSystem, type, currentRange?)`
 
 **Responsibilities**:
+
 - Determines the appropriate display month based on selection
 - Handles multi-month view visibility checks
 - Special handling for range type (only navigate when starting new range)
 
 **Logic**:
+
 ```typescript
 // For range: only navigate if starting a new range
 if (type === 'range' && currentRange?.from && !currentRange.to) {
@@ -294,6 +311,7 @@ export function calendarReducer(
 ```
 
 **Key Points**:
+
 - Each reducer returns `null` if it doesn't handle the action
 - First reducer that returns a result wins
 - Special cases handled at the end (CLEAR_SELECTION, SYNC_INIT_VALUE)
@@ -313,16 +331,18 @@ The main hook is now only **136 lines** (down from 745!) and is responsible for:
 The hook uses a ref to capture emitted values from reducers, then calls callbacks in a `useEffect`:
 
 ```typescript
-const emittedValueRef = useRef<Day | Range | Multi | null | undefined>(undefined)
+const emittedValueRef = useRef<Day | Range | Multi | null | undefined>(
+  undefined
+)
 
 const reducer = (state: CalendarState, action: CalendarAction) => {
   const result = calendarReducer(state, action, context)
-  
+
   // Capture emitted value for callback handling
   if (result.emittedValue !== undefined) {
     emittedValueRef.current = result.emittedValue
   }
-  
+
   return result.state
 }
 
@@ -331,7 +351,7 @@ useEffect(() => {
   if (emittedValueRef.current !== undefined) {
     const value = emittedValueRef.current
     emittedValueRef.current = undefined
-    
+
     onChange(value)
     if (onCalenderChange && initValue !== undefined) {
       onCalenderChange(value)
@@ -341,6 +361,7 @@ useEffect(() => {
 ```
 
 **Benefits**:
+
 - Callbacks are called after state updates
 - No side effects in reducers
 - Clear separation of concerns
@@ -352,21 +373,28 @@ All action creators are centralized in one file:
 ```typescript
 export const createActions = (dispatch: (action: CalendarAction) => void) => ({
   selectDate: (day: Day) => dispatch({ type: 'SELECT_DATE', payload: day }),
-  selectRangeStart: (day: Day) => dispatch({ type: 'SELECT_RANGE_START', payload: day }),
-  selectRangeEnd: (day: Day) => dispatch({ type: 'SELECT_RANGE_END', payload: day }),
+  selectRangeStart: (day: Day) =>
+    dispatch({ type: 'SELECT_RANGE_START', payload: day }),
+  selectRangeEnd: (day: Day) =>
+    dispatch({ type: 'SELECT_RANGE_END', payload: day }),
   selectWeek: (day: Day) => dispatch({ type: 'SELECT_WEEK', payload: day }),
-  selectRangeDirect: (range: Range) => dispatch({ type: 'SELECT_RANGE_DIRECT', payload: range }),
-  selectPresetRange: (range: Range) => dispatch({ type: 'SELECT_RANGE_DIRECT', payload: range }),
-  toggleMultiDate: (day: Day) => dispatch({ type: 'TOGGLE_MULTI_DATE', payload: day }),
-  updateTime: (day: Day, hour: number, minute: number) => 
+  selectRangeDirect: (range: Range) =>
+    dispatch({ type: 'SELECT_RANGE_DIRECT', payload: range }),
+  selectPresetRange: (range: Range) =>
+    dispatch({ type: 'SELECT_RANGE_DIRECT', payload: range }),
+  toggleMultiDate: (day: Day) =>
+    dispatch({ type: 'TOGGLE_MULTI_DATE', payload: day }),
+  updateTime: (day: Day, hour: number, minute: number) =>
     dispatch({ type: 'UPDATE_TIME', payload: { day, hour, minute } }),
   clearSelection: () => dispatch({ type: 'CLEAR_SELECTION' }),
-  navigateMonth: (direction: 'prev' | 'next') => 
+  navigateMonth: (direction: 'prev' | 'next') =>
     dispatch({ type: 'NAVIGATE_MONTH', payload: direction }),
-  setView: (view: 'calendar' | 'months' | 'years') => 
+  setView: (view: 'calendar' | 'months' | 'years') =>
     dispatch({ type: 'SET_VIEW', payload: view }),
-  selectMonth: (month: number) => dispatch({ type: 'SELECT_MONTH', payload: month }),
-  selectYear: (year: number) => dispatch({ type: 'SELECT_YEAR', payload: year }),
+  selectMonth: (month: number) =>
+    dispatch({ type: 'SELECT_MONTH', payload: month }),
+  selectYear: (year: number) =>
+    dispatch({ type: 'SELECT_YEAR', payload: year }),
   goToToday: () => dispatch({ type: 'GO_TO_TODAY' })
 })
 ```

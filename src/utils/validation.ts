@@ -6,13 +6,40 @@ import type { Day, CalendarLocale } from '../types'
 import type { ValidationResult } from '../types/calendar'
 import { jalaliToGregorian } from './date-conversion'
 import { isDayObject } from './normalize'
-import { isJalaliLeapYear } from './date-comparison'
 
 /**
  * Check if a year is a leap year in Gregorian calendar
  */
 function isGregorianLeapYear(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
+}
+
+/**
+ * Check if a year is a leap year in Jalali calendar
+ */
+function isJalaliLeapYear(year: number): boolean {
+  // Jalali leap year calculation using the 33-year cycle
+  // The remainders of dividing the year in the cycle by 33 should be in [1, 5, 9, 13, 17, 22, 26, 30]
+  const remainders = [1, 5, 9, 13, 17, 22, 26, 30]
+  const cycleYear = year % 33
+  return remainders.includes(cycleYear)
+}
+
+/**
+ * Check if a year is a leap year in the specified calendar system
+ * @param year - Year to check
+ * @param calendarSystem - Calendar system ('gregorian' or 'jalali')
+ * @returns true if the year is a leap year
+ */
+export function isLeapYear(
+  year: number,
+  calendarSystem: CalendarLocale = 'gregorian'
+): boolean {
+  if (calendarSystem === 'jalali') {
+    return isJalaliLeapYear(year)
+  } else {
+    return isGregorianLeapYear(year)
+  }
 }
 
 /**

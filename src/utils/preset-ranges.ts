@@ -173,6 +173,11 @@ export function isPresetRangeActive(
     return false
   }
 
+  // If preset range doesn't have a to date, it can't match
+  if (!presetRange.to) {
+    return false
+  }
+
   // Compare dates ignoring time
   const presetFrom = presetRange.from
   const presetTo = presetRange.to

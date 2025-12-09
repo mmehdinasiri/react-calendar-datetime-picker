@@ -37,7 +37,7 @@ describe('calendar-selection utils', () => {
       it('returns true if day is within range inclusive', () => {
         expect(isDaySelected(day, range, 'range')).toBe(true) // 15 is between 10 and 20
         expect(isDaySelected(range.from, range, 'range')).toBe(true) // Start date
-        expect(isDaySelected(range.to, range, 'range')).toBe(true) // End date
+        expect(isDaySelected(range.to!, range, 'range')).toBe(true) // End date
       })
 
       it('returns false if day is outside range', () => {
@@ -93,7 +93,7 @@ describe('calendar-selection utils', () => {
 
     it('returns false for start and end dates (boundaries)', () => {
       expect(isDayInRange(range.from, range, 'range')).toBe(false)
-      expect(isDayInRange(range.to, range, 'range')).toBe(false)
+      expect(isDayInRange(range.to!, range, 'range')).toBe(false)
     })
 
     it('returns false if type is not range or week', () => {
@@ -129,7 +129,7 @@ describe('calendar-selection utils', () => {
 
     it('returns false if day does not match from date', () => {
       expect(isRangeStart(day, range, 'range')).toBe(false)
-      expect(isRangeStart(range.to, range, 'range')).toBe(false)
+      expect(isRangeStart(range.to!, range, 'range')).toBe(false)
     })
 
     it('returns false for other types', () => {
@@ -144,7 +144,7 @@ describe('calendar-selection utils', () => {
     }
 
     it('returns true if day matches to date', () => {
-      expect(isRangeEnd(range.to, range, 'range')).toBe(true)
+      expect(isRangeEnd(range.to!, range, 'range')).toBe(true)
     })
 
     it('returns false if day does not match to date', () => {
@@ -153,7 +153,7 @@ describe('calendar-selection utils', () => {
     })
 
     it('returns false for other types', () => {
-      expect(isRangeEnd(range.to, range, 'single')).toBe(false)
+      expect(isRangeEnd(range.to!, range, 'single')).toBe(false)
     })
   })
 })

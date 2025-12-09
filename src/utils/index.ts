@@ -31,7 +31,8 @@ export {
   isDateSelectable,
   compareDays,
   getDaysInMonth,
-  validateDay
+  validateDay,
+  isLeapYear
 } from './validation'
 
 // Constraints
@@ -87,9 +88,7 @@ export {
   endOfYear,
   getStartOfWeek,
   getEndOfWeek,
-  getDaysInRange,
-  isLeapYear,
-  isJalaliLeapYear
+  getDaysInRange
 } from './date-comparison'
 
 // Utility functions for backward compatibility (convertToFa, convertToEn)

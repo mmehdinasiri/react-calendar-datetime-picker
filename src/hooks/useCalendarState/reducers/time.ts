@@ -82,7 +82,8 @@ export function timeReducer(
     }
 
     const isStartDate =
-      currentWeek.from && isSameDay(currentWeek.from, day, context.calendarSystem)
+      currentWeek.from &&
+      isSameDay(currentWeek.from, day, context.calendarSystem)
     const isEndDate =
       currentWeek.to && isSameDay(currentWeek.to, day, context.calendarSystem)
 

@@ -46,8 +46,8 @@ export interface Day {
 export interface Range {
   /** Start date */
   from: Day
-  /** End date */
-  to: Day
+  /** End date (can be null for incomplete ranges) */
+  to: Day | null
 }
 
 /**
