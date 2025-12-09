@@ -3,24 +3,16 @@
  */
 
 import type { Day, CalendarLocale } from '../types'
+import type { ValidationResult } from '../types/calendar'
 import { jalaliToGregorian } from './date-conversion'
+import { isDayObject } from './normalize'
+import { isJalaliLeapYear } from './date-comparison'
 
 /**
  * Check if a year is a leap year in Gregorian calendar
  */
 function isGregorianLeapYear(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
-}
-
-/**
- * Check if a year is a leap year in Jalali calendar
- */
-function isJalaliLeapYear(year: number): boolean {
-  // Jalali leap year calculation using the 33-year cycle
-  // The remainders of dividing the year in the cycle by 33 should be in [1, 5, 9, 13, 17, 22, 26, 30]
-  const remainders = [1, 5, 9, 13, 17, 22, 26, 30]
-  const cycleYear = year % 33
-  return remainders.includes(cycleYear)
 }
 
 /**
@@ -238,4 +230,54 @@ export function compareDays(
   }
 
   return 0
+}
+
+/**
+ * Unified validation function using ValidationResult interface
+ * Provides consistent error handling across utilities
+ * @param day - Day object or unknown value to validate
+ * @param locale - Calendar system (gregorian or jalali)
+ * @returns ValidationResult with success status and data or error
+ */
+export function validateDay(
+  day: unknown,
+  locale: CalendarLocale
+): ValidationResult<Day> {
+  try {
+    // Check if it's a Day object
+    if (!isDayObject(day)) {
+      return {
+        success: false,
+        error: {
+          code: 'INVALID_TYPE',
+          message: 'Not a Day object',
+          details: { received: typeof day, value: day }
+        }
+      }
+    }
+
+    // Validate the day
+    if (!isValidDay(day, locale)) {
+      return {
+        success: false,
+        error: {
+          code: 'INVALID_DATE',
+          message: `Invalid ${locale} date: Day ${day.day} does not exist in month ${day.month} of year ${day.year}`,
+          details: { day, locale }
+        }
+      }
+    }
+
+    return { success: true, data: day }
+  } catch (error) {
+    return {
+      success: false,
+      error: {
+        code: 'CONVERSION_ERROR',
+        message:
+          error instanceof Error ? error.message : 'Unknown validation error',
+        details: { originalError: error }
+      }
+    }
+  }
 }

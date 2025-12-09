@@ -70,6 +70,8 @@ export interface CalendarHeaderProps {
   nextTitle?: string
   /** Show year button (default: true) */
   showYear?: boolean
+  /** Show month button (default: true) */
+  showMonth?: boolean
 }
 
 export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
@@ -84,7 +86,8 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
     onYearClick,
     previousTitle,
     nextTitle,
-    showYear = true
+    showYear = true,
+    showMonth = true
   } = props
 
   const { classes = {}, icons = {} } = customization
@@ -113,19 +116,20 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = (props) => {
       </button>
 
       <div className='calendar-month-year-btn'>
-        {onMonthClick ? (
-          <button
-            type='button'
-            onClick={onMonthClick}
-            className='calendar-month-btn'
-          >
-            {monthNames[displayMonth.month - 1]}
-          </button>
-        ) : (
-          <div className='calendar-month-btn' style={{ cursor: 'default' }}>
-            {monthNames[displayMonth.month - 1]}
-          </div>
-        )}
+        {showMonth &&
+          (onMonthClick ? (
+            <button
+              type='button'
+              onClick={onMonthClick}
+              className='calendar-month-btn'
+            >
+              {monthNames[displayMonth.month - 1]}
+            </button>
+          ) : (
+            <div className='calendar-month-btn' style={{ cursor: 'default' }}>
+              {monthNames[displayMonth.month - 1]}
+            </div>
+          ))}
         {showYear &&
           (onYearClick ? (
             <button

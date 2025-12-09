@@ -7,6 +7,9 @@ import {
   isBefore,
   isAfter,
   isSameDay,
+  isSameMonth,
+  isSameYear,
+  isLeapYear,
   isBetween,
   addDays,
   addMonths,
@@ -20,6 +23,9 @@ import {
   endOfMonth,
   startOfYear,
   endOfYear,
+  getStartOfWeek,
+  getEndOfWeek,
+  getDaysInRange,
   getToday,
   dayToString
 } from '../../../src/utils'
@@ -473,6 +479,242 @@ export default function Utilities() {
                       {
                         content.sections.dateComparison.basicComparisons
                           .isSameDay.noDateMessage
+                      }
+                    </div>
+                  )}
+                </div>
+
+                <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
+                  <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                    {
+                      content.sections.dateComparison.basicComparisons
+                        .isSameMonth.title
+                    }
+                  </h4>
+                  <CodeBlock
+                    language='typescript'
+                    code={
+                      content.sections.dateComparison.basicComparisons
+                        .isSameMonth.code
+                    }
+                    customStyle={{
+                      borderRadius: '0.25rem',
+                      fontSize: '0.75rem',
+                      lineHeight: '1.5',
+                      padding: '0.5rem'
+                    }}
+                    className='mb-2'
+                  />
+                  <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
+                    {
+                      content.sections.dateComparison.basicComparisons
+                        .isSameMonth.description
+                    }
+                  </p>
+                  {selectedDate ? (
+                    <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
+                      <div>
+                        <strong>Function call:</strong>
+                        <br />
+                        <code className='text-xs'>
+                          {
+                            content.sections.dateComparison.basicComparisons
+                              .isSameMonth.functionCall
+                          }
+                        </code>
+                      </div>
+                      <div className='mt-2 pt-2 border-t border-border'>
+                        <strong>Values:</strong>
+                        <br />
+                        <span className='text-gray-700 dark:text-gray-300'>
+                          date1 (selectedDate) ={' '}
+                          {dayToString(selectedDate, '/')}
+                          <br />
+                          date2 (today) ={' '}
+                          {dayToString(getToday('gregorian'), '/')}
+                        </span>
+                      </div>
+                      <div className='mt-2 pt-2 border-t border-border'>
+                        <strong>Result:</strong>{' '}
+                        <code>
+                          {isSameMonth(selectedDate, getToday('gregorian'))
+                            ? 'true'
+                            : 'false'}
+                        </code>
+                        <br />
+                        <span className='text-gray-700 dark:text-gray-300 text-xs'>
+                          {isSameMonth(selectedDate, getToday('gregorian'))
+                            ? `Selected date is in the same month as today`
+                            : `Selected date is not in the same month as today`}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
+                      {
+                        content.sections.dateComparison.basicComparisons
+                          .isSameMonth.noDateMessage
+                      }
+                    </div>
+                  )}
+                </div>
+
+                <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
+                  <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                    {
+                      content.sections.dateComparison.basicComparisons
+                        .isSameYear.title
+                    }
+                  </h4>
+                  <CodeBlock
+                    language='typescript'
+                    code={
+                      content.sections.dateComparison.basicComparisons
+                        .isSameYear.code
+                    }
+                    customStyle={{
+                      borderRadius: '0.25rem',
+                      fontSize: '0.75rem',
+                      lineHeight: '1.5',
+                      padding: '0.5rem'
+                    }}
+                    className='mb-2'
+                  />
+                  <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
+                    {
+                      content.sections.dateComparison.basicComparisons
+                        .isSameYear.description
+                    }
+                  </p>
+                  {selectedDate ? (
+                    <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
+                      <div>
+                        <strong>Function call:</strong>
+                        <br />
+                        <code className='text-xs'>
+                          {
+                            content.sections.dateComparison.basicComparisons
+                              .isSameYear.functionCall
+                          }
+                        </code>
+                      </div>
+                      <div className='mt-2 pt-2 border-t border-border'>
+                        <strong>Values:</strong>
+                        <br />
+                        <span className='text-gray-700 dark:text-gray-300'>
+                          date1 (selectedDate) ={' '}
+                          {dayToString(selectedDate, '/')}
+                          <br />
+                          date2 (today) ={' '}
+                          {dayToString(getToday('gregorian'), '/')}
+                        </span>
+                      </div>
+                      <div className='mt-2 pt-2 border-t border-border'>
+                        <strong>Result:</strong>{' '}
+                        <code>
+                          {isSameYear(selectedDate, getToday('gregorian'))
+                            ? 'true'
+                            : 'false'}
+                        </code>
+                        <br />
+                        <span className='text-gray-700 dark:text-gray-300 text-xs'>
+                          {isSameYear(selectedDate, getToday('gregorian'))
+                            ? `Selected date is in the same year as today`
+                            : `Selected date is not in the same year as today`}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
+                      {
+                        content.sections.dateComparison.basicComparisons
+                          .isSameYear.noDateMessage
+                      }
+                    </div>
+                  )}
+                </div>
+
+                <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
+                  <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                    {
+                      content.sections.dateComparison.basicComparisons
+                        .isLeapYear.title
+                    }
+                  </h4>
+                  <CodeBlock
+                    language='typescript'
+                    code={
+                      content.sections.dateComparison.basicComparisons
+                        .isLeapYear.code
+                    }
+                    customStyle={{
+                      borderRadius: '0.25rem',
+                      fontSize: '0.75rem',
+                      lineHeight: '1.5',
+                      padding: '0.5rem'
+                    }}
+                    className='mb-2'
+                  />
+                  <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
+                    {
+                      content.sections.dateComparison.basicComparisons
+                        .isLeapYear.description
+                    }
+                  </p>
+                  {selectedDate ? (
+                    <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
+                      <div>
+                        <strong>Function call:</strong>
+                        <br />
+                        <code className='text-xs'>
+                          {
+                            content.sections.dateComparison.basicComparisons
+                              .isLeapYear.functionCall
+                          }
+                        </code>
+                      </div>
+                      <div className='mt-2 pt-2 border-t border-border'>
+                        <strong>Values:</strong>
+                        <br />
+                        <span className='text-gray-700 dark:text-gray-300'>
+                          year (selectedDate.year) = {selectedDate.year}
+                          <br />
+                          locale = 'gregorian'
+                        </span>
+                      </div>
+                      <div className='mt-2 pt-2 border-t border-border'>
+                        <strong>Result (Gregorian):</strong>{' '}
+                        <code>
+                          {isLeapYear(selectedDate.year, 'gregorian')
+                            ? 'true'
+                            : 'false'}
+                        </code>
+                        <br />
+                        <strong>Result (Jalali):</strong>{' '}
+                        <code>
+                          {isLeapYear(selectedDate.year, 'jalali')
+                            ? 'true'
+                            : 'false'}
+                        </code>
+                        <br />
+                        <span className='text-gray-700 dark:text-gray-300 text-xs'>
+                          Year {selectedDate.year} is{' '}
+                          {isLeapYear(selectedDate.year, 'gregorian')
+                            ? 'a leap year'
+                            : 'not a leap year'}{' '}
+                          in Gregorian calendar, and{' '}
+                          {isLeapYear(selectedDate.year, 'jalali')
+                            ? 'a leap year'
+                            : 'not a leap year'}{' '}
+                          in Jalali calendar
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
+                      {
+                        content.sections.dateComparison.basicComparisons
+                          .isLeapYear.noDateMessage
                       }
                     </div>
                   )}
@@ -1401,6 +1643,221 @@ export default function Utilities() {
                   </div>
                 )}
               </div>
+
+              <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
+                <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                  {content.sections.dateBoundaries.getStartOfWeek.title}
+                </h4>
+                <CodeBlock
+                  language='typescript'
+                  code={content.sections.dateBoundaries.getStartOfWeek.code}
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
+                <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
+                  {content.sections.dateBoundaries.getStartOfWeek.description}
+                </p>
+                {selectedDate ? (
+                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
+                    <div>
+                      <strong>Function call:</strong>
+                      <br />
+                      <code className='text-xs'>
+                        {
+                          content.sections.dateBoundaries.getStartOfWeek
+                            .functionCall
+                        }
+                      </code>
+                    </div>
+                    <div className='mt-2 pt-2 border-t border-border'>
+                      <strong>Input value:</strong>
+                      <br />
+                      <span className='text-gray-700 dark:text-gray-300'>
+                        date (selectedDate) = {dayToString(selectedDate, '/')}
+                        <br />
+                        weekStart = 0 (Sunday)
+                      </span>
+                    </div>
+                    <div className='mt-2 pt-2 border-t border-border'>
+                      <strong>
+                        {
+                          content.sections.dateBoundaries.getStartOfWeek
+                            .resultLabel
+                        }
+                      </strong>{' '}
+                      {dayToString(
+                        getStartOfWeek(selectedDate, 0, 'gregorian'),
+                        '/'
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
+                    {
+                      content.sections.dateBoundaries.getStartOfWeek
+                        .noDateMessage
+                    }
+                  </div>
+                )}
+              </div>
+
+              <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
+                <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                  {content.sections.dateBoundaries.getEndOfWeek.title}
+                </h4>
+                <CodeBlock
+                  language='typescript'
+                  code={content.sections.dateBoundaries.getEndOfWeek.code}
+                  customStyle={{
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem',
+                    lineHeight: '1.5',
+                    padding: '0.5rem'
+                  }}
+                  className='mb-2'
+                />
+                <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
+                  {content.sections.dateBoundaries.getEndOfWeek.description}
+                </p>
+                {selectedDate ? (
+                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
+                    <div>
+                      <strong>Function call:</strong>
+                      <br />
+                      <code className='text-xs'>
+                        {
+                          content.sections.dateBoundaries.getEndOfWeek
+                            .functionCall
+                        }
+                      </code>
+                    </div>
+                    <div className='mt-2 pt-2 border-t border-border'>
+                      <strong>Input value:</strong>
+                      <br />
+                      <span className='text-gray-700 dark:text-gray-300'>
+                        date (selectedDate) = {dayToString(selectedDate, '/')}
+                        <br />
+                        weekStart = 0 (Sunday)
+                      </span>
+                    </div>
+                    <div className='mt-2 pt-2 border-t border-border'>
+                      <strong>
+                        {
+                          content.sections.dateBoundaries.getEndOfWeek
+                            .resultLabel
+                        }
+                      </strong>{' '}
+                      {dayToString(
+                        getEndOfWeek(selectedDate, 0, 'gregorian'),
+                        '/'
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
+                    {content.sections.dateBoundaries.getEndOfWeek.noDateMessage}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Range Utilities */}
+        <section className='bg-bg-secondary rounded-lg border border-border p-8'>
+          <div className='mb-6'>
+            <SectionHeader>
+              {content.sections.rangeUtilities.title}
+            </SectionHeader>
+            <p className='text-gray-700 dark:text-gray-300'>
+              {content.sections.rangeUtilities.description}
+            </p>
+          </div>
+
+          <div className='space-y-6'>
+            <div className='border border-border rounded-lg p-4 bg-bg-tertiary'>
+              <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
+                {content.sections.rangeUtilities.getDaysInRange.title}
+              </h4>
+              <CodeBlock
+                language='typescript'
+                code={content.sections.rangeUtilities.getDaysInRange.code}
+                customStyle={{
+                  borderRadius: '0.25rem',
+                  fontSize: '0.75rem',
+                  lineHeight: '1.5',
+                  padding: '0.5rem'
+                }}
+                className='mb-2'
+              />
+              <p className='text-sm text-gray-700 dark:text-gray-300 mb-2'>
+                {content.sections.rangeUtilities.getDaysInRange.description}
+              </p>
+              {selectedDate ? (
+                <div className='mt-2 p-2 bg-bg-secondary rounded text-xs space-y-1'>
+                  <div>
+                    <strong>Function call:</strong>
+                    <br />
+                    <code className='text-xs'>
+                      {
+                        content.sections.rangeUtilities.getDaysInRange
+                          .functionCall
+                      }
+                    </code>
+                  </div>
+                  <div className='mt-2 pt-2 border-t border-border'>
+                    <strong>Input values:</strong>
+                    <br />
+                    <span className='text-gray-700 dark:text-gray-300'>
+                      {(() => {
+                        const today = getToday('gregorian')
+                        const weekAgo = addDays(today, -7, 'gregorian')
+                        return (
+                          <>
+                            range.from (weekAgo) = {dayToString(weekAgo, '/')}
+                            <br />
+                            range.to (today) = {dayToString(today, '/')}
+                          </>
+                        )
+                      })()}
+                    </span>
+                  </div>
+                  <div className='mt-2 pt-2 border-t border-border'>
+                    <strong>
+                      {
+                        content.sections.rangeUtilities.getDaysInRange
+                          .resultLabel
+                      }
+                    </strong>
+                    <br />
+                    <div className='mt-1 max-h-32 overflow-y-auto'>
+                      {(() => {
+                        const today = getToday('gregorian')
+                        const weekAgo = addDays(today, -7, 'gregorian')
+                        const days = getDaysInRange(
+                          { from: weekAgo, to: today },
+                          'gregorian'
+                        )
+                        return (
+                          <span className='text-gray-700 dark:text-gray-300 text-xs'>
+                            {days.length} days: [
+                            {days.map((d) => dayToString(d, '/')).join(', ')}]
+                          </span>
+                        )
+                      })()}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className='mt-2 p-2 bg-bg-secondary rounded text-xs text-gray-700 dark:text-gray-300'>
+                  {content.sections.rangeUtilities.getDaysInRange.noDateMessage}
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -1702,6 +2159,91 @@ export default function Utilities() {
                   </td>
                   <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
                     Get end of year
+                  </td>
+                </tr>
+                <tr>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                    <code>isSameMonth</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>date1, date2</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>boolean</code>
+                  </td>
+                  <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                    Check if dates are in the same month and year
+                  </td>
+                </tr>
+                <tr className='bg-bg-tertiary'>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                    <code>isSameYear</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>date1, date2</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>boolean</code>
+                  </td>
+                  <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                    Check if dates are in the same year
+                  </td>
+                </tr>
+                <tr>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                    <code>isLeapYear</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>year, locale?</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>boolean</code>
+                  </td>
+                  <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                    Check if a year is a leap year in the specified calendar
+                    system
+                  </td>
+                </tr>
+                <tr className='bg-bg-tertiary'>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                    <code>getStartOfWeek</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>date, weekStart, locale?</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>{renderTypeWithLinks('Day')}</code>
+                  </td>
+                  <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                    Get start of week (weekStart: 0-6, 0=Sunday)
+                  </td>
+                </tr>
+                <tr className='bg-bg-tertiary'>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                    <code>getEndOfWeek</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>date, weekStart, locale?</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>{renderTypeWithLinks('Day')}</code>
+                  </td>
+                  <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                    Get end of week (weekStart: 0-6, 0=Sunday)
+                  </td>
+                </tr>
+                <tr>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                    <code>getDaysInRange</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>{renderTypeWithLinks('Range')}, locale?</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>{renderTypeWithLinks('Day')}[]</code>
+                  </td>
+                  <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                    Get all days in a date range (inclusive)
                   </td>
                 </tr>
               </tbody>

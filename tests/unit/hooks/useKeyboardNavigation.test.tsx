@@ -214,4 +214,80 @@ describe('useKeyboardNavigation', () => {
       expect.objectContaining({ year: 2023, month: 1, day: 17 })
     )
   })
+
+  it('handles Ctrl+ArrowRight for month navigation', () => {
+    renderHook(() => useKeyboardNavigation(getHookProps()))
+
+    const event = new KeyboardEvent('keydown', {
+      key: 'ArrowRight',
+      ctrlKey: true,
+      bubbles: true
+    })
+    containerRef.current?.dispatchEvent(event)
+
+    // Should navigate to next month
+    expect(onMonthNavigate).toHaveBeenCalledWith('next')
+  })
+
+  it('handles Ctrl+ArrowLeft for month navigation', () => {
+    renderHook(() => useKeyboardNavigation(getHookProps()))
+
+    const event = new KeyboardEvent('keydown', {
+      key: 'ArrowLeft',
+      ctrlKey: true,
+      bubbles: true
+    })
+    containerRef.current?.dispatchEvent(event)
+
+    // Should navigate to previous month
+    expect(onMonthNavigate).toHaveBeenCalledWith('prev')
+  })
+
+  it('ignores keyboard events when disabled', () => {
+    renderHook(() => useKeyboardNavigation(getHookProps({ enabled: false })))
+
+    const event = new KeyboardEvent('keydown', {
+      key: 'ArrowRight',
+      bubbles: true
+    })
+    containerRef.current?.dispatchEvent(event)
+
+    // Should not call any callbacks
+    expect(onFocusedDateChange).not.toHaveBeenCalled()
+    expect(onDateSelect).not.toHaveBeenCalled()
+  })
+
+  it('handles month boundary crossing with arrow keys', () => {
+    const endOfMonth: Day = { year: 2023, month: 1, day: 31 }
+
+    renderHook(() =>
+      useKeyboardNavigation(getHookProps({ focusedDate: endOfMonth }))
+    )
+
+    // ArrowRight from last day of month should navigate to next month
+    const event = new KeyboardEvent('keydown', {
+      key: 'ArrowRight',
+      bubbles: true
+    })
+    containerRef.current?.dispatchEvent(event)
+
+    expect(onMonthNavigate).toHaveBeenCalledWith('next')
+  })
+
+  it('handles year boundary crossing with arrow keys', () => {
+    const endOfYear: Day = { year: 2023, month: 12, day: 31 }
+
+    renderHook(() =>
+      useKeyboardNavigation(getHookProps({ focusedDate: endOfYear }))
+    )
+
+    // ArrowRight from last day of year should navigate to next year
+    const event = new KeyboardEvent('keydown', {
+      key: 'ArrowRight',
+      bubbles: true
+    })
+    containerRef.current?.dispatchEvent(event)
+
+    expect(onMonthNavigate).toHaveBeenCalledWith('next')
+  })
 })

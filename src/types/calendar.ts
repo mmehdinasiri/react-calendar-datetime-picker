@@ -172,6 +172,26 @@ export interface NormalizationResult<T> {
 }
 
 /**
+ * Unified validation result interface for consistent error handling across utilities
+ * @template T The type of the validated data
+ */
+export interface ValidationResult<T> {
+  /** Whether validation succeeded */
+  success: boolean
+  /** Validated data (only present if success is true) */
+  data?: T
+  /** Error information (only present if success is false) */
+  error?: {
+    /** Error code for programmatic handling */
+    code: string
+    /** Human-readable error message */
+    message: string
+    /** Additional error details */
+    details?: unknown
+  }
+}
+
+/**
  * Custom CSS classes for calendar components
  */
 export interface CalendarClasses {

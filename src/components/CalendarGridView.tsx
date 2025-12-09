@@ -500,6 +500,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
         onYearClick={() => onViewChange('years')}
         previousTitle={previousMonthBtnTitle}
         nextTitle={nextMonthBtnTitle}
+        showMonth={numberOfMonths === 1}
       />
 
       {/* Multiple months container */}

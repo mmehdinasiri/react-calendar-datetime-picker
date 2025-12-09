@@ -45,6 +45,18 @@ export const utilitiesContent = {
             description: ''
           },
           {
+            code: 'isSameMonth(date: Day, compareDate: Day): boolean',
+            description: ''
+          },
+          {
+            code: 'isSameYear(date: Day, compareDate: Day): boolean',
+            description: ''
+          },
+          {
+            code: 'isLeapYear(year: number, locale?: CalendarLocale): boolean',
+            description: ''
+          },
+          {
             code: 'isBetween(date: Day, startDate: Day, endDate: Day, locale?: CalendarLocale): boolean',
             description: ''
           }
@@ -133,6 +145,29 @@ export const utilitiesContent = {
           code: 'isSameDay(date1, date2, locale?)',
           description: 'Returns true if both dates represent the same day',
           functionCall: "isSameDay(selectedDate, today, 'gregorian')",
+          noDateMessage: 'Select a date to see the result'
+        },
+        isSameMonth: {
+          title: 'isSameMonth',
+          code: 'isSameMonth(date1, date2)',
+          description:
+            'Returns true if both dates are in the same month and year',
+          functionCall: 'isSameMonth(selectedDate, today)',
+          noDateMessage: 'Select a date to see the result'
+        },
+        isSameYear: {
+          title: 'isSameYear',
+          code: 'isSameYear(date1, date2)',
+          description: 'Returns true if both dates are in the same year',
+          functionCall: 'isSameYear(selectedDate, today)',
+          noDateMessage: 'Select a date to see the result'
+        },
+        isLeapYear: {
+          title: 'isLeapYear',
+          code: 'isLeapYear(year, locale?)',
+          description:
+            'Returns true if the given year is a leap year in the specified calendar system',
+          functionCall: "isLeapYear(selectedDate.year, 'gregorian')",
           noDateMessage: 'Select a date to see the result'
         }
       },
@@ -270,6 +305,39 @@ export const utilitiesContent = {
           'Returns the last day of the year for the given date. Example: endOfYear(December 15, 2024) returns December 31, 2024.',
         functionCall: "endOfYear(selectedDate, 'gregorian')",
         resultLabel: 'Result (Last day of year):',
+        noDateMessage: 'Select a date to see the result'
+      },
+      getStartOfWeek: {
+        title: 'getStartOfWeek',
+        code: 'getStartOfWeek(date, weekStart, locale?)',
+        description:
+          'Returns the first day of the week for the given date. weekStart is 0-6 (0 = Sunday, 1 = Monday, ..., 6 = Saturday).',
+        functionCall: "getStartOfWeek(selectedDate, 0, 'gregorian')",
+        resultLabel: 'Result (Start of week):',
+        noDateMessage: 'Select a date to see the result'
+      },
+      getEndOfWeek: {
+        title: 'getEndOfWeek',
+        code: 'getEndOfWeek(date, weekStart, locale?)',
+        description:
+          'Returns the last day of the week for the given date. weekStart is 0-6 (0 = Sunday, 1 = Monday, ..., 6 = Saturday).',
+        functionCall: "getEndOfWeek(selectedDate, 0, 'gregorian')",
+        resultLabel: 'Result (End of week):',
+        noDateMessage: 'Select a date to see the result'
+      }
+    },
+    rangeUtilities: {
+      title: 'Range Utilities',
+      description:
+        'Functions for working with date ranges, getting all days in a range, and range operations.',
+      getDaysInRange: {
+        title: 'getDaysInRange',
+        code: 'getDaysInRange(range, locale?)',
+        description:
+          'Returns an array of all days in the given date range (inclusive). Useful for iterating over all dates in a range.',
+        functionCall:
+          "getDaysInRange({ from: weekAgo, to: today }, 'gregorian')",
+        resultLabel: 'Result (Days in range):',
         noDateMessage: 'Select a date to see the result'
       }
     },

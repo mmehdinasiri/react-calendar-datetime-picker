@@ -100,22 +100,19 @@ describe('date-conversion utils', () => {
     const gregorian: Day = { year: 2023, month: 3, day: 21 }
     const jalali: Day = { year: 1402, month: 1, day: 1 }
 
-    it('converts to fa (Gregorian -> Jalali)', () => {
-      expect(convertToLocale(gregorian, 'jalali')).toEqual(
+    it('converts from Gregorian to Jalali', () => {
+      expect(convertToLocale(gregorian, 'gregorian', 'jalali')).toEqual(
         expect.objectContaining(jalali)
       )
     })
 
-    it('converts to en (Jalali -> Gregorian)', () => {
-      expect(convertToLocale(jalali, 'gregorian')).toEqual(
+    it('converts from Jalali to Gregorian', () => {
+      expect(convertToLocale(jalali, 'jalali', 'gregorian')).toEqual(
         expect.objectContaining(gregorian)
       )
     })
 
-    it('returns as-is if target locale matches source assumption', () => {
-      // Logic assumes input is in OTHER locale if sourceLocale not provided
-      // convertToLocale(day, 'jalali') assumes day is 'gregorian'.
-      // If we pass explicit sourceLocale:
+    it('returns as-is if source and target locales are the same', () => {
       expect(convertToLocale(jalali, 'jalali', 'jalali')).toEqual(jalali)
       expect(convertToLocale(gregorian, 'gregorian', 'gregorian')).toEqual(
         gregorian

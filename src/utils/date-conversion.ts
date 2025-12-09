@@ -5,64 +5,91 @@
 import { toJalaali, toGregorian } from 'jalaali-js'
 import type { Day } from '../types'
 import type { CalendarLocale, CalendarSystem } from '../types/calendar'
+import { isValidDay } from './validation'
 
 /**
  * Convert Gregorian Day to Jalali Day
+ * @throws {Error} If the input date is invalid or conversion fails
  */
 export function gregorianToJalali(day: Day): Day {
-  const jDate = toJalaali(day.year, day.month, day.day)
-  return {
-    year: jDate.jy,
-    month: jDate.jm,
-    day: jDate.jd,
-    hour: day.hour,
-    minute: day.minute
+  try {
+    // Validate input first
+    if (!isValidDay(day, 'gregorian')) {
+      throw new Error(`Invalid Gregorian date: ${JSON.stringify(day)}`)
+    }
+
+    const jDate = toJalaali(day.year, day.month, day.day)
+    return {
+      year: jDate.jy,
+      month: jDate.jm,
+      day: jDate.jd,
+      hour: day.hour,
+      minute: day.minute
+    }
+  } catch (error) {
+    console.error(`Failed to convert Gregorian date: ${error}`)
+    throw new Error(
+      `Date conversion failed: ${error instanceof Error ? error.message : String(error)}`
+    )
   }
 }
 
 /**
  * Convert Jalali Day to Gregorian Day
+ * @throws {Error} If the input date is invalid or conversion fails
  */
 export function jalaliToGregorian(day: Day): Day {
-  const gDate = toGregorian(day.year, day.month, day.day)
-  return {
-    year: gDate.gy,
-    month: gDate.gm,
-    day: gDate.gd,
-    hour: day.hour,
-    minute: day.minute
+  try {
+    // Validate input first
+    if (!isValidDay(day, 'jalali')) {
+      throw new Error(`Invalid Jalali date: ${JSON.stringify(day)}`)
+    }
+
+    const gDate = toGregorian(day.year, day.month, day.day)
+    return {
+      year: gDate.gy,
+      month: gDate.gm,
+      day: gDate.gd,
+      hour: day.hour,
+      minute: day.minute
+    }
+  } catch (error) {
+    console.error(`Failed to convert Jalali date: ${error}`)
+    throw new Error(
+      `Date conversion failed: ${error instanceof Error ? error.message : String(error)}`
+    )
   }
 }
 
 /**
  * Convert a Day object to the target locale
- * Assumes the source day is in the opposite locale (Gregorian <-> Jalali)
  * @param day - Day object in source locale
- * @param targetLocale - Target locale ('gregorian' for Gregorian, 'jalali' for Jalali)
- * @param sourceLocale - Source locale (optional, defaults to opposite of targetLocale)
+ * @param fromLocale - Source locale ('gregorian' or 'jalali')
+ * @param toLocale - Target locale ('gregorian' or 'jalali')
+ * @returns Day object in target locale
+ * @throws {Error} If conversion fails
  */
 export function convertToLocale(
   day: Day,
-  targetLocale: CalendarLocale,
-  sourceLocale?: CalendarLocale
+  fromLocale: CalendarLocale,
+  toLocale: CalendarLocale
 ): Day {
-  // If source locale is not provided, assume it's the opposite of target
-  const actualSourceLocale =
-    sourceLocale || (targetLocale === 'jalali' ? 'gregorian' : 'jalali')
-
   // If already in target locale, return as-is
-  if (actualSourceLocale === targetLocale) {
+  if (fromLocale === toLocale) {
     return day
   }
 
   // Convert between calendars
-  if (targetLocale === 'jalali') {
-    // Convert from Gregorian to Jalali
-    return gregorianToJalali(day)
-  } else {
-    // Convert from Jalali to Gregorian
+  if (fromLocale === 'jalali' && toLocale === 'gregorian') {
     return jalaliToGregorian(day)
   }
+
+  if (fromLocale === 'gregorian' && toLocale === 'jalali') {
+    return gregorianToJalali(day)
+  }
+
+  // Same locale (shouldn't reach here due to early return, but TypeScript needs it)
+  return day
 }
 
 /**
@@ -118,20 +145,36 @@ export function dateToDay(date: Date, calendarSystem: CalendarLocale): Day {
 /**
  * Convert a Day object to a JavaScript Date object
  * Converts Jalali dates to Gregorian before creating Date object
+ * @param day - Day object in the specified calendar system
+ * @param calendarSystem - Calendar system of the input day ('gregorian' or 'jalali')
+ * @returns JavaScript Date object
+ * @throws {Error} If the input date is invalid or conversion fails
  */
 export function dayToDate(
   day: Day,
   calendarSystem: CalendarLocale = 'gregorian'
 ): Date {
-  // If day is in Jalali, convert to Gregorian first
-  const gregorianDay =
-    calendarSystem === 'jalali' ? jalaliToGregorian(day) : day
+  try {
+    // Validate input first
+    if (!isValidDay(day, calendarSystem)) {
+      throw new Error(`Invalid ${calendarSystem} date: ${JSON.stringify(day)}`)
+    }
 
-  return new Date(
-    gregorianDay.year,
-    gregorianDay.month - 1, // JavaScript months are 0-indexed
-    gregorianDay.day,
-    gregorianDay.hour ?? 0,
-    gregorianDay.minute ?? 0
-  )
+    // If day is in Jalali, convert to Gregorian first
+    const gregorianDay =
+      calendarSystem === 'jalali' ? jalaliToGregorian(day) : day
+
+    return new Date(
+      gregorianDay.year,
+      gregorianDay.month - 1, // JavaScript months are 0-indexed
+      gregorianDay.day,
+      gregorianDay.hour ?? 0,
+      gregorianDay.minute ?? 0
+    )
+  } catch (error) {
+    console.error('Failed to convert Day to Date:', error)
+    throw new Error(
+      `Date conversion failed: ${error instanceof Error ? error.message : String(error)}`
+    )
+  }
 }

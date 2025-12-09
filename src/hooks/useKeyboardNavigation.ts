@@ -247,10 +247,33 @@ export const useKeyboardNavigation = (
 
       const { key, shiftKey, ctrlKey, metaKey } = event
 
-      // Ignore if modifier keys (except Shift) are pressed
-      if (ctrlKey || metaKey) return
+      // Ignore if meta key is pressed (but allow Ctrl for month navigation)
+      if (metaKey) return
 
       let handled = false
+
+      // Ctrl+Arrow for month navigation
+      if (ctrlKey) {
+        switch (key) {
+          case 'ArrowRight':
+            if (onMonthNavigate) {
+              onMonthNavigate('next')
+              handled = true
+            }
+            break
+          case 'ArrowLeft':
+            if (onMonthNavigate) {
+              onMonthNavigate('prev')
+              handled = true
+            }
+            break
+        }
+        if (handled) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        return
+      }
 
       switch (key) {
         // Arrow navigation

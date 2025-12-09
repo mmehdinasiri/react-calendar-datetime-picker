@@ -84,6 +84,7 @@ export type {
   CalendarConstraintsInput,
   CalendarError,
   NormalizationResult,
+  ValidationResult,
   CalendarClasses,
   CalendarIcons,
   CalendarLabels,

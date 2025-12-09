@@ -3,7 +3,7 @@
  * Works with both Gregorian and Jalali calendars
  */
 
-import type { Day, CalendarLocale } from '../types'
+import type { Day, CalendarLocale, Range } from '../types'
 import {
   jalaliToGregorian,
   gregorianToJalali,
@@ -433,5 +433,116 @@ export function endOfYear(
     day: daysInMonth,
     hour: 23,
     minute: 59
+  }
+}
+
+/**
+ * Check if two days are in the same month
+ * @param day1 - First day to compare
+ * @param day2 - Second day to compare
+ * @returns true if both days are in the same month and year
+ */
+export function isSameMonth(day1: Day, day2: Day): boolean {
+  return day1.year === day2.year && day1.month === day2.month
+}
+
+/**
+ * Check if two days are in the same year
+ * @param day1 - First day to compare
+ * @param day2 - Second day to compare
+ * @returns true if both days are in the same year
+ */
+export function isSameYear(day1: Day, day2: Day): boolean {
+  return day1.year === day2.year
+}
+
+/**
+ * Get the start of week for a given day
+ * @param day - Day object
+ * @param weekStart - First day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+ * @param locale - Calendar locale
+ * @returns Day object representing the first day of the week
+ */
+export function getStartOfWeek(
+  day: Day,
+  weekStart: number,
+  calendarSystem: CalendarLocale = 'gregorian'
+): Day {
+  const date = dayToDate(day, calendarSystem)
+  const dayOfWeek = date.getDay() // 0 = Sunday, 6 = Saturday
+
+  // Calculate days to subtract to get to the start of week
+  let daysToSubtract = (dayOfWeek - weekStart + 7) % 7
+
+  return subtractDays(day, daysToSubtract, calendarSystem)
+}
+
+/**
+ * Get the end of week for a given day
+ * @param day - Day object
+ * @param weekStart - First day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+ * @param locale - Calendar locale
+ * @returns Day object representing the last day of the week
+ */
+export function getEndOfWeek(
+  day: Day,
+  weekStart: number,
+  calendarSystem: CalendarLocale = 'gregorian'
+): Day {
+  const startOfWeek = getStartOfWeek(day, weekStart, calendarSystem)
+  // Add 6 days to get to the end of the week (7 days total, starting from day 0)
+  return addDays(startOfWeek, 6, calendarSystem)
+}
+
+/**
+ * Get all days in a date range (inclusive)
+ * @param range - Date range with from and to dates
+ * @param locale - Calendar locale
+ * @returns Array of Day objects from start to end (inclusive)
+ */
+export function getDaysInRange(
+  range: Range,
+  calendarSystem: CalendarLocale = 'gregorian'
+): Day[] {
+  const { from, to } = range
+
+  // Determine which date is earlier
+  const comparison = compareDays(from, to, calendarSystem)
+  const start = comparison <= 0 ? from : to
+  const end = comparison <= 0 ? to : from
+
+  const days: Day[] = []
+  let current = { ...start }
+
+  // Add days until we reach the end date (inclusive)
+  while (compareDays(current, end, calendarSystem) <= 0) {
+    days.push({ ...current })
+    current = addDays(current, 1, calendarSystem)
+  }
+
+  return days
+}
+
+export function isJalaliLeapYear(year: number): boolean {
+  const a = year - (year > 0 ? 474 : 473)
+  const b = a % 2820
+  return ((b + 474) * 682) % 2816 < 682
+}
+
+/**
+ * Check if a year is a leap year
+ * @param year - Year to check
+ * @param calendarSystem - Calendar system ('gregorian' or 'jalali')
+ * @returns true if the year is a leap year in the specified calendar system
+ */
+export function isLeapYear(
+  year: number,
+  calendarSystem: CalendarLocale = 'gregorian'
+): boolean {
+  if (calendarSystem === 'jalali') {
+    return isJalaliLeapYear(year)
+  } else {
+    // Gregorian leap year: divisible by 4, but not by 100 unless also divisible by 400
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
   }
 }
