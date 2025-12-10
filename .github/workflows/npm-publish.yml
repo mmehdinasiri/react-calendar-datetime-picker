@@ -64,7 +64,26 @@ jobs:
       - name: Build library
         run: pnpm run build
 
+      - name: Determine NPM Tag
+        id: npm_tag
+        run: |
+          VERSION="${{ steps.get_version.outputs.version }}"
+          if [ -z "$VERSION" ]; then
+            VERSION="${{ inputs.version }}"
+          fi
+
+          if [[ "$VERSION" == *"-beta"* ]]; then
+            echo "TAG=beta" >> $GITHUB_OUTPUT
+            echo "Detected BETA release. Publishing with --tag beta"
+          elif [[ "$VERSION" == *"-alpha"* ]]; then
+            echo "TAG=alpha" >> $GITHUB_OUTPUT
+            echo "Detected ALPHA release. Publishing with --tag alpha"
+          else
+            echo "TAG=latest" >> $GITHUB_OUTPUT
+            echo "Detected STABLE release. Publishing with --tag latest"
+          fi
+
       - name: Publish to NPM
-        run: pnpm publish --no-git-checks --access public
+        run: pnpm publish --no-git-checks --access public --tag ${{ steps.npm_tag.outputs.TAG }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
