@@ -21,8 +21,8 @@ interface SearchModalContextType {
   searchResults: SearchResult[]
   selectedResultIndex: number
   setSelectedResultIndex: (index: number) => void
-  searchInputRef: React.RefObject<HTMLInputElement>
-  searchModalResultsRef: React.RefObject<HTMLDivElement>
+  searchInputRef: React.RefObject<HTMLInputElement | null>
+  searchModalResultsRef: React.RefObject<HTMLDivElement | null>
   handleResultClick: (result: SearchResult) => void
   handleSearchKeyDown: (e: React.KeyboardEvent) => void
 }
