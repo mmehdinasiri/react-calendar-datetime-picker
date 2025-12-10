@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 4000",
-    "build": "next build",
+    "build": "node scripts/sync-version.js && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sync:version": "node scripts/sync-version.js"
   },
   "dependencies": {
     "next": "^15.4.8",

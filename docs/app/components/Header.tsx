@@ -9,6 +9,7 @@ import {
   getGroupInfo,
   type SearchResult
 } from '../data/searchData'
+import { CURRENT_VERSION } from '../config/version'
 
 export function Header() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -21,6 +22,7 @@ export function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const { theme, toggleTheme } = useTheme()
   const router = useRouter()
+  const currentVersion = CURRENT_VERSION
 
   // Search functionality
   const handleSearchChange = useCallback((value: string) => {
@@ -141,7 +143,7 @@ export function Header() {
               className='text-xs bg-accent text-white px-1.5 py-0.5 rounded hover:bg-accent-hover transition-colors flex items-center gap-1'
               aria-label='Select version'
             >
-              2.0.0
+              {currentVersion}
               <svg
                 className={`h-3 w-3 transition-transform ${
                   isVersionDropdownOpen ? 'transform rotate-180' : ''
@@ -163,11 +165,11 @@ export function Header() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    handleVersionChange('2.0.0')
+                    handleVersionChange(currentVersion)
                   }}
                   className='w-full text-left px-3 py-2 text-xs text-gray-900 dark:text-white hover:bg-bg-tertiary transition-colors rounded-t-md'
                 >
-                  2.0.0
+                  {currentVersion}
                 </button>
                 <Link
                   href='/legacy'

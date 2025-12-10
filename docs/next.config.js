@@ -6,9 +6,10 @@ const isProd = process.env.NODE_ENV === 'production'
 const nextConfig = {
   // Static export for GitHub Pages
   output: 'export',
+  basePath: '/react-calendar-datetime-picker',
   // Disable server-side image optimization (Required for static export)
   images: {
-    unoptimized: true,
+    unoptimized: true
   },
   // Base path for GitHub Pages
   basePath: '/react-calendar-datetime-picker',

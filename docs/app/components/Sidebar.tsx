@@ -226,11 +226,11 @@ const navigation = [
       { name: 'Keyboard Navigation', href: '/accessibility#keyboard' },
       { name: 'ARIA & Screen Readers', href: '/accessibility#aria' }
     ]
-  },
-  {
-    title: 'MIGRATION',
-    items: [{ name: 'Migration Guide', href: '/migration' }]
   }
+  // {
+  //   title: 'MIGRATION',
+  //   items: [{ name: 'Migration Guide', href: '/migration' }]
+  // }
 ]
 
 interface CollapsibleSectionProps {
