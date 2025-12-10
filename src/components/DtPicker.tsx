@@ -14,9 +14,11 @@ import {
   useModalPosition,
   useCalendarSetup,
   useCalendarCallbacks,
-  useModalState
+  useModalState,
+  useCalendarErrorHandling
 } from '../hooks'
 import { normalizeConstraintsProps } from '../utils/constraints'
+import { normalizeInitValueWithErrors } from '../utils/normalize'
 
 interface DtPickerPropsBase extends SharedCalendarProps {
   /**
@@ -135,7 +137,8 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     onYearSelect,
     onViewChange,
     onMonthNavigate,
-    onGoToToday
+    onGoToToday,
+    onError
   } = props
 
   // 🎯 Use consolidated calendar setup hook
@@ -167,7 +170,24 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
       ),
     [constraintsInput, normalizedCalendarSystem, type]
   )
-  const { constraints } = constraintsResult
+  const { constraints, errors: constraintsErrors } = constraintsResult
+
+  // Normalize initValue upfront for proper initial state with error tracking
+  const initValueResult = useMemo(
+    () =>
+      normalizeInitValueWithErrors(
+        initValue,
+        normalizedCalendarSystem,
+        type,
+        'initValue'
+      ),
+    [initValue, normalizedCalendarSystem, type]
+  )
+  // Extract only errors - value is normalized by useCalendarPicker internally
+  const initValueErrors = initValueResult.errors
+
+  // 🎯 Use error handling hook
+  useCalendarErrorHandling(constraintsErrors, initValueErrors, onError)
 
   // Use calendar picker hook for shared calendar logic
   const { state, actions, displayValue } = useCalendarPicker(

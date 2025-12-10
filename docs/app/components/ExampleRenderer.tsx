@@ -31,6 +31,12 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
     Date | RangeDate | Date[] | null
   >(null)
   const [formattedString, setFormattedString] = useState<string | null>(null)
+  const [errors, setErrors] = useState<any[]>([])
+  // For error examples, track dynamic initValue and constraints
+  const [errorInitValue, setErrorInitValue] = useState<
+    InitValueInput | undefined
+  >(undefined)
+  const [errorConstraints, setErrorConstraints] = useState<any>(undefined)
   // Create handleChange with optional parameters (like in examples project)
   // The component will call it with three parameters via useCalendarState
   const handleChange = (
@@ -144,6 +150,67 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
   // This is important because the component expects onChange to match the discriminated union type
   delete componentProps.onChange
 
+  // Inject onError handler for error handling examples
+  // Check if this is an error handling example by title or category
+  const isErrorExample =
+    config.title.includes('Error') ||
+    config.title.includes('Invalid') ||
+    category?.toLowerCase().includes('error')
+
+  // Handle interactive examples (min/max date testing)
+  if (config.title.includes('Min/Max Date with Interactive Testing')) {
+    // Use dynamic initValue for interactive testing
+    // The calendar library will automatically reject dates outside constraints
+    if (errorInitValue !== undefined) {
+      componentProps.initValue = errorInitValue
+    }
+  }
+
+  if (isErrorExample) {
+    // Remove existing onError from props and use our own
+    delete componentProps.onError
+    // Use dynamic values for error examples
+    componentProps.initValue = errorInitValue
+    // Use errorConstraints if set, otherwise fall back to original constraints from config
+    componentProps.constraints =
+      errorConstraints !== undefined
+        ? errorConstraints
+        : config.props?.constraints
+    componentProps.onError = (errors: any[]) => {
+      setErrors(errors)
+      if (config.showConsoleLog) {
+        // Match the console log format from example code
+        if (
+          config.title.includes('Invalid Initial Value') &&
+          !config.title.includes('DtPicker')
+        ) {
+          console.log('Validation errors:', errors)
+          errors.forEach((error) => {
+            console.log(`${error.field}: ${error.message}`)
+          })
+        } else if (
+          config.title.includes('Error Handling with Custom Validation')
+        ) {
+          console.error('Calendar errors:', errors)
+        } else {
+          console.log('Errors:', errors)
+        }
+      }
+      // Show alert for Invalid Constraints example (DtCalendar only)
+      if (
+        config.title.includes('Invalid Constraints') &&
+        !config.title.includes('DtPicker')
+      ) {
+        if (errors.length > 0) {
+          alert(
+            `Found ${errors.length} error(s):\n` +
+              errors.map((e) => `${e.field}: ${e.message}`).join('\n')
+          )
+        }
+      }
+    }
+  }
+
   // Inject callbacks for examples that need them
   if (config.showConsoleLog) {
     if (config.title === 'View & Navigation Callbacks') {
@@ -212,9 +279,440 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
           <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
             Component
           </h3>
+          {/* Error trigger buttons for error handling examples and interactive examples */}
+          {(isErrorExample ||
+            config.title.includes('Min/Max Date with Interactive Testing')) && (
+            <div className='mb-4 space-y-2'>
+              <div className='flex flex-wrap gap-2'>
+                {config.title.includes('Invalid Initial Value') &&
+                  !config.title.includes('DtPicker') && (
+                    <>
+                      <button
+                        onClick={() => {
+                          // Clear errors and reset to undefined first
+                          setErrors([])
+                          setErrorInitValue(undefined)
+                          // Then set invalid value - this ensures React sees it as a change
+                          requestAnimationFrame(() => {
+                            setErrorInitValue('invalid-date-string')
+                          })
+                        }}
+                        className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors'
+                      >
+                        Set Invalid InitValue: "invalid-date-string"
+                      </button>
+                      <button
+                        onClick={() => {
+                          setErrorInitValue(undefined)
+                          setErrors([])
+                        }}
+                        className='px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm font-medium transition-colors'
+                      >
+                        Clear (Valid State)
+                      </button>
+                    </>
+                  )}
+                {config.title.includes('Invalid Constraints') &&
+                  !config.title.includes('DtPicker') && (
+                    <>
+                      <button
+                        onClick={() => {
+                          setErrors([])
+                          setErrorConstraints(undefined)
+                          requestAnimationFrame(() => {
+                            // Use a future maxDate so dates aren't all disabled
+                            const futureDate = new Date()
+                            futureDate.setFullYear(futureDate.getFullYear() + 1)
+                            setErrorConstraints({
+                              minDate: 'not-a-date',
+                              maxDate: futureDate
+                            })
+                          })
+                        }}
+                        className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors'
+                      >
+                        Set Invalid Constraints: minDate="not-a-date"
+                      </button>
+                      <button
+                        onClick={() => {
+                          setErrorConstraints(undefined)
+                          setErrors([])
+                        }}
+                        className='px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm font-medium transition-colors'
+                      >
+                        Clear (Valid State)
+                      </button>
+                    </>
+                  )}
+                {config.title.includes('Invalid Range Value') && (
+                  <>
+                    <button
+                      onClick={() => {
+                        setErrors([])
+                        setErrorInitValue(undefined)
+                        requestAnimationFrame(() => {
+                          setErrorInitValue({
+                            from: 'invalid',
+                            to: new Date('2024-12-31')
+                          })
+                        })
+                      }}
+                      className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors'
+                    >
+                      Set Invalid Range: from="invalid"
+                    </button>
+                    <button
+                      onClick={() => {
+                        setErrorInitValue(undefined)
+                        setErrors([])
+                      }}
+                      className='px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm font-medium transition-colors'
+                    >
+                      Clear (Valid State)
+                    </button>
+                  </>
+                )}
+                {config.title.includes(
+                  'Min/Max Date with Interactive Testing'
+                ) && (
+                  <>
+                    <button
+                      onClick={() => {
+                        // Set a date within the range (15th of current month)
+                        const now = new Date()
+                        const year = now.getFullYear()
+                        const month = now.getMonth()
+                        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-15`
+                        setErrorInitValue(dateStr)
+                        setErrors([])
+                      }}
+                      className='px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm font-medium transition-colors'
+                    >
+                      Set Date in Range: 15th (Current Month)
+                    </button>
+                    <button
+                      onClick={() => {
+                        // Try to set a date before minDate (5th of current month)
+                        const now = new Date()
+                        const year = now.getFullYear()
+                        const month = now.getMonth()
+                        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-05`
+                        // Set the date - the calendar will reject it if outside range
+                        setErrorInitValue(dateStr)
+                        setErrors([])
+                      }}
+                      className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors'
+                    >
+                      Try Set Date Before Min: 5th (Current Month)
+                    </button>
+                    <button
+                      onClick={() => {
+                        // Try to set a date after maxDate (30th of current month)
+                        const now = new Date()
+                        const year = now.getFullYear()
+                        const month = now.getMonth()
+                        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-30`
+                        // Set the date - the calendar will reject it if outside range
+                        setErrorInitValue(dateStr)
+                        setErrors([])
+                      }}
+                      className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors'
+                    >
+                      Try Set Date After Max: 30th (Current Month)
+                    </button>
+                    <button
+                      onClick={() => {
+                        setErrorInitValue(undefined)
+                        setErrors([])
+                      }}
+                      className='px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm font-medium transition-colors'
+                    >
+                      Clear Selection
+                    </button>
+                    <div className='mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded text-sm'>
+                      <strong className='text-blue-900 dark:text-blue-200'>
+                        Note:
+                      </strong>{' '}
+                      <span className='text-blue-800 dark:text-blue-300'>
+                        Dates outside the min/max range (10th - 25th of current
+                        month) will be disabled in the calendar. When you try to
+                        set a date outside this range, the calendar will reject
+                        it and show no selection. You can see dates before the
+                        10th and after the 25th grayed out in the same month
+                        view.
+                      </span>
+                    </div>
+                  </>
+                )}
+                {config.title.includes('Complete Error Handling') &&
+                  !config.title.includes('Invalid Initial Value') &&
+                  !config.title.includes('Invalid Constraints') && (
+                    <>
+                      <button
+                        onClick={() => {
+                          setErrors([])
+                          setErrorInitValue(undefined)
+                          requestAnimationFrame(() => {
+                            setErrorInitValue('invalid-date')
+                          })
+                        }}
+                        className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors'
+                      >
+                        Set Invalid InitValue: "invalid-date"
+                      </button>
+                      <button
+                        onClick={() => {
+                          setErrors([])
+                          setErrorConstraints(undefined)
+                          requestAnimationFrame(() => {
+                            // Use a future maxDate so dates aren't all disabled
+                            const futureDate = new Date()
+                            futureDate.setFullYear(futureDate.getFullYear() + 1)
+                            setErrorConstraints({
+                              minDate: 'not-a-date',
+                              maxDate: futureDate
+                            })
+                          })
+                        }}
+                        className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors'
+                      >
+                        Set Invalid Constraints: minDate="not-a-date"
+                      </button>
+                      <button
+                        onClick={() => {
+                          setErrorInitValue(undefined)
+                          setErrorConstraints(undefined)
+                          setErrors([])
+                        }}
+                        className='px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm font-medium transition-colors'
+                      >
+                        Clear All (Valid State)
+                      </button>
+                    </>
+                  )}
+                {config.title.includes(
+                  'Error Handling with Custom Validation'
+                ) && (
+                  <>
+                    <button
+                      onClick={() => {
+                        setErrors([])
+                        setErrorConstraints(undefined)
+                        requestAnimationFrame(() => {
+                          // Use a future maxDate so dates aren't all disabled
+                          const futureDate = new Date()
+                          futureDate.setFullYear(futureDate.getFullYear() + 1)
+                          setErrorConstraints({
+                            minDate: 'not-a-date',
+                            maxDate: futureDate,
+                            isDateDisabled: (day: any) => {
+                              // Keep custom validation for weekends
+                              const date = new Date(
+                                day.year,
+                                day.month - 1,
+                                day.day
+                              )
+                              const dayOfWeek = date.getDay()
+                              return dayOfWeek === 0 || dayOfWeek === 6
+                            }
+                          })
+                        })
+                      }}
+                      className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors'
+                    >
+                      Set Invalid Constraints: minDate="not-a-date"
+                    </button>
+                    <button
+                      onClick={() => {
+                        setErrors([])
+                        setErrorInitValue(undefined)
+                        requestAnimationFrame(() => {
+                          setErrorInitValue('invalid-date')
+                        })
+                      }}
+                      className='px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors'
+                    >
+                      Set Invalid InitValue: "invalid-date"
+                    </button>
+                    <button
+                      onClick={() => {
+                        setErrorInitValue(undefined)
+                        setErrorConstraints(undefined)
+                        setErrors([])
+                      }}
+                      className='px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm font-medium transition-colors'
+                    >
+                      Clear All (Valid State with Custom Validation)
+                    </button>
+                    <div className='mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded text-sm'>
+                      <strong className='text-blue-900 dark:text-blue-200'>
+                        Key Point:
+                      </strong>{' '}
+                      <span className='text-blue-800 dark:text-blue-300'>
+                        Notice that even when you set invalid constraints, the
+                        custom weekend validation (isDateDisabled) continues to
+                        work. Weekends remain disabled regardless of constraint
+                        errors.
+                      </span>
+                    </div>
+                  </>
+                )}
+              </div>
+              {/* Show current state */}
+              <div className='text-xs text-gray-600 dark:text-gray-400 mt-2 space-y-1'>
+                {errorInitValue !== undefined &&
+                  config.title.includes(
+                    'Min/Max Date with Interactive Testing'
+                  ) && (
+                    <div>
+                      InitValue:{' '}
+                      {(() => {
+                        // Check if date is within valid range
+                        const dateStr = String(errorInitValue)
+                        // Parse date string (e.g., '2024-06-15') to Date object
+                        // Date strings in YYYY-MM-DD format are parsed as UTC midnight
+                        const date = new Date(dateStr)
+
+                        // Get current month constraints
+                        const now = new Date()
+                        const currentYear = now.getFullYear()
+                        const currentMonth = now.getMonth()
+                        const minDate = new Date(
+                          currentYear,
+                          currentMonth,
+                          10,
+                          0,
+                          0,
+                          0,
+                          0
+                        )
+                        const maxDate = new Date(
+                          currentYear,
+                          currentMonth,
+                          25,
+                          23,
+                          59,
+                          59,
+                          999
+                        )
+
+                        // Compare dates by converting to local date strings (YYYY-MM-DD)
+                        const dateLocal = new Date(
+                          date.getFullYear(),
+                          date.getMonth(),
+                          date.getDate()
+                        )
+                        const minDateLocal = new Date(
+                          minDate.getFullYear(),
+                          minDate.getMonth(),
+                          minDate.getDate()
+                        )
+                        const maxDateLocal = new Date(
+                          maxDate.getFullYear(),
+                          maxDate.getMonth(),
+                          maxDate.getDate()
+                        )
+
+                        const isValid =
+                          !isNaN(date.getTime()) &&
+                          dateLocal >= minDateLocal &&
+                          dateLocal <= maxDateLocal
+
+                        // Format display date nicely
+                        const displayDate = date.toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })
+
+                        return (
+                          <code
+                            className={
+                              isValid
+                                ? 'text-green-600 dark:text-green-400'
+                                : 'text-red-600 dark:text-red-400'
+                            }
+                          >
+                            {displayDate}
+                            {isValid ? ' ✓ (Valid)' : ' ✗ (Outside Range)'}
+                          </code>
+                        )
+                      })()}
+                    </div>
+                  )}
+                {errorInitValue !== undefined &&
+                  !config.title.includes(
+                    'Min/Max Date with Interactive Testing'
+                  ) && (
+                    <div>
+                      InitValue:{' '}
+                      <code className='text-red-600 dark:text-red-400'>
+                        {typeof errorInitValue === 'object' &&
+                        errorInitValue !== null
+                          ? errorInitValue instanceof Date
+                            ? errorInitValue.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })
+                            : JSON.stringify(errorInitValue)
+                          : String(errorInitValue)}
+                      </code>
+                    </div>
+                  )}
+                {errorConstraints !== undefined && (
+                  <div>
+                    Constraints:{' '}
+                    <code className='text-red-600 dark:text-red-400'>
+                      {errorConstraints.minDate
+                        ? `minDate: ${String(errorConstraints.minDate)}`
+                        : ''}
+                      {errorConstraints.maxDate
+                        ? ` maxDate: ${String(errorConstraints.maxDate)}`
+                        : ''}
+                    </code>
+                  </div>
+                )}
+                {errorInitValue === undefined &&
+                  errorConstraints === undefined && (
+                    <span className='text-green-600 dark:text-green-400'>
+                      ✓ No errors (valid state)
+                    </span>
+                  )}
+                {errors.length > 0 && (
+                  <div className='text-red-600 dark:text-red-400 font-medium'>
+                    ⚠ {errors.length} error(s) detected - invalid constraints
+                    are excluded, dates remain selectable
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           <div ref={wrapperRef} className={wrapperClass}>
             <Component {...componentProps} onChange={typedOnChange} />
           </div>
+          {/* Display errors visually for Invalid Range Value example only */}
+          {isErrorExample &&
+            errors.length > 0 &&
+            config.title.includes('Invalid Range Value') && (
+              <div
+                style={{
+                  marginTop: '1rem',
+                  padding: '1rem',
+                  background: '#fee',
+                  borderRadius: '4px'
+                }}
+              >
+                <strong style={{ color: '#000' }}>Errors found:</strong>
+                <ul>
+                  {errors.map((error, i) => (
+                    <li key={i} style={{ color: '#000' }}>
+                      <strong>{error.field}:</strong> {error.message}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
         </div>
 
         <div>

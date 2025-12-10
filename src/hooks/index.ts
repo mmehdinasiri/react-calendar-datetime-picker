@@ -14,6 +14,7 @@ export { useCalendarSetup } from './useCalendarSetup'
 export { useCalendarCallbacks } from './useCalendarCallbacks'
 export { useCallbackOnChange } from './useCallbackOnChange'
 export { useModalState } from './useModalState'
+export { useCalendarErrorHandling } from './useCalendarErrorHandling'
 export type {
   CalendarState,
   CalendarAction,

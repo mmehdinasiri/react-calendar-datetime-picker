@@ -2,7 +2,7 @@
  * Date validation utilities
  */
 
-import type { Day, CalendarLocale } from '../types'
+import type { Day, Range, Multi, CalendarLocale, CalendarType } from '../types'
 import type { ValidationResult } from '../types/calendar'
 import { jalaliToGregorian } from './date-conversion'
 import { isDayObject } from './normalize'
@@ -196,6 +196,42 @@ export function isDateDisabled(
   }
 
   return false
+}
+
+/**
+ * Validate a normalized value (Day | Range | Multi) against constraints
+ * Returns true if all dates in the value are selectable, false otherwise
+ */
+export function isValidNormalizedValue(
+  value: Day | Range | Multi | null,
+  type: CalendarType,
+  options: {
+    minDate?: Day
+    maxDate?: Day
+    disabledDates?: Day[]
+    isDateDisabled?: (date: Day) => boolean
+    calendarSystem?: CalendarLocale
+  }
+): boolean {
+  if (!value) return true // null is valid
+
+  if (type === 'single' && 'year' in value) {
+    return isDateSelectable(value as Day, options)
+  }
+
+  if (type === 'range' && 'from' in value) {
+    const range = value as Range
+    const fromValid = !range.from || isDateSelectable(range.from, options)
+    const toValid = !range.to || isDateSelectable(range.to, options)
+    return fromValid && toValid
+  }
+
+  if (type === 'multi' && Array.isArray(value)) {
+    return (value as Multi).every((day: Day) => isDateSelectable(day, options))
+  }
+
+  // For week type or unknown types, return true (let other validation handle it)
+  return true
 }
 
 /**

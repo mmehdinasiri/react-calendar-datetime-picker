@@ -191,5 +191,49 @@ interface CustomPresetRange {
 • \`3\` - Display three months side by side`
       }
     ]
+  },
+  'Error Handling': {
+    intro:
+      'Both `DtCalendar` and `DtPicker` components provide comprehensive error handling through the `onError` callback. This callback receives an array of `CalendarError` objects whenever normalization or validation fails, allowing you to handle errors gracefully in your application.',
+    typeDefinitions: [
+      `onError?: (errors: CalendarError[]) => void
+
+interface CalendarError {
+  type: 'normalization' | 'validation'
+  field: string
+  value: unknown
+  message: string
+}`
+    ],
+    details: [
+      {
+        title: 'Error Types:',
+        content: `• \`normalization\` - Errors that occur when converting input values (initValue, constraints) to the internal \`Day\` format. This includes invalid date strings, malformed objects, or unsupported formats.
+• \`validation\` - Errors that occur when validating date constraints, such as invalid minDate/maxDate values or disabled dates.`
+      },
+      {
+        title: 'Error Object Properties:',
+        content: `• \`type\` - The type of error: 'normalization' or 'validation'
+• \`field\` - The field name where the error occurred (e.g., 'initValue', 'minDate', 'maxDate', 'initValue.from', 'initValue.to')
+• \`value\` - The original value that caused the error
+• \`message\` - A human-readable error message describing what went wrong`
+      },
+      {
+        title: 'When Errors Are Triggered:',
+        content: `• Invalid \`initValue\` format (e.g., malformed date strings, invalid objects)
+• Invalid \`constraints\` values (e.g., invalid minDate/maxDate, malformed disabledDates)
+• Invalid date values in range selections (invalid 'from' or 'to' values)
+• Invalid date values in multi-date selections (invalid array elements)
+• Dates that don't exist in the calendar system (e.g., February 30th)`
+      },
+      {
+        title: 'Best Practices:',
+        content: `• Always provide an \`onError\` callback in production to catch and handle errors gracefully
+• Log errors to your error tracking service for debugging
+• Display user-friendly error messages when validation fails
+• Validate user input before passing it to the calendar component
+• In development mode, errors are also logged to the console with warnings`
+      }
+    ]
   }
 }

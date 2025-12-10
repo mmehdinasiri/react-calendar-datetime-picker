@@ -21,6 +21,7 @@ import { formatDateForInput } from '../utils/formatting'
 import { convertToJsDate } from '../utils/date-conversion'
 import { formatValueToString } from '../utils/formatting'
 import { useCalendarState } from './useCalendarState'
+import { isValidNormalizedValue } from '../utils/validation'
 
 /**
  * Hook that encapsulates calendar logic shared between DtPicker and DtCalendar
@@ -65,6 +66,24 @@ export function useCalendarPicker(
   )
   const { value: normalizedInitValue } = initValueResult
 
+  // Validate normalizedInitValue against constraints
+  // If initValue is outside the allowed range, reject it (set to null)
+  const validatedInitValue = useMemo(() => {
+    if (!normalizedInitValue || !constraints) {
+      return normalizedInitValue
+    }
+
+    const isValid = isValidNormalizedValue(normalizedInitValue, type, {
+      minDate: constraints.minDate,
+      maxDate: constraints.maxDate,
+      disabledDates: constraints.disabledDates,
+      isDateDisabled: constraints.isDateDisabled,
+      calendarSystem
+    })
+
+    return isValid ? normalizedInitValue : null
+  }, [normalizedInitValue, constraints, type, calendarSystem])
+
   // Track previous initValue to only convert when it actually changes from props
   const prevInitValueRef = useRef<InitValueInput | undefined>(undefined)
 
@@ -78,12 +97,12 @@ export function useCalendarPicker(
       initValue
     )
 
-    if (initValueChanged && normalizedInitValue && onChange) {
+    if (initValueChanged && validatedInitValue && onChange) {
       // Only convert if the format differs (string/Date vs Day object)
-      if (!areValuesEqual(initValue, normalizedInitValue)) {
+      if (!areValuesEqual(initValue, validatedInitValue)) {
         // Convert to JavaScript Date objects (always Gregorian)
         const jsDateValue = convertToJsDate(
-          normalizedInitValue,
+          validatedInitValue,
           type,
           calendarSystem
         )
@@ -97,7 +116,7 @@ export function useCalendarPicker(
 
         // Format to string
         const formattedString = formatValueToString(
-          normalizedInitValue,
+          validatedInitValue,
           type,
           numberSystem,
           withTime,
@@ -108,7 +127,7 @@ export function useCalendarPicker(
         )
 
         // Call onChange with three parameters
-        onChange(normalizedInitValue, jsDateValue, formattedString)
+        onChange(validatedInitValue, jsDateValue, formattedString)
       }
     }
 
@@ -116,6 +135,7 @@ export function useCalendarPicker(
   }, [
     initValue,
     normalizedInitValue,
+    validatedInitValue,
     onChange,
     type,
     calendarSystem,
@@ -127,7 +147,7 @@ export function useCalendarPicker(
 
   // Use calendar state hook
   const { state, actions } = useCalendarState({
-    initValue: normalizedInitValue,
+    initValue: validatedInitValue,
     calendarSystem: calendarSystem,
     type,
     onChange: (normalizedValue, jsDateValue, formattedString) => {

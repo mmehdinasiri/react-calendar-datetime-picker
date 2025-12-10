@@ -397,6 +397,11 @@ export interface SharedCalendarProps {
    * Callback to navigate to today's date
    */
   onGoToToday?: () => void
+  /**
+   * Callback function called when normalization or constraint errors occur
+   * @param errors - Array of error objects describing what failed
+   */
+  onError?: (errors: CalendarError[]) => void
 }
 
 /**

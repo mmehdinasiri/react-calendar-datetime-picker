@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import type { Day, Range, Multi, InitValueInput, RangeDate } from '../types'
 import type {
-  CalendarError,
   CalendarSelectionSingle,
   CalendarSelectionRange,
   CalendarSelectionMulti,
@@ -13,7 +12,7 @@ import {
   useCalendarState,
   useCalendarSetup,
   useCalendarCallbacks,
-  useCallbackOnChange
+  useCalendarErrorHandling
 } from '../hooks'
 import {
   normalizeInitValueWithErrors,
@@ -23,6 +22,7 @@ import { normalizeConstraintsProps } from '../utils/constraints'
 import { convertToJsDate } from '../utils/date-conversion'
 import { formatValueToString } from '../utils/formatting'
 import { getNumberSystem } from '../utils/translations'
+import { isValidNormalizedValue } from '../utils/validation'
 
 interface DtCalendarPropsBase extends SharedCalendarProps {
   /**
@@ -40,11 +40,6 @@ interface DtCalendarPropsBase extends SharedCalendarProps {
    * @default false
    */
   dark?: boolean
-  /**
-   * Callback function called when normalization or constraint errors occur
-   * @param errors - Array of error objects describing what failed
-   */
-  onError?: (errors: CalendarError[]) => void
 }
 
 export interface DtCalendarPropsSingle
@@ -144,19 +139,26 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
   const { value: normalizedInitValue, errors: initValueErrors } =
     initValueResult
 
-  // Collect all errors
-  const allErrors = useMemo(
-    () => [...constraintsErrors, ...initValueErrors],
-    [constraintsErrors, initValueErrors]
-  )
-
-  // 🎯 Use callback on change hook for error handling
-  // Much simpler than JSON.stringify comparison
-  useCallbackOnChange(allErrors, (errors) => {
-    if (errors.length > 0 && onError) {
-      onError(errors)
+  // Validate normalizedInitValue against constraints
+  // If initValue is outside the allowed range, reject it (set to null)
+  const validatedInitValue = useMemo(() => {
+    if (!normalizedInitValue || !constraints) {
+      return normalizedInitValue
     }
-  })
+
+    const isValid = isValidNormalizedValue(normalizedInitValue, type, {
+      minDate: constraints.minDate,
+      maxDate: constraints.maxDate,
+      disabledDates: constraints.disabledDates,
+      isDateDisabled: constraints.isDateDisabled,
+      calendarSystem: normalizedCalendarSystem
+    })
+
+    return isValid ? normalizedInitValue : null
+  }, [normalizedInitValue, constraints, type, normalizedCalendarSystem])
+
+  // 🎯 Use error handling hook
+  useCalendarErrorHandling(constraintsErrors, initValueErrors, onError)
 
   // Track previous initValue to only convert when it actually changes from props
   const prevInitValueRef = useRef<InitValueInput | undefined>(undefined)
@@ -168,12 +170,12 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     // Only convert if initValue prop changed from previous value (including initial mount)
     const initValueChanged = prevInitValueRef.current !== initValue
 
-    if (initValueChanged && normalizedInitValue && onChange) {
+    if (initValueChanged && validatedInitValue && onChange) {
       // Only convert if the format differs (string/Date vs Day object)
-      if (!areValuesEqual(initValue, normalizedInitValue)) {
+      if (!areValuesEqual(initValue, validatedInitValue)) {
         // Convert to JavaScript Date objects (always Gregorian)
         const jsDateValue = convertToJsDate(
-          normalizedInitValue,
+          validatedInitValue,
           type,
           normalizedCalendarSystem
         )
@@ -189,7 +191,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
 
         // Format to string
         const formattedString = formatValueToString(
-          normalizedInitValue,
+          validatedInitValue,
           type,
           numberSystem,
           withTime,
@@ -207,7 +209,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
             jsDateValue: Date | RangeDate | Date[] | null,
             formattedString: string | null
           ) => void
-        )(normalizedInitValue, jsDateValue, formattedString)
+        )(validatedInitValue, jsDateValue, formattedString)
       }
     }
 
@@ -215,6 +217,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
   }, [
     initValue,
     normalizedInitValue,
+    validatedInitValue,
     onChange,
     type,
     normalizedCalendarSystem,
@@ -227,7 +230,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
 
   // Use calendar state hook
   const { state, actions } = useCalendarState({
-    initValue: normalizedInitValue,
+    initValue: validatedInitValue,
     calendarSystem: normalizedCalendarSystem,
     type,
     onChange: onChange as (

@@ -127,7 +127,7 @@ export const examples: ExamplesConfig = {
       description: 'Date picker pre-filled with a date',
       component: 'DtPicker',
       props: {
-        initValue: new Date(),
+        initValue: new Date(2024, 11, 25),
         placeholder: 'Select a date'
       },
       wrapper: 'picker-container'
@@ -142,7 +142,7 @@ export const examples: ExamplesConfig = {
       title: 'Calendar with Initial Value',
       component: 'DtCalendar',
       props: {
-        initValue: new Date()
+        initValue: new Date(2024, 11, 25)
       },
       wrapper: 'calendar-container'
     }
@@ -425,7 +425,7 @@ function App() {
         timeFormat: '24',
         showWeekend: true,
         todayBtn: true,
-        initValue: new Date()
+        initValue: new Date(2024, 11, 25, 14, 30)
       },
       wrapper: 'calendar-container'
     },
@@ -438,7 +438,7 @@ function App() {
         timeFormat: '24',
         showTimeInput: true,
         placeholder: 'Select date and time',
-        initValue: new Date()
+        initValue: new Date(2024, 11, 25, 14, 30)
       },
       wrapper: 'picker-container'
     },
@@ -452,7 +452,7 @@ function App() {
         timeFormat: '12',
         showWeekend: true,
         todayBtn: true,
-        initValue: new Date()
+        initValue: new Date(2024, 11, 25, 14, 30)
       },
       wrapper: 'calendar-container'
     },
@@ -466,7 +466,7 @@ function App() {
         timeFormat: '12',
         showTimeInput: true,
         placeholder: 'Select date and time',
-        initValue: new Date()
+        initValue: new Date(2024, 11, 25, 14, 30)
       },
       wrapper: 'picker-container'
     },
@@ -482,12 +482,8 @@ function App() {
         showWeekend: true,
         todayBtn: true,
         initValue: {
-          from: new Date(),
-          to: (() => {
-            const tomorrow = new Date()
-            tomorrow.setDate(tomorrow.getDate() + 5)
-            return tomorrow
-          })()
+          from: new Date(2024, 11, 25, 10, 0),
+          to: new Date(2024, 11, 30, 18, 0)
         }
       },
       wrapper: 'calendar-container'
@@ -503,7 +499,7 @@ function App() {
         timeFormat: '24',
         showWeekend: true,
         todayBtn: true,
-        initValue: new Date()
+        initValue: new Date(2024, 11, 25, 14, 30)
       },
       wrapper: 'calendar-container'
     },
@@ -520,7 +516,7 @@ function App() {
         placeholder: 'Select week with time',
         showWeekend: true,
         todayBtn: true,
-        initValue: new Date()
+        initValue: new Date(2024, 11, 25, 14, 30)
       },
       wrapper: 'picker-container'
     },
@@ -536,12 +532,8 @@ function App() {
         showTimeInput: true,
         placeholder: 'Select date range with time',
         initValue: {
-          from: new Date(),
-          to: (() => {
-            const tomorrow = new Date()
-            tomorrow.setDate(tomorrow.getDate() + 5)
-            return tomorrow
-          })()
+          from: new Date(2024, 11, 25, 10, 0),
+          to: new Date(2024, 11, 30, 18, 0)
         }
       },
       wrapper: 'picker-container'
@@ -557,7 +549,7 @@ function App() {
         timeFormat: '24',
         showWeekend: true,
         todayBtn: true,
-        initValue: new Date()
+        initValue: new Date(2024, 11, 25, 14, 30)
       },
       wrapper: 'calendar-container'
     },
@@ -572,7 +564,7 @@ function App() {
         timeFormat: '24',
         showTimeInput: true,
         placeholder: 'انتخاب تاریخ و زمان',
-        initValue: new Date()
+        initValue: new Date(2024, 11, 25, 14, 30)
       },
       wrapper: 'picker-container'
     }
@@ -584,12 +576,12 @@ function App() {
       component: 'DtCalendar',
       props: {
         constraints: {
-          minDate: new Date()
+          minDate: new Date(2024, 11, 25)
         }
       },
       wrapper: 'calendar-container',
       constraintsCode: `constraints={{
-        minDate: new Date()
+        minDate: new Date(2024, 11, 25)
       }}`
     },
     MaxDateConstraint: {
@@ -675,6 +667,55 @@ function App() {
           return dayOfWeek === 1
         }
       }}`
+    },
+    MinMaxDateInteractive: {
+      title: 'Min/Max Date with Interactive Testing',
+      description:
+        'Test min/max date constraints interactively. Use the buttons below to set dates within and outside the allowed range to see how the calendar handles them. Dates outside the range will be disabled. Constraints are set for the current month.',
+      component: 'DtCalendar',
+      props: {
+        constraints: (() => {
+          const now = new Date()
+          const currentYear = now.getFullYear()
+          const currentMonth = now.getMonth()
+          return {
+            minDate: new Date(currentYear, currentMonth, 10),
+            maxDate: new Date(currentYear, currentMonth, 25)
+          }
+        })()
+      },
+      wrapper: 'calendar-container',
+      showConsoleLog: false,
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+
+function App() {
+  const [selectedDate, setSelectedDate] = React.useState(null)
+  
+  // Get current month constraints
+  const now = new Date()
+  const currentYear = now.getFullYear()
+  const currentMonth = now.getMonth()
+
+  return (
+    <div>
+      <DtCalendar
+        constraints={{
+          minDate: new Date(currentYear, currentMonth, 10),
+          maxDate: new Date(currentYear, currentMonth, 25)
+        }}
+        onChange={(date) => {
+          setSelectedDate(date)
+          console.log('Selected date:', date)
+        }}
+      />
+      {selectedDate && (
+        <p style={{ marginTop: '1rem' }}>
+          Selected: {selectedDate.toLocaleDateString()}
+        </p>
+      )}
+    </div>
+  )
+}`
     }
   },
   'Display Options': {
@@ -1425,6 +1466,225 @@ const backToGregorian = convertToGregorian(jalaliDate)`,
         timeFormat: '12'
       },
       wrapper: 'picker-container'
+    }
+  },
+  'Error Handling': {
+    InvalidInitValue: {
+      title: 'Invalid Initial Value',
+      description:
+        'Handle errors when providing invalid initial values. Click the button below to trigger an error. The onError callback receives an array of CalendarError objects with details about what went wrong.',
+      component: 'DtCalendar',
+      props: {},
+      wrapper: 'calendar-container',
+      showConsoleLog: true,
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { CalendarError } from 'react-calendar-datetime-picker'
+
+function App() {
+  const handleError = (errors: CalendarError[]) => {
+    console.log('Validation errors:', errors)
+    errors.forEach((error) => {
+      console.log(\`\${error.field}: \${error.message}\`)
+    })
+  }
+
+  return (
+    <DtCalendar
+      initValue="invalid-date-string"
+      onError={handleError}
+    />
+  )
+}`
+    },
+    InvalidConstraints: {
+      title: 'Invalid Constraints',
+      description:
+        'Errors are reported when constraints (minDate, maxDate, disabledDates) contain invalid values. Click the button below to trigger an error. **Important:** When a constraint like minDate is invalid, it is automatically excluded from the constraints object (so dates remain selectable), but an error is still reported via onError. The alert will show the error details.',
+      component: 'DtCalendar',
+      props: {},
+      wrapper: 'calendar-container',
+      showConsoleLog: true,
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { CalendarError } from 'react-calendar-datetime-picker'
+
+function App() {
+  const handleError = (errors: CalendarError[]) => {
+    if (errors.length > 0) {
+      alert(\`Found \${errors.length} error(s):\n\` +
+        errors.map(e => \`\${e.field}: \${e.message}\`).join('\\n'))
+    }
+  }
+
+  return (
+    <DtCalendar
+      constraints={{
+        minDate: 'not-a-date', // Invalid - will trigger error and be excluded
+        maxDate: new Date('2024-12-31') // Valid - will be applied
+      }}
+      onError={handleError}
+    />
+  )
+}
+
+// Note: When minDate is invalid, it is excluded from constraints.
+// Only maxDate will be applied, so dates before 2024-12-31 remain selectable.`
+    },
+    InvalidRangeValue: {
+      title: 'Invalid Range Value',
+      description:
+        'When using type="range", invalid from/to values are caught and reported through the onError callback. Click the button below to trigger an error.',
+      component: 'DtCalendar',
+      props: {
+        type: 'range'
+      },
+      wrapper: 'calendar-container',
+      showConsoleLog: true,
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { CalendarError } from 'react-calendar-datetime-picker'
+
+function App() {
+  const [errors, setErrors] = React.useState<CalendarError[]>([])
+
+  return (
+    <div>
+      <DtCalendar
+        type="range"
+        initValue={{
+          from: 'invalid', // Invalid date - will trigger error
+          to: new Date('2024-12-31')
+        }}
+        onError={setErrors}
+      />
+      {errors.length > 0 && (
+        <div style={{ marginTop: '1rem', padding: '1rem', background: '#fee', borderRadius: '4px' }}>
+          <strong>Errors found:</strong>
+          <ul>
+            {errors.map((error, i) => (
+              <li key={i}>
+                <strong>{error.field}:</strong> {error.message}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}`
+    },
+    ErrorHandlingWithValidation: {
+      title: 'Error Handling with Custom Validation',
+      description:
+        'This example demonstrates that **custom validation functions (`isDateDisabled`) continue to work even when constraint errors occur**. When you set invalid constraints (like `minDate: "not-a-date"`), the invalid constraint is excluded and an error is reported, but your custom validation logic (weekend disabling) is preserved. This shows how error handling and custom validation can work together seamlessly.',
+      component: 'DtCalendar',
+      props: {
+        constraints: {
+          minDate: new Date('2024-01-01'),
+          maxDate: (() => {
+            // Use a future date so dates aren't all disabled
+            const futureDate = new Date()
+            futureDate.setFullYear(futureDate.getFullYear() + 1)
+            return futureDate
+          })(),
+          isDateDisabled: (day: any) => {
+            // Custom validation: disable weekends
+            const date = new Date(day.year, day.month - 1, day.day)
+            const dayOfWeek = date.getDay()
+            return dayOfWeek === 0 || dayOfWeek === 6
+          }
+        }
+      },
+      wrapper: 'calendar-container',
+      showConsoleLog: true,
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { CalendarError, Day } from 'react-calendar-datetime-picker'
+
+function App() {
+  const handleError = (errors: CalendarError[]) => {
+    // Log errors for debugging
+    if (errors.length > 0) {
+      console.error('Calendar errors:', errors)
+      // You could also send to error tracking service
+      // errorTracker.log(errors)
+    }
+  }
+
+  const isWeekend = (day: Day) => {
+    const date = new Date(day.year, day.month - 1, day.day)
+    const dayOfWeek = date.getDay()
+    return dayOfWeek === 0 || dayOfWeek === 6
+  }
+
+  // Use a future maxDate so dates aren't all disabled
+  const futureDate = new Date()
+  futureDate.setFullYear(futureDate.getFullYear() + 1)
+
+  return (
+    <DtCalendar
+      constraints={{
+        minDate: new Date('2024-01-01'),
+        maxDate: futureDate,
+        isDateDisabled: isWeekend // Custom validation: disable weekends
+      }}
+      onError={handleError}
+    />
+  )
+}
+
+// Key Point: Even if minDate or maxDate are invalid and excluded,
+// the isDateDisabled function continues to work. Custom validation
+// is preserved regardless of constraint errors.`
+    },
+    DtPickerErrorHandling: {
+      title: 'DtPicker - Complete Error Handling Example',
+      description:
+        'Complete example showing error handling in DtPicker. Click the buttons below to trigger different types of errors. Errors are displayed visually below the component.',
+      component: 'DtPicker',
+      props: {
+        onChange: () => {}
+      },
+      wrapper: 'picker-container',
+      showConsoleLog: true,
+      customCode: `import { DtPicker } from 'react-calendar-datetime-picker'
+import type { CalendarError } from 'react-calendar-datetime-picker'
+
+function App() {
+  const [date, setDate] = React.useState(null)
+  const [errors, setErrors] = React.useState<CalendarError[]>([])
+
+  const handleError = (errors: CalendarError[]) => {
+    setErrors(errors)
+    if (errors.length > 0) {
+      console.error('Date picker errors:', errors)
+    }
+  }
+
+  return (
+    <div>
+      <DtPicker
+        initValue="invalid-date"
+        onChange={setDate}
+        constraints={{
+          minDate: 'not-a-date', // Invalid - will trigger error
+          maxDate: new Date('2024-12-31')
+        }}
+        onError={handleError}
+        placeholder="Select a date"
+      />
+      {errors.length > 0 && (
+        <div style={{ marginTop: '1rem', padding: '1rem', background: '#fee', borderRadius: '4px' }}>
+          <strong>Errors found:</strong>
+          <ul>
+            {errors.map((error, i) => (
+              <li key={i}>
+                <strong>{error.field}:</strong> {error.message}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}`
     }
   }
 }

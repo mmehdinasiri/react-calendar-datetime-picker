@@ -106,6 +106,16 @@ const features = [
     title: 'Input-less Mode',
     description:
       'Display standalone calendars without input fields for embedded scenarios, dashboards, and custom UI designs.'
+  },
+  {
+    title: 'Smart Modal Positioning',
+    description:
+      'Intelligent modal positioning that automatically adjusts above or below based on available viewport space, handles RTL/LTR layouts, and dynamically repositions on window resize and scroll for optimal user experience.'
+  },
+  {
+    title: 'Comprehensive Error Handling & Validation',
+    description:
+      'Robust error handling system in both DtCalendar and DtPicker with onError callback for tracking normalization and validation errors. Handles invalid dates, constraint violations, and provides detailed error information with field names and messages for debugging.'
   }
 ]
 
