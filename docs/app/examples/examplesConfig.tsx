@@ -948,10 +948,14 @@ import React, { useState } from 'react'
 
 function App() {
   const [date, setDate] = useState(null)
+  const [jsDate, setJsDate] = useState(null)
+  const [formatted, setFormatted] = useState(null)
 
-  const handleDateChange = (newDate) => {
-    setDate(newDate)
-    console.log('onChange:', newDate)
+  const handleDateChange = (normalizedValue, jsDate, formattedString) => {
+    setDate(normalizedValue)      // { year: 2025, month: 12, day: 2 }
+    setJsDate(jsDate)             // Date(2025-12-02)
+    setFormatted(formattedString) // "2025/12/02"
+    console.log('onChange:', normalizedValue, jsDate, formattedString)
   }
 
   return (
@@ -980,10 +984,14 @@ import React, { useState } from 'react'
 
 function App() {
   const [range, setRange] = useState(null)
+  const [jsDateRange, setJsDateRange] = useState(null)
+  const [formatted, setFormatted] = useState(null)
 
-  const handleRangeChange = (newRange) => {
-    setRange(newRange)
-    console.log('onChange:', newRange)
+  const handleRangeChange = (normalizedValue, jsDate, formattedString) => {
+    setRange(normalizedValue)      // { from: Day, to: Day }
+    setJsDateRange(jsDate)         // { from: Date, to: Date }
+    setFormatted(formattedString)  // "from 2025/12/01 to 2025/12/15"
+    console.log('onChange:', normalizedValue, jsDate, formattedString)
   }
 
   return (
@@ -1013,10 +1021,14 @@ import React, { useState } from 'react'
 
 function App() {
   const [dates, setDates] = useState(null)
+  const [jsDates, setJsDates] = useState(null)
+  const [formatted, setFormatted] = useState(null)
 
-  const handleMultiChange = (newDates) => {
-    setDates(newDates)
-    console.log('onChange:', newDates)
+  const handleMultiChange = (normalizedValue, jsDate, formattedString) => {
+    setDates(normalizedValue)      // [Day, Day, ...]
+    setJsDates(jsDate)             // [Date, Date, ...]
+    setFormatted(formattedString)  // "2025/12/01,2025/12/05,2025/12/10"
+    console.log('onChange:', normalizedValue, jsDate, formattedString)
   }
 
   return (

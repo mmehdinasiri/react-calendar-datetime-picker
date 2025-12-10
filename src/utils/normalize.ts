@@ -134,6 +134,93 @@ export function areValuesEqual(v1: unknown, v2: unknown): boolean {
 }
 
 /**
+ * Deep equality comparison for normalized calendar value types (Day, Range, Multi, null)
+ * Performs content-based comparison instead of reference comparison
+ * This is optimized for comparing already-normalized values (unlike areValuesEqual which handles mixed types)
+ *
+ * @param a - First normalized value to compare
+ * @param b - Second normalized value to compare
+ * @returns true if values have identical content, false otherwise
+ */
+export function areNormalizedValuesEqual(
+  a: Day | Range | Multi | null | undefined,
+  b: Day | Range | Multi | null | undefined
+): boolean {
+  // Handle null/undefined cases
+  if (a === null || a === undefined) {
+    return b === null || b === undefined
+  }
+  if (b === null || b === undefined) {
+    return false
+  }
+
+  // Handle Day objects
+  if (
+    'year' in a &&
+    'month' in a &&
+    'day' in a &&
+    !('from' in a) &&
+    !Array.isArray(a)
+  ) {
+    const dayA = a as Day
+    if (
+      !(
+        'year' in b &&
+        'month' in b &&
+        'day' in b &&
+        !('from' in b) &&
+        !Array.isArray(b)
+      )
+    ) {
+      return false
+    }
+    const dayB = b as Day
+    return (
+      dayA.year === dayB.year &&
+      dayA.month === dayB.month &&
+      dayA.day === dayB.day &&
+      (dayA.hour ?? undefined) === (dayB.hour ?? undefined) &&
+      (dayA.minute ?? undefined) === (dayB.minute ?? undefined)
+    )
+  }
+
+  // Handle Range objects
+  if ('from' in a && 'to' in a && !Array.isArray(a)) {
+    const rangeA = a as Range
+    if (!('from' in b && 'to' in b && !Array.isArray(b))) {
+      return false
+    }
+    const rangeB = b as Range
+    return (
+      areNormalizedValuesEqual(rangeA.from, rangeB.from) &&
+      areNormalizedValuesEqual(rangeA.to, rangeB.to)
+    )
+  }
+
+  // Handle Multi (array of Day objects)
+  if (Array.isArray(a)) {
+    if (!Array.isArray(b)) {
+      return false
+    }
+    const multiA = a as Multi
+    const multiB = b as Multi
+    if (multiA.length !== multiB.length) {
+      return false
+    }
+    // Compare each Day in the array
+    for (let i = 0; i < multiA.length; i++) {
+      if (!areNormalizedValuesEqual(multiA[i], multiB[i])) {
+        return false
+      }
+    }
+    return true
+  }
+
+  // Fallback: reference equality for unknown types
+  return a === b
+}
+
+/**
  * Normalize a single day object
  * Ensures all required fields are present and valid
  * Supports: Day objects, Date objects, date strings, and timestamps (numbers)

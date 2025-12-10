@@ -7,8 +7,7 @@ import type { Day, CalendarLocale, Range } from '../types'
 import {
   jalaliToGregorian,
   gregorianToJalali,
-  dayToDate,
-  dateToDay
+  dayToDate
 } from './date-conversion'
 import { compareDays, getDaysInMonth } from './validation'
 
@@ -98,8 +97,22 @@ export function addDays(
   calendarSystem: CalendarLocale = 'gregorian'
 ): Day {
   const date = dayToDate(day, calendarSystem)
-  date.setDate(date.getDate() + days)
-  return dateToDay(date, calendarSystem)
+  // Use UTC methods to maintain consistency with UTC date creation
+  date.setUTCDate(date.getUTCDate() + days)
+  // Extract UTC values directly to avoid timezone issues when reading back
+  const gregorianDay: Day = {
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1,
+    day: date.getUTCDate(),
+    hour: day.hour ?? 0,
+    minute: day.minute ?? 0
+  }
+
+  if (calendarSystem === 'jalali') {
+    return gregorianToJalali(gregorianDay)
+  }
+
+  return gregorianDay
 }
 
 /**
@@ -154,21 +167,31 @@ export function addMonths(
   const originalDay = day.day
 
   // Set day to 1 to avoid overflow when changing month
-  date.setDate(1)
-  date.setMonth(date.getMonth() + months)
+  // Use UTC methods to maintain consistency with UTC date creation
+  date.setUTCDate(1)
+  date.setUTCMonth(date.getUTCMonth() + months)
 
   // Get max days in the new month
   // Note: For Gregorian, we use the standard Date behavior for month/year
   const maxDay = getDaysInMonth(
-    date.getFullYear(),
-    date.getMonth() + 1,
+    date.getUTCFullYear(),
+    date.getUTCMonth() + 1,
     calendarSystem
   )
 
   // Restore day, capped at maxDay
-  date.setDate(Math.min(originalDay, maxDay))
+  date.setUTCDate(Math.min(originalDay, maxDay))
 
-  return dateToDay(date, calendarSystem)
+  // Extract UTC values directly to avoid timezone issues when reading back
+  const gregorianDay: Day = {
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1,
+    day: date.getUTCDate(),
+    hour: day.hour ?? 0,
+    minute: day.minute ?? 0
+  }
+
+  return gregorianDay
 }
 
 /**
@@ -216,20 +239,30 @@ export function addYears(
   const originalDay = day.day
 
   // Set day to 1 to avoid overflow when changing year (e.g. Feb 29)
-  date.setDate(1)
-  date.setFullYear(date.getFullYear() + years)
+  // Use UTC methods to maintain consistency with UTC date creation
+  date.setUTCDate(1)
+  date.setUTCFullYear(date.getUTCFullYear() + years)
 
   // Get max days in the new month/year
   const maxDay = getDaysInMonth(
-    date.getFullYear(),
-    date.getMonth() + 1,
+    date.getUTCFullYear(),
+    date.getUTCMonth() + 1,
     calendarSystem
   )
 
   // Restore day, capped at maxDay
-  date.setDate(Math.min(originalDay, maxDay))
+  date.setUTCDate(Math.min(originalDay, maxDay))
 
-  return dateToDay(date, calendarSystem)
+  // Extract UTC values directly to avoid timezone issues when reading back
+  const gregorianDay: Day = {
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1,
+    day: date.getUTCDate(),
+    hour: day.hour ?? 0,
+    minute: day.minute ?? 0
+  }
+
+  return gregorianDay
 }
 
 /**

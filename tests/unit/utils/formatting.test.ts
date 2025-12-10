@@ -2,9 +2,10 @@ import { describe, it, expect } from 'vitest'
 import {
   toPersianNumeral,
   formatDateForInput,
+  formatValueToString,
   parseDateString
 } from '@/utils/formatting'
-import type { Day, Range, Week } from '@/types'
+import type { Day, Range, Week, Multi } from '@/types'
 
 describe('formatting utils', () => {
   describe('toPersianNumeral', () => {
@@ -102,6 +103,54 @@ describe('formatting utils', () => {
           'Week: 2023/01/01 - 2023/01/07'
         )
       })
+
+      it('formats multi dates as comma-separated list', () => {
+        const multi: Multi = [
+          { year: 2025, month: 12, day: 30 },
+          { year: 2025, month: 12, day: 31 }
+        ]
+        expect(formatDateForInput(multi, 'latin', 'multi')).toBe(
+          '2025/12/30,2025/12/31'
+        )
+      })
+
+      it('formats single date in multi selection', () => {
+        const multi: Multi = [{ year: 2025, month: 12, day: 30 }]
+        expect(formatDateForInput(multi, 'latin', 'multi')).toBe('2025/12/30')
+      })
+
+      it('returns empty string for empty multi array', () => {
+        const multi: Multi = []
+        expect(formatDateForInput(multi, 'latin', 'multi')).toBe('')
+      })
+
+      it('formats multi dates with custom dateFormat', () => {
+        const multi: Multi = [
+          { year: 2025, month: 12, day: 30 },
+          { year: 2025, month: 12, day: 31 }
+        ]
+        expect(
+          formatDateForInput(
+            multi,
+            'latin',
+            'multi',
+            false,
+            '',
+            '',
+            'DD-MM-YYYY'
+          )
+        ).toBe('30-12-2025,31-12-2025')
+      })
+
+      it('formats multi dates with Persian numerals', () => {
+        const multi: Multi = [
+          { year: 1404, month: 9, day: 9 },
+          { year: 1404, month: 9, day: 10 }
+        ]
+        expect(formatDateForInput(multi, 'persian', 'multi')).toBe(
+          '۱۴۰۴/۰۹/۰۹,۱۴۰۴/۰۹/۱۰'
+        )
+      })
     })
   })
 
@@ -160,6 +209,173 @@ describe('formatting utils', () => {
         year: 1402,
         month: 13,
         day: 1
+      })
+    })
+  })
+
+  describe('formatValueToString', () => {
+    it('returns null for null input', () => {
+      expect(formatValueToString(null, 'single', 'latin', false)).toBeNull()
+    })
+
+    describe('single date selection', () => {
+      it('formats single date', () => {
+        const day: Day = { year: 2025, month: 12, day: 27 }
+        expect(formatValueToString(day, 'single', 'latin', false)).toBe(
+          '2025/12/27'
+        )
+      })
+
+      it('formats single date with custom dateFormat', () => {
+        const day: Day = { year: 2025, month: 12, day: 27 }
+        expect(
+          formatValueToString(day, 'single', 'latin', false, 'DD-MM-YYYY')
+        ).toBe('27-12-2025')
+      })
+
+      it('formats single date with time', () => {
+        const day: Day = {
+          year: 2025,
+          month: 12,
+          day: 27,
+          hour: 14,
+          minute: 30
+        }
+        expect(
+          formatValueToString(day, 'single', 'latin', true, undefined, '24')
+        ).toBe('2025/12/27 14:30')
+      })
+
+      it('formats single date with Persian numerals', () => {
+        const day: Day = { year: 1404, month: 9, day: 6 }
+        expect(formatValueToString(day, 'single', 'persian', false)).toBe(
+          '۱۴۰۴/۰۹/۰۶'
+        )
+      })
+    })
+
+    describe('range selection', () => {
+      it('formats complete range', () => {
+        const range: Range = {
+          from: { year: 2025, month: 12, day: 27 },
+          to: { year: 2025, month: 12, day: 31 }
+        }
+        expect(
+          formatValueToString(
+            range,
+            'range',
+            'latin',
+            false,
+            undefined,
+            '24',
+            'from',
+            'to'
+          )
+        ).toBe('from 2025/12/27 to 2025/12/31')
+      })
+
+      it('formats incomplete range (to is null)', () => {
+        const range: Range = {
+          from: { year: 2025, month: 12, day: 27 },
+          to: null
+        }
+        expect(
+          formatValueToString(
+            range,
+            'range',
+            'latin',
+            false,
+            undefined,
+            '24',
+            'from',
+            'to'
+          )
+        ).toBe('from 2025/12/27')
+      })
+
+      it('formats range with custom labels', () => {
+        const range: Range = {
+          from: { year: 2025, month: 12, day: 27 },
+          to: { year: 2025, month: 12, day: 31 }
+        }
+        expect(
+          formatValueToString(
+            range,
+            'range',
+            'latin',
+            false,
+            undefined,
+            '24',
+            'از',
+            'تا'
+          )
+        ).toBe('از 2025/12/27 تا 2025/12/31')
+      })
+    })
+
+    describe('week selection', () => {
+      it('formats week range', () => {
+        const range: Range = {
+          from: { year: 2025, month: 12, day: 22 },
+          to: { year: 2025, month: 12, day: 28 }
+        }
+        const result = formatValueToString(range, 'week', 'latin', false)
+        expect(result).toContain('Week:')
+        expect(result).toContain('2025/12/22')
+        expect(result).toContain('2025/12/28')
+      })
+    })
+
+    describe('multi selection', () => {
+      it('formats multi dates as comma-separated list', () => {
+        const multi: Multi = [
+          { year: 2025, month: 12, day: 30 },
+          { year: 2025, month: 12, day: 31 }
+        ]
+        expect(formatValueToString(multi, 'multi', 'latin', false)).toBe(
+          '2025/12/30,2025/12/31'
+        )
+      })
+
+      it('formats single date in multi selection', () => {
+        const multi: Multi = [{ year: 2025, month: 12, day: 30 }]
+        expect(formatValueToString(multi, 'multi', 'latin', false)).toBe(
+          '2025/12/30'
+        )
+      })
+
+      it('formats multiple dates with custom dateFormat', () => {
+        const multi: Multi = [
+          { year: 2025, month: 12, day: 30 },
+          { year: 2025, month: 12, day: 31 }
+        ]
+        expect(
+          formatValueToString(multi, 'multi', 'latin', false, 'DD-MM-YYYY')
+        ).toBe('30-12-2025,31-12-2025')
+      })
+
+      it('formats multi dates with Persian numerals', () => {
+        const multi: Multi = [
+          { year: 1404, month: 9, day: 9 },
+          { year: 1404, month: 9, day: 10 }
+        ]
+        expect(formatValueToString(multi, 'multi', 'persian', false)).toBe(
+          '۱۴۰۴/۰۹/۰۹,۱۴۰۴/۰۹/۱۰'
+        )
+      })
+
+      it('handles many dates in multi selection', () => {
+        const multi: Multi = [
+          { year: 2025, month: 12, day: 27 },
+          { year: 2025, month: 12, day: 28 },
+          { year: 2025, month: 12, day: 29 },
+          { year: 2025, month: 12, day: 30 },
+          { year: 2025, month: 12, day: 31 }
+        ]
+        const result = formatValueToString(multi, 'multi', 'latin', false)
+        expect(result).toBe(
+          '2025/12/27,2025/12/28,2025/12/29,2025/12/30,2025/12/31'
+        )
       })
     })
   })

@@ -132,7 +132,9 @@ export const examples: ExamplesConfig = {
       component: 'DtPicker',
       props: {
         calendarSystem: 'gregorian',
-        placeholder: 'Select a date'
+        placeholder: 'Select a date',
+        clearBtn: true,
+        initValue: new Date()
       },
       wrapper: 'picker-container'
     },

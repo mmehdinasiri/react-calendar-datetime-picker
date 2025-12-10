@@ -5,7 +5,7 @@ import { DtPicker, DtCalendar } from 'react-calendar-datetime-picker'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import type { ExampleConfig } from '../examples/examplesConfig'
-import type { InitValueInput } from '../../../src/types'
+import type { InitValueInput, RangeDate } from '../../../src/types'
 import { useTheme } from '../contexts/ThemeContext'
 import { Note } from './Note'
 
@@ -13,26 +13,47 @@ interface ExampleRendererProps {
   config: ExampleConfig
   exampleKey: string
   category?: string
+  showFullOutput?: boolean
 }
 
 export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
   config,
   exampleKey,
-  category
+  category,
+  showFullOutput = false
 }) => {
   const { theme } = useTheme()
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [selectedValue, setSelectedValue] = useState<
     InitValueInput | undefined
   >(config.props?.initValue as InitValueInput | undefined)
-
-  const handleChange = (date: unknown) => {
-    setSelectedValue(date as InitValueInput | undefined)
+  const [jsDateValue, setJsDateValue] = useState<
+    Date | RangeDate | Date[] | null
+  >(null)
+  const [formattedString, setFormattedString] = useState<string | null>(null)
+  // Create handleChange with optional parameters (like in examples project)
+  // The component will call it with three parameters via useCalendarState
+  const handleChange = (
+    normalizedValue: unknown,
+    jsDate?: Date | RangeDate | Date[] | null,
+    formattedString?: string | null
+  ) => {
+    setSelectedValue(normalizedValue as InitValueInput | undefined)
+    if (showFullOutput) {
+      // The component should always call with three parameters via useCalendarState
+      // Handle both undefined (not provided) and null (explicitly null) cases
+      setJsDateValue(jsDate !== undefined ? jsDate : null)
+      setFormattedString(formattedString !== undefined ? formattedString : null)
+    }
     if (config.showConsoleLog) {
       if (config.title === 'onDateSelect Callback') {
-        console.log('onChange - Final value:', date)
+        console.log('onChange - Final value:', normalizedValue)
       } else {
-        console.log('onChange:', date)
+        console.log('onChange:', normalizedValue)
+        if (showFullOutput) {
+          console.log('  - JavaScript Date:', jsDate)
+          console.log('  - Formatted String:', formattedString)
+        }
       }
     }
   }
@@ -94,6 +115,35 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
     componentProps.dark = theme === 'dark'
   }
 
+  // Ensure locale is set for proper translations (needed for formatted string generation)
+  // This ensures useCalendarSetup generates translations which are needed for formatting
+  if (!componentProps.locale) {
+    // Default to 'en' if not specified, so translations are generated
+    componentProps.locale = 'en'
+  }
+
+  // Get the component's type prop to create a properly typed onChange
+  const componentType =
+    (componentProps.type as 'single' | 'range' | 'multi' | 'week') || 'single'
+
+  // Create a properly typed onChange handler
+  // IMPORTANT: We need to wrap handleChange to ensure it receives all three parameters
+  // Even though handleChange has optional parameters, we need to explicitly accept three
+  // to match the discriminated union type that the component expects
+  const typedOnChange = showFullOutput
+    ? (((normalizedValue: any, jsDate: any, formattedString: any) => {
+        // Call handleChange with all three parameters
+        handleChange(normalizedValue, jsDate, formattedString)
+      }) as any)
+    : (((normalizedValue: any) => {
+        // For non-full-output examples, only pass first parameter
+        handleChange(normalizedValue, null, null)
+      }) as any)
+
+  // Remove any existing onChange from componentProps to ensure we use our typedOnChange
+  // This is important because the component expects onChange to match the discriminated union type
+  delete componentProps.onChange
+
   // Inject callbacks for examples that need them
   if (config.showConsoleLog) {
     if (config.title === 'View & Navigation Callbacks') {
@@ -108,16 +158,7 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
     } else if (config.title === 'onDateSelect Callback') {
       componentProps.onDateSelect = (day: any) =>
         console.log('onDateSelect - Raw day clicked:', day)
-      // Also show onChange to demonstrate the difference
-      const originalOnChange = componentProps.onChange as
-        | ((value: any) => void)
-        | undefined
-      componentProps.onChange = (finalValue: any) => {
-        console.log('onChange - Final value:', finalValue)
-        if (originalOnChange) {
-          originalOnChange(finalValue)
-        }
-      }
+      // Note: We don't override onChange here anymore since we handle it via typedOnChange
     } else if (config.title === 'onGoToToday Callback') {
       componentProps.onGoToToday = () =>
         console.log('Go to today button clicked')
@@ -172,7 +213,7 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
             Component
           </h3>
           <div ref={wrapperRef} className={wrapperClass}>
-            <Component {...componentProps} onChange={handleChange} />
+            <Component {...componentProps} onChange={typedOnChange} />
           </div>
         </div>
 
@@ -275,6 +316,18 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
                   })
                   .join('\n')
 
+                // Use showFullOutput prop to determine if we should show three-parameter onChange
+                const onChangeCode = showFullOutput
+                  ? `      onChange={(normalizedValue, jsDate, formattedString) => {
+        setDate(normalizedValue)
+        // jsDate: JavaScript Date (always Gregorian)
+        // formattedString: Formatted string based on dateFormat
+        console.log('Normalized:', normalizedValue)
+        console.log('JS Date:', jsDate)
+        console.log('Formatted:', formattedString)
+      }}`
+                  : `      onChange={setDate}`
+
                 return `import { ${config.component} } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
@@ -285,7 +338,7 @@ function App() {
 
   return (
     <${config.component}
-${propsCode ? propsCode + '\n' : ''}      onChange={setDate}
+${propsCode ? propsCode + '\n' : ''}${onChangeCode}
     />
   )
 }`
@@ -335,6 +388,98 @@ ${propsCode ? propsCode + '\n' : ''}      onChange={setDate}
                     </span>
                   </div>
                 ))}
+              </div>
+            ) : showFullOutput ? (
+              <div className='space-y-4'>
+                <div>
+                  <p className='text-sm font-semibold text-gray-900 dark:text-white mb-2'>
+                    1️⃣ Normalized Value (Internal Day object):
+                  </p>
+                  <div className='rounded-lg overflow-hidden border border-border'>
+                    <SyntaxHighlighter
+                      language='json'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5',
+                        padding: '0.75rem'
+                      }}
+                    >
+                      {selectedValue
+                        ? JSON.stringify(selectedValue, null, 2)
+                        : 'null'}
+                    </SyntaxHighlighter>
+                  </div>
+                </div>
+                <div>
+                  <p className='text-sm font-semibold text-gray-900 dark:text-white mb-2'>
+                    2️⃣ JavaScript Date (Always Gregorian):
+                  </p>
+                  <div className='rounded-lg overflow-hidden border border-border'>
+                    <SyntaxHighlighter
+                      language='json'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5',
+                        padding: '0.75rem'
+                      }}
+                    >
+                      {jsDateValue === null || jsDateValue === undefined
+                        ? 'null'
+                        : Array.isArray(jsDateValue)
+                          ? JSON.stringify(
+                              jsDateValue.map((d) => d.toISOString()),
+                              null,
+                              2
+                            )
+                          : jsDateValue instanceof Date
+                            ? JSON.stringify(jsDateValue.toISOString(), null, 2)
+                            : jsDateValue &&
+                                typeof jsDateValue === 'object' &&
+                                'from' in jsDateValue
+                              ? JSON.stringify(
+                                  {
+                                    from: jsDateValue.from
+                                      ? jsDateValue.from.toISOString()
+                                      : null,
+                                    to: jsDateValue.to
+                                      ? jsDateValue.to.toISOString()
+                                      : null
+                                  },
+                                  null,
+                                  2
+                                )
+                              : 'null'}
+                    </SyntaxHighlighter>
+                  </div>
+                </div>
+                <div>
+                  <p className='text-sm font-semibold text-gray-900 dark:text-white mb-2'>
+                    3️⃣ Formatted String:
+                  </p>
+                  <div className='rounded-lg overflow-hidden border border-border'>
+                    <SyntaxHighlighter
+                      language='json'
+                      style={vscDarkPlus}
+                      customStyle={{
+                        margin: 0,
+                        borderRadius: '0.5rem',
+                        fontSize: '0.875rem',
+                        lineHeight: '1.5',
+                        padding: '0.75rem'
+                      }}
+                    >
+                      {formattedString
+                        ? JSON.stringify(formattedString)
+                        : 'null'}
+                    </SyntaxHighlighter>
+                  </div>
+                </div>
               </div>
             ) : (
               <div>

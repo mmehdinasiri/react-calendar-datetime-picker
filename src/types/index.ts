@@ -94,5 +94,6 @@ export type {
   CalendarSelectionSingle,
   CalendarSelectionRange,
   CalendarSelectionMulti,
-  CalendarSelectionWeek
+  CalendarSelectionWeek,
+  RangeDate
 } from './calendar'

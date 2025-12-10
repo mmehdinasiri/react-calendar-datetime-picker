@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useMemo } from 'react'
-import type { Day, Range, Multi, InitValueInput } from '../types'
+import type { Day, Range, Multi, InitValueInput, RangeDate } from '../types'
 import type {
   CalendarError,
   CalendarSelectionSingle,
@@ -20,6 +20,9 @@ import {
   areValuesEqual
 } from '../utils/normalize'
 import { normalizeConstraintsProps } from '../utils/constraints'
+import { convertToJsDate } from '../utils/date-conversion'
+import { formatValueToString } from '../utils/formatting'
+import { getNumberSystem } from '../utils/translations'
 
 interface DtCalendarPropsBase extends SharedCalendarProps {
   /**
@@ -168,28 +171,82 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     if (initValueChanged && normalizedInitValue && onChange) {
       // Only convert if the format differs (string/Date vs Day object)
       if (!areValuesEqual(initValue, normalizedInitValue)) {
-        // Cast onChange to handle all possible types
-        // The check ensures we only call it when values match structurally but format differs
-        ;(onChange as (date: Day | Range | Multi | null) => void)(
-          normalizedInitValue
+        // Convert to JavaScript Date objects (always Gregorian)
+        const jsDateValue = convertToJsDate(
+          normalizedInitValue,
+          type,
+          normalizedCalendarSystem
         )
+
+        // Determine number system from locale or translations
+        const numberSystem =
+          translations?.numbers ||
+          (effectiveLocale ? getNumberSystem(effectiveLocale) : 'latin')
+
+        // Get from/to labels from translations
+        const fromLabel = translations?.labels?.from || 'from'
+        const toLabel = translations?.labels?.to || 'to'
+
+        // Format to string
+        const formattedString = formatValueToString(
+          normalizedInitValue,
+          type,
+          numberSystem,
+          withTime,
+          props.dateFormat,
+          timeFormat,
+          fromLabel,
+          toLabel
+        )
+
+        // Call onChange with three parameters
+        // TypeScript needs explicit cast because onChange is a discriminated union
+        ;(
+          onChange as (
+            normalizedValue: Day | Range | Multi | null,
+            jsDateValue: Date | RangeDate | Date[] | null,
+            formattedString: string | null
+          ) => void
+        )(normalizedInitValue, jsDateValue, formattedString)
       }
     }
 
     prevInitValueRef.current = initValue
-  }, [initValue, normalizedInitValue, onChange])
+  }, [
+    initValue,
+    normalizedInitValue,
+    onChange,
+    type,
+    normalizedCalendarSystem,
+    effectiveLocale,
+    translations,
+    withTime,
+    timeFormat,
+    props.dateFormat
+  ])
 
   // Use calendar state hook
   const { state, actions } = useCalendarState({
     initValue: normalizedInitValue,
     calendarSystem: normalizedCalendarSystem,
     type,
-    // Cast onChange to broader type for internal compatibility
-    onChange: onChange as (date: Day | Range | Multi | null) => void,
-    onCalenderChange,
+    onChange: onChange as (
+      normalizedValue: Day | Range | Multi | null,
+      jsDateValue: Date | RangeDate | Date[] | null,
+      formattedString: string | null
+    ) => void,
+    onCalenderChange: onCalenderChange as (
+      normalizedValue: Day | Range | Multi | null,
+      jsDateValue: Date | RangeDate | Date[] | null,
+      formattedString: string | null
+    ) => void,
     withTime,
     numberOfMonths,
-    weekStart: effectiveWeekStart
+    weekStart: effectiveWeekStart,
+    dateFormat: props.dateFormat,
+    locale: effectiveLocale,
+    timeFormat,
+    translations
   })
 
   // 🎯 Use consolidated calendar callbacks hook

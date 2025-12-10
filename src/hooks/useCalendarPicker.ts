@@ -5,7 +5,8 @@ import type {
   InitValueInput,
   Day,
   Range,
-  Multi
+  Multi,
+  RangeDate
 } from '../types'
 import type {
   CalendarConstraintsInput,
@@ -17,6 +18,8 @@ import {
 } from '../utils/normalize'
 import { normalizeConstraintsProps } from '../utils/constraints'
 import { formatDateForInput } from '../utils/formatting'
+import { convertToJsDate } from '../utils/date-conversion'
+import { formatValueToString } from '../utils/formatting'
 import { useCalendarState } from './useCalendarState'
 
 /**
@@ -25,7 +28,11 @@ import { useCalendarState } from './useCalendarState'
  */
 export function useCalendarPicker(
   initValue: InitValueInput | undefined,
-  onChange: (date: Day | Range | Multi | null) => void,
+  onChange: (
+    normalizedValue: Day | Range | Multi | null,
+    jsDateValue: Date | RangeDate | Date[] | null,
+    formattedString: string | null
+  ) => void,
   type: CalendarType,
   calendarSystem: CalendarLocale,
   withTime: boolean,
@@ -74,36 +81,79 @@ export function useCalendarPicker(
     if (initValueChanged && normalizedInitValue && onChange) {
       // Only convert if the format differs (string/Date vs Day object)
       if (!areValuesEqual(initValue, normalizedInitValue)) {
-        onChange(normalizedInitValue)
+        // Convert to JavaScript Date objects (always Gregorian)
+        const jsDateValue = convertToJsDate(
+          normalizedInitValue,
+          type,
+          calendarSystem
+        )
+
+        // Determine number system from locale or translations
+        const numberSystem = translations?.numbers || 'latin'
+
+        // Get from/to labels from translations
+        const fromLabel = translations?.labels?.from || 'from'
+        const toLabel = translations?.labels?.to || 'to'
+
+        // Format to string
+        const formattedString = formatValueToString(
+          normalizedInitValue,
+          type,
+          numberSystem,
+          withTime,
+          dateFormat,
+          timeFormat,
+          fromLabel,
+          toLabel
+        )
+
+        // Call onChange with three parameters
+        onChange(normalizedInitValue, jsDateValue, formattedString)
       }
     }
 
     prevInitValueRef.current = initValue
-  }, [initValue, normalizedInitValue, onChange])
+  }, [
+    initValue,
+    normalizedInitValue,
+    onChange,
+    type,
+    calendarSystem,
+    translations,
+    withTime,
+    dateFormat,
+    timeFormat
+  ])
 
   // Use calendar state hook
   const { state, actions } = useCalendarState({
     initValue: normalizedInitValue,
     calendarSystem: calendarSystem,
     type,
-    onChange: (date) => {
-      // Pass the normalized value directly
-      onChange(date)
+    onChange: (normalizedValue, jsDateValue, formattedString) => {
+      // Pass all three parameters
+      onChange(normalizedValue, jsDateValue, formattedString)
       // Auto-close modal after selection if enabled
       if (autoClose && onClose) {
         if (type === 'single' || type === 'week') {
           onClose()
         } else if (
           type === 'range' &&
-          (date as Range).from &&
-          (date as Range).to
+          normalizedValue &&
+          'from' in normalizedValue &&
+          normalizedValue.from &&
+          normalizedValue.to
         ) {
           onClose()
         }
       }
     },
     withTime,
-    numberOfMonths
+    numberOfMonths,
+    dateFormat,
+    locale: undefined, // useCalendarPicker doesn't have locale, will use translations
+    timeFormat,
+    translations
   })
 
   // Format display value for input (use state.selectedValue from calendar)

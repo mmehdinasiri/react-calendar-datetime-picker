@@ -1,5 +1,5 @@
 import React, { useMemo, ReactNode, useCallback } from 'react'
-import type { Day, Range, Multi } from '../types'
+import type { Day, Range, Multi, RangeDate } from '../types'
 import type {
   CalendarSelectionSingle,
   CalendarSelectionRange,
@@ -172,8 +172,11 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
   // Use calendar picker hook for shared calendar logic
   const { state, actions, displayValue } = useCalendarPicker(
     initValue,
-    // Cast onChange to broader type for internal compatibility
-    onChange as (date: Day | Range | Multi | null) => void,
+    onChange as (
+      normalizedValue: Day | Range | Multi | null,
+      jsDateValue: Date | RangeDate | Date[] | null,
+      formattedString: string | null
+    ) => void,
     type,
     normalizedCalendarSystem,
     withTime,

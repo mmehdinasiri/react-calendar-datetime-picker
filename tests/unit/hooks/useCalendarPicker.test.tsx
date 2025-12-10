@@ -1,10 +1,17 @@
 import { renderHook, act } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { useCalendarPicker } from '@/hooks/useCalendarPicker'
-import type { Day } from '@/types'
+import type { Day, Range, Multi, RangeDate } from '@/types'
 
 describe('useCalendarPicker', () => {
-  const onChange = vi.fn()
+  const onChange =
+    vi.fn<
+      (
+        normalizedValue: Day | Range | Multi | null,
+        jsDateValue: Date | RangeDate | Date[] | null,
+        formattedString: string | null
+      ) => void
+    >()
   const onClose = vi.fn()
 
   beforeEach(() => {
@@ -121,7 +128,11 @@ describe('useCalendarPicker', () => {
       result.current.actions.selectDate(day)
     })
 
-    expect(onChange).toHaveBeenCalledWith(day)
+    // onChange should be called with three parameters
+    const call = onChange.mock.calls[0]
+    expect(call[0]).toEqual(day) // normalizedValue
+    expect(call[1]).toBeInstanceOf(Date) // jsDateValue
+    expect(call[2]).toBe('2023/01/20') // formattedString
     expect(onClose).toHaveBeenCalled()
   })
 
@@ -229,7 +240,11 @@ describe('useCalendarPicker', () => {
     // Should include mocked system time (12:00)
     const expectedDay = { ...day, hour: 12, minute: 0 }
 
-    expect(onChange).toHaveBeenCalledWith(expectedDay)
+    // onChange should be called with three parameters
+    const call = onChange.mock.calls[0]
+    expect(call[0]).toEqual(expectedDay) // normalizedValue
+    expect(call[1]).toBeInstanceOf(Date) // jsDateValue
+    expect(call[2]).toBe('2023/01/20 12:00') // formattedString
     expect(result.current.displayValue).toBe('2023/01/20 12:00')
   })
 
@@ -252,13 +267,17 @@ describe('useCalendarPicker', () => {
       )
     )
 
-    expect(onChange).toHaveBeenCalledWith(
+    // onChange should be called with three parameters
+    const call = onChange.mock.calls[0]
+    expect(call[0]).toEqual(
       expect.objectContaining({
         year: 2023,
         month: 1,
         day: 1
       })
-    )
+    ) // normalizedValue
+    expect(call[1]).toBeInstanceOf(Date) // jsDateValue
+    expect(call[2]).toBe('2023/01/01') // formattedString
   })
 
   it('does not call onChange when initValue is undefined', () => {

@@ -366,6 +366,220 @@ useEffect(() => {
 - No side effects in reducers
 - Clear separation of concerns
 
+## Comprehensive onChange Output (v2.x Feature)
+
+### Overview
+
+Starting from v2.x, the `onChange` callback provides three distinct parameters to give developers maximum flexibility:
+
+1. **Normalized Value**: Internal Day/Range/Multi object (maintains calendar system integrity)
+2. **JavaScript Date**: Native Date object(s) always in Gregorian calendar
+3. **Formatted String**: Human-readable string based on `dateFormat` prop
+
+### Implementation
+
+The conversion and formatting happen at the output boundary in `useCalendarState`'s `useEffect`:
+
+```typescript
+useEffect(() => {
+  if (emittedValueRef.current !== undefined) {
+    const normalizedValue = emittedValueRef.current
+    emittedValueRef.current = undefined
+
+    // Convert to JavaScript Date objects (always Gregorian)
+    const jsDate = convertToJsDate(normalizedValue, type, calendarSystem)
+
+    // Format to string
+    const formattedString = formatValueToString(
+      normalizedValue,
+      type,
+      numberSystem,
+      withTime,
+      dateFormat,
+      timeFormat,
+      fromLabel,
+      toLabel
+    )
+
+    // Call onChange with three parameters
+    onChange(normalizedValue, jsDate, formattedString)
+  }
+}, [state.selectedValue, onChange, ...])
+```
+
+### Type Definitions
+
+#### Single Selection
+
+```typescript
+export interface CalendarSelectionSingle {
+  type?: 'single'
+  onChange: (
+    normalizedValue: Day | null,
+    jsDate: Date | null,
+    formattedString: string | null
+  ) => void
+}
+```
+
+#### Range Selection
+
+```typescript
+export interface CalendarSelectionRange {
+  type: 'range'
+  onChange: (
+    normalizedValue: Range | null,
+    jsDate: RangeDate | null,
+    formattedString: string | null
+  ) => void
+}
+
+// RangeDate interface
+export interface RangeDate {
+  from: Date | null
+  to: Date | null
+}
+```
+
+#### Multi Selection
+
+```typescript
+export interface CalendarSelectionMulti {
+  type: 'multi'
+  onChange: (
+    normalizedValue: Multi | null,
+    jsDate: Date[] | null,
+    formattedString: string | null
+  ) => void
+}
+```
+
+#### Week Selection
+
+```typescript
+export interface CalendarSelectionWeek {
+  type: 'week'
+  onChange: (
+    normalizedValue: Range | null,
+    jsDate: RangeDate | null,
+    formattedString: string | null
+  ) => void
+}
+```
+
+### Conversion Rules
+
+#### Jalali to Gregorian Conversion
+
+When `calendarSystem='jalali'`, the `jsDate` parameter always contains Gregorian dates:
+
+```typescript
+// Example: Jalali 1402/03/11 → Gregorian 2023-06-01
+const day: Day = { year: 1402, month: 3, day: 11 }
+
+onChange(
+  { year: 1402, month: 3, day: 11 }, // normalizedValue (Jalali)
+  new Date(2023, 5, 1), // jsDate (Gregorian)
+  '1402/03/11' // formattedString (Jalali format)
+)
+```
+
+#### Gregorian Calendar
+
+When `calendarSystem='gregorian'`, conversion is direct:
+
+```typescript
+const day: Day = { year: 2023, month: 6, day: 1 }
+
+onChange(
+  { year: 2023, month: 6, day: 1 }, // normalizedValue (Gregorian)
+  new Date(2023, 5, 1), // jsDate (Gregorian)
+  '2023/06/01' // formattedString
+)
+```
+
+### Formatting Rules
+
+The `formattedString` parameter respects:
+
+- **`dateFormat` prop**: Custom format string (e.g., `"DD/MM/YYYY"`, `"MM-DD-YYYY"`)
+- **`locale` prop**: Determines number system (Persian numerals for `fa`, Latin for others)
+- **`timeFormat` prop**: 12-hour or 24-hour format when `withTime` is enabled
+- **`translations`**: Custom labels for range formatting (from/to labels)
+
+### Usage Examples
+
+#### Single Date Selection
+
+```typescript
+<DtCalendar
+  type="single"
+  calendarSystem="jalali"
+  dateFormat="DD/MM/YYYY"
+  onChange={(normalizedValue, jsDate, formattedString) => {
+    console.log('Internal value:', normalizedValue)  // { year: 1402, month: 3, day: 11 }
+    console.log('JS Date:', jsDate)                  // Date(2023-06-01)
+    console.log('Formatted:', formattedString)       // "11/03/1402"
+  }}
+/>
+```
+
+#### Range Selection
+
+```typescript
+<DtCalendar
+  type="range"
+  calendarSystem="gregorian"
+  dateFormat="YYYY-MM-DD"
+  onChange={(normalizedValue, jsDate, formattedString) => {
+    console.log('Range:', normalizedValue)           // { from: Day, to: Day }
+    console.log('JS Dates:', jsDate)                 // { from: Date, to: Date }
+    console.log('Formatted:', formattedString)       // "from 2023-06-01 to 2023-06-05"
+  }}
+/>
+```
+
+#### Multi Selection
+
+```typescript
+<DtCalendar
+  type="multi"
+  onChange={(normalizedValue, jsDate, formattedString) => {
+    console.log('Selected dates:', normalizedValue) // [Day, Day, ...]
+    console.log('JS Dates:', jsDate)                 // [Date, Date, ...]
+    console.log('Formatted:', formattedString)       // "3 dates selected"
+  }}
+/>
+```
+
+### Benefits
+
+1. **Flexibility**: Developers can choose which format to use based on their needs
+2. **Type Safety**: Full TypeScript support with discriminated unions
+3. **Calendar System Integrity**: Internal Day objects maintain their calendar system
+4. **Standard JavaScript Dates**: Always get Gregorian Date objects for API compatibility
+5. **User-Friendly Strings**: Pre-formatted strings ready for display
+
+### Migration from v1.x
+
+If you were using the single-parameter onChange:
+
+```typescript
+// v1.x
+onChange={(date) => {
+  // date is Day | Range | Multi | null
+}}
+
+// v2.x
+onChange={(normalizedValue, jsDate, formattedString) => {
+  // normalizedValue: Day | Range | Multi | null (same as v1.x)
+  // jsDate: Date | RangeDate | Date[] | null (new!)
+  // formattedString: string | null (new!)
+}}
+```
+
+You can continue using only the first parameter for backward compatibility, or take advantage of the new parameters.
+
 ## Action Creators (`actions.ts`)
 
 All action creators are centralized in one file:

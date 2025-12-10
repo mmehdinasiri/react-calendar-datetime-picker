@@ -404,38 +404,70 @@ export interface SharedCalendarProps {
  * These define strict typings for onChange based on the 'type' prop
  */
 
+/**
+ * Range of JavaScript Date objects (always Gregorian)
+ */
+export interface RangeDate {
+  from: Date | null
+  to: Date | null
+}
+
 export interface CalendarSelectionSingle {
   type?: 'single'
   /**
    * Callback function called when date changes
-   * Receives Day | null for single date selection
+   * @param normalizedValue - Internal Day object (maintains calendar system integrity)
+   * @param jsDateValue - Native JavaScript Date object (always Gregorian)
+   * @param formattedString - Formatted string based on dateFormat prop
    */
-  onChange: (date: Day | null) => void
+  onChange: (
+    normalizedValue: Day | null,
+    jsDateValue: Date | null,
+    formattedString: string | null
+  ) => void
 }
 
 export interface CalendarSelectionRange {
   type: 'range'
   /**
    * Callback function called when date changes
-   * Receives Range | null for range selection
+   * @param normalizedValue - Internal Range object (maintains calendar system integrity)
+   * @param jsDateValue - Range of JavaScript Date objects (always Gregorian)
+   * @param formattedString - Formatted range string (e.g., "From X to Y")
    */
-  onChange: (date: Range | null) => void
+  onChange: (
+    normalizedValue: Range | null,
+    jsDateValue: RangeDate | null,
+    formattedString: string | null
+  ) => void
 }
 
 export interface CalendarSelectionMulti {
   type: 'multi'
   /**
    * Callback function called when date changes
-   * Receives Multi | null for multi selection
+   * @param normalizedValue - Internal Multi object (array of Day objects)
+   * @param jsDateValue - Array of JavaScript Date objects (always Gregorian)
+   * @param formattedString - Formatted string (e.g., "3 dates selected")
    */
-  onChange: (date: Multi | null) => void
+  onChange: (
+    normalizedValue: Multi | null,
+    jsDateValue: Date[] | null,
+    formattedString: string | null
+  ) => void
 }
 
 export interface CalendarSelectionWeek {
   type: 'week'
   /**
    * Callback function called when date changes
-   * Receives Range | null for week selection (week is represented as Range)
+   * @param normalizedValue - Internal Range object (week is represented as Range)
+   * @param jsDateValue - Range of JavaScript Date objects (always Gregorian)
+   * @param formattedString - Formatted range string (e.g., "From X to Y")
    */
-  onChange: (date: Range | null) => void
+  onChange: (
+    normalizedValue: Range | null,
+    jsDateValue: RangeDate | null,
+    formattedString: string | null
+  ) => void
 }

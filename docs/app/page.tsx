@@ -17,6 +17,11 @@ const features = [
       'Single date, date range, multi-date, and week selection modes to accommodate various use cases and workflows.'
   },
   {
+    title: 'Comprehensive onChange Output',
+    description:
+      'Enhanced onChange callback provides three parameters: normalized Day object, JavaScript Date (always Gregorian), and formatted string for maximum flexibility and developer convenience.'
+  },
+  {
     title: 'Time Selection Support',
     description:
       'Full time picker integration with 12-hour and 24-hour formats, supporting hours and minutes for precise datetime input.'

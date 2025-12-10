@@ -99,6 +99,13 @@ export default function Examples() {
                     config={config}
                     exampleKey={exampleKey}
                     category={groupName}
+                    showFullOutput={
+                      groupName === 'Basic' ||
+                      groupName === 'Callbacks' ||
+                      groupName === 'Date Formatting' ||
+                      (groupName === 'Locale' &&
+                        exampleKey === 'PersianCalendar')
+                    }
                   />
                 ))}
               </div>

@@ -9,7 +9,8 @@ export {
   convertToLocale,
   getToday,
   dateToDay,
-  dayToDate
+  dayToDate,
+  convertToJsDate
 } from './date-conversion'
 
 // Normalization
@@ -18,6 +19,7 @@ export { normalizeInitValue, extractMonthFromValue } from './normalize'
 // Formatting
 export {
   formatDateForInput,
+  formatValueToString,
   dayToString,
   parseDateString,
   toPersianNumeral

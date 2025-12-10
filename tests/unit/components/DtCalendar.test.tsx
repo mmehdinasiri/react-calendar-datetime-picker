@@ -158,13 +158,18 @@ describe('DtCalendar', () => {
     render(<DtCalendar {...defaultProps} initValue={stringDate} />)
 
     await waitFor(() => {
-      expect(mockOnChange).toHaveBeenCalledWith(
+      // onChange is now called with three parameters
+      expect(mockOnChange).toHaveBeenCalled()
+      const call = mockOnChange.mock.calls[0]
+      expect(call[0]).toEqual(
         expect.objectContaining({
           year: 2023,
           month: 5,
           day: 15
         })
-      )
+      ) // normalizedValue
+      expect(call[1]).toBeInstanceOf(Date) // jsDateValue
+      expect(call[2]).toBeTruthy() // formattedString
     })
   })
 

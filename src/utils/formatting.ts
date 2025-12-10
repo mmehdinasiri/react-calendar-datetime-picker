@@ -251,11 +251,47 @@ export function formatDateForInput(
     if (multi.length === 1) {
       return formatDay(multi[0], numberSystem, showTime, dateFormat, timeFormat)
     }
-    // Show count for multiple dates
-    return `${multi.length} dates selected`
+    // Return comma-separated list of formatted dates
+    return multi
+      .map((day) =>
+        formatDay(day, numberSystem, showTime, dateFormat, timeFormat)
+      )
+      .join(',')
   }
 
   return ''
+}
+
+/**
+ * Format a value for onChange callback output
+ * Returns null if value is null, otherwise returns formatted string
+ */
+export function formatValueToString(
+  value: Day | Range | Multi | Week | null,
+  type: CalendarType,
+  numberSystem: 'latin' | 'persian',
+  withTime: boolean,
+  dateFormat?: string,
+  timeFormat: '12' | '24' = '24',
+  fromLabel = 'from',
+  toLabel = 'to'
+): string | null {
+  if (value === null) {
+    return null
+  }
+
+  const formatted = formatDateForInput(
+    value,
+    numberSystem,
+    type,
+    withTime,
+    fromLabel,
+    toLabel,
+    dateFormat,
+    timeFormat
+  )
+
+  return formatted || null
 }
 
 /**

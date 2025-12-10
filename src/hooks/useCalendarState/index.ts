@@ -14,10 +14,18 @@ import type {
   Range,
   Multi,
   CalendarLocale,
-  CalendarType
+  CalendarType,
+  CalendarTranslations,
+  CalendarUILocale,
+  RangeDate
 } from '../../types'
-import { extractMonthFromValue } from '../../utils/normalize'
-import { getToday } from '../../utils/date-conversion'
+import {
+  extractMonthFromValue,
+  areNormalizedValuesEqual
+} from '../../utils/normalize'
+import { getToday, convertToJsDate } from '../../utils/date-conversion'
+import { formatValueToString } from '../../utils/formatting'
+import { getNumberSystem } from '../../utils/translations'
 import type { CalendarState, CalendarAction, ReducerContext } from './types'
 import { calendarReducer } from './reducers'
 import { createActions } from './actions'
@@ -39,9 +47,25 @@ export interface UseCalendarStateOptions {
   /** First day of the week (0 = Sunday, 6 = Saturday) */
   weekStart?: number
   /** Callback when value changes */
-  onChange: (value: Day | Range | Multi | null) => void
+  onChange: (
+    normalizedValue: Day | Range | Multi | null,
+    jsDateValue: Date | RangeDate | Date[] | null,
+    formattedString: string | null
+  ) => void
   /** Callback when calendar value changes (requires initValue) */
-  onCalenderChange?: (value: Day | Range | Multi | null) => void
+  onCalenderChange?: (
+    normalizedValue: Day | Range | Multi | null,
+    jsDateValue: Date | RangeDate | Date[] | null,
+    formattedString: string | null
+  ) => void
+  /** Custom date format string */
+  dateFormat?: string
+  /** Locale for formatting */
+  locale?: CalendarUILocale
+  /** Time format: '12' for 12-hour format, '24' for 24-hour format */
+  timeFormat?: '12' | '24'
+  /** Translations object (includes number system and labels) */
+  translations?: CalendarTranslations
 }
 
 /**
@@ -56,7 +80,11 @@ export function useCalendarState(options: UseCalendarStateOptions) {
     numberOfMonths = 1,
     weekStart,
     onChange,
-    onCalenderChange
+    onCalenderChange,
+    dateFormat,
+    locale,
+    timeFormat = '24',
+    translations
   } = options
 
   // Extract month from normalized initValue for initial display month
@@ -109,8 +137,12 @@ export function useCalendarState(options: UseCalendarStateOptions) {
   const prevInitValueRef = useRef(initValue)
 
   // Sync initValue when it changes externally
+  // Use deep content comparison instead of reference comparison to prevent
+  // unnecessary re-synchronization when props are recreated with identical content
+  // This fixes a race condition in test environments where object references change
+  // even when the content (year, month, day, etc.) remains the same
   useEffect(() => {
-    if (initValue !== prevInitValueRef.current) {
+    if (!areNormalizedValuesEqual(initValue, prevInitValueRef.current)) {
       dispatch({ type: 'SYNC_INIT_VALUE', payload: initValue || null })
       prevInitValueRef.current = initValue
     }
@@ -118,18 +150,55 @@ export function useCalendarState(options: UseCalendarStateOptions) {
 
   // Handle value emission (onChange / onCalenderChange) via useEffect
   // This runs after state updates, calling callbacks with emitted values
+  // Conversion and formatting happen at the output boundary
   useEffect(() => {
     if (emittedValueRef.current !== undefined) {
-      const value = emittedValueRef.current
+      const normalizedValue = emittedValueRef.current
       emittedValueRef.current = undefined // Clear before calling callbacks
 
-      onChange(value)
+      // Convert to JavaScript Date objects (always Gregorian)
+      const jsDateValue = convertToJsDate(normalizedValue, type, calendarSystem)
+
+      // Determine number system from locale or translations
+      const numberSystem =
+        translations?.numbers || (locale ? getNumberSystem(locale) : 'latin')
+
+      // Get from/to labels from translations
+      const fromLabel = translations?.labels?.from || 'from'
+      const toLabel = translations?.labels?.to || 'to'
+
+      // Format to string
+      const formattedString = formatValueToString(
+        normalizedValue,
+        type,
+        numberSystem,
+        withTime,
+        dateFormat,
+        timeFormat,
+        fromLabel,
+        toLabel
+      )
+
+      // Call onChange with three parameters
+      onChange(normalizedValue, jsDateValue, formattedString)
 
       if (onCalenderChange && initValue !== undefined) {
-        onCalenderChange(value)
+        onCalenderChange(normalizedValue, jsDateValue, formattedString)
       }
     }
-  }, [state.selectedValue, onChange, onCalenderChange, initValue])
+  }, [
+    state.selectedValue,
+    onChange,
+    onCalenderChange,
+    initValue,
+    type,
+    calendarSystem,
+    withTime,
+    dateFormat,
+    locale,
+    timeFormat,
+    translations
+  ])
 
   // Create action creators
   const actions = createActions(dispatch)

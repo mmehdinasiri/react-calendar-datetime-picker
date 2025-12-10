@@ -201,6 +201,40 @@ export default function Installation() {
           </p>
         </InfoBox>
 
+        <h3>
+          {installationContent.understandingDateValues.jalaliConversion.title}
+        </h3>
+
+        <p>
+          {
+            installationContent.understandingDateValues.jalaliConversion
+              .description
+          }
+        </p>
+
+        <CodeBlock
+          language='tsx'
+          code={
+            installationContent.understandingDateValues.jalaliConversion.code
+          }
+          className='mb-4'
+        />
+
+        <Important>
+          <p className='text-sm text-gray-200'>
+            <strong>
+              {
+                installationContent.understandingDateValues.jalaliConversion
+                  .important.title
+              }
+            </strong>{' '}
+            {
+              installationContent.understandingDateValues.jalaliConversion
+                .important.content
+            }
+          </p>
+        </Important>
+
         <FeatureList
           title='Next Steps'
           items={installationContent.nextSteps}

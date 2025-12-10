@@ -90,6 +90,9 @@ export default function Internationalization() {
                   config={config}
                   exampleKey={exampleKey}
                   category={groupName}
+                  showFullOutput={
+                    groupName === 'Locale' && exampleKey === 'PersianCalendar'
+                  }
                 />
               ))}
             </div>
