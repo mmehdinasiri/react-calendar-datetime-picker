@@ -58,6 +58,8 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Build documentation website
+        env:
+          NEXT_PUBLIC_CLARITY_PROJECT_ID: ${{ secrets.CLARITY_PROJECT_ID }}
         run: pnpm run build:docs
 
       - name: Upload artifact
