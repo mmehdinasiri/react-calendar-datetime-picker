@@ -66,7 +66,10 @@ export function useCalendarPicker(
   // Only runs when initValue prop actually changes (not on every render)
   useEffect(() => {
     // Only convert if initValue prop changed from previous value (including initial mount)
-    const initValueChanged = prevInitValueRef.current !== initValue
+    const initValueChanged = !areValuesEqual(
+      prevInitValueRef.current,
+      initValue
+    )
 
     if (initValueChanged && normalizedInitValue && onChange) {
       // Only convert if the format differs (string/Date vs Day object)

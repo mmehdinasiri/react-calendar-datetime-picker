@@ -100,6 +100,23 @@ export function areValuesEqual(v1: unknown, v2: unknown): boolean {
     )
   }
 
+  // Handle Date objects - convert both to timestamps for comparison
+  if (v1 instanceof Date && v2 instanceof Date) {
+    return v1.getTime() === v2.getTime()
+  }
+
+  // Handle comparison between Date and Day objects
+  // For now, we'll assume gregorian calendar for Date comparison
+  // This is a limitation but covers the most common case
+  if (v1 instanceof Date && isDayObject(v2)) {
+    const dayFromDate = dateToDay(v1, 'gregorian')
+    return areValuesEqual(dayFromDate, v2)
+  }
+  if (isDayObject(v1) && v2 instanceof Date) {
+    const dayFromDate = dateToDay(v2, 'gregorian')
+    return areValuesEqual(v1, dayFromDate)
+  }
+
   // Check Range equality
   if (isRangeObject(v1) && isRangeObject(v2)) {
     return areValuesEqual(v1.from, v2.from) && areValuesEqual(v1.to, v2.to)
