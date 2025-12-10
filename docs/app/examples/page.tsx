@@ -7,7 +7,7 @@ import { CategoryContentDisplay } from '../components/CategoryContentDisplay'
 import { BasicCategoryContent } from './BasicCategoryContent'
 import { examplesContent } from './examplesContent'
 import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 
 // Helper function to convert string to kebab case for IDs
 const toKebabCase = (str: string) =>
@@ -16,7 +16,7 @@ const toKebabCase = (str: string) =>
     .replace(/\s+/g, '-')
     .replace(/[^a-z0-9-]/g, '')
 
-export default function Examples() {
+function ExamplesContent() {
   const searchParams = useSearchParams()
   const categoryParam = searchParams.get('category')
   const exampleParam = searchParams.get('example')
@@ -113,5 +113,22 @@ export default function Examples() {
           ))}
       </div>
     </div>
+  )
+}
+
+export default function Examples() {
+  return (
+    <Suspense
+      fallback={
+        <div className='max-w-6xl mx-auto px-6 py-12'>
+          <div className='prose prose-lg max-w-none mb-12'>
+            <h1>Features</h1>
+            <p>Loading examples...</p>
+          </div>
+        </div>
+      }
+    >
+      <ExamplesContent />
+    </Suspense>
   )
 }
