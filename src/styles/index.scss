@@ -1,0 +1,36 @@
+// All @use statements must come before any other rules
+@use './variables';
+@use './components/calendar-core';
+@use './components/header';
+@use './components/footer';
+@use './components/calendar-grid';
+@use './components/month-view';
+@use './components/time-selector';
+@use './components/year-view';
+@use './components/picker';
+
+// Base styles
+* {
+  box-sizing: border-box;
+}
+
+// Library root class
+.react-calendar-datetime-picker {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--calendar-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// RTL/Persian font support
+.react-calendar-datetime-picker[dir='rtl'],
+.react-calendar-datetime-picker[dir='rtl'] * {
+  // Use system fonts that support Persian/Farsi
+  // Fallback to common Persian fonts if available
+  font-family: 'Vazir', 'Tahoma', 'Arial', 'Segoe UI', -apple-system,
+    BlinkMacSystemFont, sans-serif;
+}

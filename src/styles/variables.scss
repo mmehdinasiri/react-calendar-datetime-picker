@@ -1,0 +1,114 @@
+// CSS Variables for theming
+:root {
+  // Colors - Green theme (matching old styles)
+  --calendar-primary: #009a17;
+  --calendar-primary-hover: #008213;
+  --calendar-primary-light: #a0f5ad;
+  --calendar-selected-day: #03bf1f;
+  --calendar-today: #029418;
+  --calendar-selected-range: #a0f5ad;
+  --calendar-selected-range-color: #008213;
+  --calendar-weekends: #990000;
+  --calendar-danger: #dc3545;
+
+  // Background colors
+  --calendar-bg: #ffffff;
+  --calendar-bg-hover: #f8f9fa;
+  --calendar-bg-disabled: #e4ebe5;
+  --calendar-bg-other-month: #e4ebe5;
+  --calendar-header-bg: var(--calendar-primary); // Default: use primary color
+
+  // Text colors
+  --calendar-text: #444;
+  --calendar-text-light: #666;
+  --calendar-text-lighter: #aaa;
+  --calendar-text-disabled: #aebfa9;
+  --calendar-text-header: #ffffff;
+  --calendar-text-day-names: #aaa;
+  --calendar-text-other-month: #aebfa9;
+  --calendar-icon-color: #c9c9c9;
+
+  // Font sizes
+  --calendar-cell-font-size: 16px;
+  --calendar-cell-font-size-selected: 18px;
+  --calendar-month-view-font-size: 14px;
+  --calendar-month-view-font-size-selected: 22px;
+  --calendar-year-view-font-size: 14px;
+  --calendar-year-view-font-size-selected: 22px;
+  --calendar-footer-btn-font-size: 16px;
+  --calendar-header-text-font-size: 18px;
+
+  // Border colors
+  --calendar-border: #dee2e6;
+  --calendar-border-focus: #009a17;
+
+  // Spacing
+  --calendar-spacing-xs: 0.25rem;
+  --calendar-spacing-sm: 0.5rem;
+  --calendar-spacing-md: 1rem;
+  --calendar-spacing-lg: 1.5rem;
+
+  // Border radius
+  --calendar-radius-sm: 4px;
+  --calendar-radius-md: 8px;
+  --calendar-radius-lg: 16px;
+  
+  // Grid cell size (controls calendar grid scaling, width = cell-size * 7)
+  // Default: 44px (calendar width = 44px * 7 = 308px)
+  --calendar-cell-size: 44px;
+
+  // Transitions
+  --calendar-transition: all 0.2s ease-in-out;
+}
+
+// Dark theme support
+.calendar-picker-modal[data-theme='dark'],
+.react-calendar-datetime-picker[data-theme='dark'] {
+  // Colors - Dark theme (darker green for primary)
+  --calendar-primary: #16a34a;
+  --calendar-primary-hover: #15803d;
+  --calendar-primary-light: #14532d;
+  --calendar-selected-day: #16a34a;
+  --calendar-today: #15803d;
+  --calendar-selected-range: #14532d;
+  --calendar-selected-range-color: #4ade80;
+  --calendar-weekends: #f87171;
+  --calendar-danger: #ef4444;
+
+  // Background colors
+  --calendar-bg: #1f2937;
+  --calendar-bg-hover: #374151;
+  --calendar-bg-disabled: #374151;
+  --calendar-bg-other-month: #111827;
+  --calendar-header-bg: #1f2937; // Dark gray header matching grid
+
+  // Text colors
+  --calendar-text: #f3f4f6;
+  --calendar-text-light: #e5e7eb;
+  --calendar-text-lighter: #9ca3af;
+  --calendar-text-disabled: #6b7280;
+  --calendar-text-header: #ffffff;
+  --calendar-text-day-names: #9ca3af;
+  --calendar-text-other-month: #6b7280;
+  --calendar-icon-color: #9ca3af;
+
+  // Font sizes
+  --calendar-cell-font-size: 16px;
+  --calendar-cell-font-size-selected: 18px;
+  --calendar-month-view-font-size: 14px;
+  --calendar-month-view-font-size-selected: 22px;
+  --calendar-year-view-font-size: 14px;
+  --calendar-year-view-font-size-selected: 22px;
+  --calendar-footer-btn-font-size: 16px;
+  --calendar-header-text-font-size: 18px;
+
+  // Border colors
+  --calendar-border: #374151;
+  --calendar-border-focus: #16a34a;
+}
+
+// RTL support
+[dir='rtl'] {
+  // RTL-specific overrides can go here
+}
+

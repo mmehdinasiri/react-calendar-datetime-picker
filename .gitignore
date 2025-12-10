@@ -34,11 +34,22 @@ dist-ssr
 # lock files
 yarn.lock
 package-lock.json
-pnpm-lock.yaml
 
 # coverage files
 coverage
 react-calendar-datetime-picker-*
 
+# test reports
+playwright-report/
+test-results/
+playwright/.cache/
+
 # html files
 bundle-analysis.html
+
+# Documentation website
+docs/.next
+docs/out
+docs/.vercel
+docs/node_modules
+docs/.env*.local

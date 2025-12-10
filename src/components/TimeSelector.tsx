@@ -1,0 +1,173 @@
+/**
+ * Time Selector Component
+ * Allows users to select hour and minute values
+ */
+
+import React from 'react'
+import type { Day, CalendarTranslations } from '../types'
+import { toPersianNumeral } from '../utils/formatting'
+
+// 🟢 Pre-computed static arrays to avoid recreation on every render
+const HOUR_OPTIONS_24 = Array.from({ length: 24 }, (_, i) => i)
+const HOUR_OPTIONS_12 = Array.from({ length: 12 }, (_, i) => i + 1)
+const MINUTE_OPTIONS = Array.from({ length: 60 }, (_, i) => i)
+
+export interface TimeSelectorProps {
+  /** Current day value */
+  day: Day | null
+  /** Time format: '12' for 12-hour format, '24' for 24-hour format */
+  timeFormat: '12' | '24'
+  /** Translation object */
+  translations: CalendarTranslations
+  /** Label for the time selector */
+  label?: string
+  /** Whether the time selector is disabled */
+  disabled?: boolean
+  /** Callback when time changes */
+  onTimeChange: (hour: number, minute: number) => void
+}
+
+const TimeSelectorInner: React.FC<TimeSelectorProps> = (props) => {
+  const {
+    day,
+    timeFormat,
+    translations,
+    label,
+    disabled = false,
+    onTimeChange
+  } = props
+
+  // Get current hour and minute, default to 0 if not set
+  const currentHour = day?.hour ?? 0
+  const currentMinute = day?.minute ?? 0
+
+  // For 12-hour format, convert to 12-hour display (1-12) and track AM/PM
+  const is24Hour = timeFormat === '24'
+  const displayHour = is24Hour
+    ? currentHour
+    : currentHour === 0
+      ? 12
+      : currentHour > 12
+        ? currentHour - 12
+        : currentHour
+  const isPM = !is24Hour && currentHour >= 12
+
+  // 🟢 Use pre-computed static arrays instead of creating on every render
+  const hourOptions = is24Hour ? HOUR_OPTIONS_24 : HOUR_OPTIONS_12
+  const minuteOptions = MINUTE_OPTIONS
+
+  const handleHourChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedDisplayHour = parseInt(e.target.value, 10)
+    let newHour: number
+
+    if (is24Hour) {
+      newHour = selectedDisplayHour
+    } else {
+      // Convert 12-hour format back to 24-hour format
+      if (selectedDisplayHour === 12) {
+        newHour = isPM ? 12 : 0
+      } else {
+        newHour = isPM ? selectedDisplayHour + 12 : selectedDisplayHour
+      }
+    }
+
+    onTimeChange(newHour, currentMinute)
+  }
+
+  const handleMinuteChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newMinute = parseInt(e.target.value, 10)
+    onTimeChange(currentHour, newMinute)
+  }
+
+  const handleAMPMChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newIsPM = e.target.value === 'PM'
+    let newHour: number
+
+    if (displayHour === 12) {
+      newHour = newIsPM ? 12 : 0
+    } else {
+      newHour = newIsPM ? displayHour + 12 : displayHour
+    }
+
+    onTimeChange(newHour, currentMinute)
+  }
+
+  const formatNumber = (num: number): string => {
+    const str = num.toString().padStart(2, '0')
+    return translations.numbers === 'persian' ? toPersianNumeral(str) : str
+  }
+
+  return (
+    <div
+      className={`time-selector ${disabled ? 'time-selector-disabled' : ''}`}
+    >
+      {label && <label className='time-selector-label'>{label}</label>}
+      <div className='time-selector-inputs'>
+        {/* Hour selector */}
+        <select
+          className='time-selector-hour'
+          value={displayHour}
+          onChange={handleHourChange}
+          disabled={disabled}
+          aria-label='Hour'
+        >
+          {hourOptions.map((hour) => (
+            <option key={hour} value={hour}>
+              {formatNumber(hour)}
+            </option>
+          ))}
+        </select>
+
+        <span className='time-selector-separator'>:</span>
+
+        {/* Minute selector */}
+        <select
+          className='time-selector-minute'
+          value={currentMinute}
+          onChange={handleMinuteChange}
+          disabled={disabled}
+          aria-label='Minute'
+        >
+          {minuteOptions.map((minute) => (
+            <option key={minute} value={minute}>
+              {formatNumber(minute)}
+            </option>
+          ))}
+        </select>
+
+        {/* AM/PM selector (only for 12-hour format) */}
+        {!is24Hour && (
+          <select
+            className='time-selector-ampm'
+            value={isPM ? 'PM' : 'AM'}
+            onChange={handleAMPMChange}
+            disabled={disabled}
+            aria-label='AM/PM'
+          >
+            <option value='AM'>{translations.labels.am}</option>
+            <option value='PM'>{translations.labels.pm}</option>
+          </select>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// 🟢 Memoize component to prevent unnecessary re-renders
+export const TimeSelector = React.memo(
+  TimeSelectorInner,
+  (prevProps, nextProps) => {
+    // Return TRUE if props are equal (skip re-render)
+    // Return FALSE if props differ (re-render needed)
+    return (
+      prevProps.day === nextProps.day &&
+      prevProps.timeFormat === nextProps.timeFormat &&
+      prevProps.translations === nextProps.translations &&
+      prevProps.label === nextProps.label &&
+      prevProps.disabled === nextProps.disabled &&
+      prevProps.onTimeChange === nextProps.onTimeChange
+    )
+  }
+)
+
+TimeSelector.displayName = 'TimeSelector'

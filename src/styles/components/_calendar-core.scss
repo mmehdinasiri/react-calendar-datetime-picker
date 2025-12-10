@@ -1,0 +1,26 @@
+// Calendar Core Component Styles
+@use '../variables' as *;
+
+.calendar-core {
+  position: relative;
+  background-color: var(--calendar-bg);
+  z-index: 10;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.25);
+  font-family: inherit;
+  border-radius: var(--calendar-radius-sm);
+  overflow: hidden;
+  width: calc(var(--calendar-cell-size) * 7);
+  margin: 0 auto;
+
+  &.is-calender {
+    position: relative;
+  }
+
+  // Adjust width for multiple months
+  &.calendar-core-multi-months {
+    width: fit-content;
+    min-width: calc(var(--calendar-cell-size) * 7);
+    max-width: calc(var(--calendar-cell-size) * 7 * 3 + 80px); // 3 months + gaps + padding
+  }
+}
+

@@ -1,0 +1,125 @@
+// Calendar Footer Styles
+@use '../variables' as *;
+
+.calendar-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--calendar-spacing-sm) var(--calendar-spacing-md);
+  background-color: var(--calendar-bg);
+  border-top: 1px solid var(--calendar-border);
+  border-bottom-left-radius: var(--calendar-radius-sm);
+  border-bottom-right-radius: var(--calendar-radius-sm);
+  gap: var(--calendar-spacing-md);
+
+  // When only time selector is present, center it
+  &:has(.calendar-time-selector:only-child) {
+    .calendar-time-selector {
+      width: 100%;
+    }
+  }
+
+  // When only today button is present, center it
+  &:has(.calendar-today-btn:only-child) {
+    // Already centered by default
+  }
+
+  // When both are present, stack them vertically
+  &:has(.calendar-time-selector):has(.calendar-today-btn) {
+    .calendar-time-selector {
+      width: 100%;
+      margin-bottom: var(--calendar-spacing-xs);
+    }
+    
+    .calendar-today-btn {
+      width: 100%;
+      max-width: 200px;
+    }
+  }
+}
+
+// RTL support
+[dir='rtl'] .calendar-footer {
+  // No change needed for vertical layout
+}
+
+.calendar-today-btn {
+  background: var(--calendar-primary);
+  border: none;
+  color: var(--calendar-text-header);
+  cursor: pointer;
+  padding: var(--calendar-spacing-xs) var(--calendar-spacing-md);
+  font-size: var(--calendar-footer-btn-font-size);
+  font-weight: 500;
+  border-radius: var(--calendar-radius-sm);
+  transition: var(--calendar-transition);
+  min-height: 32px;
+
+  &:hover {
+    background: var(--calendar-primary-hover);
+  }
+
+  &:active {
+    background: var(--calendar-primary-hover);
+    transform: scale(0.98);
+  }
+}
+
+// Preset Range Buttons
+.calendar-preset-ranges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: var(--calendar-spacing-xs);
+}
+
+.calendar-preset-btn {
+  padding: 6px 12px;
+  font-size: var(--calendar-footer-btn-font-size);
+  font-weight: 500;
+  color: var(--calendar-text);
+  background: var(--calendar-bg);
+  border: 1px solid var(--calendar-border);
+  border-radius: var(--calendar-radius-sm);
+  cursor: pointer;
+  transition: var(--calendar-transition);
+  min-height: 28px;
+  white-space: nowrap;
+  box-sizing: border-box;
+  // Use font-variant-numeric to prevent width changes when font-weight changes
+  font-variant-numeric: tabular-nums;
+
+  &:hover:not(:disabled) {
+    background: var(--calendar-bg-hover);
+    border-color: var(--calendar-primary);
+    color: var(--calendar-primary);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.calendar-preset-btn-active {
+    background: var(--calendar-primary);
+    border-color: var(--calendar-primary);
+    color: var(--calendar-text-header);
+    // Keep font-weight the same to prevent width changes, use text-shadow for emphasis
+    font-weight: 500;
+    text-shadow: 0 0 0.5px currentColor;
+    // Ensure border width stays the same to prevent width changes
+    border-width: 1px;
+
+    &:hover {
+      background: var(--calendar-primary-hover);
+      border-color: var(--calendar-primary-hover);
+      color: var(--calendar-text-header);
+    }
+  }
+}
+

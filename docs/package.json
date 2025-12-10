@@ -1,0 +1,38 @@
+{
+  "name": "react-calendar-datetime-picker-docs",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 4000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^15.4.8",
+    "nextjs-toploader": "^3.9.17",
+    "react": "^19.2.0",
+    "react-calendar-datetime-picker": "file:../",
+    "react-calendar-datetime-picker-legacy": "npm:react-calendar-datetime-picker@1.7.5",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.68.0",
+    "react-syntax-highlighter": "^15.5.0",
+    "sass": "^1.94.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.4",
+    "@types/react-dom": "^19.2.3",
+    "@types/react-syntax-highlighter": "^15.5.0",
+    "autoprefixer": "^10.4.22",
+    "eslint": "^9.39.1",
+    "eslint-config-next": "^15.0.0",
+    "fork-ts-checker-webpack-plugin": "^9.0.2",
+    "postcss": "^8.5.6",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-import": "^16.1.0",
+    "postcss-preset-env": "^10.0.1",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.9.3"
+  }
+}

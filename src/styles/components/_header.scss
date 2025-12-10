@@ -1,0 +1,153 @@
+// Calendar Header Styles
+@use '../variables' as *;
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  background-color: var(--calendar-header-bg);
+  color: var(--calendar-text-header);
+  padding: 24px 6px;
+  min-height: 48px;
+  position: relative;
+  border-top-left-radius: var(--calendar-radius-sm);
+  border-top-right-radius: var(--calendar-radius-sm);
+}
+
+.calendar-nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--calendar-text-header);
+  cursor: pointer;
+  padding: var(--calendar-spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: var(--calendar-transition);
+  border-radius: 50%;
+  min-width: 32px;
+  min-height: 32px;
+  width: 32px;
+  height: 32px;
+  justify-self: start;
+
+  &.calendar-nav-next {
+    justify-self: end;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+  }
+
+  &.is-disabled {
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  span {
+    display: block;
+  }
+}
+
+.calendar-nav-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  stroke: currentColor;
+  display: block;
+}
+
+.calendar-month-year-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  justify-self: center;
+}
+
+.calendar-month-btn,
+.calendar-year-btn {
+  background: transparent;
+  border: none;
+  color: var(--calendar-text-header);
+  font-weight: 500;
+  font-size: var(--calendar-header-text-font-size);
+  cursor: pointer;
+  padding: var(--calendar-spacing-xs) var(--calendar-spacing-sm);
+  transition: var(--calendar-transition);
+  border-radius: var(--calendar-radius-sm);
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 1;
+  }
+}
+
+.calendar-month-year-title,
+.calendar-year-range-title {
+  display: flex;
+  color: var(--calendar-text-header);
+  font-weight: 500;
+  font-size: var(--calendar-header-text-font-size);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: var(--calendar-spacing-xs) var(--calendar-spacing-sm);
+  transition: var(--calendar-transition);
+  border-radius: var(--calendar-radius-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.calendar-back-btn {
+  background: transparent;
+  border: none;
+  color: var(--calendar-text-header);
+  cursor: pointer;
+  padding: var(--calendar-spacing-xs) var(--calendar-spacing-sm);
+  font-size: var(--calendar-header-text-font-size);
+  transition: var(--calendar-transition);
+  border-radius: var(--calendar-radius-sm);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+
+// RTL support
+[dir='rtl'] {
+  .calendar-header {
+    .calendar-month-year-btn {
+      direction: ltr;
+    }
+
+    .calendar-month-year-title,
+    .calendar-year-range-title {
+      direction: ltr;
+    }
+
+    .calendar-nav-btn {
+      // Flip icons horizontally for RTL
+      .calendar-nav-icon {
+        transform: scaleX(-1);
+      }
+    }
+  }
+}
+

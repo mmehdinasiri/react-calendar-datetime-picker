@@ -1,0 +1,89 @@
+// Year Selection View Styles
+@use '../variables' as *;
+
+.calendar-years {
+  list-style: none;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  height: 291px;
+  overflow-y: scroll;
+  padding: 30px 0;
+  margin: 0;
+  background: var(--calendar-bg);
+  position: relative;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.calendar-years-grid {
+    // Grid layout for years
+  }
+
+  &.calendar-years-list {
+    display: block;
+
+    .calendar-year-item {
+      width: 100%;
+    }
+  }
+}
+
+// Year wrapper - gradient removed per user request
+.year-wrapper {
+  position: relative;
+  margin: 8px 0;
+  overflow: hidden;
+}
+
+.calendar-year-item {
+  background: transparent;
+  border: none;
+  color: var(--calendar-text);
+  cursor: pointer;
+  padding: 0;
+  font-size: var(--calendar-year-view-font-size);
+  transition: var(--calendar-transition);
+  width: 20%;
+  height: 55px;
+  line-height: 55px;
+  text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: var(--calendar-text);
+  }
+
+  &.calendar-year-current {
+    color: var(--calendar-selected-day);
+    font-weight: 700;
+    font-size: var(--calendar-year-view-font-size-selected);
+  }
+}
+
+.calendar-years-grid {
+  .calendar-year-item {
+    width: 20%;
+
+    &:nth-child(5n + 1) {
+      clear: left;
+    }
+  }
+}
+
+// RTL support
+[dir='rtl'] {
+  .calendar-years-grid {
+    .calendar-year-item {
+      &:nth-child(5n + 1) {
+        clear: right;
+      }
+    }
+  }
+}
+

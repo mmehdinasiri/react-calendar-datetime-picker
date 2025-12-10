@@ -1,0 +1,195 @@
+// Time Selector Styles
+@use '../variables' as *;
+
+.calendar-time-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  .calendar-time-selector-range {
+    display: flex;
+    gap: 16px;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    width: auto;
+
+    [dir='rtl'] & {
+      flex-direction: row-reverse;
+    }
+  }
+}
+
+.time-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  width: auto;
+
+  .time-selector-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--calendar-text-lighter);
+    margin: 0;
+  }
+
+  .time-selector-inputs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .time-selector-hour,
+  .time-selector-minute,
+  .time-selector-ampm {
+    padding: 8px 12px;
+    border: 1px solid var(--calendar-border);
+    border-radius: 4px;
+    background: var(--calendar-bg);
+    color: var(--calendar-text);
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+    box-sizing: border-box;
+    height: auto;
+    line-height: 1.5;
+    text-align: center;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0;
+    vertical-align: middle;
+
+    &:hover:not(:disabled) {
+      border-color: var(--calendar-primary);
+      background: var(--calendar-bg-hover);
+    }
+
+    &:focus:not(:disabled) {
+      outline: none;
+      border-color: var(--calendar-border-focus);
+      box-shadow: 0 0 0 2px var(--calendar-primary-light);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      background: var(--calendar-bg-disabled);
+      // Ensure disabled state maintains exact same dimensions
+      width: 60px !important;
+      min-width: 60px !important;
+      max-width: 60px !important;
+      padding: 8px 12px !important;
+      border: 1px solid var(--calendar-border) !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    option {
+      background: var(--calendar-bg);
+      color: var(--calendar-text);
+    }
+  }
+
+  .time-selector-separator {
+    color: var(--calendar-text);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    min-width: auto;
+    max-width: none;
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+  }
+}
+
+// Range mode - smaller inputs
+.calendar-time-selector-range {
+  .time-selector {
+    .time-selector-hour,
+    .time-selector-minute,
+    .time-selector-ampm {
+      padding: 6px 8px;
+      font-size: 13px;
+      width: 50px;
+      min-width: 50px;
+      max-width: 50px;
+      box-sizing: border-box;
+      height: auto;
+      line-height: 1.5;
+      text-align: center;
+      margin: 0;
+
+      &:disabled {
+        // Ensure disabled state maintains exact same dimensions in range mode
+        width: 50px !important;
+        min-width: 50px !important;
+        max-width: 50px !important;
+        padding: 6px 8px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+      }
+    }
+
+    .time-selector-ampm {
+      width: 60px;
+      min-width: 60px;
+      max-width: 60px;
+
+      &:disabled {
+        width: 60px !important;
+        min-width: 60px !important;
+        max-width: 60px !important;
+      }
+    }
+  }
+}
+
+.time-selector-disabled {
+  opacity: 0.6;
+
+  .time-selector-separator {
+    color: var(--calendar-text);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    min-width: auto;
+    max-width: none;
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+  }
+
+  .time-selector-ampm {
+    width: 70px;
+    min-width: 70px;
+    max-width: 70px;
+
+    &:disabled {
+      width: 70px !important;
+      min-width: 70px !important;
+      max-width: 70px !important;
+    }
+  }
+}
+
+// RTL support
+[dir='rtl'] {
+  .time-selector {
+    .time-selector-inputs {
+      flex-direction: row-reverse;
+    }
+  }
+}
+

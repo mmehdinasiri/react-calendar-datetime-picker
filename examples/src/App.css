@@ -1,0 +1,460 @@
+.app {
+  min-height: 100vh;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.app-header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.app-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.example-section {
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.example-content {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.example-sidebar {
+  flex: 0 0 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.example-theme,
+.example-props,
+.example-result {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.example-theme {
+  background: #fff3e0;
+  border-color: #ff9800;
+}
+
+.example-theme h3 {
+  color: #e65100;
+  border-bottom: 1px solid #ff9800;
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+}
+
+.theme-instruction {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.875rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.theme-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.theme-method {
+  padding: 0.875rem;
+  background: #fff;
+  border: 1px solid #ffcc80;
+  border-radius: 4px;
+}
+
+.theme-method strong {
+  display: block;
+  color: #e65100;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.method-description {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.8125rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.usage-example {
+  display: block;
+  margin: 0;
+  padding: 0.625rem;
+  background: #fff;
+  border: 1px solid #ffcc80;
+  border-radius: 3px;
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 0.6875rem;
+  color: #e65100;
+  white-space: pre;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+.example-props h3,
+.example-result h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.props-code,
+.result-code {
+  margin: 0;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  color: #333;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.props-editor-container {
+  position: relative;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.props-editor-container.error {
+  border-color: #dc3545;
+}
+
+/* Monaco Editor will handle its own styling */
+.props-editor-container .monaco-editor {
+  border-radius: 4px;
+}
+
+.props-error {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: #fff5f5;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+  color: #dc3545;
+  font-size: 0.8125rem;
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+}
+
+.props-reset-btn {
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  color: #666;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.props-reset-btn:hover {
+  background: #e9ecef;
+  border-color: #009a17;
+  color: #009a17;
+}
+
+.props-reset-btn:active {
+  background: #dee2e6;
+}
+
+.result-code {
+  color: #009a17;
+  font-weight: 500;
+}
+
+.example-calendar {
+  flex: 0 0 350px;
+  min-width: 0;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .example-content {
+    flex-direction: column;
+  }
+
+  .example-sidebar {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+.example-section h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #009a17;
+  padding-bottom: 10px;
+}
+
+.example-section h3 {
+  color: #555;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.description {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #f0f8f0;
+  border-left: 4px solid #009a17;
+  border-radius: 4px;
+}
+
+.example-item {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.example-item p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.picker-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding: 1rem 0;
+}
+
+.error-display {
+  margin-top: 30px;
+  padding: 20px;
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 8px;
+}
+
+.error-display h3 {
+  margin-top: 0;
+  color: #856404;
+}
+
+.error-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.error-item {
+  padding: 15px;
+  background: white;
+  border-radius: 4px;
+  border-left: 4px solid #dc3545;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.error-item strong {
+  color: #333;
+  display: inline-block;
+  min-width: 80px;
+}
+
+.error-item code {
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+  color: #d63384;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.2s ease;
+  margin-bottom: -2px;
+}
+
+.tab:hover {
+  color: #009a17;
+  background: #f0f8f0;
+}
+
+.tab-active {
+  color: #009a17;
+  border-bottom-color: #009a17;
+  background: #f0f8f0;
+}
+
+.tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ============================================
+   CUSTOM THEMING WITH CSS VARIABLES
+   ============================================
+   Both examples below override CSS variables to customize
+   the calendar appearance. The difference is HOW you apply them:
+   
+   Example 1: Apply to wrapper element (CSS inheritance)
+   Example 2: Apply using calenderModalClass prop (direct)
+*/
+
+/* Example 1: Wrapper Element Approach
+   Override variables on a wrapper div, the calendar will inherit them */
+.calendar-blue-theme {
+  --calendar-primary: #0066cc;
+  --calendar-primary-hover: #0052a3;
+  --calendar-primary-light: #b3d9ff;
+  --calendar-selected-day: #0066cc;
+  --calendar-today: #004d99;
+  --calendar-selected-range: #b3d9ff;
+  --calendar-selected-range-color: #0052a3;
+  --calendar-header-bg: #0066cc;
+}
+
+/* Example 2: calenderModalClass Prop Approach
+   Use the calenderModalClass prop to apply this class directly to the calendar.
+   Useful when you need higher specificity (e.g., with dark theme) */
+.react-calendar-datetime-picker.calendar-dark-custom-theme[data-theme='dark'],
+.calendar-dark-custom-theme[data-theme='dark'] {
+  /* Override only background colors - primary colors remain default dark theme green */
+  /* Using warmer dark brown tones - visually very distinct from default cool gray (#1f2937) */
+  --calendar-bg: #2c1810 !important;
+  --calendar-bg-hover: #3d2418 !important;
+  --calendar-bg-selected: #2c1810 !important;
+  --calendar-header-bg: #2c1810 !important;
+  --calendar-border: #4a2e1f !important;
+}
+
+.console-log-info {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: #1565c0;
+  line-height: 1.5;
+}
+
+.console-log-info p {
+  margin: 0;
+}
+
+.constraint-functions-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.constraint-functions-section h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.function-code-block {
+  margin-top: 0.5rem;
+}
+
+.function-code {
+  margin: 0;
+  padding: 1rem;
+  background: #282c34;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-family:
+    'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.function-code code {
+  color: #abb2bf;
+  display: block;
+  white-space: pre;
+}
+
+/* Basic syntax highlighting for JavaScript/TypeScript */
+.function-code code {
+  color: #abb2bf;
+}
+
+.function-code code {
+  /* Keywords */
+  background: #282c34;
+}
+
+/* Simple syntax highlighting using text color */
+.function-code {
+  color: #abb2bf;
+}
