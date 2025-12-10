@@ -2,6 +2,8 @@
 
 A modern, fast and small calendar for React with comprehensive support for Gregorian and Jalali (Persian) calendar systems.
 
+📚 **[Full Documentation Website](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)** - Complete guide with examples, API reference, and more
+
 ## Features
 
 ### Core Capabilities
@@ -50,8 +52,8 @@ function App() {
     <DtPicker
       initValue={date}
       onChange={setDate}
-      calendarSystem="gregorian"
-      locale="en"
+      calendarSystem='gregorian'
+      locale='en'
     />
   )
 }
@@ -62,33 +64,41 @@ function App() {
 Version 2.x brings significant improvements and new capabilities:
 
 ### Enhanced TypeScript Support
+
 - Better type definitions and improved IntelliSense
 - Stricter type checking for a more robust development experience
 
 ### Comprehensive onChange Output
+
 - Enhanced onChange callback provides three parameters: normalized Day object, JavaScript Date (always Gregorian), and formatted string
 
 ### Improved Performance
+
 - Optimized rendering and memoization
 - Reduced bundle size for faster loading
 
 ### Enhanced Customization
+
 - Custom icons, labels, translations, and CSS classes
 - Complete control over component styling
 
 ### Rich Event System
+
 - Comprehensive callback system for date selection, navigation, and user interactions
 
 ### Better Accessibility
+
 - Full keyboard navigation support
 - ARIA labels and focus management
 - Screen reader support
 
 ### Smart Modal Positioning
+
 - Intelligent modal positioning that automatically adjusts based on viewport space
 - Handles RTL/LTR layouts and dynamic repositioning
 
 ### Comprehensive Error Handling & Validation
+
 - Robust error handling system with onError callback
 - Handles invalid dates, constraint violations, and provides detailed error information
 
@@ -99,11 +109,13 @@ For a complete list of features and migration guide, visit the [documentation we
 This library supports:
 
 ### Core Technologies
+
 - **React** - Built with modern React patterns (Hooks, Functional Components)
 - **TypeScript** - Full TypeScript support with comprehensive type definitions
 - **Calendar** - Full-featured calendar component with month/year navigation
 
 ### Selection Types
+
 - **Date Picker** - Interactive date selection with input field integration
 - **DateTime Picker** - Combined date and time selection with 12/24-hour formats
 - **Time Picker** - Full time selection with hours and minutes
@@ -112,17 +124,20 @@ This library supports:
 - **Week Selection** - Select entire weeks with customizable start days
 
 ### Calendar Systems
+
 - **Persian** - Native Persian (Farsi) locale support with RTL layout
 - **Jalali** - Complete Jalali (Persian) calendar system implementation
 - **Gregorian** - Standard Gregorian calendar system support
 
 ### Internationalization & Localization
+
 - **i18n** - Full internationalization support for multiple languages
 - **RTL** - Right-to-left layout support for Persian and other RTL languages
 - **Locale** - Support for English, Persian, German, Spanish, and French locales
 - **Localization** - Customizable translations and regional formatting
 
 ### UI & UX Features
+
 - **Dark Mode** - Built-in dark theme with automatic detection
 - **Accessibility** - WCAG 2.1 Level AA compliant with keyboard navigation and ARIA labels
 - **Modal** - Smart modal positioning with automatic viewport adjustment
@@ -131,6 +146,7 @@ This library supports:
 - **Preset Ranges** - Built-in preset buttons for common date ranges
 
 ### Advanced Features
+
 - **Constraints** - Minimum/maximum dates, disabled dates, and custom validation
 - **Validation** - Comprehensive error handling and validation system
 - **Utilities** - Extended date manipulation and calendar conversion utilities
