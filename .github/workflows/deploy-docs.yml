@@ -47,8 +47,8 @@ jobs:
       - name: Build library (for docs to use)
         run: pnpm run build
 
-      - name: Reinstall docs dependencies (to link built package)
-        run: cd docs && rm -rf node_modules/react-calendar-datetime-picker && pnpm install
+      - name: Refresh workspace links (to link built package)
+        run: rm -rf docs/node_modules/react-calendar-datetime-picker && pnpm install
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
