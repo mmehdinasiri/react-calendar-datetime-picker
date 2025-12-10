@@ -132,6 +132,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     customization,
     dark = false,
     yearListStyle = 'grid',
+    enlargeSelectedDay = true,
     onDateSelect,
     onMonthSelect,
     onYearSelect,
@@ -335,7 +336,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
             showWeekend={showWeekend}
             weekStart={effectiveWeekStart}
             todayBtn={todayBtn}
-            enlargeSelectedDay={true}
+            enlargeSelectedDay={enlargeSelectedDay}
             constraints={constraints}
             customization={customization}
             numberOfMonths={numberOfMonths}

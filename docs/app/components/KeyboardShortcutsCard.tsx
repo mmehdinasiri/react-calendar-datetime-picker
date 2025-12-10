@@ -23,14 +23,14 @@ export const KeyboardShortcutsCard: React.FC<KeyboardShortcutsCardProps> = ({
       <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
         {shortcuts.map((shortcut, index) => (
           <li key={index}>
-            <kbd className='px-2 py-1 bg-bg-primary border border-border rounded text-xs text-gray-200'>
+            <kbd className='px-2 py-1 bg-bg-primary border border-border rounded text-xs text-gray-900 dark:text-gray-200'>
               {shortcut.key}
             </kbd>
             {shortcut.alternative && (
               <>
                 {' '}
                 or{' '}
-                <kbd className='px-2 py-1 bg-bg-primary border border-border rounded text-xs text-gray-200'>
+                <kbd className='px-2 py-1 bg-bg-primary border border-border rounded text-xs text-gray-900 dark:text-gray-200'>
                   {shortcut.alternative}
                 </kbd>
               </>

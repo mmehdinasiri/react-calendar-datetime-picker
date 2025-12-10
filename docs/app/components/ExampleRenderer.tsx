@@ -82,7 +82,8 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
     baseWrapperClass.includes('calendar-blue-theme') ||
     baseWrapperClass.includes('calendar-dark-custom-theme') ||
     (typeof config.props?.calenderModalClass === 'string' &&
-      config.props.calenderModalClass.includes('calendar-dark-custom-theme'))
+      (config.props.calenderModalClass.includes('calendar-dark-custom-theme') ||
+        config.props.calenderModalClass.includes('calendar-blue-theme')))
 
   // Extract props, ensuring boolean props are passed correctly
   const booleanPropNames = [

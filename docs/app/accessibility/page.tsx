@@ -39,7 +39,7 @@ export default function Accessibility() {
         </p>
 
         <InfoBox>
-          <p className='text-sm text-gray-200'>
+          <p className='text-sm text-gray-700 dark:text-gray-200'>
             <strong>✓ WCAG 2.1 AA Compliant</strong> - Full keyboard navigation,
             ARIA labels, focus management, and screen reader support.
           </p>
@@ -97,7 +97,7 @@ export default function Accessibility() {
                         />
                       </div>
                       <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
-                        <p className='text-sm text-gray-200'>
+                        <p className='text-sm text-gray-700 dark:text-gray-200'>
                           <strong>How to test:</strong> Tab to the input field,
                           press Enter to open the calendar, then use arrow keys
                           to navigate dates.
@@ -337,7 +337,7 @@ export default function Accessibility() {
 />`}
               />
               <div className='mt-4 p-4 bg-bg-tertiary rounded-lg'>
-                <p className='text-sm text-gray-200'>
+                <p className='text-sm text-gray-700 dark:text-gray-200'>
                   <strong>RTL Navigation:</strong> In RTL mode, arrow keys are
                   reversed - right arrow moves backward in time, left arrow
                   moves forward. This matches user expectations in right-to-left

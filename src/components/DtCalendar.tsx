@@ -30,16 +30,6 @@ interface DtCalendarPropsBase extends SharedCalendarProps {
    * Note: requires initValue to be provided
    */
   onCalenderChange?: (date: Day | Range | Multi | null) => void
-  /**
-   * Enlarge selected day text
-   * @default true
-   */
-  enlargeSelectedDay?: boolean
-  /**
-   * Enable dark theme
-   * @default false
-   */
-  dark?: boolean
 }
 
 export interface DtCalendarPropsSingle

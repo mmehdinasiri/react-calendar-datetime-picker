@@ -159,7 +159,7 @@ export const CategoryContentDisplay: React.FC<CategoryContentDisplayProps> = ({
       {/* Special note for Constraints category */}
       {categoryName === 'Constraints' && (
         <Note>
-          <p className='text-sm text-gray-200'>
+          <p className='text-sm text-gray-700 dark:text-gray-200'>
             <strong>Note:</strong> All date inputs are automatically normalized
             to{' '}
             <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
@@ -174,7 +174,7 @@ export const CategoryContentDisplay: React.FC<CategoryContentDisplayProps> = ({
       {/* Special note for Display Options category */}
       {categoryName === 'Display Options' && (
         <Note>
-          <p className='text-sm text-gray-200'>
+          <p className='text-sm text-gray-700 dark:text-gray-200'>
             <strong>Note:</strong> To customize the labels of preset range
             buttons, see{' '}
             <a
@@ -191,7 +191,7 @@ export const CategoryContentDisplay: React.FC<CategoryContentDisplayProps> = ({
       {/* Special note for Multiple Months category */}
       {categoryName === 'Multiple Months' && (
         <Note>
-          <p className='text-sm text-gray-200'>
+          <p className='text-sm text-gray-700 dark:text-gray-200'>
             <strong>Note:</strong> Multiple months are especially useful for
             range selection, as users can easily see and select dates across
             month boundaries.

@@ -369,6 +369,11 @@ export interface SharedCalendarProps {
    */
   yearListStyle?: CalendarListStyle
   /**
+   * Enlarge selected day text in the calendar grid
+   * @default true
+   */
+  enlargeSelectedDay?: boolean
+  /**
    * Enable dark theme
    * @default false
    */

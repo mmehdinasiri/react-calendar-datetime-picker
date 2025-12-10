@@ -192,6 +192,7 @@ export default function Home() {
                 initValue={lightDate}
                 onChange={setLightDate}
                 calendarSystem='gregorian'
+                dark={false}
                 showWeekend={true}
                 todayBtn={true}
               />

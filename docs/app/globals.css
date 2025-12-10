@@ -244,21 +244,52 @@ main {
 
 /* Blue theme variables for calendar */
 /* Applied via calenderModalClass prop */
+/* Higher specificity to override dark theme styles */
+.react-calendar-datetime-picker.calendar-blue-theme,
 .calendar-blue-theme {
-  --calendar-bg: #eff6ff;
-  --calendar-text: #1e40af;
-  --calendar-text-light: #1e40af;
-  --calendar-text-lighter: #3b82f6;
-  --calendar-border: #3b82f6;
-  --calendar-bg-hover: #dbeafe;
-  --calendar-selected-day: #2563eb;
-  --calendar-today: #1d4ed8;
-  --calendar-bg-disabled: #9ca3af;
-  --calendar-text-disabled: #9ca3af;
-  --calendar-border-focus: #2563eb;
-  --calendar-border-selected: #2563eb;
-  --calendar-primary: #2563eb;
-  --calendar-header-bg: #2563eb;
+  --calendar-bg: #eff6ff !important;
+  --calendar-text: #1e40af !important;
+  --calendar-text-light: #1e40af !important;
+  --calendar-text-lighter: #3b82f6 !important;
+  --calendar-border: #3b82f6 !important;
+  --calendar-bg-hover: #dbeafe !important;
+  --calendar-selected-day: #2563eb !important;
+  --calendar-today: #1d4ed8 !important;
+  --calendar-bg-disabled: #9ca3af !important;
+  --calendar-text-disabled: #9ca3af !important;
+  --calendar-border-focus: #2563eb !important;
+  --calendar-border-selected: #2563eb !important;
+  --calendar-primary: #2563eb !important;
+  --calendar-header-bg: #2563eb !important;
+  --calendar-primary-hover: #1d4ed8 !important;
+  --calendar-primary-light: #dbeafe !important;
+  --calendar-selected-range: #dbeafe !important;
+  --calendar-selected-range-color: #1d4ed8 !important;
+  --calendar-text-header: #ffffff !important;
+}
+
+/* Override dark theme when blue theme is applied */
+.react-calendar-datetime-picker.calendar-blue-theme[data-theme='dark'],
+.calendar-blue-theme[data-theme='dark'] {
+  --calendar-bg: #eff6ff !important;
+  --calendar-text: #1e40af !important;
+  --calendar-text-light: #1e40af !important;
+  --calendar-text-lighter: #3b82f6 !important;
+  --calendar-border: #3b82f6 !important;
+  --calendar-bg-hover: #dbeafe !important;
+  --calendar-selected-day: #2563eb !important;
+  --calendar-today: #1d4ed8 !important;
+  --calendar-bg-disabled: #9ca3af !important;
+  --calendar-text-disabled: #9ca3af !important;
+  --calendar-border-focus: #2563eb !important;
+  --calendar-border-selected: #2563eb !important;
+  --calendar-primary: #2563eb !important;
+  --calendar-header-bg: #2563eb !important;
+  --calendar-primary-hover: #1d4ed8 !important;
+  --calendar-primary-light: #dbeafe !important;
+  --calendar-selected-range: #dbeafe !important;
+  --calendar-selected-range-color: #1d4ed8 !important;
+  --calendar-text-header: #ffffff !important;
 }
 
 /* Smaller calendar size - applied via calenderModalClass prop */

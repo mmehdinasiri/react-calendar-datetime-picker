@@ -3,8 +3,8 @@
 import '../../../src/styles/index.scss'
 import { examples } from '../examples/examplesConfig'
 import { ExampleRenderer } from '../components/ExampleRenderer'
-import { LocaleContent } from './LocaleContent'
 import { TranslationCustomizationContent } from './TranslationCustomizationContent'
+import { CodeBlock } from '../components'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -73,13 +73,97 @@ export default function Internationalization() {
         </p>
       </div>
 
+      {/* Locales Section */}
+      <section className='bg-bg-secondary rounded-lg border border-border p-8 mb-12'>
+        <div className='mb-6'>
+          <h2 className='text-2xl font-semibold text-gray-900 dark:text-white mb-4'>
+            Locales
+          </h2>
+          <p className='text-gray-700 dark:text-gray-300 mb-4'>
+            A locale determines the language and regional settings for the
+            calendar component. When you set the <code>locale</code> prop, the
+            calendar automatically adapts all UI text, including month names,
+            weekday names, button labels, and number formatting to match the
+            selected language. Each locale also configures the text direction
+            (LTR or RTL) and number system (Latin or Persian numerals).
+          </p>
+          <div className='mt-4 mb-4'>
+            <CodeBlock
+              language='typescript'
+              code={`type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'`}
+            />
+          </div>
+        </div>
+
+        <div>
+          <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-4'>
+            Supported Locales
+          </h3>
+          <p className='text-gray-700 dark:text-gray-300 mb-4'>
+            The calendar supports multiple locales out of the box:
+          </p>
+
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-6'>
+            <div className='bg-bg-tertiary rounded-lg p-4'>
+              <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
+                English (en) - Default
+              </h4>
+              <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
+                <li>• Latin numbers</li>
+                <li>• Left-to-right (LTR)</li>
+                <li>• English month/weekday names</li>
+              </ul>
+            </div>
+            <div className='bg-bg-tertiary rounded-lg p-4'>
+              <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
+                Persian/Farsi (fa)
+              </h4>
+              <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
+                <li>• Persian numbers</li>
+                <li>• Right-to-left (RTL)</li>
+                <li>• Persian month/weekday names</li>
+              </ul>
+            </div>
+            <div className='bg-bg-tertiary rounded-lg p-4'>
+              <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
+                German (de)
+              </h4>
+              <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
+                <li>• Latin numbers</li>
+                <li>• Left-to-right (LTR)</li>
+                <li>• German month/weekday names</li>
+              </ul>
+            </div>
+            <div className='bg-bg-tertiary rounded-lg p-4'>
+              <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
+                Spanish (es)
+              </h4>
+              <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
+                <li>• Latin numbers</li>
+                <li>• Left-to-right (LTR)</li>
+                <li>• Spanish month/weekday names</li>
+              </ul>
+            </div>
+            <div className='bg-bg-tertiary rounded-lg p-4'>
+              <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
+                French (fr)
+              </h4>
+              <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
+                <li>• Latin numbers</li>
+                <li>• Left-to-right (LTR)</li>
+                <li>• French month/weekday names</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div className='space-y-16'>
         {internationalizationGroups.map(([groupName, groupExamples]) => (
           <div key={groupName} id={toKebabCase(groupName)}>
             <h2 className='text-3xl font-bold text-gray-900 dark:text-white mb-8 pb-4 border-b border-border'>
               {groupName === 'Locale' ? 'Locales' : groupName}
             </h2>
-            {groupName === 'Locale' && <LocaleContent />}
             {groupName === 'Translation Customization' && (
               <TranslationCustomizationContent />
             )}

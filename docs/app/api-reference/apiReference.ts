@@ -157,6 +157,26 @@ export const sharedProps: Prop[] = [
     type: '() => void',
     default: 'undefined',
     description: 'Callback when the "Today" button is clicked'
+  },
+  {
+    name: 'enlargeSelectedDay',
+    type: 'boolean',
+    default: 'true',
+    description: 'Enlarge selected day text in the calendar grid'
+  },
+  {
+    name: 'dateFormat',
+    type: 'string',
+    default: 'undefined',
+    description:
+      'Custom date format string for displaying dates in the input field. Supports custom separators and order. Examples: "DD/MM/YYYY", "MM-DD-YYYY", "YYYY년 MM월 DD일". Default format is YYYY/MM/DD when not specified.'
+  },
+  {
+    name: 'onError',
+    type: '(errors: CalendarError[]) => void',
+    default: 'undefined',
+    description:
+      'Callback function called when normalization or constraint errors occur. Receives an array of error objects describing what failed (e.g., invalid initValue, invalid constraints).'
   }
 ]
 
@@ -211,27 +231,23 @@ export const dtPickerOnlyProps: Prop[] = [
     description: 'Input element ID'
   },
   {
-    name: 'dateFormat',
+    name: 'triggerElement',
+    type: 'ReactNode',
+    default: 'undefined',
+    description:
+      'Custom trigger element to replace the default input field. When provided, the input field will not be rendered. Useful for custom buttons, divs, or other elements.'
+  },
+  {
+    name: 'triggerClass',
     type: 'string',
     default: 'undefined',
-    description: 'Custom date format string'
+    description:
+      'Custom CSS class for trigger wrapper when using custom trigger element'
   }
 ]
 
 // Props only available in DtCalendar
 export const dtCalendarOnlyProps: Prop[] = [
-  {
-    name: 'enlargeSelectedDay',
-    type: 'boolean',
-    default: 'true',
-    description: 'Enlarge selected day text'
-  },
-  {
-    name: 'onError',
-    type: '(errors: CalendarError[]) => void',
-    default: 'undefined',
-    description: 'Error callback function'
-  },
   {
     name: 'onCalenderChange',
     type: '(date: Day | Range | Multi | null) => void',

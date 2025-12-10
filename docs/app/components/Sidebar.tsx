@@ -32,8 +32,17 @@ const navigation = [
           { name: 'Range', href: '/types#range' },
           { name: 'Multi', href: '/types#multi' },
           { name: 'Week', href: '/types#week' },
+          { name: 'CalendarType', href: '/types#calendartype' },
+          { name: 'DateInput', href: '/types#dateinput' },
+          { name: 'InitValueInput', href: '/types#initvalueinput' },
+          {
+            name: 'CalendarConstraintsInput',
+            href: '/types#calendarconstraintsinput'
+          },
           { name: 'CalendarSystem', href: '/types#calendarsystem' },
-          { name: 'Locale', href: '/types#locale' }
+          { name: 'PresetRangesConfig', href: '/types#presetrangesconfig' },
+          { name: 'Locale', href: '/types#locale' },
+          { name: 'CalendarListStyle', href: '/types#calendarliststyle' }
         ]
       }
     ]
@@ -183,6 +192,20 @@ const navigation = [
           {
             name: 'Larger Calendar Example',
             href: '/customization#css-variables-largercalendarexample'
+          }
+        ]
+      },
+      {
+        name: 'Year List Style',
+        href: '/customization#year-list-style',
+        subItems: [
+          {
+            name: 'Grid Layout (Default)',
+            href: '/customization#year-list-style-gridlayout'
+          },
+          {
+            name: 'List Layout',
+            href: '/customization#year-list-style-listlayout'
           }
         ]
       },

@@ -748,6 +748,19 @@ function App() {
       },
       wrapper: 'picker-container'
     },
+    AutoCloseDisabled: {
+      title: 'Auto Close Disabled',
+      description:
+        'Date picker with auto-close disabled. The calendar stays open after selecting a date, allowing users to make adjustments or view the calendar without it closing automatically.',
+      component: 'DtPicker',
+      props: {
+        autoClose: false,
+        placeholder: 'Select a date',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'picker-container'
+    },
     PresetRanges: {
       title: 'Preset Date Ranges',
       description:

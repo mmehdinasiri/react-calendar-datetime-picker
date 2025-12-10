@@ -395,6 +395,7 @@ import { Controller } from 'react-hook-form'
       description: 'Calendar with light theme (default)',
       component: 'DtCalendar',
       props: {
+        dark: false,
         showWeekend: true,
         todayBtn: true
       },
@@ -465,6 +466,7 @@ function App() {
         'Custom blue theme using CSS variables with calenderModalClass prop',
       component: 'DtCalendar',
       props: {
+        dark: false,
         showWeekend: true,
         todayBtn: true,
         calenderModalClass: 'calendar-blue-theme'
@@ -612,40 +614,60 @@ function App() {
 }`
     }
   },
-  Internationalization: {
-    CustomTranslations: {
-      title: 'Custom Button Labels',
-      description: 'Customize Today button and navigation labels',
-      component: 'DtPicker',
+  'Year List Style': {
+    GridLayout: {
+      title: 'Grid Layout (Default)',
+      description:
+        'Year selection view displayed in a grid layout. This is the default style.',
+      component: 'DtCalendar',
       props: {
-        locale: 'en',
+        yearListStyle: 'grid',
         showWeekend: true,
-        todayBtn: true,
-        clearBtn: true,
-        initValue: { year: 2024, month: 3, day: 15 },
-        customization: {
-          translations: {
-            labels: {
-              today: 'Pick Today',
-              nextMonth: 'Next',
-              previousMonth: 'Previous',
-              clear: 'Reset'
-            }
-          }
-        }
+        todayBtn: true
       },
-      wrapper: 'picker-container'
+      wrapper: 'calendar-container',
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      yearListStyle="grid"
+      showWeekend={true}
+      todayBtn={true}
+      onChange={setDate}
+    />
+  )
+}`
     },
-    PersianRTL: {
-      title: 'Persian RTL Layout',
-      description: 'Automatic RTL layout with Persian text and numbers',
-      component: 'DtPicker',
+    ListLayout: {
+      title: 'List Layout',
+      description:
+        'Year selection view displayed in a vertical list layout. Useful for better scrolling on mobile devices or when you prefer a more compact vertical layout.',
+      component: 'DtCalendar',
       props: {
-        locale: 'fa',
-        withTime: true,
-        timeFormat: '12'
+        yearListStyle: 'list',
+        showWeekend: true,
+        todayBtn: true
       },
-      wrapper: 'picker-container'
+      wrapper: 'calendar-container',
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      yearListStyle="list"
+      showWeekend={true}
+      todayBtn={true}
+      onChange={setDate}
+    />
+  )
+}`
     }
   }
 }

@@ -105,6 +105,143 @@ const dateOnly: Day = {
 }`
     },
     {
+      id: 'calendartype',
+      title: 'CalendarType',
+      description:
+        'The `CalendarType` type determines the selection behavior of the calendar component. It specifies how users can interact with the calendar and what format the `onChange` callback will receive.',
+      interfaceCode: `type CalendarType = 'single' | 'range' | 'multi' | 'week'`,
+      exampleTitle: 'Selection Types',
+      exampleCode: `// Single date selection (default)
+// Returns: Day | null
+<DtCalendar type="single" onChange={(date) => {
+  // date is a Day object or null
+}} />
+
+// Date range selection
+// Returns: Range | null
+<DtCalendar type="range" onChange={(range) => {
+  // range is { from: Day, to: Day } or null
+}} />
+
+// Multiple dates selection
+// Returns: Day[] | null
+<DtCalendar type="multi" onChange={(dates) => {
+  // dates is an array of Day objects or null
+}} />
+
+// Week selection
+// Returns: Range | null
+<DtCalendar type="week" onChange={(week) => {
+  // week is { from: Day, to: Day } representing the selected week or null
+}} />`,
+      note: 'Each selection type returns a different value format: `single` returns a `Day` object, `range` and `week` return a `Range` object, and `multi` returns an array of `Day` objects (`Multi`).'
+    },
+    {
+      id: 'dateinput',
+      title: 'DateInput',
+      description:
+        'The `DateInput` type represents a flexible date input that can accept various date formats. It is used as a building block for other types like `InitValueInput` and `CalendarConstraintsInput`.',
+      interfaceCode: `type DateInput = Day | Date | string | number
+
+// Accepted formats:
+// - Day object: { year: 2025, month: 12, day: 25 }
+// - JavaScript Date object: new Date(2025, 11, 25)
+// - Date string: "2025-12-25" or "12/25/2025"
+// - Timestamp number: 1735084800000`,
+      exampleTitle: 'Examples',
+      exampleCode: `// All of these are valid DateInput values:
+const dayObject: DateInput = { year: 2025, month: 12, day: 25 }
+const jsDate: DateInput = new Date(2025, 11, 25)
+const dateString: DateInput = "2025-12-25"
+const timestamp: DateInput = 1735084800000`
+    },
+    {
+      id: 'initvalueinput',
+      title: 'InitValueInput',
+      description:
+        'The `InitValueInput` type represents the initial value that can be passed to `DtPicker` and `DtCalendar` components via the `initValue` prop. It accepts various formats depending on the selection type (single, range, multi, or week).',
+      interfaceCode: `type InitValueInput =
+  | DateInput
+  | { from: DateInput; to: DateInput }
+  | DateInput[]
+  | null
+
+// Format depends on the 'type' prop:
+// - 'single': DateInput | null
+// - 'range' or 'week': { from: DateInput; to: DateInput } | null
+// - 'multi': DateInput[] | null`,
+      exampleTitle: 'Examples',
+      exampleCode: `// Single date selection
+<DtCalendar 
+  type="single" 
+  initValue={{ year: 2025, month: 12, day: 25 }} 
+/>
+
+// Range selection
+<DtCalendar 
+  type="range" 
+  initValue={{
+    from: { year: 2025, month: 12, day: 1 },
+    to: { year: 2025, month: 12, day: 25 }
+  }} 
+/>
+
+// Multiple dates selection
+<DtCalendar 
+  type="multi" 
+  initValue={[
+    { year: 2025, month: 12, day: 1 },
+    { year: 2025, month: 12, day: 15 },
+    { year: 2025, month: 12, day: 25 }
+  ]} 
+/>`,
+      note: "All date formats (Day objects, Date objects, strings, timestamps) are automatically normalized to `Day` objects internally. The format you pass to `initValue` doesn't need to match the format returned by `onChange`."
+    },
+    {
+      id: 'calendarconstraintsinput',
+      title: 'CalendarConstraintsInput',
+      description:
+        'The `CalendarConstraintsInput` interface defines date constraints that can be passed to the `constraints` prop. It allows you to restrict which dates can be selected by setting minimum/maximum dates, disabling specific dates, or providing a custom function to determine if a date should be disabled.',
+      interfaceCode: `interface CalendarConstraintsInput {
+  maxDate?: DateInput      // Maximum selectable date
+  minDate?: DateInput      // Minimum selectable date
+  disabledDates?: DateInput[]  // Array of dates that should be disabled
+  isDateDisabled?: (date: Day) => boolean  // Custom function to check if a date should be disabled
+}`,
+      exampleTitle: 'Examples',
+      exampleCode: `// Using Date objects
+<DtCalendar 
+  constraints={{
+    minDate: new Date(2025, 0, 1),  // January 1, 2025
+    maxDate: new Date(2025, 11, 31) // December 31, 2025
+  }}
+/>
+
+// Using Day objects
+<DtCalendar 
+  constraints={{
+    minDate: { year: 2025, month: 1, day: 1 },
+    maxDate: { year: 2025, month: 12, day: 31 },
+    disabledDates: [
+      { year: 2025, month: 12, day: 25 },  // Christmas
+      { year: 2025, month: 1, day: 1 }     // New Year
+    ]
+  }}
+/>
+
+// Using custom function
+<DtCalendar 
+  constraints={{
+    isDateDisabled: (date: Day) => {
+      // Disable weekends
+      const dayOfWeek = new Date(date.year, date.month - 1, date.day).getDay()
+      return dayOfWeek === 0 || dayOfWeek === 6
+    }
+  }}
+/>`,
+      note: 'All date formats (Day objects, Date objects, strings, timestamps) are automatically normalized to `Day` objects internally. The `isDateDisabled` function receives a `Day` object and should return `true` if the date should be disabled.'
+    },
+    {
       id: 'calendarsystem',
       title: 'CalendarSystem',
       description:
@@ -182,16 +319,28 @@ const presetRanges: PresetRangesConfig = {
       id: 'locale',
       title: 'Locale',
       description:
-        'The `locale` prop accepts a `CalendarUILocale` type that specifies the user interface language and text direction for the calendar. Each locale determines both the language of labels and the number system (Latin vs Persian numerals).',
-      interfaceCode: `type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'
-
-// Language locales:
+        'The `locale` prop specifies the user interface language and text direction for the calendar. It accepts one of the following string values. Each locale determines both the language of labels and the number system (Latin vs Persian numerals).',
+      interfaceCode: `// Accepted values for the locale prop:
 // 'en' - English (Latin numerals, LTR)
 // 'fa' - Persian (Persian numerals, RTL)
 // 'de' - German (Latin numerals, LTR)
 // 'es' - Spanish (Latin numerals, LTR)
 // 'fr' - French (Latin numerals, LTR)`,
       note: "The number system (Latin vs Persian numerals) is automatically determined from the locale. Persian (`'fa'`) locale uses Persian numerals (۰-۹), while all other locales use Latin numerals (0-9)."
+    },
+    {
+      id: 'calendarliststyle',
+      title: 'CalendarListStyle',
+      description:
+        'The `CalendarListStyle` type determines the display style for the year selection view in the calendar. It controls whether years are displayed in a grid layout or a list layout.',
+      interfaceCode: `type CalendarListStyle = 'grid' | 'list'`,
+      exampleTitle: 'Example Usage',
+      exampleCode: `// Grid layout (default) - years displayed in a grid
+<DtCalendar yearListStyle="grid" onChange={setDate} />
+
+// List layout - years displayed in a vertical list
+<DtCalendar yearListStyle="list" onChange={setDate} />`,
+      note: "The `yearListStyle` prop accepts this type. The default value is `'grid'`, which displays years in a grid layout. Use `'list'` for a vertical list layout."
     }
   ] as TypeSection[],
   typeSafety: {

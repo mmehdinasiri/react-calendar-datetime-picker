@@ -373,6 +373,34 @@ export default function Customization() {
           </div>
         </section>
 
+        {/* Year List Style */}
+        <section
+          id='year-list-style'
+          className='bg-bg-secondary rounded-lg border border-border p-8'
+        >
+          <div className='mb-6'>
+            <SectionHeader>Year List Style</SectionHeader>
+            <p className='text-gray-700 dark:text-gray-300'>
+              Control how the year selection view is displayed. Choose between a
+              grid layout (default) or a vertical list layout.
+            </p>
+          </div>
+
+          {/* Year List Style Examples */}
+          <div className='space-y-6'>
+            {Object.entries(customizationExamples['Year List Style'] || {}).map(
+              ([exampleKey, config]) => (
+                <ExampleRenderer
+                  key={exampleKey}
+                  config={config}
+                  exampleKey={exampleKey}
+                  category='Year List Style'
+                />
+              )
+            )}
+          </div>
+        </section>
+
         {/* Custom Classes */}
         <section
           id='custom-classes'
@@ -462,170 +490,6 @@ export default function Customization() {
                   category='Custom Icons'
                 />
               )
-            )}
-          </div>
-        </section>
-
-        {/* Internationalization */}
-        <section
-          id='internationalization'
-          className='bg-bg-secondary rounded-lg border border-border p-8'
-        >
-          <div className='mb-6'>
-            <SectionHeader>Internationalization (i18n)</SectionHeader>
-            <p className='text-gray-700 dark:text-gray-300'>
-              Full internationalization support with locale-based translations,
-              RTL support, and customizable text.
-            </p>
-          </div>
-
-          <div className='space-y-8'>
-            {/* Supported Locales */}
-            {customizationContent.Internationalization?.supportedLocales && (
-              <div id='locale-support'>
-                <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-4'>
-                  Supported Locales
-                </h3>
-                <p className='text-gray-700 dark:text-gray-300 mb-4'>
-                  {
-                    customizationContent.Internationalization.supportedLocales
-                      .description
-                  }
-                </p>
-
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-6'>
-                  {customizationContent.Internationalization.supportedLocales.locales.map(
-                    (locale, idx) => (
-                      <div key={idx} className='bg-bg-tertiary rounded-lg p-4'>
-                        <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
-                          {locale.name}
-                        </h4>
-                        <ul className='text-sm text-gray-600 dark:text-gray-400 space-y-1'>
-                          {locale.features.map((feature, featureIdx) => (
-                            <li key={featureIdx}>• {feature}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )
-                  )}
-                </div>
-
-                {customizationContent.Internationalization.supportedLocales
-                  .codeExample && (
-                  <div className='bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-6'>
-                    <CodeBlock
-                      language='typescript'
-                      code={
-                        customizationContent.Internationalization
-                          .supportedLocales.codeExample
-                      }
-                      className='bg-transparent border-0'
-                    />
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Custom Translations */}
-            {customizationContent.Internationalization?.customTranslations && (
-              <div id='custom-translations'>
-                <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-4'>
-                  Custom Translations
-                </h3>
-                <p className='text-gray-700 dark:text-gray-300 mb-4'>
-                  {
-                    customizationContent.Internationalization.customTranslations
-                      .description
-                  }
-                </p>
-
-                {Object.entries(
-                  customizationExamples['Internationalization'] || {}
-                )
-                  .filter(([key]) => key === 'CustomTranslations')
-                  .map(([exampleKey, config]) => (
-                    <ExampleRenderer
-                      key={exampleKey}
-                      config={config}
-                      exampleKey={exampleKey}
-                      category='Internationalization'
-                    />
-                  ))}
-
-                {customizationContent.Internationalization.customTranslations
-                  .interfaceCode && (
-                  <div className='mt-6'>
-                    <h4 className='text-lg font-semibold text-gray-900 dark:text-white mb-3'>
-                      CalendarTranslations Interface
-                    </h4>
-                    <div className='bg-gray-50 dark:bg-gray-800 rounded-lg overflow-hidden'>
-                      <CodeBlock
-                        language='typescript'
-                        code={
-                          customizationContent.Internationalization
-                            .customTranslations.interfaceCode
-                        }
-                        className='bg-transparent border-0'
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {customizationContent.Internationalization.customTranslations
-                  .exampleCode && (
-                  <div className='bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mt-6'>
-                    <CodeBlock
-                      language='typescript'
-                      code={
-                        customizationContent.Internationalization
-                          .customTranslations.exampleCode
-                      }
-                      className='bg-transparent border-0'
-                    />
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* RTL Support */}
-            {customizationContent.Internationalization?.rtlSupport && (
-              <div id='rtl-support'>
-                <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-4'>
-                  RTL Support
-                </h3>
-                <p className='text-gray-700 dark:text-gray-300 mb-4'>
-                  {renderLineWithCode(
-                    customizationContent.Internationalization.rtlSupport
-                      .description
-                  )}
-                </p>
-
-                {Object.entries(
-                  customizationExamples['Internationalization'] || {}
-                )
-                  .filter(([key]) => key === 'PersianRTL')
-                  .map(([exampleKey, config]) => (
-                    <ExampleRenderer
-                      key={exampleKey}
-                      config={config}
-                      exampleKey={exampleKey}
-                      category='Internationalization'
-                    />
-                  ))}
-
-                {customizationContent.Internationalization.rtlSupport
-                  .features && (
-                  <FeatureList
-                    title='RTL Features:'
-                    items={
-                      customizationContent.Internationalization.rtlSupport
-                        .features
-                    }
-                    variant='info'
-                    className='mt-4'
-                  />
-                )}
-              </div>
             )}
           </div>
         </section>

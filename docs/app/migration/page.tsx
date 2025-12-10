@@ -23,7 +23,7 @@ export default function MigrationGuide() {
         <p>{intro.description}</p>
 
         <InfoBox variant='warning'>
-          <p className='text-sm text-gray-200'>
+          <p className='text-sm text-gray-700 dark:text-gray-200'>
             <strong>Minimal Breaking Changes:</strong> {intro.warning}
           </p>
         </InfoBox>
@@ -33,10 +33,12 @@ export default function MigrationGuide() {
         {/* Quick Migration */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader className='text-white mb-2'>
+            <SectionHeader className='text-gray-900 dark:text-white mb-2'>
               {quickMigration.title}
             </SectionHeader>
-            <p className='text-gray-300'>{quickMigration.description}</p>
+            <p className='text-gray-700 dark:text-gray-300'>
+              {quickMigration.description}
+            </p>
           </div>
 
           <div className='space-y-4'>
@@ -50,11 +52,13 @@ export default function MigrationGuide() {
                   </div>
                 </div>
                 <div className='ml-4'>
-                  <h3 className='text-lg font-medium text-white'>
+                  <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
                     {item.title}
                   </h3>
                   {item.description && (
-                    <p className='text-gray-300 mt-1'>{item.description}</p>
+                    <p className='text-gray-700 dark:text-gray-300 mt-1'>
+                      {item.description}
+                    </p>
                   )}
                   {item.code && (
                     <CodeBlock
@@ -78,10 +82,12 @@ export default function MigrationGuide() {
         {/* Breaking Changes */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader className='text-white mb-2'>
+            <SectionHeader className='text-gray-900 dark:text-white mb-2'>
               {breakingChanges.title}
             </SectionHeader>
-            <p className='text-gray-300'>{breakingChanges.description}</p>
+            <p className='text-gray-700 dark:text-gray-300'>
+              {breakingChanges.description}
+            </p>
           </div>
 
           <div className='space-y-6'>
@@ -92,25 +98,27 @@ export default function MigrationGuide() {
               >
                 <div className='flex'>
                   <div className='ml-3'>
-                    <h3 className='text-lg font-medium text-white'>
+                    <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
                       {change.title}
                     </h3>
-                    <p className='text-sm text-gray-200 mt-1'>
+                    <p className='text-sm text-gray-700 dark:text-gray-200 mt-1'>
                       {change.description}
                     </p>
                     {change.codeExamples && (
                       <div className='mt-3 space-y-3'>
                         {change.codeExamples.map((example, exIndex) => (
                           <div key={exIndex}>
-                            <code className='text-sm bg-bg-primary border border-orange-500 px-2 py-1 rounded text-gray-200'>
+                            <code className='text-sm bg-bg-primary border border-orange-500 px-2 py-1 rounded text-gray-900 dark:text-gray-200'>
                               {example.old}
                             </code>
-                            <span className='text-gray-300 mx-2'>→</span>
-                            <code className='text-sm bg-bg-primary border border-accent px-2 py-1 rounded text-gray-200'>
+                            <span className='text-gray-700 dark:text-gray-300 mx-2'>
+                              →
+                            </span>
+                            <code className='text-sm bg-bg-primary border border-accent px-2 py-1 rounded text-gray-900 dark:text-gray-200'>
                               {example.new}
                             </code>
                             {example.note && (
-                              <span className='text-sm text-gray-300 ml-2'>
+                              <span className='text-sm text-gray-700 dark:text-gray-300 ml-2'>
                                 ({example.note})
                               </span>
                             )}
@@ -124,18 +132,20 @@ export default function MigrationGuide() {
                           <div key={detailIndex} className='text-sm'>
                             {detail.startsWith('`') ? (
                               <>
-                                <code className='bg-bg-primary border border-accent px-2 py-1 rounded text-gray-200'>
+                                <code className='bg-bg-primary border border-accent px-2 py-1 rounded text-gray-900 dark:text-gray-200'>
                                   {detail.replace(/`/g, '')}
                                 </code>
                                 {detail.includes(' - ') && (
-                                  <span className='text-gray-300'>
+                                  <span className='text-gray-700 dark:text-gray-300'>
                                     {' '}
                                     - {detail.split(' - ')[1]}
                                   </span>
                                 )}
                               </>
                             ) : (
-                              <p className='text-sm text-gray-200'>{detail}</p>
+                              <p className='text-sm text-gray-700 dark:text-gray-200'>
+                                {detail}
+                              </p>
                             )}
                           </div>
                         ))}
@@ -151,14 +161,16 @@ export default function MigrationGuide() {
         {/* What's New in v2.x */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader className='text-white mb-2'>
+            <SectionHeader className='text-gray-900 dark:text-white mb-2'>
               {whatsNew.title}
             </SectionHeader>
-            <p className='text-gray-300 mb-4'>{whatsNew.description}</p>
+            <p className='text-gray-700 dark:text-gray-300 mb-4'>
+              {whatsNew.description}
+            </p>
             <div className='text-center'>
               <a
                 href={whatsNew.linkHref}
-                className='inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-accent hover:bg-accent-hover transition-colors'
+                className='inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white dark:text-white bg-accent hover:bg-accent-hover transition-colors'
               >
                 {whatsNew.linkText}
               </a>
@@ -169,21 +181,23 @@ export default function MigrationGuide() {
         {/* Migration Examples */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader className='text-white mb-2'>
+            <SectionHeader className='text-gray-900 dark:text-white mb-2'>
               {migrationExamples.title}
             </SectionHeader>
-            <p className='text-gray-300'>{migrationExamples.description}</p>
+            <p className='text-gray-700 dark:text-gray-300'>
+              {migrationExamples.description}
+            </p>
           </div>
 
           <div className='space-y-8'>
             {migrationExamples.examples.map((example, index) => (
               <div key={index}>
-                <h3 className='text-lg font-semibold text-white mb-4'>
+                <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                   {example.title}
                 </h3>
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                   <div>
-                    <h4 className='font-medium text-white mb-2'>
+                    <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                       Before (v1.x)
                     </h4>
                     <CodeBlock
@@ -193,7 +207,7 @@ export default function MigrationGuide() {
                     />
                   </div>
                   <div>
-                    <h4 className='font-medium text-white mb-2'>
+                    <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                       After (v2.x)
                     </h4>
                     <CodeBlock
@@ -211,21 +225,23 @@ export default function MigrationGuide() {
         {/* Enhanced initValue Support */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader className='text-white mb-2'>
+            <SectionHeader className='text-gray-900 dark:text-white mb-2'>
               {enhancedInitValue.title}
             </SectionHeader>
-            <p className='text-gray-300'>{enhancedInitValue.description}</p>
+            <p className='text-gray-700 dark:text-gray-300'>
+              {enhancedInitValue.description}
+            </p>
           </div>
 
           <div className='space-y-8'>
             {enhancedInitValue.examples.map((example, index) => (
               <div key={index}>
-                <h3 className='text-lg font-semibold text-white mb-4'>
+                <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                   {example.title}
                 </h3>
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
                   <div>
-                    <h4 className='font-medium text-white mb-2'>
+                    <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                       Before (v1.x)
                     </h4>
                     <CodeBlock
@@ -235,7 +251,7 @@ export default function MigrationGuide() {
                     />
                   </div>
                   <div>
-                    <h4 className='font-medium text-white mb-2'>
+                    <h4 className='font-medium text-gray-900 dark:text-white mb-2'>
                       After (v2.x)
                     </h4>
                     <CodeBlock
@@ -253,33 +269,37 @@ export default function MigrationGuide() {
         {/* Utility Functions */}
         <section className='bg-bg-secondary rounded-lg border border-border p-8'>
           <div className='mb-6'>
-            <SectionHeader className='text-white mb-2'>
+            <SectionHeader className='text-gray-900 dark:text-white mb-2'>
               {utilityFunctions.title}
             </SectionHeader>
-            <p className='text-gray-300'>{utilityFunctions.description}</p>
+            <p className='text-gray-700 dark:text-gray-300'>
+              {utilityFunctions.description}
+            </p>
           </div>
 
           <div className='space-y-6'>
             {utilityFunctions.sections.map((section, index) => (
               <div key={index}>
-                <h3 className='text-lg font-semibold text-white mb-4'>
+                <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
                   {section.title}
                 </h3>
                 {section.description && (
-                  <p className='text-gray-300 mb-4'>{section.description}</p>
+                  <p className='text-gray-700 dark:text-gray-300 mb-4'>
+                    {section.description}
+                  </p>
                 )}
                 {section.code && (
                   <CodeBlock language='typescript' code={section.code} />
                 )}
                 {section.items && (
-                  <ul className='list-disc list-inside text-gray-300 space-y-2'>
+                  <ul className='list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2'>
                     {section.items.map((item, itemIndex) => (
                       <li key={itemIndex}>
                         {item.split('`').map((part, partIndex) =>
                           partIndex % 2 === 1 ? (
                             <code
                               key={partIndex}
-                              className='px-1 py-0.5 bg-bg-primary border border-accent rounded text-sm'
+                              className='px-1 py-0.5 bg-bg-primary border border-accent rounded text-sm text-gray-900 dark:text-gray-200'
                             >
                               {part}
                             </code>
@@ -299,10 +319,12 @@ export default function MigrationGuide() {
         {/* Need Help */}
         <section className='bg-bg-tertiary border border-border rounded-lg p-8'>
           <div className='text-center'>
-            <h2 className='text-2xl font-bold text-white mb-4'>
+            <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
               {needHelp.title}
             </h2>
-            <p className='text-gray-300 mb-6'>{needHelp.description}</p>
+            <p className='text-gray-700 dark:text-gray-300 mb-6'>
+              {needHelp.description}
+            </p>
             <div className='flex flex-col sm:flex-row gap-4 justify-center'>
               {needHelp.links.map((link, index) => (
                 <a
@@ -310,10 +332,10 @@ export default function MigrationGuide() {
                   href={link.href}
                   target='_blank'
                   rel='noopener noreferrer'
-                  className={`inline-flex items-center px-4 py-2 border text-sm font-medium rounded-md text-white transition-colors ${
+                  className={`inline-flex items-center px-4 py-2 border text-sm font-medium rounded-md transition-colors ${
                     link.variant === 'primary'
-                      ? 'border-transparent bg-accent hover:bg-accent-hover'
-                      : 'border-border bg-bg-secondary hover:bg-bg-tertiary'
+                      ? 'border-transparent bg-accent hover:bg-accent-hover text-white'
+                      : 'border-border bg-bg-secondary hover:bg-bg-tertiary text-gray-900 dark:text-white'
                   }`}
                 >
                   {link.text}
