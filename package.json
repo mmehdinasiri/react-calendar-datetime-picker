@@ -1,6 +1,6 @@
 {
   "name": "react-calendar-datetime-picker",
-  "version": "v2.0.0-beta.0",
+  "version": "2.0.0-beta.0",
   "description": "A modern, fast and small calendar for React with English and Persian (Jalali) support",
   "author": "MehdiNasiri",
   "license": "MIT",
