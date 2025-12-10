@@ -48,7 +48,11 @@ jobs:
         run: pnpm run build
 
       - name: Refresh workspace links (to link built package)
-        run: rm -rf docs/node_modules/react-calendar-datetime-picker && pnpm install
+        run: |
+          cd docs
+          rm -rf node_modules/react-calendar-datetime-picker
+          pnpm install
+          cd ..
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
