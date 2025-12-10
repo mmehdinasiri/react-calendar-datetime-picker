@@ -7,6 +7,8 @@ import Script from 'next/script'
 import NextTopLoader from 'nextjs-toploader'
 import { LayoutWrapper } from './components/LayoutWrapper'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { SidebarProvider } from './contexts/SidebarContext'
+import { SearchModalProvider } from './contexts/SearchModalContext'
 import { CLARITY_PROJECT_ID, ENABLE_CLARITY } from './config/clarity'
 import './globals.css'
 
@@ -71,7 +73,11 @@ export default function RootLayout({
           shadow='0 0 10px rgba(0, 154, 23, 0.5)'
         />
         <ThemeProvider>
-          <LayoutWrapper>{children}</LayoutWrapper>
+          <SidebarProvider>
+            <SearchModalProvider>
+              <LayoutWrapper>{children}</LayoutWrapper>
+            </SearchModalProvider>
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>

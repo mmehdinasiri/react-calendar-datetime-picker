@@ -6,6 +6,115 @@ import { useState, useMemo, useEffect } from 'react'
 import React from 'react'
 import { examples } from '../examples/examplesConfig'
 
+// Icon mapping for sections
+const sectionIcons: Record<string, React.ReactNode> = {
+  'GET STARTED': (
+    <svg
+      className='w-5 h-5'
+      fill='none'
+      viewBox='0 0 24 24'
+      stroke='currentColor'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={2}
+        d='M13 10V3L4 14h7v7l9-11h-7z'
+      />
+    </svg>
+  ),
+  TYPES: (
+    <svg
+      className='w-5 h-5'
+      fill='none'
+      viewBox='0 0 24 24'
+      stroke='currentColor'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={2}
+        d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+      />
+    </svg>
+  ),
+  FEATURES: (
+    <svg
+      className='w-5 h-5'
+      fill='none'
+      viewBox='0 0 24 24'
+      stroke='currentColor'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={2}
+        d='M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z'
+      />
+    </svg>
+  ),
+  INTERNATIONALIZATION: (
+    <svg
+      className='w-5 h-5'
+      fill='none'
+      viewBox='0 0 24 24'
+      stroke='currentColor'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={2}
+        d='M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129'
+      />
+    </svg>
+  ),
+  'STYLE CUSTOMIZATION': (
+    <svg
+      className='w-5 h-5'
+      fill='none'
+      viewBox='0 0 24 24'
+      stroke='currentColor'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={2}
+        d='M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01'
+      />
+    </svg>
+  ),
+  API: (
+    <svg
+      className='w-5 h-5'
+      fill='none'
+      viewBox='0 0 24 24'
+      stroke='currentColor'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={2}
+        d='M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4'
+      />
+    </svg>
+  ),
+  ACCESSIBILITY: (
+    <svg
+      className='w-5 h-5'
+      fill='none'
+      viewBox='0 0 24 24'
+      stroke='currentColor'
+    >
+      <path
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeWidth={2}
+        d='M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z'
+      />
+    </svg>
+  )
+}
+
 // Helper function to convert example key to URL-friendly format
 const toKebabCase = (str: string) =>
   str
@@ -484,10 +593,13 @@ function CollapsibleSection({
     return null
   }
 
+  const icon = sectionIcons[section.title]
+
   return (
     <div>
-      <h3 className='text-base font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2 px-3'>
-        {section.title}
+      <h3 className='text-base font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2 px-3 flex items-center gap-2'>
+        {icon && <span className='text-accent'>{icon}</span>}
+        <span>{section.title}</span>
       </h3>
       <ul className='space-y-1'>
         {filteredItems.map((item) => (
@@ -504,12 +616,21 @@ function CollapsibleSection({
   )
 }
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname()
   const [searchQuery, setSearchQuery] = useState('')
 
   return (
-    <aside className='w-80 bg-bg-secondary border-r border-border overflow-y-auto h-[calc(100vh-3.5rem)] sticky top-14 sidebar-scrollbar flex flex-col'>
+    <aside
+      className={`fixed top-14 left-0 z-50 w-80 bg-bg-secondary border-r border-border overflow-y-auto h-[calc(100vh-3.5rem)] sidebar-scrollbar flex flex-col transition-transform duration-300 ease-in-out ${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}
+    >
       {/* Search Input */}
       <div className='p-4 border-b border-border sticky top-0 bg-bg-secondary z-10'>
         <div className='relative'>

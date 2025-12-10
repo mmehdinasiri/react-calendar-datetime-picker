@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTheme } from '../contexts/ThemeContext'
+import { useSidebar } from '../contexts/SidebarContext'
+import { useSearchModal } from '../contexts/SearchModalContext'
 import {
   searchItems,
   getGroupInfo,
@@ -22,26 +24,40 @@ export function Header() {
   const searchDropdownRef = useRef<HTMLDivElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const { theme, toggleTheme } = useTheme()
+  const { toggle: toggleSidebar } = useSidebar()
+  const { open: openSearchModal, setSearchQuery: setContextSearchQuery } =
+    useSearchModal()
   const router = useRouter()
   const currentVersion = CURRENT_VERSION
 
   // Search functionality
-  const handleSearchChange = useCallback((value: string) => {
-    setSearchQuery(value)
-    if (value.trim()) {
-      const results = searchItems(value, 8)
-      setSearchResults(results)
-      setIsSearchDropdownOpen(true)
-      setSelectedResultIndex(-1)
-    } else {
-      setSearchResults([])
-      setIsSearchDropdownOpen(false)
-    }
-  }, [])
+  const handleSearchChange = useCallback(
+    (value: string) => {
+      setSearchQuery(value)
+      // Sync with modal context for small screens
+      if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+        setContextSearchQuery(value)
+      }
+      if (value.trim()) {
+        const results = searchItems(value, 8)
+        setSearchResults(results)
+        // On large screens, show dropdown; on small screens, modal is already open
+        if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+          setIsSearchDropdownOpen(true)
+        }
+        setSelectedResultIndex(-1)
+      } else {
+        setSearchResults([])
+        setIsSearchDropdownOpen(false)
+      }
+    },
+    [setContextSearchQuery]
+  )
 
   const handleSearchKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (!isSearchDropdownOpen || searchResults.length === 0) return
+      // Handle keyboard navigation for dropdown (large screens only)
+      if (searchResults.length === 0) return
 
       switch (e.key) {
         case 'ArrowDown':
@@ -124,70 +140,94 @@ export function Header() {
   return (
     <header className='sticky top-0 z-50 bg-white dark:bg-bg-secondary border-b border-border shadow-md'>
       <div className='flex items-center justify-between h-14 px-4'>
-        {/* Logo and Title */}
-        <div className='flex items-center space-x-3'>
-          <Link
-            href='/'
-            className='flex items-center space-x-2 hover:opacity-80 transition-opacity'
+        {/* Left Side: Toggle Button and Logo */}
+        <div className='flex items-center space-x-2'>
+          <button
+            onClick={() => {
+              toggleSidebar()
+            }}
+            className='p-2 rounded-md text-gray-900 dark:text-gray-100 hover:bg-bg-tertiary transition-colors mr-4'
+            aria-label='Toggle sidebar'
           >
-            <img
-              src={`${BASE_PATH}/next-logo.png`}
-              alt='Logo'
-              className='h-6 w-6'
-            />
-            <span className='font-semibold text-gray-900 dark:text-white text-sm'>
-              React Calendar DateTime Picker
-            </span>
-          </Link>
-          <div className='relative' ref={dropdownRef}>
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                setIsVersionDropdownOpen(!isVersionDropdownOpen)
-              }}
-              className='text-xs bg-accent text-white px-1.5 py-0.5 rounded hover:bg-accent-hover transition-colors flex items-center gap-1'
-              aria-label='Select version'
+            <svg
+              className='h-7 w-7'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
             >
-              {currentVersion}
-              <svg
-                className={`h-3 w-3 transition-transform ${
-                  isVersionDropdownOpen ? 'transform rotate-180' : ''
-                }`}
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M4 6h16M4 12h16M4 18h16'
+              />
+            </svg>
+          </button>
+          {/* Logo and Title */}
+          <div className='flex items-center space-x-3'>
+            <Link
+              href='/'
+              className='flex items-center space-x-2 hover:opacity-80 transition-opacity'
+            >
+              <img
+                src={`${BASE_PATH}/next-logo.png`}
+                alt='Logo'
+                className='h-6 w-6'
+              />
+              <span className='hidden lg:inline font-semibold text-gray-900 dark:text-white text-sm'>
+                React Calendar DateTime Picker
+              </span>
+            </Link>
+            <div className='relative' ref={dropdownRef}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setIsVersionDropdownOpen(!isVersionDropdownOpen)
+                }}
+                className='text-xs bg-accent text-white px-1.5 py-0.5 rounded hover:bg-accent-hover transition-colors flex items-center gap-1'
+                aria-label='Select version'
               >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M19 9l-7 7-7-7'
-                />
-              </svg>
-            </button>
-            {isVersionDropdownOpen && (
-              <div className='absolute top-full left-0 mt-1 bg-bg-primary border border-border rounded-md shadow-lg z-50 min-w-[120px]'>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleVersionChange(currentVersion)
-                  }}
-                  className='w-full text-left px-3 py-2 text-xs text-gray-900 dark:text-white hover:bg-bg-tertiary transition-colors rounded-t-md'
+                {currentVersion}
+                <svg
+                  className={`h-3 w-3 transition-transform ${
+                    isVersionDropdownOpen ? 'transform rotate-180' : ''
+                  }`}
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
                 >
-                  {currentVersion}
-                </button>
-                <Link
-                  href='/legacy'
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setIsVersionDropdownOpen(false)
-                  }}
-                  className='block w-full text-left px-3 py-2 text-xs text-gray-900 dark:text-white hover:bg-bg-tertiary transition-colors rounded-b-md border-t border-border'
-                >
-                  1.7.5
-                </Link>
-              </div>
-            )}
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M19 9l-7 7-7-7'
+                  />
+                </svg>
+              </button>
+              {isVersionDropdownOpen && (
+                <div className='absolute top-full left-0 mt-1 bg-bg-primary border border-border rounded-md shadow-lg z-50 min-w-[120px]'>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleVersionChange(currentVersion)
+                    }}
+                    className='w-full text-left px-3 py-2 text-xs text-gray-900 dark:text-white hover:bg-bg-tertiary transition-colors rounded-t-md'
+                  >
+                    {currentVersion}
+                  </button>
+                  <Link
+                    href='/legacy'
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setIsVersionDropdownOpen(false)
+                    }}
+                    className='block w-full text-left px-3 py-2 text-xs text-gray-900 dark:text-white hover:bg-bg-tertiary transition-colors rounded-b-md border-t border-border'
+                  >
+                    1.7.5
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -217,13 +257,25 @@ export function Header() {
               onChange={(e) => handleSearchChange(e.target.value)}
               onKeyDown={handleSearchKeyDown}
               onFocus={() => {
-                if (searchResults.length > 0) {
-                  setIsSearchDropdownOpen(true)
+                // On small screens, open full-page modal
+                if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+                  openSearchModal()
+                } else {
+                  // On large screens, show dropdown
+                  if (searchResults.length > 0) {
+                    setIsSearchDropdownOpen(true)
+                  }
+                }
+              }}
+              onClick={() => {
+                // On small screens, open full-page modal when clicked
+                if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+                  openSearchModal()
                 }
               }}
               className='w-full bg-bg-primary border border-border rounded-md pl-10 pr-4 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent'
             />
-            {/* Search Results Dropdown */}
+            {/* Search Results Dropdown - Only on large screens */}
             {isSearchDropdownOpen && searchResults.length > 0 && (
               <div
                 ref={searchDropdownRef}
@@ -261,13 +313,13 @@ export function Header() {
                 })}
               </div>
             )}
-            {/* No Results */}
+            {/* No Results - Only on large screens */}
             {isSearchDropdownOpen &&
               searchQuery.trim() &&
               searchResults.length === 0 && (
                 <div className='absolute top-full left-0 right-0 mt-1 bg-bg-primary border border-border rounded-md shadow-lg z-50 p-4'>
                   <p className='text-sm text-gray-600 dark:text-gray-400'>
-                    No results found for "{searchQuery}"
+                    No results found for &quot;{searchQuery}&quot;
                   </p>
                 </div>
               )}
@@ -278,19 +330,19 @@ export function Header() {
         <div className='flex items-center space-x-6'>
           <Link
             href='/getting-started'
-            className='text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors'
+            className='hidden lg:block text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors'
           >
             Learn
           </Link>
           <Link
             href='/api-reference'
-            className='text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors'
+            className='hidden lg:block text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors'
           >
             Reference
           </Link>
           <Link
             href='/examples'
-            className='text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors'
+            className='hidden lg:block text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors'
           >
             Examples
           </Link>
