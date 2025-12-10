@@ -7,13 +7,11 @@ const nextConfig = {
   // Static export for GitHub Pages
   output: 'export',
   basePath: '/react-calendar-datetime-picker',
+  trailingSlash: true,
   // Disable server-side image optimization (Required for static export)
   images: {
     unoptimized: true
   },
-  // Base path for GitHub Pages
-  basePath: '/react-calendar-datetime-picker',
-  trailingSlash: true,
   // Sass options
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { DtCalendar } from 'react-calendar-datetime-picker'
 import type { InitValueInput } from 'react-calendar-datetime-picker'
+import { BASE_PATH } from './config/basePath'
 
 const features = [
   {
@@ -134,7 +135,7 @@ export default function Home() {
           {/* Logo */}
           <div className='mb-8 flex justify-center'>
             <img
-              src='/next-logo.png'
+              src={`${BASE_PATH}/next-logo.png`}
               alt='React Calendar DateTime Picker Logo'
               className='w-24 h-24'
             />

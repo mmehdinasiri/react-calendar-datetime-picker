@@ -10,6 +10,7 @@ import {
   type SearchResult
 } from '../data/searchData'
 import { CURRENT_VERSION } from '../config/version'
+import { BASE_PATH } from '../config/basePath'
 
 export function Header() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -129,7 +130,11 @@ export function Header() {
             href='/'
             className='flex items-center space-x-2 hover:opacity-80 transition-opacity'
           >
-            <img src='/next-logo.png' alt='Logo' className='h-6 w-6' />
+            <img
+              src={`${BASE_PATH}/next-logo.png`}
+              alt='Logo'
+              className='h-6 w-6'
+            />
             <span className='font-semibold text-gray-900 dark:text-white text-sm'>
               React Calendar DateTime Picker
             </span>
