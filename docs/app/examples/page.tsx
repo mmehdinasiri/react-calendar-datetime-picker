@@ -80,7 +80,7 @@ export default function Examples() {
           .map(([groupName, groupExamples]) => (
             <div key={groupName} id={toKebabCase(groupName)}>
               <h2 className='text-3xl font-bold text-gray-900 dark:text-white mb-8 pb-4 border-b border-border'>
-                {groupName === 'Types' ? 'Calendar Modes' : groupName}
+                {groupName === 'Types' ? 'Calendar Types' : groupName}
               </h2>
               {groupName === 'Basic' ? (
                 <BasicCategoryContent />

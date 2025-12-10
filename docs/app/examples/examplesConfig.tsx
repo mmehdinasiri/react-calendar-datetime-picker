@@ -147,6 +147,62 @@ export const examples: ExamplesConfig = {
       wrapper: 'calendar-container'
     }
   },
+  'Calendar Systems': {
+    JalaliShorthand: {
+      title: 'Jalali Calendar (Shorthand)',
+      description:
+        'Calendar using the shorthand alias "ja" for Jalali calendar system',
+      component: 'DtCalendar',
+      props: {
+        calendarSystem: 'ja',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      calendarSystem="ja"
+      showWeekend={true}
+      todayBtn={true}
+      onChange={setDate}
+    />
+  )
+}`
+    },
+    GregorianShorthand: {
+      title: 'Gregorian Calendar (Shorthand)',
+      description:
+        'Calendar using the shorthand alias "ge" for Gregorian calendar system',
+      component: 'DtCalendar',
+      props: {
+        calendarSystem: 'ge',
+        showWeekend: true,
+        todayBtn: true
+      },
+      wrapper: 'calendar-container',
+      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import React, { useState } from 'react'
+
+function App() {
+  const [date, setDate] = useState(null)
+
+  return (
+    <DtCalendar
+      calendarSystem="ge"
+      showWeekend={true}
+      todayBtn={true}
+      onChange={setDate}
+    />
+  )
+}`
+    }
+  },
   Types: {
     SingleDateSelection: {
       title: 'Single Date Selection',

@@ -8,6 +8,22 @@ export const examplesContent = {
     intro:
       'React Calendar DateTime Picker provides two main components for different use cases:'
   },
+  'Calendar Systems': {
+    intro:
+      'The calendar component supports two calendar systems: Gregorian and Jalali. You can use the full names (`gregorian`, `jalali`) or convenient shorthand aliases (`ge`, `ja`). The default value is `ge` (Gregorian).',
+    typeDefinitions: [
+      `type CalendarSystem = 'gregorian' | 'jalali' | 'ge' | 'ja'
+// Default: 'ge' (Gregorian)`
+    ],
+    details: [
+      {
+        title: 'Calendar Systems:',
+        content: `• \`gregorian\` or \`ge\` - Gregorian calendar (Western calendar system) - Default
+• \`jalali\` or \`ja\` - Jalali calendar (Persian/Iranian calendar system)
+The shorthand aliases (\`ge\` and \`ja\`) are automatically normalized to their full names internally. If not specified, the calendar system defaults to \`ge\` (Gregorian).`
+      }
+    ]
+  },
   Types: {
     intro:
       'The `type` prop determines the selection behavior of the calendar component. You can choose from four different selection types, each with its own use case and return value format.',
