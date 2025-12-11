@@ -249,7 +249,7 @@ const exampleItems: SearchItem[] = [
     title: 'React Hook Form Integration',
     description:
       'Integrate DtPicker with React Hook Form using the Controller component',
-    href: '/customization#reacthookformintegration',
+    href: '/customization#custom-trigger-elements-reacthookformintegration',
     category: 'example' as const,
     tags: ['react-hook-form', 'form', 'validation', 'controller', 'integration']
   },
