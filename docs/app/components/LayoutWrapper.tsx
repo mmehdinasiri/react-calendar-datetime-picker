@@ -86,7 +86,13 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
             <MobileMenuButton />
           </>
         )}
-        <main className='flex-1 overflow-auto w-full'>{children}</main>
+        <main
+          className={`flex-1 overflow-auto w-full transition-all duration-300 ease-in-out ${
+            isSidebarOpen ? 'lg:ml-80' : ''
+          }`}
+        >
+          {children}
+        </main>
         {/* Search Modal - Rendered outside header to overlay sidebar */}
         {!isLegacyRoute && <SearchModal />}
       </div>
