@@ -139,14 +139,14 @@ export function Header() {
 
   return (
     <header className='sticky top-0 z-50 bg-white dark:bg-bg-secondary border-b border-border shadow-md'>
-      <div className='flex items-center justify-between h-14 px-4'>
+      <div className='flex items-center justify-between h-14 px-2 lg:px-4'>
         {/* Left Side: Toggle Button and Logo */}
-        <div className='flex items-center space-x-2'>
+        <div className='flex items-center space-x-1 lg:space-x-2'>
           <button
             onClick={() => {
               toggleSidebar()
             }}
-            className='p-2 rounded-md text-gray-900 dark:text-gray-100 hover:bg-bg-tertiary transition-colors mr-4'
+            className='p-2 rounded-md text-gray-900 dark:text-gray-100 hover:bg-bg-tertiary transition-colors mr-2 lg:mr-4'
             aria-label='Toggle sidebar'
           >
             <svg
@@ -164,15 +164,15 @@ export function Header() {
             </svg>
           </button>
           {/* Logo and Title */}
-          <div className='flex items-center space-x-3'>
+          <div className='flex items-center space-x-1.5 lg:space-x-3'>
             <Link
               href='/'
-              className='flex items-center space-x-2 hover:opacity-80 transition-opacity'
+              className='flex items-center space-x-1.5 lg:space-x-2 hover:opacity-80 transition-opacity'
             >
               <img
                 src={`${BASE_PATH}/next-logo.png`}
                 alt='Logo'
-                className='h-6 w-6'
+                className='h-6 w-6 flex-shrink-0'
               />
               <span className='hidden lg:inline font-semibold text-gray-900 dark:text-white text-sm'>
                 React Calendar DateTime Picker
@@ -184,7 +184,7 @@ export function Header() {
                   e.stopPropagation()
                   setIsVersionDropdownOpen(!isVersionDropdownOpen)
                 }}
-                className='text-xs bg-accent text-white px-1.5 py-0.5 rounded hover:bg-accent-hover transition-colors flex items-center gap-1'
+                className='text-sm h-6 lg:text-base lg-h-8 bg-accent text-white px-1.5 py-0.5 rounded hover:bg-accent-hover transition-colors flex items-center gap-1 flex-shrink-0'
                 aria-label='Select version'
               >
                 {currentVersion}
@@ -211,7 +211,7 @@ export function Header() {
                       e.stopPropagation()
                       handleVersionChange(currentVersion)
                     }}
-                    className='w-full text-left px-3 py-2 text-xs text-gray-900 dark:text-white hover:bg-bg-tertiary transition-colors rounded-t-md'
+                    className='w-full text-left px-3 py-3 text-xs text-gray-900 dark:text-white hover:bg-bg-tertiary transition-colors rounded-t-md'
                   >
                     {currentVersion}
                   </button>
@@ -221,7 +221,7 @@ export function Header() {
                       e.stopPropagation()
                       setIsVersionDropdownOpen(false)
                     }}
-                    className='block w-full text-left px-3 py-2 text-xs text-gray-900 dark:text-white hover:bg-bg-tertiary transition-colors rounded-b-md border-t border-border'
+                    className='block w-full text-left px-3 py-3 text-xs text-gray-900 dark:text-white hover:bg-bg-tertiary transition-colors rounded-b-md border-t border-border'
                   >
                     1.7.5
                   </Link>
@@ -232,11 +232,21 @@ export function Header() {
         </div>
 
         {/* Search Bar */}
-        <div className='flex-1 max-w-md mx-8'>
+        <div className='flex-1 max-w-md mx-2 lg:mx-8'>
           <div className='relative'>
-            <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+            {/* Search Icon Button for Small Screens */}
+            <button
+              onClick={() => {
+                // On small screens, open full-page modal
+                if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+                  openSearchModal()
+                }
+              }}
+              className='lg:hidden p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-bg-tertiary transition-colors'
+              aria-label='Open search'
+            >
               <svg
-                className='h-4 w-4 text-gray-400'
+                className='h-5 w-5'
                 fill='none'
                 viewBox='0 0 24 24'
                 stroke='currentColor'
@@ -248,33 +258,41 @@ export function Header() {
                   d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
                 />
               </svg>
-            </div>
-            <input
-              ref={searchInputRef}
-              type='text'
-              placeholder='Search documentation...'
-              value={searchQuery}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              onKeyDown={handleSearchKeyDown}
-              onFocus={() => {
-                // On small screens, open full-page modal
-                if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-                  openSearchModal()
-                } else {
+            </button>
+
+            {/* Search Input for Large Screens */}
+            <div className='hidden lg:block relative w-full'>
+              <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+                <svg
+                  className='h-4 w-4 text-gray-400'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+                  />
+                </svg>
+              </div>
+              <input
+                ref={searchInputRef}
+                type='text'
+                placeholder='Search documentation...'
+                value={searchQuery}
+                onChange={(e) => handleSearchChange(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
+                onFocus={() => {
                   // On large screens, show dropdown
                   if (searchResults.length > 0) {
                     setIsSearchDropdownOpen(true)
                   }
-                }
-              }}
-              onClick={() => {
-                // On small screens, open full-page modal when clicked
-                if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-                  openSearchModal()
-                }
-              }}
-              className='w-full bg-bg-primary border border-border rounded-md pl-10 pr-4 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent'
-            />
+                }}
+                className='w-full bg-bg-primary border border-border rounded-md pl-10 pr-4 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent'
+              />
+            </div>
             {/* Search Results Dropdown - Only on large screens */}
             {isSearchDropdownOpen && searchResults.length > 0 && (
               <div
@@ -327,7 +345,7 @@ export function Header() {
         </div>
 
         {/* Top Navigation */}
-        <div className='flex items-center space-x-6'>
+        <div className='flex items-center space-x-2 lg:space-x-6'>
           <Link
             href='/getting-started'
             className='hidden lg:block text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors'

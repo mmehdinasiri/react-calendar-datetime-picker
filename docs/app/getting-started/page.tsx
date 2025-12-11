@@ -14,7 +14,7 @@ export default function GettingStarted() {
   const content = gettingStartedContent
 
   return (
-    <div className='max-w-4xl mx-auto px-6 py-12'>
+    <div className='max-w-4xl mx-auto px-2 sm:px-6 py-12'>
       <div className='prose prose-lg max-w-none'>
         <Breadcrumb>LEARN REACT CALENDAR &gt;</Breadcrumb>
         <h1>Quick Start</h1>

@@ -10,6 +10,7 @@ import { ThemeProvider } from './contexts/ThemeContext'
 import { SidebarProvider } from './contexts/SidebarContext'
 import { SearchModalProvider } from './contexts/SearchModalContext'
 import { CLARITY_PROJECT_ID, ENABLE_CLARITY } from './config/clarity'
+import { BASE_PATH } from './config/basePath'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -18,13 +19,13 @@ export const metadata: Metadata = {
     'A modern, fast and small calendar for React with English and Persian (Jalali) support',
   icons: {
     icon: [
-      { url: '/favicon/favicon.ico', sizes: 'any' },
-      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' }
+      { url: `${BASE_PATH}/next-logo.png`, sizes: 'any' },
+      { url: `${BASE_PATH}/next-logo.png`, sizes: '16x16', type: 'image/png' },
+      { url: `${BASE_PATH}/next-logo.png`, sizes: '32x32', type: 'image/png' }
     ],
     apple: [
       {
-        url: '/favicon/apple-touch-icon.png',
+        url: `${BASE_PATH}/next-logo.png`,
         sizes: '180x180',
         type: 'image/png'
       }
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     other: [
       {
         rel: 'mask-icon',
-        url: '/favicon/safari-pinned-tab.svg',
+        url: `${BASE_PATH}/favicon/safari-pinned-tab.svg`,
         color: '#009a17'
       }
     ]

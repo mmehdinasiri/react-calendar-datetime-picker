@@ -249,6 +249,18 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
       .replace(/\s+/g, '-')
       .replace(/[^a-z0-9-]/g, '')
 
+  // Remove wrapper styling for customization examples
+  const isCustomizationCategory =
+    category &&
+    [
+      'Custom Trigger Elements',
+      'Themes',
+      'CSS Variables',
+      'Year List Style',
+      'Custom CSS Classes',
+      'Custom Icons'
+    ].includes(category)
+
   return (
     <section
       id={
@@ -256,7 +268,11 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
           ? `${toKebabCase(category)}-${toKebabCase(exampleKey)}`
           : toKebabCase(exampleKey)
       }
-      className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
+      className={
+        isCustomizationCategory
+          ? 'mb-8'
+          : 'bg-bg-secondary rounded-lg border border-border p-8 mb-8'
+      }
     >
       <div className='mb-6'>
         <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>

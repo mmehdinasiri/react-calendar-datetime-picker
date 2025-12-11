@@ -75,7 +75,7 @@ export default function Utilities() {
   const content = utilitiesContent
 
   return (
-    <div className='max-w-6xl mx-auto px-6 py-12'>
+    <div className='max-w-6xl mx-auto px-2 sm:px-6 py-12'>
       <div className='prose prose-lg max-w-none mb-12'>
         <h1>{content.title}</h1>
 

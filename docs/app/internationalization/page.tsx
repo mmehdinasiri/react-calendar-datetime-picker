@@ -62,7 +62,7 @@ function InternationalizationContent() {
   )
 
   return (
-    <div className='max-w-6xl mx-auto px-6 py-12'>
+    <div className='max-w-6xl mx-auto px-2 sm:px-6 py-12'>
       <div className='prose prose-lg max-w-none mb-12'>
         <h1>Internationalization</h1>
         <p>
@@ -76,7 +76,10 @@ function InternationalizationContent() {
       {/* Locales Section */}
       <section className='bg-bg-secondary rounded-lg border border-border p-8 mb-12'>
         <div className='mb-6'>
-          <h2 className='text-2xl font-semibold text-gray-900 dark:text-white mb-4'>
+          <h2
+            id='locales'
+            className='text-2xl font-semibold text-gray-900 dark:text-white mb-4'
+          >
             Locales
           </h2>
           <p className='text-gray-700 dark:text-gray-300 mb-4'>
@@ -191,7 +194,7 @@ export default function Internationalization() {
   return (
     <Suspense
       fallback={
-        <div className='max-w-6xl mx-auto px-6 py-12'>
+        <div className='max-w-6xl mx-auto px-2 sm:px-6 py-12'>
           <div className='prose prose-lg max-w-none mb-12'>
             <h1>Internationalization</h1>
             <p>Loading...</p>

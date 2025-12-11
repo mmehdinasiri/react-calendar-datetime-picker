@@ -17,13 +17,14 @@ const levelStyles = {
 export function SectionHeader({
   children,
   level = 2,
-  className = ''
-}: SectionHeaderProps) {
+  className = '',
+  id
+}: SectionHeaderProps & { id?: string }) {
   const Tag = `h${level}` as 'h1' | 'h2' | 'h3'
 
   return React.createElement(
     Tag,
-    { className: `${levelStyles[level]} ${className}` },
+    { id, className: `${levelStyles[level]} ${className}` },
     children
   )
 }

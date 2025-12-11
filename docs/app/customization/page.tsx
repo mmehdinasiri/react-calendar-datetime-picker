@@ -66,7 +66,7 @@ export default function Customization() {
   }
 
   return (
-    <div className='max-w-6xl mx-auto px-6 py-12'>
+    <div className='max-w-6xl mx-auto px-2 sm:px-6 py-12'>
       <div className='prose prose-lg max-w-none mb-12'>
         <h1>Customization</h1>
 
@@ -308,7 +308,7 @@ export default function Customization() {
                   <section
                     key={exampleKey}
                     id={`css-variables-${exampleKey.toLowerCase()}`}
-                    className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
+                    className='mb-8'
                   >
                     <div className='mb-6'>
                       <SectionHeader>{config.title}</SectionHeader>

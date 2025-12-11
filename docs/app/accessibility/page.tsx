@@ -28,7 +28,7 @@ export default function Accessibility() {
   >(undefined)
 
   return (
-    <div className='max-w-6xl mx-auto px-6 py-12'>
+    <div className='max-w-6xl mx-auto px-2 sm:px-6 py-12'>
       <div className='prose prose-lg max-w-none mb-12'>
         <h1>Accessibility</h1>
 
@@ -55,7 +55,9 @@ export default function Accessibility() {
               className='bg-bg-secondary rounded-lg border border-border p-8'
             >
               <div className='mb-6'>
-                <SectionHeader>{sectionName}</SectionHeader>
+                <SectionHeader id={toKebabCase(sectionName)}>
+                  {sectionName}
+                </SectionHeader>
                 {/* Skip CategoryContentDisplay for ARIA Support section - we render it custom below */}
                 {sectionName !== 'ARIA Support and Screen Readers' && (
                   <CategoryContentDisplay

@@ -57,7 +57,7 @@ export const CustomExampleRenderer: React.FC<CustomExampleRendererProps> = ({
             ? `${toKebabCase(category)}-${toKebabCase(exampleKey)}`
             : toKebabCase(exampleKey)
         }
-        className='bg-bg-secondary rounded-lg border border-border p-8 mb-8'
+        className='mb-8'
       >
         <div className='mb-6'>
           <SectionHeader>{config.title}</SectionHeader>

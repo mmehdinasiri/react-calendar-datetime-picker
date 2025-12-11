@@ -84,6 +84,14 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
             <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
             {/* Mobile Menu Button - Always visible */}
             <MobileMenuButton />
+            {/* Overlay for small screens when sidebar is open */}
+            {isSidebarOpen && (
+              <div
+                onClick={closeSidebar}
+                className='fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity duration-300'
+                aria-label='Close sidebar'
+              />
+            )}
           </>
         )}
         <main

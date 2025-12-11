@@ -133,7 +133,7 @@ export default function Home() {
       <div className='flex flex-col items-center justify-center min-h-[42vh] px-4 pb-6'>
         <div className='text-center max-w-3xl'>
           {/* Logo */}
-          <div className='mb-8 flex justify-center'>
+          <div className='flex justify-center m-4'>
             <img
               src={`${BASE_PATH}/next-logo.png`}
               alt='React Calendar DateTime Picker Logo'
@@ -142,16 +142,16 @@ export default function Home() {
           </div>
 
           {/* Title */}
-          <h1 className='text-6xl font-bold text-gray-900 dark:text-white mb-4 whitespace-nowrap'>
+          <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 px-4 mt-6'>
             React Calendar DateTime Picker
           </h1>
 
           {/* Tagline */}
-          <p className='text-xl text-gray-600 dark:text-gray-300 mb-4'>
+          <p className='text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-4 px-4'>
             The library for web and native user interfaces with comprehensive
             calendar support
           </p>
-          <p className='text-lg text-gray-600 dark:text-gray-300 mb-8'>
+          <p className='text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 mb-8 px-4'>
             Supports <strong>Jalali (Persian)</strong> and{' '}
             <strong>Gregorian</strong> calendar systems with{' '}
             <strong>single</strong>, <strong>range</strong>,{' '}
@@ -160,16 +160,16 @@ export default function Home() {
           </p>
 
           {/* CTA Buttons */}
-          <div className='flex items-center justify-center gap-4'>
+          <div className='flex flex-col sm:flex-row items-center justify-center gap-4 px-4'>
             <Link
               href='/getting-started'
-              className='bg-accent hover:bg-accent-hover text-white px-6 py-3 rounded-md font-medium transition-colors'
+              className='w-full sm:w-auto bg-accent hover:bg-accent-hover text-white px-6 py-3 rounded-md font-medium transition-colors text-center'
             >
               Learn React Calendar
             </Link>
             <Link
               href='/api-reference'
-              className='bg-transparent border border-border hover:border-accent text-gray-900 dark:text-white px-6 py-3 rounded-md font-medium transition-colors'
+              className='w-full sm:w-auto bg-transparent border border-border hover:border-accent text-gray-900 dark:text-white px-6 py-3 rounded-md font-medium transition-colors text-center'
             >
               API Reference
             </Link>
@@ -178,7 +178,7 @@ export default function Home() {
       </div>
 
       {/* Examples Section */}
-      <div className='max-w-6xl mx-auto px-6 pb-10 home-page-calendar-container'>
+      <div className='max-w-6xl mx-auto px-2 sm:px-6 pb-10 home-page-calendar-container'>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
           {/* Example 1: Basic Light Calendar with EN locale */}
           <div className='bg-bg-secondary rounded-lg border border-border p-6'>
@@ -224,11 +224,11 @@ export default function Home() {
       </div>
 
       {/* Main Content Section */}
-      <div className='max-w-4xl mx-auto px-6 pt-8 pb-16'>
-        <h2 className='text-4xl font-bold text-gray-900 dark:text-white mb-6'>
+      <div className='max-w-4xl mx-auto px-2 sm:px-6 pt-8 pb-16'>
+        <h2 className='text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6'>
           Create user interfaces from components
         </h2>
-        <p className='text-lg text-gray-600 dark:text-gray-300 leading-relaxed'>
+        <p className='text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed'>
           React Calendar DateTime Picker lets you build date and time selection
           interfaces out of individual pieces called components. Create your own
           calendar components like{' '}
@@ -248,12 +248,15 @@ export default function Home() {
       </div>
 
       {/* New Features in v2.x Section */}
-      <div id='new-features-v2x' className='max-w-6xl mx-auto px-6 pb-16'>
+      <div
+        id='new-features-v2x'
+        className='max-w-6xl mx-auto px-4 sm:px-6 pb-16'
+      >
         <div className='text-center mb-12'>
-          <h2 className='text-4xl font-bold text-gray-900 dark:text-white mb-4'>
+          <h2 className='text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 px-4'>
             New Features in v2.x
           </h2>
-          <p className='text-xl text-gray-600 dark:text-gray-300'>
+          <p className='text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 px-4'>
             Discover the enhanced capabilities and improvements in the latest
             version
           </p>

@@ -167,25 +167,33 @@ const navigation = [
           groupName !== 'Customization' &&
           groupName !== 'Date Utilities'
       )
-      .map(([groupName, groupExamples]) => ({
-        name: groupName === 'Types' ? 'Calendar Types' : groupName,
-        href: `/examples#${toKebabCase(groupName)}`,
-        subItems: Object.keys(groupExamples).map((exampleKey) => ({
-          name: groupExamples[exampleKey].title,
-          href: `/examples#${toKebabCase(groupName)}-${toKebabCase(exampleKey)}`
-        }))
-      }))
+      .map(([groupName, groupExamples]) => {
+        const groupHref = `/examples#${toKebabCase(groupName)}`
+        const exampleKeys = Object.keys(groupExamples)
+        return {
+          name: groupName === 'Types' ? 'Calendar Types' : groupName,
+          href: groupHref,
+          subItems: exampleKeys.map((exampleKey, index) => ({
+            name: groupExamples[exampleKey].title,
+            // First sub-item links to the group heading, others link to specific examples
+            href:
+              index === 0
+                ? groupHref
+                : `/examples#${toKebabCase(groupName)}-${toKebabCase(exampleKey)}`
+          }))
+        }
+      })
   },
   {
     title: 'INTERNATIONALIZATION',
     items: [
       {
         name: 'Locales',
-        href: '/internationalization#locale',
+        href: '/internationalization#locales',
         subItems: [
           {
             name: 'Persian (fa)',
-            href: '/internationalization#locale-persiancalendar'
+            href: '/internationalization#locales'
           },
           {
             name: 'French (fr)',
@@ -207,7 +215,7 @@ const navigation = [
         subItems: [
           {
             name: 'Preset Date Ranges',
-            href: '/internationalization#preset-ranges',
+            href: '/internationalization#translation-customization',
             subItems: [
               {
                 name: 'Custom Preset Labels',
@@ -252,7 +260,7 @@ const navigation = [
         subItems: [
           {
             name: 'Custom Button Trigger',
-            href: '/customization#custom-trigger-elements-custombuttontrigger'
+            href: '/customization#custom-trigger-elements'
           },
           {
             name: 'Custom Div with Icon',
@@ -274,7 +282,7 @@ const navigation = [
         subItems: [
           {
             name: 'Light Theme',
-            href: '/customization#themes-lighttheme'
+            href: '/customization#themes'
           },
           {
             name: 'Dark Theme',
@@ -288,7 +296,7 @@ const navigation = [
         subItems: [
           {
             name: 'Blue Example',
-            href: '/customization#css-variables-blueexample'
+            href: '/customization#css-variables'
           },
           {
             name: 'Brown Example',
@@ -310,7 +318,7 @@ const navigation = [
         subItems: [
           {
             name: 'Grid Layout (Default)',
-            href: '/customization#year-list-style-gridlayout'
+            href: '/customization#year-list-style'
           },
           {
             name: 'List Layout',
@@ -333,7 +341,10 @@ const navigation = [
     title: 'ACCESSIBILITY',
     items: [
       { name: 'Keyboard Navigation', href: '/accessibility#keyboard' },
-      { name: 'ARIA & Screen Readers', href: '/accessibility#aria' }
+      {
+        name: 'ARIA & Screen Readers',
+        href: '/accessibility#aria-support-and-screen-readers'
+      }
     ]
   }
   // {
@@ -357,7 +368,8 @@ interface CollapsibleSectionProps {
 function CollapsibleItem({
   item,
   pathname,
-  searchQuery
+  searchQuery,
+  onLinkClick
 }: {
   item: {
     name: string
@@ -366,6 +378,7 @@ function CollapsibleItem({
   }
   pathname: string
   searchQuery: string
+  onLinkClick?: () => void
 }) {
   const router = useRouter()
   const hasSubItems = item.subItems && item.subItems.length > 0
@@ -411,24 +424,33 @@ function CollapsibleItem({
       e.preventDefault()
       setIsOpen(!isOpen)
 
-      // Navigate to the section
-      if (item.href.includes('#')) {
-        const [path, hash] = item.href.split('#')
-        const currentPath = pathname.split('#')[0]
-        if (currentPath !== path) {
-          // Navigate to different page
-          router.push(item.href)
-        } else {
-          // If we're already on the page, just scroll to the hash
-          setTimeout(() => {
-            const element = document.getElementById(hash)
-            if (element) {
-              element.scrollIntoView({ behavior: 'smooth' })
-            }
-          }, 0)
+      // Don't close sidebar for items with sub-items - they just toggle the submenu
+      // Only navigate if item doesn't have sub-items
+      if (!hasSubItems) {
+        // Close sidebar on small screens when navigating
+        if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+          onLinkClick?.()
         }
-      } else {
-        router.push(item.href)
+
+        // Navigate to the section
+        if (item.href.includes('#')) {
+          const [path, hash] = item.href.split('#')
+          const currentPath = pathname.split('#')[0]
+          if (currentPath !== path) {
+            // Navigate to different page
+            router.push(item.href)
+          } else {
+            // If we're already on the page, just scroll to the hash
+            setTimeout(() => {
+              const element = document.getElementById(hash)
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth' })
+              }
+            }, 0)
+          }
+        } else {
+          router.push(item.href)
+        }
       }
     }
 
@@ -503,10 +525,18 @@ function CollapsibleItem({
                 )
               }
 
+              const handleSubItemClick = () => {
+                // Close sidebar on small screens when clicking link
+                if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+                  onLinkClick?.()
+                }
+              }
+
               return (
                 <li key={subItem.name}>
                   <Link
                     href={subItem.href}
+                    onClick={handleSubItemClick}
                     className='block px-3 py-1.5 text-sm rounded-md transition-colors text-gray-600 dark:text-gray-300 hover:bg-bg-tertiary hover:text-gray-900 dark:hover:text-white'
                   >
                     {highlightedName}
@@ -544,9 +574,17 @@ function CollapsibleItem({
     )
   }
 
+  const handleLinkClick = () => {
+    // Close sidebar on small screens when clicking link
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+      onLinkClick?.()
+    }
+  }
+
   return (
     <Link
       href={item.href}
+      onClick={handleLinkClick}
       className='block px-3 py-1.5 text-sm rounded-md transition-colors text-gray-600 dark:text-gray-300 hover:bg-bg-tertiary hover:text-gray-900 dark:hover:text-white'
     >
       {highlightedItemName}
@@ -557,8 +595,12 @@ function CollapsibleItem({
 function CollapsibleSection({
   section,
   pathname,
-  searchQuery
-}: CollapsibleSectionProps & { searchQuery: string }) {
+  searchQuery,
+  onLinkClick
+}: CollapsibleSectionProps & {
+  searchQuery: string
+  onLinkClick?: () => void
+}) {
   // Filter items based on search query
   const filteredItems = useMemo(() => {
     if (!searchQuery.trim()) {
@@ -608,6 +650,7 @@ function CollapsibleSection({
               item={item}
               pathname={pathname}
               searchQuery={searchQuery}
+              onLinkClick={onLinkClick}
             />
           </li>
         ))}
@@ -686,6 +729,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             section={section}
             pathname={pathname}
             searchQuery={searchQuery}
+            onLinkClick={onClose}
           />
         ))}
         {searchQuery.trim() &&
