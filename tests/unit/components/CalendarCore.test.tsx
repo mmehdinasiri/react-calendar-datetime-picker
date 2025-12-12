@@ -10,6 +10,8 @@ vi.mock('@/components/CalendarGridView', () => ({
     <div data-testid='calendar-grid-view'>
       Calendar View
       <span data-testid='prop-type'>{props.type}</span>
+      <span data-testid='prop-dateFormat'>{props.dateFormat || 'none'}</span>
+      <span data-testid='prop-timeFormat'>{props.timeFormat || 'none'}</span>
     </div>
   )
 }))
@@ -97,5 +99,78 @@ describe('CalendarCore', () => {
     )
 
     expect(container).toBeEmptyDOMElement()
+  })
+
+  describe('dateFormat integration', () => {
+    it('passes dateFormat to CalendarGridView and detects time format', () => {
+      render(
+        <CalendarCore
+          {...defaultProps}
+          currentView='calendar'
+          dateFormat='YYYY-MM-DD HH:mm'
+        />
+      )
+
+      expect(screen.getByTestId('calendar-grid-view')).toBeInTheDocument()
+      expect(screen.getByTestId('prop-dateFormat')).toHaveTextContent(
+        'YYYY-MM-DD HH:mm'
+      )
+      // Should detect 24-hour format from HH token
+      expect(screen.getByTestId('prop-timeFormat')).toHaveTextContent('24')
+    })
+
+    it('detects 12-hour format from dateFormat with hh token', () => {
+      render(
+        <CalendarCore
+          {...defaultProps}
+          currentView='calendar'
+          dateFormat='YYYY-MM-DD hh:mm A'
+        />
+      )
+
+      expect(screen.getByTestId('prop-dateFormat')).toHaveTextContent(
+        'YYYY-MM-DD hh:mm A'
+      )
+      // Should detect 12-hour format from hh token
+      expect(screen.getByTestId('prop-timeFormat')).toHaveTextContent('12')
+    })
+
+    it('defaults to 24-hour format when dateFormat has no time tokens', () => {
+      render(
+        <CalendarCore
+          {...defaultProps}
+          currentView='calendar'
+          dateFormat='YYYY-MM-DD'
+        />
+      )
+
+      expect(screen.getByTestId('prop-dateFormat')).toHaveTextContent(
+        'YYYY-MM-DD'
+      )
+      // Should default to 24-hour format
+      expect(screen.getByTestId('prop-timeFormat')).toHaveTextContent('24')
+    })
+
+    it('defaults to 24-hour format when dateFormat is undefined', () => {
+      render(<CalendarCore {...defaultProps} currentView='calendar' />)
+
+      expect(screen.getByTestId('prop-dateFormat')).toHaveTextContent('none')
+      // Should default to 24-hour format
+      expect(screen.getByTestId('prop-timeFormat')).toHaveTextContent('24')
+    })
+
+    it('uses provided timeFormat when both dateFormat and timeFormat are provided', () => {
+      render(
+        <CalendarCore
+          {...defaultProps}
+          currentView='calendar'
+          dateFormat='YYYY-MM-DD hh:mm A'
+          timeFormat='24'
+        />
+      )
+
+      // When timeFormat is explicitly provided, it should be used
+      expect(screen.getByTestId('prop-timeFormat')).toHaveTextContent('24')
+    })
   })
 })

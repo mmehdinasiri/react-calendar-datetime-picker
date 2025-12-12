@@ -162,12 +162,12 @@ onChange={(normalizedValue, jsDate, formattedString) => {
 />
 
 // The formattedString parameter respects:
-// - dateFormat prop (e.g., "DD/MM/YYYY", "MM-DD-YYYY")
+// - dateFormat prop (e.g., "DD/MM/YYYY", "MM-DD-YYYY", "YYYY-MM-DD HH:mm")
 // - locale prop (Persian numerals for 'fa', Latin for others)
-// - timeFormat prop (12-hour or 24-hour when withTime is true)`,
+// Time format is determined by dateFormat tokens: HH (24-hour) or hh (12-hour)`,
       tip: {
         title: 'Tip:',
-        content: `The \`formattedString\` parameter is automatically generated based on your \`dateFormat\`, \`locale\`, and \`timeFormat\` props, so you don't need to format dates manually. For more information about data types and their structures, see the Types documentation.`
+        content: `The \`formattedString\` parameter is automatically generated based on your \`dateFormat\` and \`locale\` props. The time format (12-hour vs 24-hour) is determined by the tokens in \`dateFormat\` (\`HH\` for 24-hour, \`hh\` with \`A\`/\`a\` for 12-hour), so you don't need to format dates manually. For more information about data types and their structures, see the Types documentation.`
       }
     },
 

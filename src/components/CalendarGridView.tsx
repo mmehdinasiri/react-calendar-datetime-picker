@@ -30,7 +30,10 @@ import {
   isRangeStart,
   isRangeEnd
 } from '../utils/calendar-selection'
-import { formatNumber } from '../utils/formatting'
+import {
+  formatNumber,
+  detectTimeFormatFromDateFormat
+} from '../utils/formatting'
 import { getToday } from '../utils/date-conversion'
 import {
   getPresetRangesFromConfig,
@@ -59,7 +62,9 @@ export interface CalendarGridViewProps {
   type: CalendarType
   /** Enable time selection */
   withTime?: boolean
-  /** Time format: '12' for 12-hour format, '24' for 24-hour format */
+  /** Custom date format string (used to detect time format) */
+  dateFormat?: string
+  /** Time format: '12' for 12-hour format, '24' for 24-hour format (detected from dateFormat if not provided) */
   timeFormat?: '12' | '24'
   /** Show weekend highlighting */
   showWeekend?: boolean
@@ -100,7 +105,8 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
     translations,
     type,
     withTime = false,
-    timeFormat = '24',
+    dateFormat,
+    timeFormat,
     showWeekend = false,
     weekStart,
     todayBtn = false,
@@ -116,6 +122,10 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
     onPresetRangeSelect,
     numberOfMonths = 1
   } = props
+
+  // Detect time format from dateFormat if not provided
+  const effectiveTimeFormat =
+    timeFormat || detectTimeFormatFromDateFormat(dateFormat)
 
   const { maxDate, minDate, disabledDates, isDateDisabled } = constraints
   const { classes = {}, labels = {} } = customization
@@ -523,7 +533,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
               {type === 'single' ? (
                 <TimeSelector
                   day={selectedValue as Day | null}
-                  timeFormat={timeFormat}
+                  timeFormat={effectiveTimeFormat}
                   translations={translations}
                   disabled={!selectedValue}
                   onTimeChange={(hour, minute) => {
@@ -537,7 +547,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                 <div className='calendar-time-selector-range'>
                   <TimeSelector
                     day={(selectedValue as Range | null)?.from || null}
-                    timeFormat={timeFormat}
+                    timeFormat={effectiveTimeFormat}
                     translations={translations}
                     label={translations.labels.timeFrom}
                     disabled={!(selectedValue as Range | null)?.from}
@@ -550,7 +560,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                   />
                   <TimeSelector
                     day={(selectedValue as Range | null)?.to || null}
-                    timeFormat={timeFormat}
+                    timeFormat={effectiveTimeFormat}
                     translations={translations}
                     label={translations.labels.timeTo}
                     disabled={!(selectedValue as Range | null)?.to}
@@ -566,7 +576,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                 <div className='calendar-time-selector-range'>
                   <TimeSelector
                     day={(selectedValue as Week | null)?.from || null}
-                    timeFormat={timeFormat}
+                    timeFormat={effectiveTimeFormat}
                     translations={translations}
                     label={translations.labels.timeFrom}
                     disabled={!(selectedValue as Week | null)?.from}
@@ -579,7 +589,7 @@ const CalendarGridViewInner: React.FC<CalendarGridViewProps> = (props) => {
                   />
                   <TimeSelector
                     day={(selectedValue as Week | null)?.to || null}
-                    timeFormat={timeFormat}
+                    timeFormat={effectiveTimeFormat}
                     translations={translations}
                     label={translations.labels.timeTo}
                     disabled={!(selectedValue as Week | null)?.to}
@@ -664,6 +674,7 @@ export const CalendarGridView = React.memo(
       prevProps.calendarSystem === nextProps.calendarSystem &&
       prevProps.type === nextProps.type &&
       prevProps.withTime === nextProps.withTime &&
+      prevProps.dateFormat === nextProps.dateFormat &&
       prevProps.timeFormat === nextProps.timeFormat &&
       prevProps.showWeekend === nextProps.showWeekend &&
       prevProps.todayBtn === nextProps.todayBtn &&

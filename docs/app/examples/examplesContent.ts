@@ -42,18 +42,20 @@ The shorthand aliases (\`ge\` and \`ja\`) are automatically normalized to their 
   },
   Time: {
     intro:
-      'The calendar component supports time selection through the `withTime` prop. When enabled, users can select both date and time. The `timeFormat` prop allows you to choose between 12-hour (AM/PM) and 24-hour time formats.',
+      'The calendar component supports time selection through the `withTime` prop. When enabled, users can select both date and time. The time format is determined by the `dateFormat` prop using time tokens: `HH` for 24-hour format or `hh` with `A`/`a` for 12-hour format.',
     typeDefinitions: [
       `withTime?: boolean
-timeFormat?: '12' | '24'`
+dateFormat?: string`
     ],
     details: [
       {
         title: 'Props:',
         content: `• withTime - When set to \`true\`, enables time selection. The selected \`Day\` object will include \`hour\` and \`minute\` properties.
-• timeFormat - Determines the time display format:
-  • '12' - 12-hour format with AM/PM indicators (1-12)
-  • '24' - 24-hour format (0-23)`
+• dateFormat - Custom format string that supports time tokens:
+  • \`HH\` - 24-hour format (00-23)
+  • \`hh\` - 12-hour format (01-12) with \`A\` (AM/PM) or \`a\` (am/pm)
+  • \`mm\` - Minutes (00-59)
+  • Examples: "YYYY-MM-DD HH:mm" (24-hour), "MM/DD/YYYY hh:mm A" (12-hour)`
       }
     ]
   },

@@ -291,12 +291,6 @@ export interface SharedCalendarProps {
    */
   withTime?: boolean
   /**
-   * Time format: '12' for 12-hour format, '24' for 24-hour format
-   * Only applies when withTime is true
-   * @default '24'
-   */
-  timeFormat?: '12' | '24'
-  /**
    * Calendar system: 'gregorian' (Gregorian) or 'jalali' (Jalali)
    * Also accepts shorthand aliases: 'ge' for 'gregorian', 'ja' for 'jalali'
    * @default 'gregorian'
@@ -350,11 +344,56 @@ export interface SharedCalendarProps {
    */
   customization?: CalendarCustomization
   /**
-   * Custom date format string
-   * Supports tokens: YYYY (year), MM (month), DD (day)
-   * Supports custom separators and order
-   * Examples: "DD/MM/YYYY", "MM-DD-YYYY", "YYYY년 MM월 DD일"
-   * @default undefined (uses default format: YYYY/MM/DD)
+   * Custom format string for displaying the date and time.
+   *
+   * The format string allows you to customize how the selected date is rendered in the input.
+   * Any characters not matching the tokens below will be rendered as-is.
+   *
+   * **Important:** The format string must include at least one date token (YYYY, MM, or DD).
+   * Time-only formats like "HH:mm" are not supported because the calendar always requires a date.
+   *
+   * **Available Tokens:**
+   *
+   * | Token | Description | Example |
+   * |-------|-------------|---------|
+   * | `YYYY` | 4-digit year | 2025 |
+   * | `MM`   | 2-digit month | 01, 12 |
+   * | `DD`   | 2-digit day | 05, 31 |
+   * | `HH`   | 24-hour clock (00-23) | 14, 00 |
+   * | `hh`   | 12-hour clock (01-12) | 02, 12 |
+   * | `mm`   | Minutes | 05, 59 |
+   * | `A`    | Uppercase AM/PM | AM, PM |
+   * | `a`    | Lowercase am/pm | am, pm |
+   *
+   * @example
+   * // Standard Date
+   * dateFormat="DD/MM/YYYY" // "25/12/2025"
+   *
+   * @example
+   * // Date with Time (24h) - requires withTime={true}
+   * dateFormat="YYYY-MM-DD HH:mm" // "2025-12-25 14:30"
+   *
+   * @example
+   * // Date with Time (12h) - requires withTime={true}
+   * dateFormat="MM/DD/YYYY hh:mm A" // "12/25/2025 02:30 PM"
+   *
+   * @example
+   * // withTime={true}
+   * dateFormat="YYYY-MM-DD HH:mm" // "2025-12-09 14:30"
+   *
+   * @example
+   * // withTime={false} (Time tokens are ignored)
+   * dateFormat="YYYY-MM-DD HH:mm" // "2025-12-09"
+   *
+   * @example
+   * // Custom Separators & Text
+   * dateFormat="Year: YYYY, Month: MM" // "Year: 2025, Month: 12"
+   *
+   * @example
+   * // ❌ Time-only formats are NOT supported (requires date tokens)
+   * // dateFormat="HH:mm" // This will not work - date tokens are required
+   *
+   * @default undefined (Renders as "YYYY/MM/DD")
    */
   dateFormat?: string
   /**

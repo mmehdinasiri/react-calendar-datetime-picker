@@ -4,11 +4,50 @@ import {
   formatDateForInput,
   formatValueToString,
   parseDateString,
-  parseAndValidateDate
+  parseAndValidateDate,
+  detectTimeFormatFromDateFormat
 } from '@/utils/formatting'
 import type { Day, Range, Week, Multi } from '@/types'
 
 describe('formatting utils', () => {
+  describe('detectTimeFormatFromDateFormat', () => {
+    it('returns 24-hour format when dateFormat contains HH', () => {
+      expect(detectTimeFormatFromDateFormat('YYYY-MM-DD HH:mm')).toBe('24')
+      expect(detectTimeFormatFromDateFormat('DD/MM/YYYY HH:mm')).toBe('24')
+      expect(detectTimeFormatFromDateFormat('HH:mm')).toBe('24')
+    })
+
+    it('returns 12-hour format when dateFormat contains hh', () => {
+      expect(detectTimeFormatFromDateFormat('YYYY-MM-DD hh:mm A')).toBe('12')
+      expect(detectTimeFormatFromDateFormat('MM/DD/YYYY hh:mm a')).toBe('12')
+      expect(detectTimeFormatFromDateFormat('hh:mm A')).toBe('12')
+    })
+
+    it('prioritizes hh over HH when both are present', () => {
+      expect(detectTimeFormatFromDateFormat('HH:mm hh:mm A')).toBe('12')
+    })
+
+    it('returns 24-hour format as default when no time tokens are present', () => {
+      expect(detectTimeFormatFromDateFormat('YYYY-MM-DD')).toBe('24')
+      expect(detectTimeFormatFromDateFormat('DD/MM/YYYY')).toBe('24')
+    })
+
+    it('returns 24-hour format when dateFormat is undefined', () => {
+      expect(detectTimeFormatFromDateFormat(undefined)).toBe('24')
+    })
+
+    it('returns 24-hour format when dateFormat is empty string', () => {
+      expect(detectTimeFormatFromDateFormat('')).toBe('24')
+    })
+
+    it('handles case sensitivity correctly', () => {
+      expect(detectTimeFormatFromDateFormat('HH')).toBe('24')
+      expect(detectTimeFormatFromDateFormat('hh')).toBe('12')
+      expect(detectTimeFormatFromDateFormat('Hh')).toBe('24') // Only lowercase hh triggers 12-hour
+      expect(detectTimeFormatFromDateFormat('hH')).toBe('24') // Only lowercase hh triggers 12-hour
+    })
+  })
+
   describe('toPersianNumeral', () => {
     it('converts english digits to persian', () => {
       expect(toPersianNumeral(1234567890)).toBe('۱۲۳۴۵۶۷۸۹۰')
@@ -68,6 +107,50 @@ describe('formatting utils', () => {
             'YYYY-MM-DD'
           )
         ).toBe('۱۴۰۲-۰۱-۰۱')
+      })
+
+      it('ignores time tokens when showTime is false', () => {
+        const dayWithTime: Day = { ...day, hour: 14, minute: 30 }
+        expect(
+          formatDateForInput(
+            dayWithTime,
+            'persian',
+            'single',
+            false, // showTime = false
+            '',
+            '',
+            'YYYY-MM-DD HH:mm'
+          )
+        ).toBe('۱۴۰۲-۰۱-۰۱') // Time tokens ignored
+      })
+
+      it('renders time tokens when showTime is true and day has time', () => {
+        const dayWithTime: Day = { ...day, hour: 14, minute: 30 }
+        expect(
+          formatDateForInput(
+            dayWithTime,
+            'persian',
+            'single',
+            true, // showTime = true
+            '',
+            '',
+            'YYYY-MM-DD HH:mm'
+          )
+        ).toBe('۱۴۰۲-۰۱-۰۱ ۱۴:۳۰')
+      })
+
+      it('ignores time tokens when showTime is true but day has no time', () => {
+        expect(
+          formatDateForInput(
+            day,
+            'persian',
+            'single',
+            true, // showTime = true
+            '',
+            '',
+            'YYYY-MM-DD HH:mm'
+          )
+        ).toBe('۱۴۰۲-۰۱-۰۱') // No time in day object
       })
     })
 
@@ -200,6 +283,155 @@ describe('formatting utils', () => {
           day: 1
         })
       })
+    })
+
+    it('parses date with 24-hour time format', () => {
+      const result = parseDateString(
+        '2024-12-16 14:30',
+        'gregorian',
+        'YYYY-MM-DD HH:mm'
+      )
+      expect(result).toEqual({
+        year: 2024,
+        month: 12,
+        day: 16,
+        hour: 14,
+        minute: 30
+      })
+    })
+
+    it('parses date with 12-hour time format and AM', () => {
+      const result = parseDateString(
+        '2024-12-16 01:43 AM',
+        'gregorian',
+        'YYYY-MM-DD hh:mm A'
+      )
+      expect(result).toEqual({
+        year: 2024,
+        month: 12,
+        day: 16,
+        hour: 1, // 1 AM = hour 1 in 24-hour format
+        minute: 43
+      })
+    })
+
+    it('parses date with 12-hour time format and PM', () => {
+      const result = parseDateString(
+        '2024-12-16 01:43 PM',
+        'gregorian',
+        'YYYY-MM-DD hh:mm A'
+      )
+      expect(result).toEqual({
+        year: 2024,
+        month: 12,
+        day: 16,
+        hour: 13, // 1 PM = hour 13 in 24-hour format
+        minute: 43
+      })
+    })
+
+    it('parses date with 12-hour time format and lowercase am/pm', () => {
+      const result = parseDateString(
+        '2024-12-16 11:30 pm',
+        'gregorian',
+        'YYYY-MM-DD hh:mm a'
+      )
+      expect(result).toEqual({
+        year: 2024,
+        month: 12,
+        day: 16,
+        hour: 23, // 11 PM = hour 23 in 24-hour format
+        minute: 30
+      })
+    })
+
+    it('parses 12:00 PM correctly (noon)', () => {
+      const result = parseDateString(
+        '2024-12-16 12:00 PM',
+        'gregorian',
+        'YYYY-MM-DD hh:mm A'
+      )
+      expect(result).toEqual({
+        year: 2024,
+        month: 12,
+        day: 16,
+        hour: 12, // 12 PM = hour 12 in 24-hour format
+        minute: 0
+      })
+    })
+
+    it('parses 12:00 AM correctly (midnight)', () => {
+      const result = parseDateString(
+        '2024-12-16 12:00 AM',
+        'gregorian',
+        'YYYY-MM-DD hh:mm A'
+      )
+      expect(result).toEqual({
+        year: 2024,
+        month: 12,
+        day: 16,
+        hour: 0, // 12 AM = hour 0 in 24-hour format
+        minute: 0
+      })
+    })
+
+    it('parses date without time when time tokens are in format but not in string', () => {
+      // When format has time tokens but string doesn't, we parse just the date part
+      const result = parseDateString(
+        '2024-12-16',
+        'gregorian',
+        'YYYY-MM-DD HH:mm'
+      )
+      // This is acceptable behavior - we parse what we can
+      expect(result).toEqual({
+        year: 2024,
+        month: 12,
+        day: 16
+        // No time since it wasn't in the string
+      })
+    })
+
+    it('correctly converts 12-hour PM to 24-hour format (user example)', () => {
+      // User's example: format "YYYY-MM-DD hh:mm A" with "2024-12-16 1:43 PM"
+      // Should result in hour: 13 (not hour: 1)
+      const result = parseDateString(
+        '2024-12-16 1:43 PM',
+        'gregorian',
+        'YYYY-MM-DD hh:mm A'
+      )
+      expect(result).toEqual({
+        year: 2024,
+        month: 12,
+        day: 16,
+        hour: 13, // 1 PM = 13 in 24-hour format
+        minute: 43
+      })
+    })
+
+    it('correctly converts 12-hour AM to 24-hour format', () => {
+      const result = parseDateString(
+        '2024-12-16 1:43 AM',
+        'gregorian',
+        'YYYY-MM-DD hh:mm A'
+      )
+      expect(result).toEqual({
+        year: 2024,
+        month: 12,
+        day: 16,
+        hour: 1, // 1 AM = 1 in 24-hour format
+        minute: 43
+      })
+    })
+
+    it('does not support time-only formats (HH:mm without date)', () => {
+      // Time-only formats are not supported because Day object requires year, month, day
+      const result = parseDateString('14:30', 'gregorian', 'HH:mm')
+      expect(result).toBeNull() // Should return null because date tokens are missing
+    })
+
+    it('does not support time-only formats (hh:mm A without date)', () => {
+      const result = parseDateString('1:43 PM', 'gregorian', 'hh:mm A')
+      expect(result).toBeNull() // Should return null because date tokens are missing
     })
 
     it('returns null for structurally invalid strings', () => {
@@ -634,8 +866,92 @@ describe('formatting utils', () => {
           minute: 30
         }
         expect(
-          formatValueToString(day, 'single', 'latin', true, undefined, '24')
+          formatValueToString(day, 'single', 'latin', true, undefined)
         ).toBe('2025/12/27 14:30')
+      })
+
+      it('formats single date with custom dateFormat and 24-hour time', () => {
+        const day: Day = {
+          year: 2025,
+          month: 12,
+          day: 27,
+          hour: 14,
+          minute: 30
+        }
+        expect(
+          formatValueToString(day, 'single', 'latin', true, 'YYYY-MM-DD HH:mm')
+        ).toBe('2025-12-27 14:30')
+      })
+
+      it('formats single date with custom dateFormat and 12-hour time', () => {
+        const day: Day = {
+          year: 2025,
+          month: 12,
+          day: 27,
+          hour: 14,
+          minute: 30
+        }
+        expect(
+          formatValueToString(
+            day,
+            'single',
+            'latin',
+            true,
+            'MM/DD/YYYY hh:mm A'
+          )
+        ).toBe('12/27/2025 02:30 PM')
+      })
+
+      it('ignores time tokens when withTime is false', () => {
+        const day: Day = {
+          year: 2025,
+          month: 12,
+          day: 27,
+          hour: 14,
+          minute: 30
+        }
+        expect(
+          formatValueToString(day, 'single', 'latin', false, 'YYYY-MM-DD HH:mm')
+        ).toBe('2025-12-27')
+      })
+
+      it('handles 12-hour format with lowercase am/pm', () => {
+        const day: Day = {
+          year: 2025,
+          month: 12,
+          day: 27,
+          hour: 9,
+          minute: 15
+        }
+        expect(
+          formatValueToString(day, 'single', 'latin', true, 'hh:mm a')
+        ).toBe('09:15 am')
+      })
+
+      it('handles midnight correctly in 12-hour format', () => {
+        const day: Day = {
+          year: 2025,
+          month: 12,
+          day: 27,
+          hour: 0,
+          minute: 0
+        }
+        expect(
+          formatValueToString(day, 'single', 'latin', true, 'hh:mm A')
+        ).toBe('12:00 AM')
+      })
+
+      it('handles 11:59 PM correctly in 12-hour format', () => {
+        const day: Day = {
+          year: 2025,
+          month: 12,
+          day: 27,
+          hour: 23,
+          minute: 59
+        }
+        expect(
+          formatValueToString(day, 'single', 'latin', true, 'hh:mm A')
+        ).toBe('11:59 PM')
       })
 
       it('formats single date with Persian numerals', () => {
@@ -659,7 +975,6 @@ describe('formatting utils', () => {
             'latin',
             false,
             undefined,
-            '24',
             'from',
             'to'
           )
@@ -678,7 +993,6 @@ describe('formatting utils', () => {
             'latin',
             false,
             undefined,
-            '24',
             'from',
             'to'
           )
@@ -697,11 +1011,64 @@ describe('formatting utils', () => {
             'latin',
             false,
             undefined,
-            '24',
             'از',
             'تا'
           )
         ).toBe('از 2025/12/27 تا 2025/12/31')
+      })
+
+      it('formats range with time when withTime is true', () => {
+        const range: Range = {
+          from: { year: 2025, month: 12, day: 27, hour: 9, minute: 0 },
+          to: { year: 2025, month: 12, day: 31, hour: 17, minute: 30 }
+        }
+        expect(
+          formatValueToString(
+            range,
+            'range',
+            'latin',
+            true,
+            'YYYY-MM-DD HH:mm',
+            'from',
+            'to'
+          )
+        ).toBe('from 2025-12-27 09:00 to 2025-12-31 17:30')
+      })
+
+      it('ignores time tokens in range when withTime is false', () => {
+        const range: Range = {
+          from: { year: 2025, month: 12, day: 27, hour: 9, minute: 0 },
+          to: { year: 2025, month: 12, day: 31, hour: 17, minute: 30 }
+        }
+        expect(
+          formatValueToString(
+            range,
+            'range',
+            'latin',
+            false,
+            'YYYY-MM-DD HH:mm',
+            'from',
+            'to'
+          )
+        ).toBe('from 2025-12-27 to 2025-12-31')
+      })
+
+      it('formats range with 12-hour time format', () => {
+        const range: Range = {
+          from: { year: 2025, month: 12, day: 27, hour: 9, minute: 0 },
+          to: { year: 2025, month: 12, day: 31, hour: 17, minute: 30 }
+        }
+        expect(
+          formatValueToString(
+            range,
+            'range',
+            'latin',
+            true,
+            'MM/DD/YYYY hh:mm A',
+            'from',
+            'to'
+          )
+        ).toBe('from 12/27/2025 09:00 AM to 12/31/2025 05:30 PM')
       })
     })
 
@@ -768,6 +1135,32 @@ describe('formatting utils', () => {
         expect(result).toBe(
           '2025/12/27,2025/12/28,2025/12/29,2025/12/30,2025/12/31'
         )
+      })
+
+      it('formats multi dates with time when withTime is true', () => {
+        const multi: Multi = [
+          { year: 2025, month: 12, day: 27, hour: 10, minute: 0 },
+          { year: 2025, month: 12, day: 28, hour: 14, minute: 30 }
+        ]
+        expect(
+          formatValueToString(multi, 'multi', 'latin', true, 'YYYY-MM-DD HH:mm')
+        ).toBe('2025-12-27 10:00,2025-12-28 14:30')
+      })
+
+      it('ignores time tokens in multi when withTime is false', () => {
+        const multi: Multi = [
+          { year: 2025, month: 12, day: 27, hour: 10, minute: 0 },
+          { year: 2025, month: 12, day: 28, hour: 14, minute: 30 }
+        ]
+        expect(
+          formatValueToString(
+            multi,
+            'multi',
+            'latin',
+            false,
+            'YYYY-MM-DD HH:mm'
+          )
+        ).toBe('2025-12-27,2025-12-28')
       })
     })
   })

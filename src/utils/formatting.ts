@@ -31,6 +31,28 @@ const PERSIAN_TO_ENGLISH: Record<string, string> = {
 }
 
 /**
+ * Detect time format from dateFormat string
+ * Returns '12' if format contains 'hh' (12-hour), '24' if format contains 'HH' (24-hour), or '24' as default
+ */
+export function detectTimeFormatFromDateFormat(
+  dateFormat?: string
+): '12' | '24' {
+  if (!dateFormat) {
+    return '24' // Default to 24-hour format
+  }
+  // Check for 12-hour format token (lowercase hh)
+  if (dateFormat.includes('hh')) {
+    return '12'
+  }
+  // Check for 24-hour format token (uppercase HH)
+  if (dateFormat.includes('HH')) {
+    return '24'
+  }
+  // Default to 24-hour format if no time tokens are present
+  return '24'
+}
+
+/**
  * Convert a number to Persian numerals
  */
 export function toPersianNumeral(num: number | string): string {
@@ -61,18 +83,22 @@ export function formatNumber(
  * Format a date according to a custom format string
  * Supports tokens:
  * - Date: YYYY (year), MM (month), DD (day)
- * - Time: HH (24-hour), hh (12-hour), mm (minutes), ss (seconds), A (AM/PM), a (am/pm)
+ * - Time: HH (24-hour), hh (12-hour), mm (minutes), A (AM/PM), a (am/pm)
  * Supports custom separators and order
  * Examples: "DD/MM/YYYY", "MM-DD-YYYY HH:mm", "YYYY년 MM월 DD일 hh:mm A"
+ * The format string itself determines whether to use 12-hour (hh) or 24-hour (HH) format
+ * Time tokens are only rendered if showTime is true AND the day has time values
  */
 function formatDateWithCustomFormat(
   day: Day,
   format: string,
   numberSystem: 'latin' | 'persian',
-  timeFormat: '12' | '24' = '24'
+  showTime = false
 ): string {
   const { year, month, day: dayNum, hour, minute } = day
   const hasTime = hour !== undefined && minute !== undefined
+  // Only render time if showTime is enabled AND day has time values
+  const shouldShowTime = showTime && hasTime
 
   // Prepare date strings
   const YYYY = year.toString()
@@ -83,11 +109,10 @@ function formatDateWithCustomFormat(
   let HH = '',
     hh = '',
     mm = '',
-    ss = '00',
     A = '',
     a = ''
 
-  if (hasTime) {
+  if (shouldShowTime) {
     HH = hour.toString().padStart(2, '0')
     mm = minute.toString().padStart(2, '0')
 
@@ -108,26 +133,25 @@ function formatDateWithCustomFormat(
     HH,
     hh,
     mm,
-    ss,
     A,
     a
   }
 
   // Regex to match tokens
-  const tokenRegex = /YYYY|MM|DD|HH|hh|mm|ss|A|a/g
+  const tokenRegex = /YYYY|MM|DD|HH|hh|mm|A|a/g
 
   let formatted = format.replace(tokenRegex, (match) => {
-    // If we don't have time but the token asks for it, return empty string
-    if (!hasTime && ['HH', 'hh', 'mm', 'ss', 'A', 'a'].includes(match)) {
+    // If we shouldn't show time but the token asks for it, return empty string
+    if (!shouldShowTime && ['HH', 'hh', 'mm', 'A', 'a'].includes(match)) {
       return ''
     }
     return tokens[match] ?? match
   })
 
   // Cleanup if time tokens were removed (extra spaces/colons)
-  if (!hasTime) {
+  if (!shouldShowTime) {
     formatted = formatted
-      .replace(/HH|hh|mm|ss/g, '') // Ensure any remaining time tokens are gone
+      .replace(/HH|hh|mm/g, '') // Ensure any remaining time tokens are gone
       .replace(/A|a/g, '')
       .replace(/\s*:\s*/g, '') // Remove empty colons
       .replace(/\s+/g, ' ') // Collapse multiple spaces
@@ -150,18 +174,17 @@ function formatDay(
   day: Day,
   numberSystem: 'latin' | 'persian',
   showTime = false,
-  dateFormat?: string,
-  timeFormat: '12' | '24' = '24'
+  dateFormat?: string
 ): string {
   let formatted: string
 
   if (dateFormat) {
-    // Use custom format (includes time if format string contains time tokens)
+    // Use custom format (includes time if format string contains time tokens and showTime is true)
     formatted = formatDateWithCustomFormat(
       day,
       dateFormat,
       numberSystem,
-      timeFormat
+      showTime
     )
   } else {
     // Default format: YYYY/MM/DD
@@ -172,7 +195,7 @@ function formatDay(
 
     formatted = `${YYYY}/${MM}/${DD}`
 
-    // Append time if showTime is true and time is available
+    // Append time if showTime is true and time is available (defaults to 24-hour format)
     if (showTime && hour !== undefined && minute !== undefined) {
       const HH = hour.toString().padStart(2, '0')
       const mm = minute.toString().padStart(2, '0')
@@ -198,14 +221,12 @@ export function formatDateForInput(
   showTime = false,
   fromLabel = 'from',
   toLabel = 'to',
-  dateFormat?: string,
-  timeFormat: '12' | '24' = '24'
+  dateFormat?: string
 ): string {
   if (!value) return ''
 
   // Helper to keep code DRY
-  const fmt = (d: Day) =>
-    formatDay(d, numberSystem, showTime, dateFormat, timeFormat)
+  const fmt = (d: Day) => formatDay(d, numberSystem, showTime, dateFormat)
 
   if (type === 'single' && 'year' in value) {
     return fmt(value as Day)
@@ -253,7 +274,6 @@ export function formatValueToString(
   numberSystem: 'latin' | 'persian',
   withTime: boolean,
   dateFormat?: string,
-  timeFormat: '12' | '24' = '24',
   fromLabel = 'from',
   toLabel = 'to'
 ): string | null {
@@ -268,8 +288,7 @@ export function formatValueToString(
     withTime,
     fromLabel,
     toLabel,
-    dateFormat,
-    timeFormat
+    dateFormat
   )
 
   return formatted || null
@@ -293,7 +312,7 @@ export function dayToString(day: Day, divider = '/'): string {
  * Helper to parse simple formats (YYYY/MM/DD, YYYY-MM-DD, etc.)
  */
 function parseSimpleDate(dateStr: string): Day | null {
-  const match = dateStr.match(/^(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})$/)
+  const match = dateStr.match(/^(\d{4})[/\-.](\d{1,2})[/\-.](\d{1,2})$/)
   if (!match) return null
 
   return {
@@ -321,26 +340,33 @@ export function parseDateString(
   calendarSystem: CalendarLocale,
   dateFormat?: string
 ): Day | null {
-  // Remove whitespace
   let cleaned = dateString.trim()
 
-  // Convert Persian numerals to English numerals for Jalali locale
+  // 1. Normalize numerals (Persian to English)
   if (calendarSystem === 'jalali') {
     cleaned = toEnglishNumeral(cleaned)
+    // 2. Normalize Persian AM/PM to English (So regex can match it)
+    cleaned = cleaned
+      .replace(/ب\.ظ/g, 'PM')
+      .replace(/ق\.ظ/g, 'AM')
+      .replace(/بظ/g, 'PM')
+      .replace(/قظ/g, 'AM')
   }
 
-  // If dateFormat is provided, parse according to format
   if (dateFormat) {
-    // 1. Escape the user-provided format to treat separators (/, -, .) as literals
     let regexStr = escapeRegExp(dateFormat)
 
-    // 2. Replace format tokens with Named Capturing Groups
     regexStr = regexStr
       .replace(/YYYY/g, '(?<year>\\d{4})')
+      .replace(/HH/g, '(?<hour24>\\d{1,2})')
+      .replace(/hh/g, '(?<hour12>\\d{1,2})')
       .replace(/MM/g, '(?<month>\\d{1,2})')
       .replace(/DD/g, '(?<day>\\d{1,2})')
+      .replace(/mm/g, '(?<minute>\\d{1,2})')
+      .replace(/(?<![a-zA-Z])A(?![a-zA-Z])/g, '(?<ampmUpper>AM|PM)')
+      .replace(/(?<![a-zA-Z])a(?![a-zA-Z])/g, '(?<ampmLower>am|pm)')
 
-    const matcher = new RegExp(`^${regexStr}$`)
+    const matcher = new RegExp(`^${regexStr}$`, 'i')
     const match = cleaned.match(matcher)
 
     if (match && match.groups) {
@@ -349,15 +375,55 @@ export function parseDateString(
       const day = parseInt(match.groups.day, 10)
 
       if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-        return { year, month, day }
+        const result: Day = { year, month, day }
+
+        let hour: number | undefined
+        let minute: number | undefined
+
+        // Handle 24-hour format
+        if (match.groups.hour24 !== undefined) {
+          hour = parseInt(match.groups.hour24, 10)
+          // Default minute to 0 if only hour is provided
+          minute =
+            match.groups.minute !== undefined
+              ? parseInt(match.groups.minute, 10)
+              : 0
+        }
+        // Handle 12-hour format
+        else if (match.groups.hour12 !== undefined) {
+          const hour12 = parseInt(match.groups.hour12, 10)
+          const ampm =
+            match.groups.ampmUpper?.toUpperCase() ||
+            match.groups.ampmLower?.toUpperCase() ||
+            ''
+
+          if (hour12 === 12) {
+            hour = ampm === 'PM' ? 12 : 0
+          } else {
+            hour = ampm === 'PM' ? hour12 + 12 : hour12
+          }
+
+          // Default minute to 0
+          minute =
+            match.groups.minute !== undefined
+              ? parseInt(match.groups.minute, 10)
+              : 0
+        }
+
+        if (hour !== undefined && minute !== undefined) {
+          result.hour = hour
+          result.minute = minute
+        }
+
+        return result
       }
     }
   }
 
-  // Default behavior: Try different separators and assume YYYY/MM/DD format
-  return parseSimpleDate(cleaned)
+  // Fallback if no format provided or regex failed
+  // (You might want to return null here if you want strict parsing only when dateFormat is present)
+  return parseSimpleDate(cleaned) // Assuming parseSimpleDate is defined elsewhere as before
 }
-
 /**
  * Parse and validate a date string in one step
  * Combines parseDateString and validateDay for convenience

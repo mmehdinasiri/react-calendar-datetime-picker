@@ -390,7 +390,7 @@ function App() {
         showWeekend: true,
         todayBtn: true,
         withTime: true,
-        timeFormat: '12',
+        dateFormat: 'YYYY-MM-DD hh:mm A',
         customization: {
           translations: {
             labels: {
@@ -438,7 +438,7 @@ function App() {
         showWeekend: true,
         todayBtn: true,
         withTime: true,
-        timeFormat: '12',
+        dateFormat: 'YYYY-MM-DD hh:mm A',
         customization: {
           translations: {
             months: [
@@ -468,161 +468,6 @@ function App() {
         }
       },
       wrapper: 'calendar-container'
-    }
-  },
-  Time: {
-    SingleWithTime24Hour: {
-      title: 'Single Date with Time (24-hour)',
-      description:
-        'Calendar with time selection enabled using 24-hour format (0-23)',
-      component: 'DtCalendar',
-      props: {
-        withTime: true,
-        timeFormat: '24',
-        showWeekend: true,
-        todayBtn: true,
-        initValue: new Date(2024, 11, 25, 14, 30)
-      },
-      wrapper: 'calendar-container'
-    },
-    DatePickerWithTime24Hour: {
-      title: 'Date Picker with Time (24-hour)',
-      description: 'Date picker with time selection in 24-hour format (0-23)',
-      component: 'DtPicker',
-      props: {
-        withTime: true,
-        timeFormat: '24',
-        showTimeInput: true,
-        placeholder: 'Select date and time',
-        initValue: new Date(2024, 11, 25, 14, 30)
-      },
-      wrapper: 'picker-container'
-    },
-    SingleWithTime12Hour: {
-      title: 'Single Date with Time (12-hour)',
-      description:
-        'Calendar with time selection enabled using 12-hour format (1-12 AM/PM)',
-      component: 'DtCalendar',
-      props: {
-        withTime: true,
-        timeFormat: '12',
-        showWeekend: true,
-        todayBtn: true,
-        initValue: new Date(2024, 11, 25, 14, 30)
-      },
-      wrapper: 'calendar-container'
-    },
-    DatePickerWithTime12Hour: {
-      title: 'Date Picker with Time (12-hour)',
-      description:
-        'Date picker with time selection in 12-hour format (1-12 AM/PM)',
-      component: 'DtPicker',
-      props: {
-        withTime: true,
-        timeFormat: '12',
-        showTimeInput: true,
-        placeholder: 'Select date and time',
-        initValue: new Date(2024, 11, 25, 14, 30)
-      },
-      wrapper: 'picker-container'
-    },
-    RangeWithTime: {
-      title: 'Date Range with Time',
-      description:
-        'Range selection with time selectors for both start and end dates',
-      component: 'DtCalendar',
-      props: {
-        type: 'range',
-        withTime: true,
-        timeFormat: '24',
-        showWeekend: true,
-        todayBtn: true,
-        initValue: {
-          from: new Date(2024, 11, 25, 10, 0),
-          to: new Date(2024, 11, 30, 18, 0)
-        }
-      },
-      wrapper: 'calendar-container'
-    },
-    WeekWithTime: {
-      title: 'Week Selection with Time',
-      description:
-        'Week selection with time selectors for both start and end of the week',
-      component: 'DtCalendar',
-      props: {
-        type: 'week',
-        withTime: true,
-        timeFormat: '24',
-        showWeekend: true,
-        todayBtn: true,
-        initValue: new Date(2024, 11, 25, 14, 30)
-      },
-      wrapper: 'calendar-container'
-    },
-    WeekPickerWithTime: {
-      title: 'Week Picker with Time',
-      description:
-        'Week picker with time selectors for both start and end of the week',
-      component: 'DtPicker',
-      props: {
-        type: 'week',
-        withTime: true,
-        timeFormat: '24',
-        showTimeInput: true,
-        placeholder: 'Select week with time',
-        showWeekend: true,
-        todayBtn: true,
-        initValue: new Date(2024, 11, 25, 14, 30)
-      },
-      wrapper: 'picker-container'
-    },
-    DateRangePickerWithTime: {
-      title: 'Date Range Picker with Time',
-      description:
-        'Date range picker with time selectors for both start and end dates',
-      component: 'DtPicker',
-      props: {
-        type: 'range',
-        withTime: true,
-        timeFormat: '24',
-        showTimeInput: true,
-        placeholder: 'Select date range with time',
-        initValue: {
-          from: new Date(2024, 11, 25, 10, 0),
-          to: new Date(2024, 11, 30, 18, 0)
-        }
-      },
-      wrapper: 'picker-container'
-    },
-    PersianWithTime: {
-      title: 'Persian Calendar with Time',
-      description:
-        'Persian (Jalali) calendar with time selection in 24-hour format',
-      component: 'DtCalendar',
-      props: {
-        calendarSystem: 'jalali',
-        withTime: true,
-        timeFormat: '24',
-        showWeekend: true,
-        todayBtn: true,
-        initValue: new Date(2024, 11, 25, 14, 30)
-      },
-      wrapper: 'calendar-container'
-    },
-    PersianDatePickerWithTime: {
-      title: 'Persian Date Picker with Time',
-      description:
-        'Persian (Jalali) date picker with time selection in 24-hour format',
-      component: 'DtPicker',
-      props: {
-        calendarSystem: 'jalali',
-        withTime: true,
-        timeFormat: '24',
-        showTimeInput: true,
-        placeholder: 'انتخاب تاریخ و زمان',
-        initValue: new Date(2024, 11, 25, 14, 30)
-      },
-      wrapper: 'picker-container'
     }
   },
   Constraints: {
@@ -1296,17 +1141,96 @@ function App() {
         }
       },
       wrapper: 'picker-container'
-    },
-    WithTimeAndFormat: {
-      title: 'Date with Time and Custom Format',
+    }
+  },
+  Time: {
+    SingleWithTime24Hour: {
+      title: 'Single Date with Time (24-hour)',
       description:
-        'Date picker with time selection and DD/MM/YYYY format - combines custom date format with time',
+        'Calendar with time selection enabled using 24-hour format (0-23)',
+      component: 'DtCalendar',
+      props: {
+        withTime: true,
+        dateFormat: 'YYYY-MM-DD HH:mm',
+        showWeekend: true,
+        todayBtn: true,
+        initValue: new Date(2024, 11, 25, 14, 30)
+      },
+      wrapper: 'calendar-container'
+    },
+    DatePickerWithTime24Hour: {
+      title: 'Date Picker with Time (24-hour)',
+      description: 'Date picker with time selection in 24-hour format (0-23)',
       component: 'DtPicker',
       props: {
-        dateFormat: 'DD/MM/YYYY',
         withTime: true,
+        dateFormat: 'YYYY-MM-DD HH:mm',
         showTimeInput: true,
-        placeholder: 'Select date and time (DD/MM/YYYY)',
+        placeholder: 'Select date and time',
+        initValue: new Date(2024, 11, 25, 14, 30)
+      },
+      wrapper: 'picker-container'
+    },
+    DatePickerWithTime12Hour: {
+      title: 'Date Picker with Time (12-hour)',
+      description:
+        'Date picker with time selection in 12-hour format (1-12 AM/PM)',
+      component: 'DtPicker',
+      props: {
+        withTime: true,
+        dateFormat: 'YYYY-MM-DD hh:mm A',
+        showTimeInput: true,
+        placeholder: 'Select date and time',
+        initValue: new Date(2024, 11, 25, 14, 30)
+      },
+      wrapper: 'picker-container'
+    },
+    WeekPickerWithTime: {
+      title: 'Week Picker with Time',
+      description:
+        'Week picker with time selectors for both start and end of the week',
+      component: 'DtPicker',
+      props: {
+        type: 'week',
+        withTime: true,
+        dateFormat: 'YYYY-MM-DD HH:mm',
+        showTimeInput: true,
+        placeholder: 'Select week with time',
+        showWeekend: true,
+        todayBtn: true,
+        initValue: new Date(2024, 11, 25, 14, 30)
+      },
+      wrapper: 'picker-container'
+    },
+    DateRangePickerWithTime: {
+      title: 'Date Range Picker with Time',
+      description:
+        'Date range picker with time selectors for both start and end dates',
+      component: 'DtPicker',
+      props: {
+        type: 'range',
+        withTime: true,
+        dateFormat: 'YYYY-MM-DD HH:mm',
+        showTimeInput: true,
+        placeholder: 'Select date range with time',
+        initValue: {
+          from: new Date(2024, 11, 25, 10, 0),
+          to: new Date(2024, 11, 30, 18, 0)
+        }
+      },
+      wrapper: 'picker-container'
+    },
+    PersianDatePickerWithTime: {
+      title: 'Persian Date Picker with Time',
+      description:
+        'Persian (Jalali) date picker with time selection in 24-hour format',
+      component: 'DtPicker',
+      props: {
+        calendarSystem: 'jalali',
+        withTime: true,
+        dateFormat: 'YYYY-MM-DD HH:mm',
+        showTimeInput: true,
+        placeholder: 'انتخاب تاریخ و زمان',
         initValue: new Date(2024, 11, 25, 14, 30)
       },
       wrapper: 'picker-container'

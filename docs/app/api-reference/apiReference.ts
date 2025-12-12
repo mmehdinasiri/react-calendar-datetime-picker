@@ -55,12 +55,6 @@ export const sharedProps: Prop[] = [
     description: 'Enable time selection'
   },
   {
-    name: 'timeFormat',
-    type: "'12' | '24'",
-    default: "'24'",
-    description: 'Time format'
-  },
-  {
     name: 'calendarSystem',
     type: 'CalendarSystem',
     default: "'gregorian'",

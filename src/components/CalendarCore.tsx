@@ -22,6 +22,7 @@ import type {
 import { CalendarGridView } from './CalendarGridView'
 import { MonthView } from './MonthView'
 import { YearView } from './YearView'
+import { detectTimeFormatFromDateFormat } from '../utils/formatting'
 
 export interface CalendarCoreProps {
   /** Currently selected value */
@@ -40,7 +41,9 @@ export interface CalendarCoreProps {
   type: CalendarType
   /** Enable time selection */
   withTime?: boolean
-  /** Time format: '12' for 12-hour format, '24' for 24-hour format */
+  /** Custom date format string (used to detect time format) */
+  dateFormat?: string
+  /** Time format: '12' for 12-hour format, '24' for 24-hour format (detected from dateFormat if not provided) */
   timeFormat?: '12' | '24'
   /** Show weekend highlighting */
   showWeekend?: boolean
@@ -88,7 +91,8 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     translations,
     type,
     withTime = false,
-    timeFormat = '24',
+    dateFormat,
+    timeFormat,
     showWeekend = false,
     weekStart,
     todayBtn = false,
@@ -108,6 +112,10 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
     numberOfMonths = 1
   } = props
 
+  // Detect time format from dateFormat if not provided
+  const effectiveTimeFormat =
+    timeFormat || detectTimeFormatFromDateFormat(dateFormat)
+
   // Render appropriate view component
   if (currentView === 'calendar') {
     return (
@@ -119,7 +127,8 @@ export const CalendarCore: React.FC<CalendarCoreProps> = (props) => {
         translations={translations}
         type={type}
         withTime={withTime}
-        timeFormat={timeFormat}
+        dateFormat={dateFormat}
+        timeFormat={effectiveTimeFormat}
         showWeekend={showWeekend}
         weekStart={weekStart}
         todayBtn={todayBtn}
