@@ -103,6 +103,11 @@ export const utilitiesContent = {
             description: ''
           },
           {
+            code: 'parseAndValidateDate(dateString: string, calendarSystem: CalendarLocale, dateFormat?: string): ValidationResult<Day>',
+            description:
+              'Parse and validate date string. Without dateFormat, accepts YYYY/MM/DD format with /, -, or . separators. With dateFormat parameter, parses according to the format pattern. The separator is automatically extracted from the format (e.g., "DD/MM/YYYY" for "25/12/2024", "MM-DD-YYYY" for "12-25-2024", "DD+MM+YYYY" for "25+12+2024").'
+          },
+          {
             code: 'toPersianNumeral(num: number): string',
             description: ''
           }

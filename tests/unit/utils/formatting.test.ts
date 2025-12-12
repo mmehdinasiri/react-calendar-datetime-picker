@@ -3,7 +3,8 @@ import {
   toPersianNumeral,
   formatDateForInput,
   formatValueToString,
-  parseDateString
+  parseDateString,
+  parseAndValidateDate
 } from '@/utils/formatting'
 import type { Day, Range, Week, Multi } from '@/types'
 
@@ -209,6 +210,397 @@ describe('formatting utils', () => {
         year: 1402,
         month: 13,
         day: 1
+      })
+    })
+
+    describe('with dateFormat parameter', () => {
+      it('parses DD/MM/YYYY format', () => {
+        expect(
+          parseDateString('25/12/2024', 'gregorian', 'DD/MM/YYYY')
+        ).toEqual({
+          year: 2024,
+          month: 12,
+          day: 25
+        })
+      })
+
+      it('parses MM-DD-YYYY format', () => {
+        expect(
+          parseDateString('12-25-2024', 'gregorian', 'MM-DD-YYYY')
+        ).toEqual({
+          year: 2024,
+          month: 12,
+          day: 25
+        })
+      })
+
+      it('parses YYYY.MM.DD format with custom separator', () => {
+        expect(
+          parseDateString('2024.12.25', 'gregorian', 'YYYY.MM.DD')
+        ).toEqual({
+          year: 2024,
+          month: 12,
+          day: 25
+        })
+      })
+
+      it('parses DD+MM+YYYY format with + separator', () => {
+        expect(
+          parseDateString('25+12+2024', 'gregorian', 'DD+MM+YYYY')
+        ).toEqual({
+          year: 2024,
+          month: 12,
+          day: 25
+        })
+      })
+
+      it('parses DD-MM-YYYY format', () => {
+        expect(
+          parseDateString('25-12-2024', 'gregorian', 'DD-MM-YYYY')
+        ).toEqual({
+          year: 2024,
+          month: 12,
+          day: 25
+        })
+      })
+
+      it('parses MM/DD/YYYY format', () => {
+        expect(
+          parseDateString('12/25/2024', 'gregorian', 'MM/DD/YYYY')
+        ).toEqual({
+          year: 2024,
+          month: 12,
+          day: 25
+        })
+      })
+
+      it('parses Jalali dates with DD/MM/YYYY format', () => {
+        expect(parseDateString('05/10/1403', 'jalali', 'DD/MM/YYYY')).toEqual({
+          year: 1403,
+          month: 10,
+          day: 5
+        })
+      })
+
+      it('parses Jalali dates with Persian numerals and format', () => {
+        expect(parseDateString('۰۵/۱۰/۱۴۰۳', 'jalali', 'DD/MM/YYYY')).toEqual({
+          year: 1403,
+          month: 10,
+          day: 5
+        })
+      })
+
+      it('falls back to default parsing for invalid format', () => {
+        // Invalid format (missing YYYY, MM, or DD) should fall back to default
+        expect(parseDateString('2024/12/25', 'gregorian', 'INVALID')).toEqual({
+          year: 2024,
+          month: 12,
+          day: 25
+        })
+      })
+
+      it('handles single digit days and months', () => {
+        expect(parseDateString('5/1/2024', 'gregorian', 'DD/MM/YYYY')).toEqual({
+          year: 2024,
+          month: 1,
+          day: 5
+        })
+      })
+
+      it('returns null when date string does not match format separator', () => {
+        // Format expects / but string has -
+        expect(
+          parseDateString('25-12-2024', 'gregorian', 'DD/MM/YYYY')
+        ).toBeNull()
+      })
+
+      it('returns null when date string has wrong number of parts', () => {
+        expect(parseDateString('25/12', 'gregorian', 'DD/MM/YYYY')).toBeNull()
+        expect(
+          parseDateString('25/12/2024/01', 'gregorian', 'DD/MM/YYYY')
+        ).toBeNull()
+      })
+    })
+  })
+
+  describe('parseAndValidateDate', () => {
+    describe('Gregorian calendar', () => {
+      it('parses and validates valid date string', () => {
+        const result = parseAndValidateDate('2024/12/25', 'gregorian')
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 2024,
+          month: 12,
+          day: 25
+        })
+      })
+
+      it('parses and validates date with different separators', () => {
+        expect(parseAndValidateDate('2024-12-25', 'gregorian').success).toBe(
+          true
+        )
+        expect(parseAndValidateDate('2024.12.25', 'gregorian').success).toBe(
+          true
+        )
+      })
+
+      it('returns error for invalid date (invalid month)', () => {
+        const result = parseAndValidateDate('2024/13/25', 'gregorian')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('INVALID_DATE')
+      })
+
+      it('returns error for invalid date (invalid day)', () => {
+        const result = parseAndValidateDate('2024/12/32', 'gregorian')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('INVALID_DATE')
+      })
+
+      it('returns error for invalid date (February 30)', () => {
+        const result = parseAndValidateDate('2024/02/30', 'gregorian')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('INVALID_DATE')
+      })
+
+      it('validates leap year correctly (February 29)', () => {
+        const result = parseAndValidateDate('2024/02/29', 'gregorian')
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 2024,
+          month: 2,
+          day: 29
+        })
+      })
+
+      it('returns error for non-leap year February 29', () => {
+        const result = parseAndValidateDate('2023/02/29', 'gregorian')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('INVALID_DATE')
+      })
+
+      it('returns error for unparseable string', () => {
+        const result = parseAndValidateDate('invalid', 'gregorian')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('PARSE_ERROR')
+        expect(result.error?.message).toContain('Could not parse date string')
+      })
+
+      it('returns error for year out of range (too old)', () => {
+        const result = parseAndValidateDate('1800/12/25', 'gregorian')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('YEAR_OUT_OF_RANGE')
+        expect(result.error?.message).toContain('not in the range of calendar')
+      })
+
+      it('returns error for year out of range (too far in future)', () => {
+        const currentYear = new Date().getFullYear()
+        const futureYear = currentYear + 100
+        const result = parseAndValidateDate(`${futureYear}/12/25`, 'gregorian')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('YEAR_OUT_OF_RANGE')
+      })
+    })
+
+    describe('Jalali calendar', () => {
+      it('parses and validates valid Jalali date', () => {
+        const result = parseAndValidateDate('1403/10/05', 'jalali')
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 1403,
+          month: 10,
+          day: 5
+        })
+      })
+
+      it('parses and validates Jalali date with Persian numerals', () => {
+        const result = parseAndValidateDate('۱۴۰۳/۱۰/۰۵', 'jalali')
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 1403,
+          month: 10,
+          day: 5
+        })
+      })
+
+      it('returns error for invalid Jalali date (invalid month)', () => {
+        const result = parseAndValidateDate('1403/13/05', 'jalali')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('INVALID_DATE')
+      })
+
+      it('returns error for invalid Jalali date (invalid day)', () => {
+        const result = parseAndValidateDate('1403/10/32', 'jalali')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('INVALID_DATE')
+      })
+
+      it('validates Jalali leap year correctly (Esfand 30)', () => {
+        // 1402 is a leap year in Jalali calendar
+        const result = parseAndValidateDate('1403/12/30', 'jalali')
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 1403,
+          month: 12,
+          day: 30
+        })
+      })
+
+      it('returns error for non-leap year Esfand 30', () => {
+        // 1403 is not a leap year in Jalali calendar
+        const result = parseAndValidateDate('1402/12/30', 'jalali')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('INVALID_DATE')
+      })
+    })
+
+    describe('with dateFormat parameter', () => {
+      it('parses and validates DD/MM/YYYY format', () => {
+        const result = parseAndValidateDate(
+          '25/12/2024',
+          'gregorian',
+          'DD/MM/YYYY'
+        )
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 2024,
+          month: 12,
+          day: 25
+        })
+      })
+
+      it('parses and validates MM-DD-YYYY format', () => {
+        const result = parseAndValidateDate(
+          '12-25-2024',
+          'gregorian',
+          'MM-DD-YYYY'
+        )
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 2024,
+          month: 12,
+          day: 25
+        })
+      })
+
+      it('parses and validates YYYY.MM.DD format', () => {
+        const result = parseAndValidateDate(
+          '2024.12.25',
+          'gregorian',
+          'YYYY.MM.DD'
+        )
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 2024,
+          month: 12,
+          day: 25
+        })
+      })
+
+      it('validates date parsed with custom format', () => {
+        const result = parseAndValidateDate(
+          '31/12/2024',
+          'gregorian',
+          'DD/MM/YYYY'
+        )
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 2024,
+          month: 12,
+          day: 31
+        })
+      })
+
+      it('returns error for invalid date with custom format', () => {
+        const result = parseAndValidateDate(
+          '32/12/2024',
+          'gregorian',
+          'DD/MM/YYYY'
+        )
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('INVALID_DATE')
+      })
+
+      it('returns parse error when format does not match string', () => {
+        const result = parseAndValidateDate(
+          '25-12-2024',
+          'gregorian',
+          'DD/MM/YYYY'
+        )
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('PARSE_ERROR')
+      })
+
+      it('parses Jalali date with DD/MM/YYYY format', () => {
+        const result = parseAndValidateDate(
+          '05/10/1403',
+          'jalali',
+          'DD/MM/YYYY'
+        )
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 1403,
+          month: 10,
+          day: 5
+        })
+      })
+
+      it('validates year range with custom format', () => {
+        const result = parseAndValidateDate(
+          '25/12/1800',
+          'gregorian',
+          'DD/MM/YYYY'
+        )
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('YEAR_OUT_OF_RANGE')
+      })
+    })
+
+    describe('edge cases', () => {
+      it('handles empty string', () => {
+        const result = parseAndValidateDate('', 'gregorian')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('PARSE_ERROR')
+      })
+
+      it('handles whitespace-only string', () => {
+        const result = parseAndValidateDate('   ', 'gregorian')
+        expect(result.success).toBe(false)
+        expect(result.error).toBeDefined()
+        expect(result.error?.code).toBe('PARSE_ERROR')
+      })
+
+      it('handles single digit values', () => {
+        const result = parseAndValidateDate('2024/1/5', 'gregorian')
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 2024,
+          month: 1,
+          day: 5
+        })
+      })
+
+      it('handles zero-padded values', () => {
+        const result = parseAndValidateDate('2024/01/05', 'gregorian')
+        expect(result.success).toBe(true)
+        expect(result.data).toEqual({
+          year: 2024,
+          month: 1,
+          day: 5
+        })
       })
     })
   })

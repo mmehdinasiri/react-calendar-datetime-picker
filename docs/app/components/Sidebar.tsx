@@ -271,6 +271,10 @@ const navigation = [
             href: '/customization#custom-trigger-elements-customstyledinput'
           },
           {
+            name: 'Input with Icon Trigger',
+            href: '/customization#custom-trigger-elements-inputwithicontrigger'
+          },
+          {
             name: 'React Hook Form Integration',
             href: '/customization#custom-trigger-elements-reacthookformintegration'
           }
