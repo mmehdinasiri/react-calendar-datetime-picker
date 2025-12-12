@@ -20,7 +20,10 @@ import {
 } from '../utils/normalize'
 import { normalizeConstraintsProps } from '../utils/constraints'
 import { convertToJsDate } from '../utils/date-conversion'
-import { formatValueToString } from '../utils/formatting'
+import {
+  formatValueToString,
+  detectTimeFormatFromDateFormat
+} from '../utils/formatting'
 import { getNumberSystem } from '../utils/translations'
 import { isValidNormalizedValue } from '../utils/validation'
 
@@ -72,7 +75,6 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     onCalenderChange,
     type = 'single',
     withTime = false,
-    timeFormat = '24',
     calendarSystem = 'gregorian',
     showWeekend = false,
     weekStart,
@@ -94,6 +96,9 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     locale,
     yearListStyle = 'grid'
   } = props
+
+  // Detect time format from dateFormat string
+  const timeFormat = detectTimeFormatFromDateFormat(props.dateFormat)
 
   // 🎯 Use consolidated calendar setup hook
   const {
@@ -186,7 +191,6 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
           numberSystem,
           withTime,
           props.dateFormat,
-          timeFormat,
           fromLabel,
           toLabel
         )
@@ -214,7 +218,6 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     effectiveLocale,
     translations,
     withTime,
-    timeFormat,
     props.dateFormat
   ])
 
@@ -238,7 +241,6 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
     weekStart: effectiveWeekStart,
     dateFormat: props.dateFormat,
     locale: effectiveLocale,
-    timeFormat,
     translations
   })
 
@@ -276,6 +278,7 @@ export const DtCalendar: React.FC<DtCalendarProps> = (props) => {
         translations={translations}
         type={type}
         withTime={withTime}
+        dateFormat={props.dateFormat}
         timeFormat={timeFormat}
         showWeekend={showWeekend}
         weekStart={effectiveWeekStart}

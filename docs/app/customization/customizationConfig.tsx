@@ -2,7 +2,8 @@ import type { ExampleConfig } from '../examples/examplesConfig'
 import React from 'react'
 import {
   DatePickerWithValueDisplay,
-  ReactHookFormExample
+  ReactHookFormExample,
+  InputWithIconTrigger
 } from './customComponents'
 
 // Extended interface for customization examples that need custom rendering
@@ -253,6 +254,128 @@ function App() {
       resultValueGetter: () => {
         // This will be set by the renderer
         return null
+      }
+    },
+    InputWithIconTrigger: {
+      title: 'Input with Icon Trigger',
+      description:
+        'Calendar triggered by clicking an icon button. Users can type dates directly in the input field, and valid dates are automatically parsed and used as the initial value.',
+      component: 'DtPicker',
+      props: {},
+      wrapper: 'calendar-container',
+      customComponent: InputWithIconTrigger,
+      customCode: `import { DtPicker, parseAndValidateDate } from 'react-calendar-datetime-picker'
+import React, { useState, useCallback } from 'react'
+import type { Day } from 'react-calendar-datetime-picker'
+
+function InputWithIconTrigger({ onChange, ...props }) {
+  const [selectedDate, setSelectedDate] = useState<Day | null>(null)
+  const [inputValue, setInputValue] = useState<string>('')
+
+  // Check if input value is valid and get validation result
+  const validationResult = inputValue
+    ? parseAndValidateDate(inputValue, 'gregorian')
+    : null
+  const isValid = validationResult?.success ?? null
+  const errorMessage = validationResult?.success === false ? validationResult.error?.message : null
+
+  // Handle input change - parse and validate
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      setInputValue(value)
+
+      // Parse and validate the date string
+      const validation = parseAndValidateDate(value, 'gregorian')
+      if (validation.success && validation.data) {
+        setSelectedDate(validation.data)
+        onChange?.(validation.data)
+      }
+    },
+    [onChange]
+  )
+
+  // Handle calendar selection
+  const handleCalendarChange = useCallback(
+    (date: Day | null, _jsDate: Date | null, formattedString: string | null) => {
+      setSelectedDate(date)
+      setInputValue(formattedString || '')
+      onChange?.(date) //or _jsDate
+    },
+    [onChange]
+  )
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', maxWidth: '300px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+          <input
+            type="text"
+            placeholder="Type date (YYYY/MM/DD) or click icon"
+            value={inputValue}
+            onChange={handleInputChange}
+            style={{
+              width: '100%',
+              minWidth: 0,
+              padding: '10px 12px',
+              border: '2px solid',
+              borderRadius: '6px',
+              fontSize: '14px',
+              outline: 'none',
+              backgroundColor: '#ffffff',
+              color: '#111827',
+              borderColor: isValid === true ? '#10b981' : isValid === false ? '#ef4444' : '#d1d5db'
+            }}
+          />
+          {errorMessage && (
+            <div style={{ marginTop: '4px', fontSize: '12px', color: '#ef4444', paddingLeft: '4px' }}>
+              {errorMessage}
+            </div>
+          )}
+        </div>
+        <div style={{ flexShrink: 0 }}>
+          <DtPicker
+            calendarSystem="gregorian"
+            initValue={selectedDate}
+            onChange={handleCalendarChange}
+            triggerElement={
+              <button
+                type="button"
+                style={{
+                  padding: '10px',
+                  border: 'none',
+                  borderRadius: '6px',
+                  backgroundColor: '#3b82f6',
+                  color: 'white',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  minWidth: '40px',
+                  height: '40px',
+                  flexShrink: 0
+                }}
+                aria-label="Open calendar"
+              >
+                📅
+              </button>
+            }
+          />
+        </div>
+    </div>
+  )
+}`,
+      featureList: {
+        title: 'Key Points',
+        items: [
+          '• <strong>Editable Input:</strong> Users can type dates directly in the input field',
+          '• <strong>Automatic Parsing:</strong> Uses <code><a href="/react-calendar-datetime-picker/utilities/#parseandvalidatedate" class="text-blue-600 dark:text-blue-400 hover:underline">parseAndValidateDate</a></code> to parse and validate date strings in one step',
+          "• <strong>Date Validation:</strong> Validates dates in three steps: 1) Parses the date string format, 2) Checks if the year is within the calendar's year range (Gregorian: 1900 to current year + 30, Jalali: 1300 to current year + 30), 3) Validates the date structure (month and day validity)",
+          "• <strong>Year Range Validation:</strong> Dates with years outside the calendar's supported range will return an error with code <code>YEAR_OUT_OF_RANGE</code>",
+          '• <strong>Icon Trigger:</strong> Clicking the icon opens the calendar modal',
+          '• <strong>Visual Feedback:</strong> Input border color changes based on date validity (green for valid, red for invalid)',
+          '• <strong>Two-way Binding:</strong> Dates selected from calendar update the input, and typed dates update the calendar',
+          '• <strong>Flexible Input:</strong> Accepts date strings in formats: "2024/12/25", "2024-12-25", "2024.12.25"'
+        ],
+        variant: 'info'
       }
     },
     ReactHookFormIntegration: {

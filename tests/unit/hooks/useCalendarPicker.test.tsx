@@ -40,7 +40,6 @@ describe('useCalendarPicker', () => {
         false,
         onClose,
         undefined,
-        '24',
         1
       )
     )
@@ -68,7 +67,6 @@ describe('useCalendarPicker', () => {
         false,
         onClose,
         undefined,
-        '24',
         1
       )
     )
@@ -96,7 +94,6 @@ describe('useCalendarPicker', () => {
         false,
         onClose,
         undefined,
-        '24',
         1
       )
     )
@@ -117,7 +114,6 @@ describe('useCalendarPicker', () => {
         true, // autoClose
         onClose,
         undefined,
-        '24',
         1
       )
     )
@@ -149,7 +145,6 @@ describe('useCalendarPicker', () => {
         true, // autoClose
         onClose,
         undefined,
-        '24',
         1
       )
     )
@@ -183,7 +178,6 @@ describe('useCalendarPicker', () => {
         false,
         onClose,
         undefined,
-        '24',
         1
       )
     )
@@ -205,7 +199,6 @@ describe('useCalendarPicker', () => {
         false,
         onClose,
         undefined,
-        '24',
         1
       )
     )
@@ -226,7 +219,6 @@ describe('useCalendarPicker', () => {
         false,
         onClose,
         undefined,
-        '24',
         1
       )
     )
@@ -262,7 +254,6 @@ describe('useCalendarPicker', () => {
         false,
         onClose,
         undefined,
-        '24',
         1
       )
     )
@@ -293,7 +284,6 @@ describe('useCalendarPicker', () => {
         false,
         onClose,
         undefined,
-        '24',
         1
       )
     )
@@ -314,7 +304,6 @@ describe('useCalendarPicker', () => {
         false,
         onClose,
         undefined,
-        '24',
         1
       )
     )

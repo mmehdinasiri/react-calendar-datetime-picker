@@ -19,6 +19,7 @@ import {
 } from '../hooks'
 import { normalizeConstraintsProps } from '../utils/constraints'
 import { normalizeInitValueWithErrors } from '../utils/normalize'
+import { detectTimeFormatFromDateFormat } from '../utils/formatting'
 
 interface DtPickerPropsBase extends SharedCalendarProps {
   /**
@@ -126,7 +127,6 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     autoClose = true,
     inputId,
     dateFormat,
-    timeFormat = '24',
     numberOfMonths = 1,
     locale,
     customization,
@@ -190,6 +190,9 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
   // 🎯 Use error handling hook
   useCalendarErrorHandling(constraintsErrors, initValueErrors, onError)
 
+  // Detect time format from dateFormat string
+  const timeFormat = detectTimeFormatFromDateFormat(dateFormat)
+
   // Use calendar picker hook for shared calendar logic
   const { state, actions, displayValue } = useCalendarPicker(
     initValue,
@@ -206,7 +209,6 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
     autoClose,
     modalHandlers.close,
     dateFormat,
-    timeFormat,
     numberOfMonths,
     translations
   )
@@ -332,6 +334,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
             translations={translations}
             type={type}
             withTime={withTime}
+            dateFormat={dateFormat}
             timeFormat={timeFormat}
             showWeekend={showWeekend}
             weekStart={effectiveWeekStart}

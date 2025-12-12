@@ -79,6 +79,15 @@ export const CustomExampleRenderer: React.FC<CustomExampleRendererProps> = ({
                 onChange={handleChange}
               />
             </div>
+            {config.featureList && (
+              <div className='mt-4'>
+                <FeatureList
+                  title={config.featureList.title}
+                  items={config.featureList.items}
+                  variant={config.featureList.variant || 'info'}
+                />
+              </div>
+            )}
           </div>
 
           <div>
@@ -117,15 +126,6 @@ export const CustomExampleRenderer: React.FC<CustomExampleRendererProps> = ({
                     )}
                   </code>
                 </p>
-              </div>
-            )}
-            {config.featureList && (
-              <div className='mt-4'>
-                <FeatureList
-                  title={config.featureList.title}
-                  items={config.featureList.items}
-                  variant={config.featureList.variant || 'info'}
-                />
               </div>
             )}
           </div>

@@ -22,6 +22,7 @@ export {
   formatValueToString,
   dayToString,
   parseDateString,
+  parseAndValidateDate,
   toPersianNumeral
 } from './formatting'
 

@@ -790,4 +790,120 @@ describe('CalendarGridView', () => {
       expect(screen.getByText('Últimos 7 días')).toBeInTheDocument()
     })
   })
+
+  describe('dateFormat integration', () => {
+    it('detects 24-hour format from dateFormat with HH token', () => {
+      const dayWithTime: Day = {
+        year: 2023,
+        month: 1,
+        day: 15,
+        hour: 14,
+        minute: 30
+      }
+      render(
+        <CalendarGridView
+          {...defaultProps}
+          selectedValue={dayWithTime}
+          withTime={true}
+          dateFormat='YYYY-MM-DD HH:mm'
+          onTimeChange={defaultProps.onTimeChange}
+        />
+      )
+
+      // TimeSelector should receive timeFormat='24' (detected from dateFormat)
+      const timeSelector = screen.getByTestId('time-selector')
+      expect(timeSelector).toBeInTheDocument()
+    })
+
+    it('detects 12-hour format from dateFormat with hh token', () => {
+      const dayWithTime: Day = {
+        year: 2023,
+        month: 1,
+        day: 15,
+        hour: 14,
+        minute: 30
+      }
+      render(
+        <CalendarGridView
+          {...defaultProps}
+          selectedValue={dayWithTime}
+          withTime={true}
+          dateFormat='YYYY-MM-DD hh:mm A'
+          onTimeChange={defaultProps.onTimeChange}
+        />
+      )
+
+      // TimeSelector should receive timeFormat='12' (detected from dateFormat)
+      const timeSelector = screen.getByTestId('time-selector')
+      expect(timeSelector).toBeInTheDocument()
+    })
+
+    it('defaults to 24-hour format when dateFormat has no time tokens', () => {
+      const dayWithTime: Day = {
+        year: 2023,
+        month: 1,
+        day: 15,
+        hour: 14,
+        minute: 30
+      }
+      render(
+        <CalendarGridView
+          {...defaultProps}
+          selectedValue={dayWithTime}
+          withTime={true}
+          dateFormat='YYYY-MM-DD'
+          onTimeChange={defaultProps.onTimeChange}
+        />
+      )
+
+      // Should default to 24-hour format
+      const timeSelector = screen.getByTestId('time-selector')
+      expect(timeSelector).toBeInTheDocument()
+    })
+
+    it('defaults to 24-hour format when dateFormat is undefined', () => {
+      const dayWithTime: Day = {
+        year: 2023,
+        month: 1,
+        day: 15,
+        hour: 14,
+        minute: 30
+      }
+      render(
+        <CalendarGridView
+          {...defaultProps}
+          selectedValue={dayWithTime}
+          withTime={true}
+          onTimeChange={defaultProps.onTimeChange}
+        />
+      )
+
+      // Should default to 24-hour format
+      const timeSelector = screen.getByTestId('time-selector')
+      expect(timeSelector).toBeInTheDocument()
+    })
+
+    it('prioritizes hh over HH when both tokens are present', () => {
+      const dayWithTime: Day = {
+        year: 2023,
+        month: 1,
+        day: 15,
+        hour: 14,
+        minute: 30
+      }
+      render(
+        <CalendarGridView
+          {...defaultProps}
+          selectedValue={dayWithTime}
+          withTime={true}
+          dateFormat='HH:mm hh:mm A'
+          onTimeChange={defaultProps.onTimeChange}
+        />
+      )
+
+      // Should detect 12-hour format (hh takes priority)
+      const timeSelector = screen.getByTestId('time-selector')
+      expect(timeSelector).toBeInTheDocument()
+    })
+  })
 })

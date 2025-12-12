@@ -677,8 +677,7 @@ describe('useCalendarState', () => {
           type: 'single',
           onChange,
           locale: 'en',
-          withTime: true,
-          timeFormat: '24'
+          withTime: true
         })
       )
 

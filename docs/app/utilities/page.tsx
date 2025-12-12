@@ -2246,6 +2246,53 @@ export default function Utilities() {
                     Get all days in a date range (inclusive)
                   </td>
                 </tr>
+                <tr className='bg-bg-tertiary'>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                    <code>dayToString</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>date, divider?</code>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>string</code>
+                  </td>
+                  <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                    Convert Day object to string format
+                  </td>
+                </tr>
+                <tr id='parseandvalidatedate'>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white'>
+                    <code>parseAndValidateDate</code>
+                  </td>
+                  <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                    <div className='space-y-1'>
+                      <div>
+                        <code>dateString: string</code>
+                      </div>
+                      <div className='!my-4'>
+                        <code>
+                          calendarSystem:{' '}
+                          {renderTypeWithLinks('CalendarLocale')}
+                        </code>
+                      </div>
+                      <div>
+                        <code>dateFormat: string?</code>
+                      </div>
+                    </div>
+                  </td>
+                  <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300'>
+                    <code>
+                      ValidationResult&lt;{renderTypeWithLinks('Day')}&gt;
+                    </code>
+                  </td>
+                  <td className='px-6 py-4 text-sm text-gray-700 dark:text-gray-300'>
+                    Parse and validate a date string. Without{' '}
+                    <code>dateFormat</code>, accepts YYYY/MM/DD format with /,
+                    -, or . separators. With <code>dateFormat</code>, parses
+                    according to the pattern (separator auto-extracted). Also
+                    validates year is within calendar range.
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>

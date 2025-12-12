@@ -62,8 +62,6 @@ export interface UseCalendarStateOptions {
   dateFormat?: string
   /** Locale for formatting */
   locale?: CalendarUILocale
-  /** Time format: '12' for 12-hour format, '24' for 24-hour format */
-  timeFormat?: '12' | '24'
   /** Translations object (includes number system and labels) */
   translations?: CalendarTranslations
 }
@@ -83,7 +81,6 @@ export function useCalendarState(options: UseCalendarStateOptions) {
     onCalenderChange,
     dateFormat,
     locale,
-    timeFormat = '24',
     translations
   } = options
 
@@ -174,7 +171,6 @@ export function useCalendarState(options: UseCalendarStateOptions) {
         numberSystem,
         withTime,
         dateFormat,
-        timeFormat,
         fromLabel,
         toLabel
       )
@@ -196,7 +192,6 @@ export function useCalendarState(options: UseCalendarStateOptions) {
     withTime,
     dateFormat,
     locale,
-    timeFormat,
     translations
   ])
 
