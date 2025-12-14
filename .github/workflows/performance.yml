@@ -76,7 +76,7 @@ jobs:
         id: performance-report
         run: |
           # Define a standard unavailability message for reuse
-          COMPARISON_UNAVAILABLE_MESSAGE="## ⚠️ Baseline Comparison Unavailable\n\nBaseline data could not be generated from the main branch. This is expected if the main branch structure or performance scripts are incompatible with the current PR."
+          COMPARISON_UNAVAILABLE_MESSAGE="## ⚠️ Baseline (main) Comparison Unavailable\n\nBaseline (main) data could not be generated from the main branch. This is expected if the main branch structure or performance scripts are incompatible with the current PR."
 
           # 1. Generate Comparison (If Baseline Exists)
           if [ -f "performance/results/performance-metrics-main.json" ]; then
@@ -126,7 +126,7 @@ jobs:
           # Cleaned up script: simply uses the generated outputs
           script: |
             const report = process.env.REPORT || 'Report unavailable';
-            const comparison = process.env.COMPARISON || '## ⚠️ Baseline Comparison Unavailable\n\nBaseline comparison output missing.';
+            const comparison = process.env.COMPARISON || '## ⚠️ Baseline (main) Comparison Unavailable\n\nBaseline (main) comparison output missing.';
             const body = `## 🚀 Performance Benchmark Results\n\n${report}\n\n---\n\n${comparison}`;
 
             const { owner, repo } = context.repo;

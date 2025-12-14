@@ -46,32 +46,6 @@ function parsePerformanceResults(metricsPath) {
   }
 }
 
-function getTarget(metric) {
-  const targets = {
-    'DtCalendar (1 month)': '< 100ms',
-    'DtCalendar (3 months)': '< 200ms',
-    'Re-render (unchanged props)': '< 25ms',
-    'Month Navigation': '< 75ms',
-    'Array.from Calls (Re-render)': '0 calls',
-    'Array.from Calls': '0 calls',
-    'DtPicker Render': '< 150ms',
-    'DtPicker Modal Open': '< 100ms',
-    'Memoized Grid Navigation': '< 30ms'
-  }
-
-  // Find matching target (check if metric name contains any target key)
-  // Sort by length (longest first) to match more specific keys first
-  const sortedKeys = Object.keys(targets).sort((a, b) => b.length - a.length)
-
-  for (const targetKey of sortedKeys) {
-    if (metric.includes(targetKey)) {
-      return targets[targetKey]
-    }
-  }
-
-  return 'N/A'
-}
-
 function formatValue(value, isCalls) {
   // Validate that value is a valid number
   if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) {
@@ -140,36 +114,9 @@ function getBundleComparison(current, baseline) {
   }
 }
 
-function getComparisonValue(current, baseline, isCalls) {
-  if (baseline === undefined || baseline === null) {
-    return 'null'
-  }
-
-  // Validate that both values are valid numbers
-  if (
-    typeof current !== 'number' ||
-    isNaN(current) ||
-    typeof baseline !== 'number' ||
-    isNaN(baseline)
-  ) {
-    return 'N/A'
-  }
-
-  const diff = current - baseline
-
-  // Validate that diff is a valid number
-  if (isNaN(diff) || !isFinite(diff)) {
-    return 'N/A'
-  }
-
-  if (isCalls) {
-    return diff > 0 ? `+${Math.round(diff)}` : Math.round(diff).toString()
-  }
-  return diff >= 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2)
-}
-
 function generateMarkdownReport(
   metrics,
+  // eslint-disable-next-line no-unused-vars
   baselineMetrics = null,
   bundleMetrics = null,
   baselineBundleMetrics = null
@@ -179,7 +126,8 @@ function generateMarkdownReport(
   // Bundle Size Section (if available)
   if (bundleMetrics) {
     report += '### 📦 Bundle Size\n\n'
-    report += '| Asset | Size | Gzipped | Baseline (Gzipped) | Comparison |\n'
+    report +=
+      '| Asset | Size | Gzipped | Baseline (main) (Gzipped) | Comparison |\n'
     report += '|-------|------|---------|-------------------|------------|\n'
 
     Object.entries(bundleMetrics).forEach(([key, value]) => {
@@ -237,69 +185,15 @@ function generateMarkdownReport(
     // Only show note if no baseline bundle metrics are available for comparison
     if (!baselineBundleMetrics) {
       report +=
-        '> **Note:** Bundle size comparison against main branch is not available. '
+        '> **Note:** Bundle size comparison against baseline (main) branch is not available. '
       report +=
         'This may be because the main branch has a different project structure or bundle size tracking is not set up.\n\n'
     }
   }
 
-  report += '### ⚡ Performance Metrics\n\n'
-  report += '| Metric | Value | Target | Comparison | Status |\n'
-  report += '|--------|-------|--------|------------|--------|\n'
-
-  Object.entries(metrics).forEach(([key, value]) => {
-    const isCalls = key.includes('Calls')
-    const unit = isCalls ? 'calls' : 'ms'
-    const formattedValue = formatValue(value, isCalls)
-    const target = getTarget(key)
-    const status = getStatus(key, value)
-
-    // Get comparison value (difference from baseline)
-    const baselineValue = baselineMetrics ? baselineMetrics[key] : null
-    const comparison = getComparisonValue(value, baselineValue, isCalls)
-    const comparisonStr =
-      comparison === 'null' ? 'null' : `${comparison}${unit}`
-
-    report += `| ${key} | ${formattedValue}${unit} | ${target} | ${comparisonStr} | ${status} |\n`
-  })
-
-  if (!baselineMetrics) {
-    report += '\n'
-    report +=
-      '> **Note:** Performance comparison against main branch is not available. '
-    report +=
-      'This may be because the main branch has a different project structure or performance tests are not set up.\n'
-  }
-
   report += '\n_Generated on ' + new Date().toISOString() + '_\n'
 
   return report
-}
-
-function getStatus(metric, value) {
-  if (metric.includes('Calls')) {
-    return value === 0 ? '✅ PASS' : '⚠️ CHECK'
-  }
-
-  const targets = {
-    'DtCalendar (1 month)': 100,
-    'DtCalendar (3 months)': 200,
-    'Re-render (unchanged props)': 25,
-    'Month Navigation': 75,
-    'DtPicker Render': 150,
-    'DtPicker Modal Open': 100,
-    'Memoized Grid Navigation': 30
-  }
-
-  // Find matching target (sort by length to match more specific keys first)
-  const sortedKeys = Object.keys(targets).sort((a, b) => b.length - a.length)
-  const targetKey = sortedKeys.find((key) => metric.includes(key))
-  if (!targetKey) return '❓ UNKNOWN'
-
-  const target = targets[targetKey]
-  if (value <= target) return '✅ PASS'
-  if (value <= target * 1.5) return '⚠️ SLOW'
-  return '❌ FAIL'
 }
 
 function compareMetrics(baseline, current) {
@@ -399,8 +293,8 @@ function compareMetrics(baseline, current) {
 function generateComparisonReport(baselineMetrics, currentMetrics) {
   const comparison = compareMetrics(baselineMetrics, currentMetrics)
 
-  let report = '# ⚡ Performance Comparison\n\n'
-  report += '| Metric | Baseline | Current | Diff | Status |\n'
+  let report = '### ⚡ Performance Comparison\n\n'
+  report += '| Metric | Baseline (main) | Current | Diff | Status |\n'
   report += '|--------|----------|---------|------|--------|\n'
 
   Object.entries(comparison).forEach(([key, data]) => {
@@ -531,12 +425,12 @@ switch (command) {
         console.warn('Skipping comparison report generation.')
 
         // Generate a message explaining why comparison is unavailable
-        const unavailableReport = `## ⚠️ Baseline Comparison Unavailable
+        const unavailableReport = `## ⚠️ Baseline (main) Comparison Unavailable
 
-Baseline performance metrics from main branch are not available. This may be because:
+Baseline (main) performance metrics from main branch are not available. This may be because:
 - The main branch has a different project structure
 - Performance tests are not set up on the main branch
-- The baseline measurement step encountered an error
+- The baseline (main) measurement step encountered an error
 
 Current branch performance metrics are still available in the report above.`
 
