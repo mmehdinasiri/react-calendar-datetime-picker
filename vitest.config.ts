@@ -3,15 +3,16 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 export default defineConfig({
-  // Use process.cwd() as root - this will be the directory where vitest is run from
-  // This ensures paths resolve correctly when running from different directories
-  root: process.cwd(),
+  // Use __dirname as root - this is the directory containing this config file
+  // When running from main-branch, this will be main-branch directory
+  root: __dirname,
   plugins: [react()],
   test: {
     globals: true,
     environment: 'jsdom',
-    // Use relative path - vitest will resolve it relative to the root (process.cwd())
-    setupFiles: ['tests/setup.ts'],
+    // Use absolute path resolved from config file location
+    // This ensures it resolves correctly regardless of where vitest is invoked from
+    setupFiles: [path.resolve(__dirname, 'tests', 'setup.ts')],
     include: [
       'tests/unit/**/*.{test,spec}.{ts,tsx}',
       'performance/tests/**/*.{test,spec}.{ts,tsx}',
