@@ -58,22 +58,40 @@ jobs:
       # The workflow gracefully handles incompatible project structures.
       - name: Checkout main branch for baseline
         if: github.event_name == 'pull_request'
+        id: checkout-baseline
         uses: actions/checkout@v4
         with:
           ref: ${{ github.base_ref }}
           path: main-branch
+          fetch-depth: 0
 
       - name: Measure baseline performance
         if: github.event_name == 'pull_request'
         working-directory: main-branch
         continue-on-error: true
+        id: measure-baseline
         run: |
           echo "Measuring baseline performance on main branch..."
+          echo "Base ref: ${{ github.base_ref }}"
+          echo "Head ref: ${{ github.head_ref }}"
+          echo "Current directory: $(pwd)"
+          echo "Listing files in main-branch:"
+          ls -la || echo "Failed to list files"
+
+          # Check if checkout was successful
+          if [ ! -d "." ] || [ ! -f "package.json" ]; then
+            echo "❌ ERROR: Checkout of main branch failed or package.json not found"
+            echo "   Current directory contents:"
+            ls -la || true
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
 
           # Check if this looks like the same project structure
           if [ ! -f "package.json" ] || [ ! -d "performance" ] || [ ! -f "pnpm-lock.yaml" ]; then
             echo "⚠️ Main branch appears to have different project structure (missing package.json, performance/, or pnpm-lock.yaml)."
             echo "   This is expected for major rewrites. Skipping baseline measurement."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -81,36 +99,41 @@ jobs:
           if ! grep -q '"build"' package.json || ! grep -q '"react"' package.json; then
             echo "⚠️ Main branch package.json structure differs significantly from current branch."
             echo "   Skipping baseline measurement to avoid incompatible comparisons."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          # Try to install dependencies for main branch (may fail if lockfile is incompatible)
+          # Try to install dependencies for main branch
           echo "Attempting to install dependencies on main branch..."
-          if ! pnpm install --frozen-lockfile 2>/dev/null; then
+          if ! pnpm install --frozen-lockfile; then
             echo "⚠️ Failed to install dependencies on main branch (likely incompatible lockfile)."
-            echo "   This is expected for major rewrites. Skipping baseline measurement."
+            echo "   Error output above. This is expected for major rewrites. Skipping baseline measurement."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          # Build main branch (may fail if project structure is different)
+          # Build main branch
           echo "Attempting to build main branch..."
-          if ! pnpm run build 2>/dev/null; then
+          if ! pnpm run build; then
             echo "⚠️ Failed to build main branch (likely different build process)."
-            echo "   This is expected for major rewrites. Skipping baseline measurement."
+            echo "   Error output above. This is expected for major rewrites. Skipping baseline measurement."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
           # Check bundle size on main branch
           echo "Attempting bundle size check on main branch..."
-          if ! node performance/scripts/check-bundle-size.js 2>/dev/null; then
+          if ! node performance/scripts/check-bundle-size.js; then
             echo "⚠️ Failed to check bundle size on main branch. Continuing without baseline bundle metrics."
+            echo "   Error output above."
           fi
 
           # Run performance tests on main branch
           echo "Attempting performance tests on main branch..."
-          if ! node performance/scripts/extract-performance-metrics.js 2>/dev/null; then
+          if ! node performance/scripts/extract-performance-metrics.js; then
             echo "⚠️ Failed to run performance tests on main branch (likely incompatible test setup)."
-            echo "   This is expected for major rewrites. Skipping baseline measurement."
+            echo "   Error output above. This is expected for major rewrites. Skipping baseline measurement."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -118,8 +141,12 @@ jobs:
           if [ -f "performance/results/performance-metrics.json" ]; then
             cp performance/results/performance-metrics.json ../performance/results/performance-metrics-main.json
             echo "✅ Baseline performance metrics saved successfully"
+            echo "baseline_available=true" >> $GITHUB_OUTPUT
           else
-            echo "⚠️ Performance metrics file not found. Skipping baseline measurement."
+            echo "⚠️ Performance metrics file not found at: performance/results/performance-metrics.json"
+            echo "   Listing performance/results directory:"
+            ls -la performance/results/ || echo "Directory does not exist"
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -129,6 +156,25 @@ jobs:
             echo "✅ Baseline bundle metrics saved successfully"
           else
             echo "⚠️ Bundle metrics file not found from main branch. Continuing without baseline bundle comparison."
+          fi
+
+      - name: Verify baseline metrics
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          echo "Verifying baseline metrics availability..."
+          if [ -f "performance/results/performance-metrics-main.json" ]; then
+            echo "✅ Baseline metrics file exists"
+            echo "File size: $(wc -c < performance/results/performance-metrics-main.json) bytes"
+            echo "Baseline metrics preview:"
+            head -20 performance/results/performance-metrics-main.json || true
+          else
+            echo "❌ Baseline metrics file NOT found at: performance/results/performance-metrics-main.json"
+            echo "Listing performance/results directory:"
+            ls -la performance/results/ || echo "Directory does not exist"
+            echo ""
+            echo "Baseline measurement step output:"
+            echo "  baseline_available=${{ steps.measure-baseline.outputs.baseline_available || 'not set' }}"
           fi
 
       - name: Generate performance report
@@ -156,20 +202,34 @@ jobs:
         continue-on-error: true
         run: |
           echo "Generating performance comparison report..."
+          echo "Checking for baseline metrics file..."
+          echo "Baseline available from step: ${{ steps.measure-baseline.outputs.baseline_available || 'not set' }}"
 
           # Check if baseline metrics exist
           if [ ! -f "performance/results/performance-metrics-main.json" ]; then
             echo "⚠️ Baseline metrics not found. Skipping comparison report."
+            echo "Listing performance/results directory contents:"
+            ls -la performance/results/ || echo "Directory does not exist"
+            echo ""
+            echo "Possible reasons:"
+            echo "1. Baseline measurement step failed (check logs above)"
+            echo "2. Main branch has different project structure"
+            echo "3. Performance tests failed on main branch"
+            echo ""
             echo "comparison<<EOF" >> $GITHUB_OUTPUT
             echo "## ⚠️ Baseline Comparison Unavailable" >> $GITHUB_OUTPUT
             echo "" >> $GITHUB_OUTPUT
-            echo "Baseline performance metrics from main branch are not available. This is expected for major rewrites and may be because:" >> $GITHUB_OUTPUT
+            echo "Baseline performance metrics from main branch are not available. This may be because:" >> $GITHUB_OUTPUT
             echo "- The main branch has a different project structure or dependencies" >> $GITHUB_OUTPUT
             echo "- Performance tests are not compatible between branches" >> $GITHUB_OUTPUT
             echo "- Build processes differ significantly between branches" >> $GITHUB_OUTPUT
             echo "- This is a major rewrite where direct performance comparison isn't meaningful" >> $GITHUB_OUTPUT
+            echo "- The baseline measurement step encountered an error (check workflow logs)" >> $GITHUB_OUTPUT
             echo "" >> $GITHUB_OUTPUT
             echo "Current branch performance metrics are still available in the report above." >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "**Debug Info:**" >> $GITHUB_OUTPUT
+            echo "- Baseline step output: \`baseline_available=${{ steps.measure-baseline.outputs.baseline_available || 'not set' }}\`" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
             exit 0
           fi
