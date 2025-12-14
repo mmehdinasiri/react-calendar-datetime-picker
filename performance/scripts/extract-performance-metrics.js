@@ -42,28 +42,35 @@ function main() {
     const cwd = process.cwd()
     const path = require('path')
     console.log(`Running from directory: ${cwd}`)
-    
+
     // Check if vitest.config.ts exists
     const configPath = path.join(cwd, 'vitest.config.ts')
     if (!fs.existsSync(configPath)) {
       throw new Error(`Vitest config not found at: ${configPath}`)
     }
-    
+
     // Check if setup file exists
     const setupPath = path.join(cwd, 'tests', 'setup.ts')
     if (!fs.existsSync(setupPath)) {
       throw new Error(`Setup file not found at: ${setupPath}`)
     }
     console.log(`Setup file found at: ${setupPath}`)
-    
-    // Run the performance tests with explicit config
+
+    // Run the performance tests with explicit config and root
     // This ensures vitest uses the correct config and resolves paths correctly
+    // --root ensures vitest resolves all paths from the correct directory
+    // --no-config-search prevents vitest from looking for config in parent directories
     const output = execSync(
-      `npx vitest run performance/tests/calendar-performance.test.tsx --config ${configPath}`,
+      `npx vitest run performance/tests/calendar-performance.test.tsx --config ${configPath} --root ${cwd} --no-config-search`,
       {
         encoding: 'utf8',
         stdio: 'pipe',
-        cwd: cwd
+        cwd: cwd,
+        env: {
+          ...process.env,
+          // Ensure VITEST_ROOT is set to the current directory
+          VITEST_ROOT: cwd
+        }
       }
     )
 
