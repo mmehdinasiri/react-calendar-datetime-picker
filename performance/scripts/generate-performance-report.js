@@ -73,6 +73,11 @@ function getTarget(metric) {
 }
 
 function formatValue(value, isCalls) {
+  // Validate that value is a valid number
+  if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) {
+    return 'N/A'
+  }
+
   if (isCalls) {
     return Math.round(value).toString()
   }
@@ -105,14 +110,33 @@ function getBundleComparison(current, baseline) {
     return 'null'
   }
 
+  // Validate that both values are valid numbers
+  if (
+    typeof current !== 'number' ||
+    isNaN(current) ||
+    typeof baseline !== 'number' ||
+    isNaN(baseline)
+  ) {
+    return 'N/A'
+  }
+
   const diff = current - baseline
+
+  // Validate that diff is a valid number
+  if (isNaN(diff) || !isFinite(diff)) {
+    return 'N/A'
+  }
+
   const percentChange = baseline > 0 ? (diff / baseline) * 100 : 0
+  // Validate percentChange is valid before formatting
+  const validPercentChange =
+    isNaN(percentChange) || !isFinite(percentChange) ? 0 : percentChange
 
   if (diff === 0) return '0 B'
   if (diff > 0) {
-    return `+${formatBytes(diff)} (+${percentChange.toFixed(1)}%)`
+    return `+${formatBytes(diff)} (+${validPercentChange.toFixed(1)}%)`
   } else {
-    return `${formatBytes(diff)} (${percentChange.toFixed(1)}%)`
+    return `${formatBytes(diff)} (${validPercentChange.toFixed(1)}%)`
   }
 }
 
@@ -121,7 +145,23 @@ function getComparisonValue(current, baseline, isCalls) {
     return 'null'
   }
 
+  // Validate that both values are valid numbers
+  if (
+    typeof current !== 'number' ||
+    isNaN(current) ||
+    typeof baseline !== 'number' ||
+    isNaN(baseline)
+  ) {
+    return 'N/A'
+  }
+
   const diff = current - baseline
+
+  // Validate that diff is a valid number
+  if (isNaN(diff) || !isFinite(diff)) {
+    return 'N/A'
+  }
+
   if (isCalls) {
     return diff > 0 ? `+${Math.round(diff)}` : Math.round(diff).toString()
   }
@@ -257,8 +297,37 @@ function compareMetrics(baseline, current) {
       return
     }
 
+    // Validate that both values are valid numbers
+    if (
+      typeof currentVal !== 'number' ||
+      isNaN(currentVal) ||
+      typeof baselineVal !== 'number' ||
+      isNaN(baselineVal)
+    ) {
+      comparison[key] = {
+        baseline: baselineVal,
+        current: currentVal,
+        change: 'N/A',
+        diffIndicator: '❓',
+        status: '⚠️ INVALID DATA'
+      }
+      return
+    }
+
     const isCalls = key.includes('Calls')
     const change = currentVal - baselineVal
+
+    // Validate that change is a valid number
+    if (isNaN(change) || !isFinite(change)) {
+      comparison[key] = {
+        baseline: baselineVal,
+        current: currentVal,
+        change: 'N/A',
+        diffIndicator: '❓',
+        status: '⚠️ INVALID DATA'
+      }
+      return
+    }
 
     let status, changeDesc
     if (isCalls) {
@@ -270,12 +339,15 @@ function compareMetrics(baseline, current) {
     } else {
       // For time metrics, lower is better
       const percentChange = baselineVal > 0 ? (change / baselineVal) * 100 : 0
+      // Validate percentChange is valid before formatting
+      const validPercentChange =
+        isNaN(percentChange) || !isFinite(percentChange) ? 0 : percentChange
       changeDesc = change >= 0 ? `+${change.toFixed(2)}` : change.toFixed(2)
       status =
         change < 0
-          ? `✅ IMPROVED (${Math.abs(percentChange).toFixed(1)}% faster)`
+          ? `✅ IMPROVED (${Math.abs(validPercentChange).toFixed(1)}% faster)`
           : change > 0
-            ? `❌ DEGRADED (${percentChange.toFixed(1)}% slower)`
+            ? `❌ DEGRADED (${validPercentChange.toFixed(1)}% slower)`
             : '➡️ SAME'
     }
 
