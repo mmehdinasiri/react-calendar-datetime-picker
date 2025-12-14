@@ -67,6 +67,19 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # Isolate parent dependencies to prevent Vitest from resolving paths from parent workspace
+      # This prevents Vitest from finding parent node_modules and config files
+      - name: Isolate parent dependencies
+        if: github.event_name == 'pull_request'
+        run: |
+          if [ -d "node_modules" ]; then
+            echo "🛡️ Moving parent node_modules to backup to isolate main-branch environment..."
+            mv node_modules node_modules_parent_backup
+            echo "✅ Parent node_modules isolated"
+          else
+            echo "ℹ️ No parent node_modules found, skipping isolation"
+          fi
+
       - name: Measure baseline performance
         if: github.event_name == 'pull_request'
         working-directory: main-branch
@@ -138,7 +151,7 @@ jobs:
 
           # Run performance tests on main branch
           echo "Attempting performance tests on main branch..."
-          
+
           # Check if setup file exists (vitest needs this)
           if [ ! -f "tests/setup.ts" ]; then
             echo "⚠️ Test setup file (tests/setup.ts) not found in main branch."
@@ -146,7 +159,7 @@ jobs:
             echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
-          
+
           # Check if vitest config exists
           if [ ! -f "vitest.config.ts" ]; then
             echo "⚠️ Vitest config (vitest.config.ts) not found in main branch."
@@ -154,10 +167,10 @@ jobs:
             echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
-          
+
           # Ensure performance/results directory exists
           mkdir -p performance/results/
-          
+
           # Run the performance tests
           # Use explicit working directory to ensure paths resolve correctly
           if ! node performance/scripts/extract-performance-metrics.js; then
@@ -217,6 +230,23 @@ jobs:
             echo "   - Different project structure between branches"
           fi
           echo "===================================="
+
+      # Restore parent dependencies - use always() to ensure this runs even if measurement fails
+      - name: Restore parent dependencies
+        if: always() && github.event_name == 'pull_request'
+        run: |
+          if [ -d "node_modules_parent_backup" ]; then
+            echo "🔄 Restoring parent node_modules..."
+            # Safety clean in case a partial install happened
+            if [ -d "node_modules" ]; then
+              echo "   Removing any partial node_modules..."
+              rm -rf node_modules
+            fi
+            mv node_modules_parent_backup node_modules
+            echo "✅ Parent node_modules restored"
+          else
+            echo "ℹ️ No backup found, nothing to restore"
+          fi
 
       - name: Verify baseline metrics
         if: github.event_name == 'pull_request'
