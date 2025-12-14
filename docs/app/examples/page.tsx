@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import '../../../src/styles/index.scss'
 import { examples } from './examplesConfig'
 import { ExampleRenderer } from '../components/ExampleRenderer'
@@ -8,6 +9,8 @@ import { BasicCategoryContent } from './BasicCategoryContent'
 import { examplesContent } from './examplesContent'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, Suspense } from 'react'
+import { Note } from '../components/Note'
+import Link from 'next/link'
 
 // Helper function to convert string to kebab case for IDs
 const toKebabCase = (str: string) =>
@@ -93,21 +96,41 @@ function ExamplesContent() {
                 />
               )}
               <div className='space-y-8'>
-                {Object.entries(groupExamples).map(([exampleKey, config]) => (
-                  <ExampleRenderer
-                    key={exampleKey}
-                    config={config}
-                    exampleKey={exampleKey}
-                    category={groupName}
-                    showFullOutput={
-                      groupName === 'Basic' ||
-                      groupName === 'Callbacks' ||
-                      groupName === 'Date Formatting' ||
-                      (groupName === 'Locale' &&
-                        exampleKey === 'PersianCalendar')
-                    }
-                  />
-                ))}
+                {Object.entries(groupExamples).map(
+                  ([exampleKey, config], index, array) => (
+                    <React.Fragment key={exampleKey}>
+                      <ExampleRenderer
+                        config={config}
+                        exampleKey={exampleKey}
+                        category={groupName}
+                        showFullOutput={
+                          groupName === 'Basic' ||
+                          groupName === 'Callbacks' ||
+                          groupName === 'Date Formatting' ||
+                          (groupName === 'Locale' &&
+                            exampleKey === 'PersianCalendar')
+                        }
+                      />
+                      {groupName === 'Basic' &&
+                        exampleKey === 'SingleDatePicker' && (
+                          <Note>
+                            <p className='text-sm text-gray-700 dark:text-gray-300'>
+                              <strong>Note:</strong> If you want to have an
+                              input field where users can type dates directly,
+                              you can use the{' '}
+                              <Link
+                                href='/customization#custom-trigger-elements-inputwithicontrigger'
+                                className='text-blue-600 dark:text-blue-400 hover:underline'
+                              >
+                                Input with Icon Trigger
+                              </Link>{' '}
+                              example in the Customization section.
+                            </p>
+                          </Note>
+                        )}
+                    </React.Fragment>
+                  )
+                )}
               </div>
             </div>
           ))}

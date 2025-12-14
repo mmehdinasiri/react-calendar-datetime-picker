@@ -9,6 +9,7 @@ import { LayoutWrapper } from './components/LayoutWrapper'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { SidebarProvider } from './contexts/SidebarContext'
 import { SearchModalProvider } from './contexts/SearchModalContext'
+import { SandpackCSS } from './components/SandpackStyles'
 import { CLARITY_PROJECT_ID, ENABLE_CLARITY } from './config/clarity'
 import { BASE_PATH } from './config/basePath'
 import './globals.css'
@@ -49,6 +50,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body className='bg-bg-primary text-gray-900 dark:text-white antialiased'>
+        <SandpackCSS />
         {/* Microsoft Clarity Analytics */}
         {ENABLE_CLARITY && (
           <Script

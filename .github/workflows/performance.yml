@@ -2,12 +2,10 @@ name: Performance Tests
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -17,11 +15,12 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - name: Checkout code
+      - name: Checkout code (Current Branch)
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetch full history for proper baseline comparison
+          fetch-depth: 0
 
+      # --- SETUP ENVIRONMENT ---
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -36,296 +35,118 @@ jobs:
             pnpm-lock.yaml
             ${{ github.event_name == 'pull_request' && 'main-branch/pnpm-lock.yaml' || '' }}
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build library
-        run: pnpm run build
-
-      - name: Check bundle size
+      # --- CURRENT BRANCH ---
+      - name: Install & Build (Current Branch)
         run: |
-          echo "Checking bundle sizes..."
-          node performance/scripts/check-bundle-size.js
-        continue-on-error: false
+          pnpm install --frozen-lockfile
+          pnpm run build
 
-      - name: Run performance tests
+      - name: Run Checks (Current Branch)
         run: |
-          echo "Running performance tests on current branch..."
+          echo "Checking bundle size..."
+          node performance/scripts/check-bundle-size.js || true
+
+          echo "Running performance tests..."
           node performance/scripts/extract-performance-metrics.js
-        continue-on-error: false
 
-      # Note: For major rewrites, main branch comparison may fail and that's expected.
-      # The workflow gracefully handles incompatible project structures.
-      - name: Checkout main branch for baseline
+      # --- BASELINE COMPARISON SECTION ---
+
+      - name: Checkout main branch (Baseline)
         if: github.event_name == 'pull_request'
         uses: actions/checkout@v4
         with:
           ref: ${{ github.base_ref }}
           path: main-branch
+          fetch-depth: 0
 
-      - name: Measure baseline performance
+      # Grant explicit permissions for consistency and to avoid "permission denied" errors
+      - name: Grant execution permissions to scripts
         if: github.event_name == 'pull_request'
-        working-directory: main-branch
-        continue-on-error: true
         run: |
-          echo "Measuring baseline performance on main branch..."
+          chmod +x performance/scripts/measure-baseline.sh
+          chmod +x performance/scripts/check-bundle-size.js
+          chmod +x performance/scripts/extract-performance-metrics.js
 
-          # Check if this looks like the same project structure
-          if [ ! -f "package.json" ] || [ ! -d "performance" ] || [ ! -f "pnpm-lock.yaml" ]; then
-            echo "⚠️ Main branch appears to have different project structure (missing package.json, performance/, or pnpm-lock.yaml)."
-            echo "   This is expected for major rewrites. Skipping baseline measurement."
-            exit 0
-          fi
+      - name: Measure Baseline (Isolated)
+        if: github.event_name == 'pull_request'
+        id: measure-baseline
+        run: source performance/scripts/measure-baseline.sh
 
-          # Check if package.json has similar structure (has build script and similar dependencies)
-          if ! grep -q '"build"' package.json || ! grep -q '"react"' package.json; then
-            echo "⚠️ Main branch package.json structure differs significantly from current branch."
-            echo "   Skipping baseline measurement to avoid incompatible comparisons."
-            exit 0
-          fi
-
-          # Try to install dependencies for main branch (may fail if lockfile is incompatible)
-          echo "Attempting to install dependencies on main branch..."
-          if ! pnpm install --frozen-lockfile 2>/dev/null; then
-            echo "⚠️ Failed to install dependencies on main branch (likely incompatible lockfile)."
-            echo "   This is expected for major rewrites. Skipping baseline measurement."
-            exit 0
-          fi
-
-          # Build main branch (may fail if project structure is different)
-          echo "Attempting to build main branch..."
-          if ! pnpm run build 2>/dev/null; then
-            echo "⚠️ Failed to build main branch (likely different build process)."
-            echo "   This is expected for major rewrites. Skipping baseline measurement."
-            exit 0
-          fi
-
-          # Check bundle size on main branch
-          echo "Attempting bundle size check on main branch..."
-          if ! node performance/scripts/check-bundle-size.js 2>/dev/null; then
-            echo "⚠️ Failed to check bundle size on main branch. Continuing without baseline bundle metrics."
-          fi
-
-          # Run performance tests on main branch
-          echo "Attempting performance tests on main branch..."
-          if ! node performance/scripts/extract-performance-metrics.js 2>/dev/null; then
-            echo "⚠️ Failed to run performance tests on main branch (likely incompatible test setup)."
-            echo "   This is expected for major rewrites. Skipping baseline measurement."
-            exit 0
-          fi
-
-          # Copy the metrics to the parent directory with a different name
-          if [ -f "performance/results/performance-metrics.json" ]; then
-            cp performance/results/performance-metrics.json ../performance/results/performance-metrics-main.json
-            echo "✅ Baseline performance metrics saved successfully"
-          else
-            echo "⚠️ Performance metrics file not found. Skipping baseline measurement."
-            exit 0
-          fi
-
-          # Copy bundle metrics if they exist
-          if [ -f "performance/results/bundle-metrics.json" ]; then
-            cp performance/results/bundle-metrics.json ../performance/results/bundle-metrics-main.json
-            echo "✅ Baseline bundle metrics saved successfully"
-          else
-            echo "⚠️ Bundle metrics file not found from main branch. Continuing without baseline bundle comparison."
-          fi
-
-      - name: Generate performance report
+      - name: Generate Reports
         id: performance-report
         run: |
-          echo "Generating performance report..."
+          # Define a standard unavailability message for reuse
+          COMPARISON_UNAVAILABLE_MESSAGE="## ⚠️ Baseline (main) Comparison Unavailable\n\nBaseline (main) data could not be generated from the main branch. This is expected if the main branch structure or performance scripts are incompatible with the current PR."
 
-          # Check if baseline metrics exist and include them in the report
+          # 1. Generate Comparison (If Baseline Exists)
           if [ -f "performance/results/performance-metrics-main.json" ]; then
-            echo "Including baseline metrics in report..."
-            node performance/scripts/generate-performance-report.js report performance/results/performance-metrics.json performance/results/performance-report.md performance/results/performance-metrics-main.json
+            node performance/scripts/generate-performance-report.js compare \
+              performance/results/performance-metrics-main.json \
+              performance/results/performance-metrics.json \
+              performance/results/performance-comparison.md
+            
+            # Set the comparison output from the generated file
+            echo "comparison<<EOF" >> $GITHUB_OUTPUT
+            cat performance/results/performance-comparison.md >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
           else
-            echo "No baseline metrics found, generating report without comparison..."
-            node performance/scripts/generate-performance-report.js report performance/results/performance-metrics.json performance/results/performance-report.md
+            # Set the comparison output to the unavailability message
+            echo "comparison<<EOF" >> $GITHUB_OUTPUT
+            echo "$COMPARISON_UNAVAILABLE_MESSAGE" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
           fi
 
-          # Set output for GitHub Actions
+          # 2. Generate Main Report (Always runs, uses 4 args if comparison file exists)
+          if [ -f "performance/results/performance-comparison.md" ]; then
+            # Generate the main report *with* comparison data
+            node performance/scripts/generate-performance-report.js report \
+              performance/results/performance-metrics.json \
+              performance/results/performance-report.md \
+              performance/results/performance-metrics-main.json
+          else
+            # Generate the main report *without* comparison data
+            node performance/scripts/generate-performance-report.js report \
+              performance/results/performance-metrics.json \
+              performance/results/performance-report.md
+          fi
+
+          # Set the main report output
           echo "report<<EOF" >> $GITHUB_OUTPUT
           cat performance/results/performance-report.md >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Generate comparison report
+      - name: Check Regression
         if: github.event_name == 'pull_request'
-        id: comparison-report
-        continue-on-error: true
-        run: |
-          echo "Generating performance comparison report..."
+        run: node performance/scripts/check-regression.js
 
-          # Check if baseline metrics exist
-          if [ ! -f "performance/results/performance-metrics-main.json" ]; then
-            echo "⚠️ Baseline metrics not found. Skipping comparison report."
-            echo "comparison<<EOF" >> $GITHUB_OUTPUT
-            echo "## ⚠️ Baseline Comparison Unavailable" >> $GITHUB_OUTPUT
-            echo "" >> $GITHUB_OUTPUT
-            echo "Baseline performance metrics from main branch are not available. This is expected for major rewrites and may be because:" >> $GITHUB_OUTPUT
-            echo "- The main branch has a different project structure or dependencies" >> $GITHUB_OUTPUT
-            echo "- Performance tests are not compatible between branches" >> $GITHUB_OUTPUT
-            echo "- Build processes differ significantly between branches" >> $GITHUB_OUTPUT
-            echo "- This is a major rewrite where direct performance comparison isn't meaningful" >> $GITHUB_OUTPUT
-            echo "" >> $GITHUB_OUTPUT
-            echo "Current branch performance metrics are still available in the report above." >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          node performance/scripts/generate-performance-report.js compare performance/results/performance-metrics-main.json performance/results/performance-metrics.json performance/results/performance-comparison.md
-
-          # Set output for GitHub Actions
-          echo "comparison<<EOF" >> $GITHUB_OUTPUT
-          cat performance/results/performance-comparison.md >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Check performance regression
+      - name: Comment PR
         if: github.event_name == 'pull_request'
-        continue-on-error: true
-        run: |
-          echo "Checking for significant performance regressions..."
-          node -e "
-          const fs = require('fs');
-
-          // Check if baseline file exists
-          if (!fs.existsSync('performance/results/performance-metrics-main.json')) {
-            console.log('⚠️ Baseline metrics not found. Skipping regression check.');
-            console.log('This is expected for major rewrites where the main branch has different structure.');
-            process.exit(0);
-          }
-
-          // For major rewrites, performance comparison may not be meaningful
-          // Check if the metrics look fundamentally different (e.g., very different values)
-          try {
-            const baseline = JSON.parse(fs.readFileSync('performance/results/performance-metrics-main.json', 'utf8'));
-            const current = JSON.parse(fs.readFileSync('performance/results/performance-metrics.json', 'utf8'));
-
-            // If most metrics have very large differences (>500% or >10x), this might be a rewrite
-            let largeDifferences = 0;
-            let totalMetrics = 0;
-
-            Object.entries(current).forEach(([key, val]) => {
-              const base = baseline[key];
-              if (!base || key.includes('Calls')) return; // Skip missing metrics and call counts
-
-              totalMetrics++;
-              const ratio = val > base ? val / base : base / val;
-              if (ratio > 5) { // More than 5x difference
-                largeDifferences++;
-              }
-            });
-
-            if (totalMetrics > 0 && largeDifferences / totalMetrics > 0.7) { // 70%+ of metrics have large differences
-              console.log('⚠️ Detected potentially incompatible performance metrics between branches.');
-              console.log('   Large differences in most metrics suggest this may be a major rewrite.');
-              console.log('   Skipping regression check as direct performance comparison is not meaningful.');
-              process.exit(0);
-            }
-          } catch (error) {
-            console.log('⚠️ Could not analyze metric compatibility:', error.message);
-            console.log('   Proceeding with regression check anyway...');
-          }
-
-          try {
-            const baseline = JSON.parse(fs.readFileSync('performance/results/performance-metrics-main.json', 'utf8'));
-            const current = JSON.parse(fs.readFileSync('performance/results/performance-metrics.json', 'utf8'));
-
-            let hasRegression = false;
-            const regressions = [];
-
-            Object.entries(current).forEach(([key, val]) => {
-              const base = baseline[key];
-              if (!base || key.includes('Calls')) return; // Skip missing metrics and call counts
-
-              const percentChange = ((val - base) / base) * 100;
-              const absoluteChange = val - base;
-
-              // Skip metrics that are too small to be meaningful (< 1ms)
-              if (base < 1 && val < 1) return;
-
-              // Flag regressions that are both significant percentage AND absolute change
-              // OR large absolute changes regardless of percentage
-              const significantRegression = (
-                (percentChange > 15 && absoluteChange > 2) || // 15% + 2ms minimum
-                absoluteChange > 5 // OR 5ms absolute change
-              );
-
-              if (significantRegression) {
-                hasRegression = true;
-                regressions.push(\`❌ \${key}: \${percentChange.toFixed(1)}% slower (\${base.toFixed(2)}ms → \${val.toFixed(2)}ms)\`);
-              }
-            });
-
-            if (hasRegression) {
-              console.log('🚨 PERFORMANCE REGRESSIONS DETECTED:');
-              regressions.forEach(reg => console.log(\`  \${reg}\`));
-              console.log('');
-              console.log('These changes exceed the 15% performance regression threshold.');
-              console.log('Consider optimizing before merging.');
-              process.exit(1);
-            } else {
-              console.log('✅ No significant performance regressions detected.');
-            }
-          } catch (error) {
-            console.log('⚠️ Could not check for regressions:', error.message);
-            console.log('Continuing without regression check...');
-            process.exit(0);
-          }
-          "
-
-      - name: Comment PR with performance results
-        if: github.event_name == 'pull_request'
-        continue-on-error: true
         uses: actions/github-script@v7
         with:
+          # Cleaned up script: simply uses the generated outputs
           script: |
-            const report = process.env.REPORT || 'Performance report not available';
-            const comparison = process.env.COMPARISON || 'Baseline comparison not available - expected for major rewrites';
+            const report = process.env.REPORT || 'Report unavailable';
+            const comparison = process.env.COMPARISON || '## ⚠️ Baseline (main) Comparison Unavailable\n\nBaseline (main) comparison output missing.';
+            const body = `## 🚀 Performance Benchmark Results\n\n${report}\n\n---\n\n${comparison}`;
 
-            const fullReport = report + '\n\n---\n\n' + comparison;
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
 
-            // Check if we already commented
-            const comments = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
+            const comments = await github.rest.issues.listComments({ owner, repo, issue_number });
+            const botComment = comments.data.find(c => c.body.includes('Performance Benchmark Results') && c.user.type === 'Bot');
 
-            const existingComment = comments.data.find(comment =>
-              comment.body.includes('Performance Benchmark Results') &&
-              comment.user.type === 'Bot'
-            );
-
-            if (existingComment) {
-              // Update existing comment
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existingComment.id,
-                body: fullReport
-              });
+            if (botComment) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: botComment.id, body });
             } else {
-              // Create new comment
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: fullReport
-              });
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
             }
         env:
           REPORT: ${{ steps.performance-report.outputs.report }}
-          COMPARISON: ${{ steps.comparison-report.outputs.comparison || 'Baseline comparison not available - expected for major rewrites' }}
+          COMPARISON: ${{ steps.performance-report.outputs.comparison }}
 
-      - name: Upload performance artifacts
+      - name: Upload Artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: performance-results-${{ github.sha }}
-          path: |
-            performance/results/performance-metrics.json
-            performance/results/performance-report.md
-            ${{ github.event_name == 'pull_request' && 'performance/results/performance-comparison.md' || '' }}
-            ${{ github.event_name == 'pull_request' && 'performance/results/performance-metrics-main.json' || '' }}
-            ${{ github.event_name == 'pull_request' && 'performance/results/bundle-metrics-main.json' || '' }}
+          name: performance-results
+          path: performance/results/

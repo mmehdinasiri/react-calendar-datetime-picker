@@ -127,7 +127,8 @@ const navigation = [
     title: 'GET STARTED',
     items: [
       { name: 'Installation', href: '/installation' },
-      { name: 'Quick Start', href: '/getting-started' }
+      { name: 'Quick Start', href: '/getting-started' },
+      { name: 'Playground', href: '/playground' }
     ]
   },
   {
@@ -269,6 +270,10 @@ const navigation = [
           {
             name: 'Custom Styled Input',
             href: '/customization#custom-trigger-elements-customstyledinput'
+          },
+          {
+            name: 'Input with Icon Trigger',
+            href: '/customization#custom-trigger-elements-inputwithicontrigger'
           },
           {
             name: 'React Hook Form Integration',

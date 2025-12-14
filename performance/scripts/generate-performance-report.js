@@ -46,33 +46,12 @@ function parsePerformanceResults(metricsPath) {
   }
 }
 
-function getTarget(metric) {
-  const targets = {
-    'DtCalendar (1 month)': '< 100ms',
-    'DtCalendar (3 months)': '< 200ms',
-    'Re-render (unchanged props)': '< 25ms',
-    'Month Navigation': '< 75ms',
-    'Array.from Calls (Re-render)': '0 calls',
-    'Array.from Calls': '0 calls',
-    'DtPicker Render': '< 150ms',
-    'DtPicker Modal Open': '< 100ms',
-    'Memoized Grid Navigation': '< 30ms'
-  }
-
-  // Find matching target (check if metric name contains any target key)
-  // Sort by length (longest first) to match more specific keys first
-  const sortedKeys = Object.keys(targets).sort((a, b) => b.length - a.length)
-
-  for (const targetKey of sortedKeys) {
-    if (metric.includes(targetKey)) {
-      return targets[targetKey]
-    }
-  }
-
-  return 'N/A'
-}
-
 function formatValue(value, isCalls) {
+  // Validate that value is a valid number
+  if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) {
+    return 'N/A'
+  }
+
   if (isCalls) {
     return Math.round(value).toString()
   }
@@ -80,24 +59,22 @@ function formatValue(value, isCalls) {
 }
 
 function formatBytes(bytes) {
-  if (bytes === 0) return '0 B'
-  const k = 1024
-  const sizes = ['B', 'kB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
-
-function getBundleStatus(asset, size) {
-  const limits = {
-    'index.mjs': 25 * 1024, // 25 kB gzip
-    'index.cjs': 20 * 1024, // 20 kB gzip
-    'style.css': 5 * 1024 // 5 kB gzip
+  // Validate that bytes is a valid number
+  if (typeof bytes !== 'number' || isNaN(bytes) || !isFinite(bytes)) {
+    return 'N/A'
   }
 
-  const limit = limits[asset]
-  if (!limit) return '❓ UNKNOWN'
+  if (bytes === 0) return '0 B'
 
-  return size <= limit ? '✅ PASS' : '❌ FAIL'
+  // Handle negative values (for differences)
+  const sign = bytes < 0 ? '-' : ''
+  const absBytes = Math.abs(bytes)
+  const k = 1024
+  const sizes = ['B', 'kB', 'MB', 'GB']
+  const i = Math.floor(Math.log(absBytes) / Math.log(k))
+  return (
+    sign + parseFloat((absBytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  )
 }
 
 function getBundleComparison(current, baseline) {
@@ -105,69 +82,102 @@ function getBundleComparison(current, baseline) {
     return 'null'
   }
 
+  // Validate that both values are valid numbers
+  if (
+    typeof current !== 'number' ||
+    isNaN(current) ||
+    !isFinite(current) ||
+    typeof baseline !== 'number' ||
+    isNaN(baseline) ||
+    !isFinite(baseline)
+  ) {
+    return 'N/A'
+  }
+
   const diff = current - baseline
+
+  // Validate that diff is a valid number
+  if (isNaN(diff) || !isFinite(diff)) {
+    return 'N/A'
+  }
+
   const percentChange = baseline > 0 ? (diff / baseline) * 100 : 0
+  // Validate percentChange is valid before formatting
+  const validPercentChange =
+    isNaN(percentChange) || !isFinite(percentChange) ? 0 : percentChange
 
   if (diff === 0) return '0 B'
   if (diff > 0) {
-    return `+${formatBytes(diff)} (+${percentChange.toFixed(1)}%)`
+    return `+${formatBytes(diff)} (+${validPercentChange.toFixed(1)}%)`
   } else {
-    return `${formatBytes(diff)} (${percentChange.toFixed(1)}%)`
+    return `${formatBytes(diff)} (${validPercentChange.toFixed(1)}%)`
   }
-}
-
-function getComparisonValue(current, baseline, isCalls) {
-  if (baseline === undefined || baseline === null) {
-    return 'null'
-  }
-
-  const diff = current - baseline
-  if (isCalls) {
-    return diff > 0 ? `+${Math.round(diff)}` : Math.round(diff).toString()
-  }
-  return diff >= 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2)
 }
 
 function generateMarkdownReport(
   metrics,
-  title = 'Performance Benchmark Results',
+  // eslint-disable-next-line no-unused-vars
   baselineMetrics = null,
   bundleMetrics = null,
   baselineBundleMetrics = null
 ) {
-  let report = `# 🚀 ${title}\n\n`
+  let report = ''
 
   // Bundle Size Section (if available)
   if (bundleMetrics) {
     report += '### 📦 Bundle Size\n\n'
-    report += '| Asset | Size | Gzipped | Comparison | Status |\n'
-    report += '|-------|------|---------|------------|--------|\n'
+    report +=
+      '| Asset | Size | Gzipped | Baseline (main) (Gzipped) | Comparison |\n'
+    report += '|-------|------|---------|-------------------|------------|\n'
 
     Object.entries(bundleMetrics).forEach(([key, value]) => {
       const isGzip = key.includes('(gzip)')
       const baseName = key.replace(' (gzip)', '').replace(' (raw)', '')
-      const size = isGzip ? value : bundleMetrics[`${baseName} (gzip)`] || value
-      const status = getBundleStatus(baseName, size)
+
+      // Validate value is a valid number
+      if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) {
+        console.warn(`⚠️ Invalid bundle metric value for ${key}: ${value}`)
+        return // Skip this entry
+      }
+
       const sizeStr = formatBytes(value)
 
-      // Get comparison value from baseline
+      // Get baseline values
       const baselineValue = baselineBundleMetrics
         ? baselineBundleMetrics[key]
         : null
+      const baselineStr =
+        baselineValue !== null && baselineValue !== undefined
+          ? formatBytes(baselineValue)
+          : 'N/A'
+
       const comparison =
         baselineValue !== null && baselineValue !== undefined
           ? getBundleComparison(value, baselineValue)
-          : 'null'
+          : 'N/A'
 
       if (isGzip) {
         // Find corresponding raw size
         const rawKey = key.replace(' (gzip)', ' (raw)')
         const rawSize = bundleMetrics[rawKey]
+
+        // Validate rawSize exists and is valid
+        if (
+          rawSize === undefined ||
+          rawSize === null ||
+          typeof rawSize !== 'number' ||
+          isNaN(rawSize) ||
+          !isFinite(rawSize)
+        ) {
+          console.warn(`⚠️ Invalid or missing raw size for ${rawKey}`)
+          return // Skip this entry
+        }
+
         const rawComparison =
           baselineBundleMetrics && baselineBundleMetrics[rawKey] !== undefined
             ? getBundleComparison(rawSize, baselineBundleMetrics[rawKey])
-            : 'null'
-        report += `| ${baseName} | ${formatBytes(rawSize)} (${rawComparison}) | ${sizeStr} (${comparison}) | ${comparison} | ${status} |\n`
+            : 'N/A'
+        report += `| ${baseName} | ${formatBytes(rawSize)} <small>(${rawComparison})</small> | ${sizeStr} <small>(${comparison})</small> | ${baselineStr} | ${comparison} |\n`
       }
     })
     report += '\n'
@@ -175,69 +185,15 @@ function generateMarkdownReport(
     // Only show note if no baseline bundle metrics are available for comparison
     if (!baselineBundleMetrics) {
       report +=
-        '> **Note:** Bundle size comparison against main branch is not available. '
+        '> **Note:** Bundle size comparison against baseline (main) branch is not available. '
       report +=
         'This may be because the main branch has a different project structure or bundle size tracking is not set up.\n\n'
     }
   }
 
-  report += '### ⚡ Performance Metrics\n\n'
-  report += '| Metric | Value | Target | Comparison | Status |\n'
-  report += '|--------|-------|--------|------------|--------|\n'
-
-  Object.entries(metrics).forEach(([key, value]) => {
-    const isCalls = key.includes('Calls')
-    const unit = isCalls ? 'calls' : 'ms'
-    const formattedValue = formatValue(value, isCalls)
-    const target = getTarget(key)
-    const status = getStatus(key, value)
-
-    // Get comparison value (difference from baseline)
-    const baselineValue = baselineMetrics ? baselineMetrics[key] : null
-    const comparison = getComparisonValue(value, baselineValue, isCalls)
-    const comparisonStr =
-      comparison === 'null' ? 'null' : `${comparison}${unit}`
-
-    report += `| ${key} | ${formattedValue}${unit} | ${target} | ${comparisonStr} | ${status} |\n`
-  })
-
-  if (!baselineMetrics) {
-    report += '\n'
-    report +=
-      '> **Note:** Performance comparison against main branch is not available. '
-    report +=
-      'This may be because the main branch has a different project structure or performance tests are not set up.\n'
-  }
-
   report += '\n_Generated on ' + new Date().toISOString() + '_\n'
 
   return report
-}
-
-function getStatus(metric, value) {
-  if (metric.includes('Calls')) {
-    return value === 0 ? '✅ PASS' : '⚠️ CHECK'
-  }
-
-  const targets = {
-    'DtCalendar (1 month)': 100,
-    'DtCalendar (3 months)': 200,
-    'Re-render (unchanged props)': 25,
-    'Month Navigation': 75,
-    'DtPicker Render': 150,
-    'DtPicker Modal Open': 100,
-    'Memoized Grid Navigation': 30
-  }
-
-  // Find matching target (sort by length to match more specific keys first)
-  const sortedKeys = Object.keys(targets).sort((a, b) => b.length - a.length)
-  const targetKey = sortedKeys.find((key) => metric.includes(key))
-  if (!targetKey) return '❓ UNKNOWN'
-
-  const target = targets[targetKey]
-  if (value <= target) return '✅ PASS'
-  if (value <= target * 1.5) return '⚠️ SLOW'
-  return '❌ FAIL'
 }
 
 function compareMetrics(baseline, current) {
@@ -257,8 +213,37 @@ function compareMetrics(baseline, current) {
       return
     }
 
+    // Validate that both values are valid numbers
+    if (
+      typeof currentVal !== 'number' ||
+      isNaN(currentVal) ||
+      typeof baselineVal !== 'number' ||
+      isNaN(baselineVal)
+    ) {
+      comparison[key] = {
+        baseline: baselineVal,
+        current: currentVal,
+        change: 'N/A',
+        diffIndicator: '❓',
+        status: '⚠️ INVALID DATA'
+      }
+      return
+    }
+
     const isCalls = key.includes('Calls')
     const change = currentVal - baselineVal
+
+    // Validate that change is a valid number
+    if (isNaN(change) || !isFinite(change)) {
+      comparison[key] = {
+        baseline: baselineVal,
+        current: currentVal,
+        change: 'N/A',
+        diffIndicator: '❓',
+        status: '⚠️ INVALID DATA'
+      }
+      return
+    }
 
     let status, changeDesc
     if (isCalls) {
@@ -270,12 +255,15 @@ function compareMetrics(baseline, current) {
     } else {
       // For time metrics, lower is better
       const percentChange = baselineVal > 0 ? (change / baselineVal) * 100 : 0
+      // Validate percentChange is valid before formatting
+      const validPercentChange =
+        isNaN(percentChange) || !isFinite(percentChange) ? 0 : percentChange
       changeDesc = change >= 0 ? `+${change.toFixed(2)}` : change.toFixed(2)
       status =
         change < 0
-          ? `✅ IMPROVED (${Math.abs(percentChange).toFixed(1)}% faster)`
+          ? `✅ IMPROVED (${Math.abs(validPercentChange).toFixed(1)}% faster)`
           : change > 0
-            ? `❌ DEGRADED (${percentChange.toFixed(1)}% slower)`
+            ? `❌ DEGRADED (${validPercentChange.toFixed(1)}% slower)`
             : '➡️ SAME'
     }
 
@@ -285,7 +273,7 @@ function compareMetrics(baseline, current) {
     } else if (status.includes('DEGRADED')) {
       diffIndicator = '🔴'
     } else if (status.includes('SAME')) {
-      diffIndicator = '⚪'
+      diffIndicator = '🔴' // Red color for equal values
     } else {
       diffIndicator = '❓'
     }
@@ -305,9 +293,9 @@ function compareMetrics(baseline, current) {
 function generateComparisonReport(baselineMetrics, currentMetrics) {
   const comparison = compareMetrics(baselineMetrics, currentMetrics)
 
-  let report = '# ⚡ Performance Comparison\n\n'
-  report += '| Metric | Baseline | Current | Diff | Change | Status |\n'
-  report += '|--------|----------|---------|------|--------|--------|\n'
+  let report = '### ⚡ Performance Comparison\n\n'
+  report += '| Metric | Baseline (main) | Current | Diff | Status |\n'
+  report += '|--------|----------|---------|------|--------|\n'
 
   Object.entries(comparison).forEach(([key, data]) => {
     const unit = key.includes('Calls') ? 'calls' : 'ms'
@@ -318,7 +306,7 @@ function generateComparisonReport(baselineMetrics, currentMetrics) {
         : 'null'
     const currentStr = `${formatValue(data.current, isCalls)}${unit}`
 
-    report += `| ${key} | ${baselineStr} | ${currentStr} | ${data.diffIndicator} ${data.change === 'null' ? 'null' : data.change + unit} | ${data.change === 'null' ? 'null' : data.change + unit} | ${data.status} |\n`
+    report += `| ${key} | ${baselineStr} | ${currentStr} | ${data.diffIndicator} ${data.change === 'null' ? 'null' : data.change + unit} | ${data.status} |\n`
   })
 
   // Summary
@@ -400,7 +388,6 @@ switch (command) {
 
       const report = generateMarkdownReport(
         metrics,
-        'Performance Benchmark Results',
         baselineMetrics,
         bundleMetrics,
         baselineBundleMetrics
@@ -438,12 +425,12 @@ switch (command) {
         console.warn('Skipping comparison report generation.')
 
         // Generate a message explaining why comparison is unavailable
-        const unavailableReport = `## ⚠️ Baseline Comparison Unavailable
+        const unavailableReport = `## ⚠️ Baseline (main) Comparison Unavailable
 
-Baseline performance metrics from main branch are not available. This may be because:
+Baseline (main) performance metrics from main branch are not available. This may be because:
 - The main branch has a different project structure
 - Performance tests are not set up on the main branch
-- The baseline measurement step encountered an error
+- The baseline (main) measurement step encountered an error
 
 Current branch performance metrics are still available in the report above.`
 

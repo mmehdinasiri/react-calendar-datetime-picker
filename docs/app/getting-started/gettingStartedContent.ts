@@ -114,7 +114,7 @@ function App() {
     intro: `Enable time selection with customizable format:`,
     code: `<DtPicker
   withTime={true}
-  timeFormat="24"
+  dateFormat="YYYY-MM-DD HH:mm"
   onChange={setDateTime}
 />`
   },

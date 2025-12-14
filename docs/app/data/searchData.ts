@@ -40,6 +40,23 @@ const navigationPages: SearchItem[] = [
     tags: ['demo', 'code', 'interactive', 'snippets']
   },
   {
+    id: 'playground',
+    title: 'Playground',
+    description:
+      'Live code playground to experiment with DtCalendar and DtPicker components',
+    href: '/playground',
+    category: 'page',
+    tags: [
+      'playground',
+      'sandbox',
+      'live',
+      'code',
+      'experiment',
+      'dtcalendar',
+      'dtpicker'
+    ]
+  },
+  {
     id: 'customization',
     title: 'Customization',
     description: 'Learn how to customize the calendar appearance and behavior',

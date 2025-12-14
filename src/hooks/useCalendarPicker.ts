@@ -17,9 +17,8 @@ import {
   areValuesEqual
 } from '../utils/normalize'
 import { normalizeConstraintsProps } from '../utils/constraints'
-import { formatDateForInput } from '../utils/formatting'
+import { formatDateForInput, formatValueToString } from '../utils/formatting'
 import { convertToJsDate } from '../utils/date-conversion'
-import { formatValueToString } from '../utils/formatting'
 import { useCalendarState } from './useCalendarState'
 import { isValidNormalizedValue } from '../utils/validation'
 
@@ -42,7 +41,6 @@ export function useCalendarPicker(
   autoClose?: boolean,
   onClose?: () => void,
   dateFormat?: string,
-  timeFormat: '12' | '24' = '24',
   numberOfMonths: 1 | 2 | 3 = 1,
   translations?: CalendarTranslations
 ) {
@@ -121,7 +119,6 @@ export function useCalendarPicker(
           numberSystem,
           withTime,
           dateFormat,
-          timeFormat,
           fromLabel,
           toLabel
         )
@@ -141,8 +138,7 @@ export function useCalendarPicker(
     calendarSystem,
     translations,
     withTime,
-    dateFormat,
-    timeFormat
+    dateFormat
   ])
 
   // Use calendar state hook
@@ -172,7 +168,6 @@ export function useCalendarPicker(
     numberOfMonths,
     dateFormat,
     locale: undefined, // useCalendarPicker doesn't have locale, will use translations
-    timeFormat,
     translations
   })
 
@@ -188,8 +183,7 @@ export function useCalendarPicker(
       showTimeInput && withTime,
       fromLabel,
       toLabel,
-      dateFormat,
-      timeFormat
+      dateFormat
     )
   }, [
     state.selectedValue,
@@ -197,7 +191,6 @@ export function useCalendarPicker(
     showTimeInput,
     withTime,
     dateFormat,
-    timeFormat,
     translations
   ])
 

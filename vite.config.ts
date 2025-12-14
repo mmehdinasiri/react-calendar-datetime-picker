@@ -9,9 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export default defineConfig({
   plugins: [
     react({
-      // Enable Fast Refresh
       fastRefresh: true,
-      // Exclude test files from JSX transform
       exclude: /\.test\.(ts|tsx)$/
     }),
     dts({
@@ -22,9 +20,9 @@ export default defineConfig({
         '**/*.spec.ts',
         '**/*.spec.tsx',
         'examples/**',
-        'tests/**'
+        'tests/**',
+        'performance/**' // Added performance exclude
       ],
-      // Generate declaration maps for better IDE support
       rollupTypes: true
     })
   ],
@@ -33,42 +31,26 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src')
     }
   },
-  css: {
-    // Enable source maps for CSS
-    devSourcemap: true,
-    preprocessorOptions: {
-      scss: {
-        // Add global SCSS variables/mixins if needed
-        // additionalData: `@import "@/styles/variables.scss";`,
-      }
-    }
-  },
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'ReactCalendarDateTimePicker',
       formats: ['es', 'cjs'],
-      fileName: (format) => {
-        if (format === 'es') {
-          return 'index.mjs'
-        }
-        return 'index.cjs'
-      }
+      fileName: (format) => (format === 'es' ? 'index.mjs' : 'index.cjs')
     },
     rollupOptions: {
-      // Externalize dependencies
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      // 1. OPTIMIZATION: Don't bundle dependencies!
+      // Users will install these via their package manager.
+      external: ['react', 'react-dom', 'react/jsx-runtime', 'jalaali-js'],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
-          'react/jsx-runtime': 'react/jsx-runtime'
+          'react/jsx-runtime': 'react/jsx-runtime',
+          'jalaali-js': 'Jalaali' // Global variable name for UMD/CDN builds
         },
-        // Preserve module structure for tree-shaking
-        preserveModules: false,
-        // Asset file naming - ensure CSS is named style.css
+        // 2. OPTIMIZATION: Keep CSS name predictable
         assetFileNames: (assetInfo) => {
-          // Extract CSS to style.css at root
           if (assetInfo.name && assetInfo.name.endsWith('.css')) {
             return 'style.css'
           }
@@ -76,13 +58,15 @@ export default defineConfig({
         }
       }
     },
-    // Generate source maps for debugging
+    // 3. OPTIMIZATION: Use 'terser' for smaller bundle size
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        defaults: true,
+        drop_console: true // Removes console.log
+      }
+    },
     sourcemap: true,
-    // Minify with esbuild (faster than terser)
-    minify: 'esbuild',
-    // Target modern browsers
-    target: 'es2020',
-    // Optimize chunk size
-    chunkSizeWarningLimit: 1000
+    target: 'es2020'
   }
 })

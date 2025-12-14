@@ -49,8 +49,11 @@ export {
   formatDateForInput,
   dayToString,
   toPersianNumeral,
+  parseDateString,
+  parseAndValidateDate,
   normalizeInitValue,
   isValidDay,
+  validateDay,
   isDateInRange,
   isDateSelectable,
   // Date comparison and manipulation

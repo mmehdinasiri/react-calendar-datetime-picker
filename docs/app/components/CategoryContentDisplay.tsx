@@ -1,5 +1,5 @@
 import React from 'react'
-import { TypeDefinition, Note } from '.'
+import { TypeDefinition, Note, Important } from '.'
 
 interface CategoryContentDisplayProps {
   categoryName: string
@@ -197,6 +197,37 @@ export const CategoryContentDisplay: React.FC<CategoryContentDisplayProps> = ({
             month boundaries.
           </p>
         </Note>
+      )}
+
+      {/* Important note for Time category */}
+      {categoryName === 'Time' && (
+        <Important>
+          <p className='text-sm text-gray-700 dark:text-gray-200'>
+            <strong>Important:</strong> The time values in the{' '}
+            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+              Day
+            </code>{' '}
+            type are always stored in 24-hour format (0-23), regardless of the
+            display format specified in{' '}
+            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+              dateFormat
+            </code>
+            . When using 12-hour format tokens (
+            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+              hh
+            </code>{' '}
+            with{' '}
+            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+              A
+            </code>{' '}
+            or{' '}
+            <code className='px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-sm'>
+              a
+            </code>
+            ), the component automatically converts between 12-hour display and
+            24-hour storage.
+          </p>
+        </Important>
       )}
     </div>
   )
