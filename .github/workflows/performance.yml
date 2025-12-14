@@ -67,43 +67,46 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Isolate parent dependencies to prevent Vitest from resolving paths from parent workspace
-      # This prevents Vitest from finding parent node_modules and config files
-      - name: Isolate parent dependencies
-        if: github.event_name == 'pull_request'
-        run: |
-          if [ -d "node_modules" ]; then
-            echo "🛡️ Moving parent node_modules to backup to isolate main-branch environment..."
-            mv node_modules node_modules_parent_backup
-            echo "✅ Parent node_modules isolated"
-          else
-            echo "ℹ️ No parent node_modules found, skipping isolation"
-          fi
-
       - name: Measure baseline performance
         if: github.event_name == 'pull_request'
-        working-directory: main-branch
         continue-on-error: true
         id: measure-baseline
         run: |
           echo "Measuring baseline performance on main branch..."
           echo "Base ref: ${{ github.base_ref }}"
           echo "Head ref: ${{ github.head_ref }}"
-          echo "PR is from fork: ${{ github.event.pull_request.head.repo.fork }}"
-          echo "Current directory: $(pwd)"
-          echo "Listing files in main-branch:"
-          ls -la || echo "Failed to list files"
+          
+          # 1. DEFINE A SAFE SIBLING DIRECTORY
+          # We define a path that is OUTSIDE the current git repository ($GITHUB_WORKSPACE)
+          # This guarantees Vitest cannot see the parent config files.
+          BASELINE_DIR="$(dirname $GITHUB_WORKSPACE)/baseline-temp-env"
+          echo "Preparing isolated environment at: $BASELINE_DIR"
 
-          # Check if checkout was successful
-          if [ ! -d "." ] || [ ! -f "package.json" ]; then
-            echo "❌ ERROR: Checkout of main branch failed or package.json not found"
-            echo "   Current directory contents:"
-            ls -la || true
-            echo ""
+          # Clean up any previous run (just in case)
+          rm -rf "$BASELINE_DIR"
+          
+          # Move the checked-out main branch to the isolated directory
+          # We verify main-branch exists first
+          if [ -d "main-branch" ]; then
+            mv main-branch "$BASELINE_DIR"
+            echo "✅ Moved main-branch to isolated directory"
+          else
+            echo "❌ 'main-branch' directory not found. Checkout likely failed."
             if [ "${{ github.event.pull_request.head.repo.fork }}" = "true" ]; then
               echo "   ⚠️ This PR is from a fork. GitHub Actions may not have permission to checkout the base branch."
-              echo "   Consider using a branch in the main repository instead, or ensure proper permissions are set."
             fi
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # 2. SWITCH CONTEXT
+          # From this point on, we execute commands inside the isolated directory
+          cd "$BASELINE_DIR"
+          echo "Current working directory: $(pwd)"
+
+          # Check structure
+          if [ ! -f "package.json" ]; then
+            echo "❌ package.json not found in isolated dir."
             echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
@@ -124,129 +127,68 @@ jobs:
             exit 0
           fi
 
-          # Try to install dependencies for main branch
-          echo "Attempting to install dependencies on main branch..."
+          # 3. INSTALL & BUILD (In Isolation)
+          echo "Installing dependencies..."
           if ! pnpm install --frozen-lockfile; then
-            echo "⚠️ Failed to install dependencies on main branch (likely incompatible lockfile)."
-            echo "   Error output above. This is expected for major rewrites. Skipping baseline measurement."
+            echo "⚠️ Main branch install failed."
             echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          # Build main branch
-          echo "Attempting to build main branch..."
+          echo "Building..."
           if ! pnpm run build; then
-            echo "⚠️ Failed to build main branch (likely different build process)."
-            echo "   Error output above. This is expected for major rewrites. Skipping baseline measurement."
+            echo "⚠️ Main branch build failed."
             echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          # Check bundle size on main branch
-          echo "Attempting bundle size check on main branch..."
-          if ! node performance/scripts/check-bundle-size.js; then
-            echo "⚠️ Failed to check bundle size on main branch. Continuing without baseline bundle metrics."
-            echo "   Error output above."
-          fi
-
-          # Run performance tests on main branch
-          echo "Attempting performance tests on main branch..."
-
-          # Check if setup file exists (vitest needs this)
-          if [ ! -f "tests/setup.ts" ]; then
-            echo "⚠️ Test setup file (tests/setup.ts) not found in main branch."
-            echo "   This suggests the project structure differs. Skipping baseline measurement."
-            echo "baseline_available=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          # Check if vitest config exists
-          if [ ! -f "vitest.config.ts" ]; then
-            echo "⚠️ Vitest config (vitest.config.ts) not found in main branch."
-            echo "   This suggests the project structure differs. Skipping baseline measurement."
-            echo "baseline_available=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          # Ensure performance/results directory exists
-          mkdir -p performance/results/
-
-          # Run the performance tests
-          # Use explicit working directory to ensure paths resolve correctly
-          if ! node performance/scripts/extract-performance-metrics.js; then
-            echo "⚠️ Failed to run performance tests on main branch (likely incompatible test setup)."
-            echo "   Error output above. This is expected for major rewrites. Skipping baseline measurement."
-            echo "baseline_available=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          # Copy the metrics to the parent directory with a different name
-          if [ -f "performance/results/performance-metrics.json" ]; then
-            # Ensure the target directory exists
-            mkdir -p ../performance/results/
-            cp performance/results/performance-metrics.json ../performance/results/performance-metrics-main.json
-            echo "✅ Baseline performance metrics saved successfully"
-            echo "   Source: $(pwd)/performance/results/performance-metrics.json"
-            echo "   Target: $(cd .. && pwd)/performance/results/performance-metrics-main.json"
-            echo "   Verifying copy..."
-            if [ -f "../performance/results/performance-metrics-main.json" ]; then
-              echo "   ✅ File copied successfully ($(wc -c < ../performance/results/performance-metrics-main.json) bytes)"
-              echo "baseline_available=true" >> $GITHUB_OUTPUT
-            else
-              echo "   ❌ File copy failed!"
-              echo "baseline_available=false" >> $GITHUB_OUTPUT
-              exit 0
-            fi
-          else
-            echo "⚠️ Performance metrics file not found at: performance/results/performance-metrics.json"
-            echo "   Current directory: $(pwd)"
-            echo "   Listing performance/results directory:"
-            ls -la performance/results/ || echo "Directory does not exist"
-            echo "baseline_available=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          # Copy bundle metrics if they exist
+          # Check bundle size (optional, non-blocking)
+          echo "Checking bundle size..."
+          node performance/scripts/check-bundle-size.js || echo "Bundle check failed, continuing..."
+          
+          # Copy bundle metrics if generated
           if [ -f "performance/results/bundle-metrics.json" ]; then
-            mkdir -p ../performance/results/
-            cp performance/results/bundle-metrics.json ../performance/results/bundle-metrics-main.json
-            echo "✅ Baseline bundle metrics saved successfully"
-          else
-            echo "⚠️ Bundle metrics file not found from main branch. Continuing without baseline bundle comparison."
+            # Copy back to the ORIGINAL workspace
+            mkdir -p "$GITHUB_WORKSPACE/performance/results/"
+            cp performance/results/bundle-metrics.json "$GITHUB_WORKSPACE/performance/results/bundle-metrics-main.json"
+            echo "✅ Baseline bundle metrics saved"
           fi
 
-          # Final summary
-          echo ""
-          echo "=== Baseline Measurement Summary ==="
-          if [ -f "../performance/results/performance-metrics-main.json" ]; then
-            echo "✅ Baseline measurement completed successfully"
-            echo "   File location: ../performance/results/performance-metrics-main.json"
-          else
-            echo "❌ Baseline measurement failed or was skipped"
-            echo "   Check the logs above to see which step failed"
-            echo "   Common issues:"
-            echo "   - Checkout failed (fork PRs may not have access to base branch)"
-            echo "   - Build/test failures on main branch"
-            echo "   - Different project structure between branches"
+          # 4. RUN PERFORMANCE TESTS (In Isolation)
+          echo "Running performance tests..."
+          mkdir -p performance/results/
+          
+          # This should now work because there are no parent config files to find!
+          if ! node performance/scripts/extract-performance-metrics.js; then
+            echo "⚠️ Failed to run performance tests on main branch."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
+            exit 0
           fi
-          echo "===================================="
 
-      # Restore parent dependencies - use always() to ensure this runs even if measurement fails
-      - name: Restore parent dependencies
-        if: always() && github.event_name == 'pull_request'
-        run: |
-          if [ -d "node_modules_parent_backup" ]; then
-            echo "🔄 Restoring parent node_modules..."
-            # Safety clean in case a partial install happened
-            if [ -d "node_modules" ]; then
-              echo "   Removing any partial node_modules..."
-              rm -rf node_modules
+          # 5. SAVE RESULTS
+          # Copy the result file back to the GitHub Workspace
+          if [ -f "performance/results/performance-metrics.json" ]; then
+            echo "✅ Baseline metrics generated. Copying to workspace..."
+            mkdir -p "$GITHUB_WORKSPACE/performance/results/"
+            cp performance/results/performance-metrics.json "$GITHUB_WORKSPACE/performance/results/performance-metrics-main.json"
+            
+            # Verify the file landed safely
+            if [ -f "$GITHUB_WORKSPACE/performance/results/performance-metrics-main.json" ]; then
+              echo "baseline_available=true" >> $GITHUB_OUTPUT
+              echo "✅ Baseline performance metrics saved successfully"
+            else 
+              echo "❌ File copy failed."
+              echo "baseline_available=false" >> $GITHUB_OUTPUT
             fi
-            mv node_modules_parent_backup node_modules
-            echo "✅ Parent node_modules restored"
           else
-            echo "ℹ️ No backup found, nothing to restore"
+            echo "⚠️ Performance metrics file not generated."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
           fi
+          
+          # 6. CLEANUP
+          cd "$GITHUB_WORKSPACE"
+          rm -rf "$BASELINE_DIR"
+          echo "✅ Cleaned up isolated environment"
 
       - name: Verify baseline metrics
         if: github.event_name == 'pull_request'
