@@ -70,7 +70,7 @@ jobs:
       - name: Measure Baseline (Isolated)
         if: github.event_name == 'pull_request'
         id: measure-baseline
-        run: performance/scripts/measure-baseline.sh
+        run: source performance/scripts/measure-baseline.sh
 
       - name: Generate Reports
         id: performance-report
