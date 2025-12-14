@@ -56,21 +56,15 @@ function main() {
     }
     console.log(`Setup file found at: ${setupPath}`)
 
-    // Run the performance tests with explicit config and root
-    // This ensures vitest uses the correct config and resolves paths correctly
-    // --root ensures vitest resolves all paths from the correct directory
-    // --no-config-search prevents vitest from looking for config in parent directories
+    // Run the performance tests with explicit config
+    // The config file has root: process.cwd() which will be the current directory
+    // This ensures vitest resolves all paths correctly
     const output = execSync(
-      `npx vitest run performance/tests/calendar-performance.test.tsx --config ${configPath} --root ${cwd} --no-config-search`,
+      `npx vitest run performance/tests/calendar-performance.test.tsx --config "${configPath}"`,
       {
         encoding: 'utf8',
         stdio: 'pipe',
-        cwd: cwd,
-        env: {
-          ...process.env,
-          // Ensure VITEST_ROOT is set to the current directory
-          VITEST_ROOT: cwd
-        }
+        cwd: cwd
       }
     )
 
