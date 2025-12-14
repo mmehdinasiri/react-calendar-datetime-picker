@@ -44,7 +44,7 @@ function main() {
     console.log('✅ No significant performance regressions detected.')
   } catch (error) {
     console.error('⚠️ Error checking regressions:', error.message)
-    process.exit(0) // Don't fail the build on script errors
+    process.exit(0)
   }
 }
 
