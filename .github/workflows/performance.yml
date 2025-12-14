@@ -20,12 +20,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Environment
-        uses: ./.github/actions/setup-pnpm-env # Optional: You can keep individual steps if you prefer
-        # OR keep these 2 steps here if you don't have a composite action:
-      - uses: pnpm/action-setup@v4
-        with: { version: 10 }
-      - uses: actions/setup-node@v4
+      # --- SETUP ENVIRONMENT (Fixed: doing this inline) ---
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
@@ -33,14 +35,18 @@ jobs:
             pnpm-lock.yaml
             ${{ github.event_name == 'pull_request' && 'main-branch/pnpm-lock.yaml' || '' }}
 
-      - name: Install & Build (Current Branch)
+      # --- CURRENT BRANCH ---
+      - name: Install & Build
         run: |
           pnpm install --frozen-lockfile
           pnpm run build
 
       - name: Run Checks (Current Branch)
         run: |
+          echo "Checking bundle size..."
           node performance/scripts/check-bundle-size.js || true
+
+          echo "Running performance tests..."
           node performance/scripts/extract-performance-metrics.js
 
       # --- BASELINE COMPARISON SECTION ---
@@ -56,7 +62,7 @@ jobs:
       - name: Measure Baseline (Isolated)
         if: github.event_name == 'pull_request'
         id: measure-baseline
-        # We run the script created in Step 1
+        # Assumes you created performance/scripts/measure-baseline.sh
         run: bash performance/scripts/measure-baseline.sh
 
       - name: Generate Reports
@@ -89,7 +95,7 @@ jobs:
 
       - name: Check Regression
         if: github.event_name == 'pull_request'
-        # We run the node script created in Step 2
+        # Assumes you created performance/scripts/check-regression.js
         run: node performance/scripts/check-regression.js
 
       - name: Comment PR
