@@ -85,11 +85,22 @@ function formatValue(value, isCalls) {
 }
 
 function formatBytes(bytes) {
+  // Validate that bytes is a valid number
+  if (typeof bytes !== 'number' || isNaN(bytes) || !isFinite(bytes)) {
+    return 'N/A'
+  }
+
   if (bytes === 0) return '0 B'
+
+  // Handle negative values (for differences)
+  const sign = bytes < 0 ? '-' : ''
+  const absBytes = Math.abs(bytes)
   const k = 1024
   const sizes = ['B', 'kB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  const i = Math.floor(Math.log(absBytes) / Math.log(k))
+  return (
+    sign + parseFloat((absBytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  )
 }
 
 function getBundleStatus(asset, size) {
@@ -114,8 +125,10 @@ function getBundleComparison(current, baseline) {
   if (
     typeof current !== 'number' ||
     isNaN(current) ||
+    !isFinite(current) ||
     typeof baseline !== 'number' ||
-    isNaN(baseline)
+    isNaN(baseline) ||
+    !isFinite(baseline)
   ) {
     return 'N/A'
   }
@@ -186,6 +199,13 @@ function generateMarkdownReport(
     Object.entries(bundleMetrics).forEach(([key, value]) => {
       const isGzip = key.includes('(gzip)')
       const baseName = key.replace(' (gzip)', '').replace(' (raw)', '')
+
+      // Validate value is a valid number
+      if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) {
+        console.warn(`⚠️ Invalid bundle metric value for ${key}: ${value}`)
+        return // Skip this entry
+      }
+
       const size = isGzip ? value : bundleMetrics[`${baseName} (gzip)`] || value
       const status = getBundleStatus(baseName, size)
       const sizeStr = formatBytes(value)
@@ -203,6 +223,19 @@ function generateMarkdownReport(
         // Find corresponding raw size
         const rawKey = key.replace(' (gzip)', ' (raw)')
         const rawSize = bundleMetrics[rawKey]
+
+        // Validate rawSize exists and is valid
+        if (
+          rawSize === undefined ||
+          rawSize === null ||
+          typeof rawSize !== 'number' ||
+          isNaN(rawSize) ||
+          !isFinite(rawSize)
+        ) {
+          console.warn(`⚠️ Invalid or missing raw size for ${rawKey}`)
+          return // Skip this entry
+        }
+
         const rawComparison =
           baselineBundleMetrics && baselineBundleMetrics[rawKey] !== undefined
             ? getBundleComparison(rawSize, baselineBundleMetrics[rawKey])
