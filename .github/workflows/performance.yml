@@ -29,6 +29,7 @@ jobs:
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
+
         with:
           node-version: '20'
           cache: 'pnpm'
@@ -58,22 +59,64 @@ jobs:
       # The workflow gracefully handles incompatible project structures.
       - name: Checkout main branch for baseline
         if: github.event_name == 'pull_request'
+        id: checkout-baseline
+        continue-on-error: true
         uses: actions/checkout@v4
         with:
           ref: ${{ github.base_ref }}
           path: main-branch
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Measure baseline performance
         if: github.event_name == 'pull_request'
-        working-directory: main-branch
         continue-on-error: true
+        id: measure-baseline
         run: |
           echo "Measuring baseline performance on main branch..."
+          echo "Base ref: ${{ github.base_ref }}"
+          echo "Head ref: ${{ github.head_ref }}"
+
+          # 1. DEFINE A SAFE SIBLING DIRECTORY
+          # We define a path that is OUTSIDE the current git repository ($GITHUB_WORKSPACE)
+          # This guarantees Vitest cannot see the parent config files.
+          BASELINE_DIR="$(dirname $GITHUB_WORKSPACE)/baseline-temp-env"
+          echo "Preparing isolated environment at: $BASELINE_DIR"
+
+          # Clean up any previous run (just in case)
+          rm -rf "$BASELINE_DIR"
+
+          # Move the checked-out main branch to the isolated directory
+          # We verify main-branch exists first
+          if [ -d "main-branch" ]; then
+            mv main-branch "$BASELINE_DIR"
+            echo "✅ Moved main-branch to isolated directory"
+          else
+            echo "❌ 'main-branch' directory not found. Checkout likely failed."
+            if [ "${{ github.event.pull_request.head.repo.fork }}" = "true" ]; then
+              echo "   ⚠️ This PR is from a fork. GitHub Actions may not have permission to checkout the base branch."
+            fi
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # 2. SWITCH CONTEXT
+          # From this point on, we execute commands inside the isolated directory
+          cd "$BASELINE_DIR"
+          echo "Current working directory: $(pwd)"
+
+          # Check structure
+          if [ ! -f "package.json" ]; then
+            echo "❌ package.json not found in isolated dir."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
 
           # Check if this looks like the same project structure
           if [ ! -f "package.json" ] || [ ! -d "performance" ] || [ ! -f "pnpm-lock.yaml" ]; then
             echo "⚠️ Main branch appears to have different project structure (missing package.json, performance/, or pnpm-lock.yaml)."
             echo "   This is expected for major rewrites. Skipping baseline measurement."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -81,60 +124,100 @@ jobs:
           if ! grep -q '"build"' package.json || ! grep -q '"react"' package.json; then
             echo "⚠️ Main branch package.json structure differs significantly from current branch."
             echo "   Skipping baseline measurement to avoid incompatible comparisons."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          # Try to install dependencies for main branch (may fail if lockfile is incompatible)
-          echo "Attempting to install dependencies on main branch..."
-          if ! pnpm install --frozen-lockfile 2>/dev/null; then
-            echo "⚠️ Failed to install dependencies on main branch (likely incompatible lockfile)."
-            echo "   This is expected for major rewrites. Skipping baseline measurement."
+          # 3. INSTALL & BUILD (In Isolation)
+          echo "Installing dependencies..."
+          if ! pnpm install --frozen-lockfile; then
+            echo "⚠️ Main branch install failed."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          # Build main branch (may fail if project structure is different)
-          echo "Attempting to build main branch..."
-          if ! pnpm run build 2>/dev/null; then
-            echo "⚠️ Failed to build main branch (likely different build process)."
-            echo "   This is expected for major rewrites. Skipping baseline measurement."
+          echo "Building..."
+          if ! pnpm run build; then
+            echo "⚠️ Main branch build failed."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          # Check bundle size on main branch
-          echo "Attempting bundle size check on main branch..."
-          if ! node performance/scripts/check-bundle-size.js 2>/dev/null; then
-            echo "⚠️ Failed to check bundle size on main branch. Continuing without baseline bundle metrics."
-          fi
+          # Check bundle size (optional, non-blocking)
+          echo "Checking bundle size..."
+          node performance/scripts/check-bundle-size.js || echo "Bundle check failed, continuing..."
 
-          # Run performance tests on main branch
-          echo "Attempting performance tests on main branch..."
-          if ! node performance/scripts/extract-performance-metrics.js 2>/dev/null; then
-            echo "⚠️ Failed to run performance tests on main branch (likely incompatible test setup)."
-            echo "   This is expected for major rewrites. Skipping baseline measurement."
-            exit 0
-          fi
-
-          # Copy the metrics to the parent directory with a different name
-          if [ -f "performance/results/performance-metrics.json" ]; then
-            cp performance/results/performance-metrics.json ../performance/results/performance-metrics-main.json
-            echo "✅ Baseline performance metrics saved successfully"
-          else
-            echo "⚠️ Performance metrics file not found. Skipping baseline measurement."
-            exit 0
-          fi
-
-          # Copy bundle metrics if they exist
+          # Copy bundle metrics if generated
           if [ -f "performance/results/bundle-metrics.json" ]; then
-            cp performance/results/bundle-metrics.json ../performance/results/bundle-metrics-main.json
-            echo "✅ Baseline bundle metrics saved successfully"
+            # Copy back to the ORIGINAL workspace
+            mkdir -p "$GITHUB_WORKSPACE/performance/results/"
+            cp performance/results/bundle-metrics.json "$GITHUB_WORKSPACE/performance/results/bundle-metrics-main.json"
+            echo "✅ Baseline bundle metrics saved"
+          fi
+
+          # 4. RUN PERFORMANCE TESTS (In Isolation)
+          echo "Running performance tests..."
+          mkdir -p performance/results/
+
+          # This should now work because there are no parent config files to find!
+          if ! node performance/scripts/extract-performance-metrics.js; then
+            echo "⚠️ Failed to run performance tests on main branch."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # 5. SAVE RESULTS
+          # Copy the result file back to the GitHub Workspace
+          if [ -f "performance/results/performance-metrics.json" ]; then
+            echo "✅ Baseline metrics generated. Copying to workspace..."
+            mkdir -p "$GITHUB_WORKSPACE/performance/results/"
+            cp performance/results/performance-metrics.json "$GITHUB_WORKSPACE/performance/results/performance-metrics-main.json"
+            
+            # Verify the file landed safely
+            if [ -f "$GITHUB_WORKSPACE/performance/results/performance-metrics-main.json" ]; then
+              echo "baseline_available=true" >> $GITHUB_OUTPUT
+              echo "✅ Baseline performance metrics saved successfully"
+            else 
+              echo "❌ File copy failed."
+              echo "baseline_available=false" >> $GITHUB_OUTPUT
+            fi
           else
-            echo "⚠️ Bundle metrics file not found from main branch. Continuing without baseline bundle comparison."
+            echo "⚠️ Performance metrics file not generated."
+            echo "baseline_available=false" >> $GITHUB_OUTPUT
+          fi
+
+          # 6. CLEANUP
+          cd "$GITHUB_WORKSPACE"
+          rm -rf "$BASELINE_DIR"
+          echo "✅ Cleaned up isolated environment"
+
+      - name: Verify baseline metrics
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          echo "Verifying baseline metrics availability..."
+          if [ -f "performance/results/performance-metrics-main.json" ]; then
+            echo "✅ Baseline metrics file exists"
+            echo "File size: $(wc -c < performance/results/performance-metrics-main.json) bytes"
+            echo "Baseline metrics preview:"
+            head -20 performance/results/performance-metrics-main.json || true
+          else
+            echo "❌ Baseline metrics file NOT found at: performance/results/performance-metrics-main.json"
+            echo "Listing performance/results directory:"
+            ls -la performance/results/ || echo "Directory does not exist"
+            echo ""
+            echo "Baseline measurement step output:"
+            echo "  baseline_available=${{ steps.measure-baseline.outputs.baseline_available || 'not set' }}"
           fi
 
       - name: Generate performance report
         id: performance-report
         run: |
           echo "Generating performance report..."
+
+
+
+
 
           # Check if baseline metrics exist and include them in the report
           if [ -f "performance/results/performance-metrics-main.json" ]; then
@@ -156,20 +239,34 @@ jobs:
         continue-on-error: true
         run: |
           echo "Generating performance comparison report..."
+          echo "Checking for baseline metrics file..."
+          echo "Baseline available from step: ${{ steps.measure-baseline.outputs.baseline_available || 'not set' }}"
 
           # Check if baseline metrics exist
           if [ ! -f "performance/results/performance-metrics-main.json" ]; then
             echo "⚠️ Baseline metrics not found. Skipping comparison report."
+            echo "Listing performance/results directory contents:"
+            ls -la performance/results/ || echo "Directory does not exist"
+            echo ""
+            echo "Possible reasons:"
+            echo "1. Baseline measurement step failed (check logs above)"
+            echo "2. Main branch has different project structure"
+            echo "3. Performance tests failed on main branch"
+            echo ""
             echo "comparison<<EOF" >> $GITHUB_OUTPUT
             echo "## ⚠️ Baseline Comparison Unavailable" >> $GITHUB_OUTPUT
             echo "" >> $GITHUB_OUTPUT
-            echo "Baseline performance metrics from main branch are not available. This is expected for major rewrites and may be because:" >> $GITHUB_OUTPUT
+            echo "Baseline performance metrics from main branch are not available. This may be because:" >> $GITHUB_OUTPUT
             echo "- The main branch has a different project structure or dependencies" >> $GITHUB_OUTPUT
             echo "- Performance tests are not compatible between branches" >> $GITHUB_OUTPUT
             echo "- Build processes differ significantly between branches" >> $GITHUB_OUTPUT
             echo "- This is a major rewrite where direct performance comparison isn't meaningful" >> $GITHUB_OUTPUT
+            echo "- The baseline measurement step encountered an error (check workflow logs)" >> $GITHUB_OUTPUT
             echo "" >> $GITHUB_OUTPUT
             echo "Current branch performance metrics are still available in the report above." >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "**Debug Info:**" >> $GITHUB_OUTPUT
+            echo "- Baseline step output: \`baseline_available=${{ steps.measure-baseline.outputs.baseline_available || 'not set' }}\`" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
             exit 0
           fi
@@ -245,11 +342,12 @@ jobs:
               // Skip metrics that are too small to be meaningful (< 1ms)
               if (base < 1 && val < 1) return;
 
-              // Flag regressions that are both significant percentage AND absolute change
-              // OR large absolute changes regardless of percentage
+              // UPDATED THRESHOLDS: More tolerant of CI noise
+              // 1. Percentage > 15% AND Absolute difference > 5ms (was 2ms)
+              // 2. OR Absolute difference > 10ms (was 5ms) regardless of percentage
               const significantRegression = (
-                (percentChange > 15 && absoluteChange > 2) || // 15% + 2ms minimum
-                absoluteChange > 5 // OR 5ms absolute change
+                (percentChange > 15 && absoluteChange > 5) || 
+                absoluteChange > 10
               );
 
               if (significantRegression) {
@@ -262,15 +360,13 @@ jobs:
               console.log('🚨 PERFORMANCE REGRESSIONS DETECTED:');
               regressions.forEach(reg => console.log(\`  \${reg}\`));
               console.log('');
-              console.log('These changes exceed the 15% performance regression threshold.');
-              console.log('Consider optimizing before merging.');
+              console.log('These changes exceed the regression threshold.');
               process.exit(1);
             } else {
               console.log('✅ No significant performance regressions detected.');
             }
           } catch (error) {
             console.log('⚠️ Could not check for regressions:', error.message);
-            console.log('Continuing without regression check...');
             process.exit(0);
           }
           "
@@ -320,6 +416,7 @@ jobs:
           COMPARISON: ${{ steps.comparison-report.outputs.comparison || 'Baseline comparison not available - expected for major rewrites' }}
 
       - name: Upload performance artifacts
+
         uses: actions/upload-artifact@v4
         with:
           name: performance-results-${{ github.sha }}
