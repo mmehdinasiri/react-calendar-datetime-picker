@@ -10,6 +10,7 @@
     "sync:version": "node scripts/sync-version.js"
   },
   "dependencies": {
+    "@codesandbox/sandpack-react": "^2.20.0",
     "next": "^15.4.8",
     "nextjs-toploader": "^3.9.17",
     "react": "^19.2.0",

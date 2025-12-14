@@ -127,7 +127,8 @@ const navigation = [
     title: 'GET STARTED',
     items: [
       { name: 'Installation', href: '/installation' },
-      { name: 'Quick Start', href: '/getting-started' }
+      { name: 'Quick Start', href: '/getting-started' },
+      { name: 'Playground', href: '/playground' }
     ]
   },
   {
