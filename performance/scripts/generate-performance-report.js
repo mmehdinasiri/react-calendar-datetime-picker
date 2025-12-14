@@ -179,8 +179,8 @@ function generateMarkdownReport(
   // Bundle Size Section (if available)
   if (bundleMetrics) {
     report += '### 📦 Bundle Size\n\n'
-    report += '| Asset | Size | Gzipped | Baseline | Comparison |\n'
-    report += '|-------|------|---------|----------|------------|\n'
+    report += '| Asset | Size | Gzipped | Baseline (Gzipped) | Comparison |\n'
+    report += '|-------|------|---------|-------------------|------------|\n'
 
     Object.entries(bundleMetrics).forEach(([key, value]) => {
       const isGzip = key.includes('(gzip)')
@@ -229,7 +229,7 @@ function generateMarkdownReport(
           baselineBundleMetrics && baselineBundleMetrics[rawKey] !== undefined
             ? getBundleComparison(rawSize, baselineBundleMetrics[rawKey])
             : 'N/A'
-        report += `| ${baseName} | ${formatBytes(rawSize)} (${rawComparison}) | ${sizeStr} (${comparison}) | ${baselineStr} | ${comparison} |\n`
+        report += `| ${baseName} | ${formatBytes(rawSize)} <small>(${rawComparison})</small> | ${sizeStr} <small>(${comparison})</small> | ${baselineStr} | ${comparison} |\n`
       }
     })
     report += '\n'
