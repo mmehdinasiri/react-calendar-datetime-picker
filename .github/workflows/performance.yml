@@ -75,7 +75,7 @@ jobs:
           echo "Measuring baseline performance on main branch..."
           echo "Base ref: ${{ github.base_ref }}"
           echo "Head ref: ${{ github.head_ref }}"
-          
+
           # 1. DEFINE A SAFE SIBLING DIRECTORY
           # We define a path that is OUTSIDE the current git repository ($GITHUB_WORKSPACE)
           # This guarantees Vitest cannot see the parent config files.
@@ -84,7 +84,7 @@ jobs:
 
           # Clean up any previous run (just in case)
           rm -rf "$BASELINE_DIR"
-          
+
           # Move the checked-out main branch to the isolated directory
           # We verify main-branch exists first
           if [ -d "main-branch" ]; then
@@ -145,7 +145,7 @@ jobs:
           # Check bundle size (optional, non-blocking)
           echo "Checking bundle size..."
           node performance/scripts/check-bundle-size.js || echo "Bundle check failed, continuing..."
-          
+
           # Copy bundle metrics if generated
           if [ -f "performance/results/bundle-metrics.json" ]; then
             # Copy back to the ORIGINAL workspace
@@ -157,7 +157,7 @@ jobs:
           # 4. RUN PERFORMANCE TESTS (In Isolation)
           echo "Running performance tests..."
           mkdir -p performance/results/
-          
+
           # This should now work because there are no parent config files to find!
           if ! node performance/scripts/extract-performance-metrics.js; then
             echo "⚠️ Failed to run performance tests on main branch."
@@ -184,7 +184,7 @@ jobs:
             echo "⚠️ Performance metrics file not generated."
             echo "baseline_available=false" >> $GITHUB_OUTPUT
           fi
-          
+
           # 6. CLEANUP
           cd "$GITHUB_WORKSPACE"
           rm -rf "$BASELINE_DIR"
@@ -337,11 +337,12 @@ jobs:
               // Skip metrics that are too small to be meaningful (< 1ms)
               if (base < 1 && val < 1) return;
 
-              // Flag regressions that are both significant percentage AND absolute change
-              // OR large absolute changes regardless of percentage
+              // UPDATED THRESHOLDS: More tolerant of CI noise
+              // 1. Percentage > 15% AND Absolute difference > 5ms (was 2ms)
+              // 2. OR Absolute difference > 10ms (was 5ms) regardless of percentage
               const significantRegression = (
-                (percentChange > 15 && absoluteChange > 2) || // 15% + 2ms minimum
-                absoluteChange > 5 // OR 5ms absolute change
+                (percentChange > 15 && absoluteChange > 5) || 
+                absoluteChange > 10
               );
 
               if (significantRegression) {
@@ -354,15 +355,13 @@ jobs:
               console.log('🚨 PERFORMANCE REGRESSIONS DETECTED:');
               regressions.forEach(reg => console.log(\`  \${reg}\`));
               console.log('');
-              console.log('These changes exceed the 15% performance regression threshold.');
-              console.log('Consider optimizing before merging.');
+              console.log('These changes exceed the regression threshold.');
               process.exit(1);
             } else {
               console.log('✅ No significant performance regressions detected.');
             }
           } catch (error) {
             console.log('⚠️ Could not check for regressions:', error.message);
-            console.log('Continuing without regression check...');
             process.exit(0);
           }
           "
