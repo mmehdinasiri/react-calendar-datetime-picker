@@ -22,6 +22,9 @@
       "require": "./dist/style.css"
     }
   },
+  "sideEffects": [
+    "**/*.css"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "source": "./src/index.ts",

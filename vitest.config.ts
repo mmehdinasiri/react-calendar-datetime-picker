@@ -1,17 +1,17 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import { fileURLToPath } from 'url'
+
+// Fix: Define __dirname for ESM
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
-  // Use __dirname as root - this is the directory containing this config file
-  // When running from main-branch, this will be main-branch directory
   root: __dirname,
   plugins: [react()],
   test: {
     globals: true,
     environment: 'jsdom',
-    // Use absolute path resolved from config file location
-    // This ensures it resolves correctly regardless of where vitest is invoked from
     setupFiles: [path.resolve(__dirname, 'tests', 'setup.ts')],
     include: [
       'tests/unit/**/*.{test,spec}.{ts,tsx}',
@@ -28,7 +28,8 @@ export default defineConfig({
         'examples/',
         '**/*.d.ts',
         '**/*.config.*',
-        '**/dist/**'
+        '**/dist/**',
+        'src/**/index.ts' // Recommended: Exclude barrel files
       ]
     }
   },
