@@ -103,19 +103,6 @@ function formatBytes(bytes) {
   )
 }
 
-function getBundleStatus(asset, size) {
-  const limits = {
-    'index.mjs': 25 * 1024, // 25 kB gzip
-    'index.cjs': 20 * 1024, // 20 kB gzip
-    'style.css': 5 * 1024 // 5 kB gzip
-  }
-
-  const limit = limits[asset]
-  if (!limit) return '❓ UNKNOWN'
-
-  return size <= limit ? '✅ PASS' : '❌ FAIL'
-}
-
 function getBundleComparison(current, baseline) {
   if (baseline === undefined || baseline === null) {
     return 'null'
@@ -183,18 +170,17 @@ function getComparisonValue(current, baseline, isCalls) {
 
 function generateMarkdownReport(
   metrics,
-  title = 'Performance Benchmark Results',
   baselineMetrics = null,
   bundleMetrics = null,
   baselineBundleMetrics = null
 ) {
-  let report = `# 🚀 ${title}\n\n`
+  let report = ''
 
   // Bundle Size Section (if available)
   if (bundleMetrics) {
     report += '### 📦 Bundle Size\n\n'
-    report += '| Asset | Size | Gzipped | Comparison | Status |\n'
-    report += '|-------|------|---------|------------|--------|\n'
+    report += '| Asset | Size | Gzipped | Baseline | Comparison |\n'
+    report += '|-------|------|---------|----------|------------|\n'
 
     Object.entries(bundleMetrics).forEach(([key, value]) => {
       const isGzip = key.includes('(gzip)')
@@ -206,18 +192,21 @@ function generateMarkdownReport(
         return // Skip this entry
       }
 
-      const size = isGzip ? value : bundleMetrics[`${baseName} (gzip)`] || value
-      const status = getBundleStatus(baseName, size)
       const sizeStr = formatBytes(value)
 
-      // Get comparison value from baseline
+      // Get baseline values
       const baselineValue = baselineBundleMetrics
         ? baselineBundleMetrics[key]
         : null
+      const baselineStr =
+        baselineValue !== null && baselineValue !== undefined
+          ? formatBytes(baselineValue)
+          : 'N/A'
+
       const comparison =
         baselineValue !== null && baselineValue !== undefined
           ? getBundleComparison(value, baselineValue)
-          : 'null'
+          : 'N/A'
 
       if (isGzip) {
         // Find corresponding raw size
@@ -239,8 +228,8 @@ function generateMarkdownReport(
         const rawComparison =
           baselineBundleMetrics && baselineBundleMetrics[rawKey] !== undefined
             ? getBundleComparison(rawSize, baselineBundleMetrics[rawKey])
-            : 'null'
-        report += `| ${baseName} | ${formatBytes(rawSize)} (${rawComparison}) | ${sizeStr} (${comparison}) | ${comparison} | ${status} |\n`
+            : 'N/A'
+        report += `| ${baseName} | ${formatBytes(rawSize)} (${rawComparison}) | ${sizeStr} (${comparison}) | ${baselineStr} | ${comparison} |\n`
       }
     })
     report += '\n'
@@ -390,7 +379,7 @@ function compareMetrics(baseline, current) {
     } else if (status.includes('DEGRADED')) {
       diffIndicator = '🔴'
     } else if (status.includes('SAME')) {
-      diffIndicator = '⚪'
+      diffIndicator = '🔴' // Red color for equal values
     } else {
       diffIndicator = '❓'
     }
@@ -411,8 +400,8 @@ function generateComparisonReport(baselineMetrics, currentMetrics) {
   const comparison = compareMetrics(baselineMetrics, currentMetrics)
 
   let report = '# ⚡ Performance Comparison\n\n'
-  report += '| Metric | Baseline | Current | Diff | Change | Status |\n'
-  report += '|--------|----------|---------|------|--------|--------|\n'
+  report += '| Metric | Baseline | Current | Diff | Status |\n'
+  report += '|--------|----------|---------|------|--------|\n'
 
   Object.entries(comparison).forEach(([key, data]) => {
     const unit = key.includes('Calls') ? 'calls' : 'ms'
@@ -423,7 +412,7 @@ function generateComparisonReport(baselineMetrics, currentMetrics) {
         : 'null'
     const currentStr = `${formatValue(data.current, isCalls)}${unit}`
 
-    report += `| ${key} | ${baselineStr} | ${currentStr} | ${data.diffIndicator} ${data.change === 'null' ? 'null' : data.change + unit} | ${data.change === 'null' ? 'null' : data.change + unit} | ${data.status} |\n`
+    report += `| ${key} | ${baselineStr} | ${currentStr} | ${data.diffIndicator} ${data.change === 'null' ? 'null' : data.change + unit} | ${data.status} |\n`
   })
 
   // Summary
@@ -505,7 +494,6 @@ switch (command) {
 
       const report = generateMarkdownReport(
         metrics,
-        'Performance Benchmark Results',
         baselineMetrics,
         bundleMetrics,
         baselineBundleMetrics
