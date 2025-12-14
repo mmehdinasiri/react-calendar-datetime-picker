@@ -158,7 +158,7 @@ export default defineConfig({
       try {
         fs.unlinkSync(tempConfigPath)
         console.log(`Cleaned up temporary config: ${tempConfigPath}`)
-      } catch (cleanupError) {
+      } catch {
         // Ignore cleanup errors
       }
     }
