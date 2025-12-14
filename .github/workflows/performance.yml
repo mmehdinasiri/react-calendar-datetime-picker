@@ -82,7 +82,7 @@ jobs:
             performance/results/performance-report.md \
             performance/results/performance-metrics-main.json
 
-          # 2. Comparison (Only if baseline exists)
+          # 2. Comparison (Only if bundle metrics exist)
           if [ -f "performance/results/performance-metrics-main.json" ]; then
             node performance/scripts/generate-performance-report.js compare \
               performance/results/performance-metrics-main.json \
@@ -111,9 +111,19 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            // Check for explicit comparison failure message
+            let comparisonMessage = process.env.COMPARISON;
+            if (comparisonMessage === 'Baseline comparison unavailable (Main branch may differ)' || !comparisonMessage) {
+                // Generate a more helpful message if the comparison file was truly missing
+                if (!require('fs').existsSync('performance/results/performance-metrics-main.json')) {
+                    comparisonMessage = '## ⚠️ Baseline Comparison Unavailable\n\nBaseline performance data could not be generated from the main branch. This is expected if the main branch structure or performance scripts are incompatible with the current PR.';
+                } else {
+                    comparisonMessage = 'Baseline comparison unavailable (See logs for report generation errors)';
+                }
+            }
+
             const report = process.env.REPORT || 'Report unavailable';
-            const comparison = process.env.COMPARISON || 'Baseline comparison unavailable (Main branch may differ)';
-            const body = `## 🚀 Performance Benchmark Results\n\n${report}\n\n---\n\n${comparison}`;
+            const body = `## 🚀 Performance Benchmark Results\n\n${report}\n\n---\n\n${comparisonMessage}`;
 
             const { owner, repo } = context.repo;
             const issue_number = context.issue.number;
