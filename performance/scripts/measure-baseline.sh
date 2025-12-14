@@ -6,11 +6,9 @@ set -e
 echo "Measuring baseline performance on main branch..."
 
 # 1. SETUP ISOLATION
-# Define path OUTSIDE the current git repository to prevent config bleeding
 BASELINE_DIR="$(dirname $GITHUB_WORKSPACE)/baseline-temp-env"
 echo "Preparing isolated environment at: $BASELINE_DIR"
 
-# Clean up any previous run & Move the checked-out main branch
 rm -rf "$BASELINE_DIR"
 
 if [ -d "main-branch" ]; then
@@ -34,23 +32,26 @@ fi
 
 # 4. INSTALL & BUILD
 echo "Installing dependencies..."
-# Use || { ... } to handle errors gracefully in Bash scripts
 pnpm install --frozen-lockfile || { echo "⚠️ Main branch install failed."; echo "baseline_available=false" >> $GITHUB_OUTPUT; exit 0; }
 
 echo "Building..."
 pnpm run build || { echo "⚠️ Main branch build failed."; echo "baseline_available=false" >> $GITHUB_OUTPUT; exit 0; }
 
-# 5. MEASURE BUNDLE SIZE (Use script from PR, run on Main code)
+# 5. MEASURE BUNDLE SIZE (Use script from PR)
 echo "Checking bundle size..."
 # CRITICAL: Use the script path from GITHUB_WORKSPACE (the PR branch)
-node "$GITHUB_WORKSPACE/performance/scripts/check-bundle-size.js" || echo "Bundle check failed"
+# We allow failure, but log if the file is missing later.
+node "$GITHUB_WORKSPACE/performance/scripts/check-bundle-size.js" || echo "Bundle check script failed, continuing..."
 
 # Copy bundle metrics if generated
 if [ -f "performance/results/bundle-metrics.json" ]; then
   mkdir -p "$GITHUB_WORKSPACE/performance/results/"
   cp performance/results/bundle-metrics.json "$GITHUB_WORKSPACE/performance/results/bundle-metrics-main.json"
-  echo "✅ Baseline bundle metrics saved"
+  echo "✅ Baseline bundle metrics saved to bundle-metrics-main.json"
+else
+  echo "⚠️ Bundle metrics file not found in isolated directory."
 fi
+
 
 # 6. RUN PERFORMANCE TESTS (Use script from PR)
 echo "Running performance tests..."
