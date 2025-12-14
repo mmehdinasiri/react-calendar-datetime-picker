@@ -59,11 +59,13 @@ jobs:
       - name: Checkout main branch for baseline
         if: github.event_name == 'pull_request'
         id: checkout-baseline
+        continue-on-error: true
         uses: actions/checkout@v4
         with:
           ref: ${{ github.base_ref }}
           path: main-branch
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Measure baseline performance
         if: github.event_name == 'pull_request'
@@ -74,6 +76,7 @@ jobs:
           echo "Measuring baseline performance on main branch..."
           echo "Base ref: ${{ github.base_ref }}"
           echo "Head ref: ${{ github.head_ref }}"
+          echo "PR is from fork: ${{ github.event.pull_request.head.repo.fork }}"
           echo "Current directory: $(pwd)"
           echo "Listing files in main-branch:"
           ls -la || echo "Failed to list files"
@@ -83,6 +86,11 @@ jobs:
             echo "❌ ERROR: Checkout of main branch failed or package.json not found"
             echo "   Current directory contents:"
             ls -la || true
+            echo ""
+            if [ "${{ github.event.pull_request.head.repo.fork }}" = "true" ]; then
+              echo "   ⚠️ This PR is from a fork. GitHub Actions may not have permission to checkout the base branch."
+              echo "   Consider using a branch in the main repository instead, or ensure proper permissions are set."
+            fi
             echo "baseline_available=false" >> $GITHUB_OUTPUT
             exit 0
           fi
@@ -139,11 +147,24 @@ jobs:
 
           # Copy the metrics to the parent directory with a different name
           if [ -f "performance/results/performance-metrics.json" ]; then
+            # Ensure the target directory exists
+            mkdir -p ../performance/results/
             cp performance/results/performance-metrics.json ../performance/results/performance-metrics-main.json
             echo "✅ Baseline performance metrics saved successfully"
-            echo "baseline_available=true" >> $GITHUB_OUTPUT
+            echo "   Source: $(pwd)/performance/results/performance-metrics.json"
+            echo "   Target: $(cd .. && pwd)/performance/results/performance-metrics-main.json"
+            echo "   Verifying copy..."
+            if [ -f "../performance/results/performance-metrics-main.json" ]; then
+              echo "   ✅ File copied successfully ($(wc -c < ../performance/results/performance-metrics-main.json) bytes)"
+              echo "baseline_available=true" >> $GITHUB_OUTPUT
+            else
+              echo "   ❌ File copy failed!"
+              echo "baseline_available=false" >> $GITHUB_OUTPUT
+              exit 0
+            fi
           else
             echo "⚠️ Performance metrics file not found at: performance/results/performance-metrics.json"
+            echo "   Current directory: $(pwd)"
             echo "   Listing performance/results directory:"
             ls -la performance/results/ || echo "Directory does not exist"
             echo "baseline_available=false" >> $GITHUB_OUTPUT
@@ -152,11 +173,28 @@ jobs:
 
           # Copy bundle metrics if they exist
           if [ -f "performance/results/bundle-metrics.json" ]; then
+            mkdir -p ../performance/results/
             cp performance/results/bundle-metrics.json ../performance/results/bundle-metrics-main.json
             echo "✅ Baseline bundle metrics saved successfully"
           else
             echo "⚠️ Bundle metrics file not found from main branch. Continuing without baseline bundle comparison."
           fi
+
+          # Final summary
+          echo ""
+          echo "=== Baseline Measurement Summary ==="
+          if [ -f "../performance/results/performance-metrics-main.json" ]; then
+            echo "✅ Baseline measurement completed successfully"
+            echo "   File location: ../performance/results/performance-metrics-main.json"
+          else
+            echo "❌ Baseline measurement failed or was skipped"
+            echo "   Check the logs above to see which step failed"
+            echo "   Common issues:"
+            echo "   - Checkout failed (fork PRs may not have access to base branch)"
+            echo "   - Build/test failures on main branch"
+            echo "   - Different project structure between branches"
+          fi
+          echo "===================================="
 
       - name: Verify baseline metrics
         if: github.event_name == 'pull_request'
