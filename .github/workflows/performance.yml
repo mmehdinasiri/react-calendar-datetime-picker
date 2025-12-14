@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - name: Checkout code
+      - name: Checkout code (Current Branch)
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -36,7 +36,7 @@ jobs:
             ${{ github.event_name == 'pull_request' && 'main-branch/pnpm-lock.yaml' || '' }}
 
       # --- CURRENT BRANCH ---
-      - name: Install & Build
+      - name: Install & Build (Current Branch)
         run: |
           pnpm install --frozen-lockfile
           pnpm run build
@@ -51,7 +51,7 @@ jobs:
 
       # --- BASELINE COMPARISON SECTION ---
 
-      - name: Checkout main branch
+      - name: Checkout main branch (Baseline)
         if: github.event_name == 'pull_request'
         uses: actions/checkout@v4
         with:
@@ -59,15 +59,19 @@ jobs:
           path: main-branch
           fetch-depth: 0
 
-      # NEW STEP: Ensure the bash script is executable
-      - name: Grant execution permission to baseline script
+      # Grant explicit permissions for consistency and to avoid "permission denied" errors
+      - name: Grant execution permissions to scripts
         if: github.event_name == 'pull_request'
-        run: chmod +x performance/scripts/measure-baseline.sh
+        run: |
+          chmod +x performance/scripts/measure-baseline.sh
+          chmod +x performance/scripts/check-bundle-size.js
+          chmod +x performance/scripts/extract-performance-metrics.js
 
       - name: Measure Baseline (Isolated)
         if: github.event_name == 'pull_request'
         id: measure-baseline
-        run: bash performance/scripts/measure-baseline.sh
+        # Execute the script using the runner's reliable default shell
+        run: performance/scripts/measure-baseline.sh
 
       - name: Generate Reports
         id: performance-report
@@ -86,11 +90,12 @@ jobs:
               performance/results/performance-comparison.md
           fi
 
-          # Output for PR Comment
+          # Output for PR Comment (Report)
           echo "report<<EOF" >> $GITHUB_OUTPUT
           cat performance/results/performance-report.md >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+          # Output for PR Comment (Comparison)
           if [ -f "performance/results/performance-comparison.md" ]; then
             echo "comparison<<EOF" >> $GITHUB_OUTPUT
             cat performance/results/performance-comparison.md >> $GITHUB_OUTPUT
