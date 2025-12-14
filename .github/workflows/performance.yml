@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      # --- SETUP ENVIRONMENT (Fixed: doing this inline) ---
+      # --- SETUP ENVIRONMENT ---
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -59,10 +59,14 @@ jobs:
           path: main-branch
           fetch-depth: 0
 
+      # NEW STEP: Ensure the bash script is executable
+      - name: Grant execution permission to baseline script
+        if: github.event_name == 'pull_request'
+        run: chmod +x performance/scripts/measure-baseline.sh
+
       - name: Measure Baseline (Isolated)
         if: github.event_name == 'pull_request'
         id: measure-baseline
-        # Assumes you created performance/scripts/measure-baseline.sh
         run: bash performance/scripts/measure-baseline.sh
 
       - name: Generate Reports
@@ -95,7 +99,6 @@ jobs:
 
       - name: Check Regression
         if: github.event_name == 'pull_request'
-        # Assumes you created performance/scripts/check-regression.js
         run: node performance/scripts/check-regression.js
 
       - name: Comment PR
@@ -105,7 +108,7 @@ jobs:
           script: |
             const report = process.env.REPORT || 'Report unavailable';
             const comparison = process.env.COMPARISON || 'Baseline comparison unavailable (Main branch may differ)';
-            const body = `${report}\n\n---\n\n${comparison}`;
+            const body = `## 🚀 Performance Benchmark Results\n\n${report}\n\n---\n\n${comparison}`;
 
             const { owner, repo } = context.repo;
             const issue_number = context.issue.number;
