@@ -38,12 +38,32 @@ function main() {
   console.log('Running performance tests to extract metrics...')
 
   try {
-    // Run the performance tests
+    // Get the current working directory (should be the project root)
+    const cwd = process.cwd()
+    const path = require('path')
+    console.log(`Running from directory: ${cwd}`)
+    
+    // Check if vitest.config.ts exists
+    const configPath = path.join(cwd, 'vitest.config.ts')
+    if (!fs.existsSync(configPath)) {
+      throw new Error(`Vitest config not found at: ${configPath}`)
+    }
+    
+    // Check if setup file exists
+    const setupPath = path.join(cwd, 'tests', 'setup.ts')
+    if (!fs.existsSync(setupPath)) {
+      throw new Error(`Setup file not found at: ${setupPath}`)
+    }
+    console.log(`Setup file found at: ${setupPath}`)
+    
+    // Run the performance tests with explicit config
+    // This ensures vitest uses the correct config and resolves paths correctly
     const output = execSync(
-      'npx vitest run performance/tests/calendar-performance.test.tsx',
+      `npx vitest run performance/tests/calendar-performance.test.tsx --config ${configPath}`,
       {
         encoding: 'utf8',
-        stdio: 'pipe'
+        stdio: 'pipe',
+        cwd: cwd
       }
     )
 
