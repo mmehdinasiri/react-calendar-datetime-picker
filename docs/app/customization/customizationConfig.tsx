@@ -360,6 +360,7 @@ function InputWithIconTrigger({ onChange, ...props }) {
             }
           />
         </div>
+      </div>
     </div>
   )
 }`,
