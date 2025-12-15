@@ -1,14 +1,15 @@
 name: Deploy Documentation
 
 on:
-  push:
+  # Manual trigger from GitHub Actions UI
+  workflow_dispatch:
+  # Trigger docs deployment after npm publish completes successfully
+  workflow_run:
+    workflows: ['Publish to NPM']
+    types:
+      - completed
     branches:
       - main
-    paths:
-      - 'docs/**'
-      - 'package.json'
-      - '.github/workflows/deploy-docs.yml'
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -22,6 +23,12 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # Only run if:
+    # - Manually triggered (workflow_dispatch), OR
+    # - Triggered by workflow_run and the npm publish succeeded
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -29,6 +36,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        # When triggered by workflow_run, checkout the commit SHA from that workflow
+        # The ref parameter can accept a commit SHA directly
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.ref }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -40,18 +51,64 @@ jobs:
         with:
           node-version: '20'
           cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
 
-      - name: Install dependencies
+      - name: Get version from package.json
+        id: get_published_version
+        run: |
+          # Get version directly from package.json
+          # This version is used to:
+          # - Update docs/package.json to use npm version (when triggered by workflow_run)
+          # - Sync to docs/app/config/version.ts for playground
+          VERSION=$(node -p "require('./package.json').version")
+
+          if [ -z "$VERSION" ] || [ "$VERSION" == "null" ] || [ "$VERSION" == "undefined" ]; then
+            echo "Error: Could not read version from package.json"
+            exit 1
+          fi
+
+          # Determine npm tag (beta/latest) based on version
+          if [[ "$VERSION" == *"-beta"* ]] || [[ "$VERSION" == *"-alpha"* ]] || [[ "$VERSION" == *"-rc"* ]]; then
+            TAG="beta"
+          else
+            TAG="latest"
+          fi
+
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Version from package.json: $VERSION (npm tag: $TAG)"
+
+      - name: Install dependencies (root)
+        if: github.event_name != 'workflow_run'
         run: pnpm install --frozen-lockfile
 
-      - name: Build library (for docs to use)
+      - name: Build library from source (for docs to use)
+        if: github.event_name != 'workflow_run'
         run: pnpm run build
 
-      - name: Refresh workspace links (to link built package)
+      - name: Update docs package.json to use npm version
+        if: github.event_name == 'workflow_run'
+        run: |
+          VERSION="${{ steps.get_published_version.outputs.version }}"
+          cd docs
+          # Update package.json to use npm version instead of file:../
+          pnpm pkg set "dependencies.react-calendar-datetime-picker=$VERSION"
+          echo "Updated docs/package.json to use react-calendar-datetime-picker@$VERSION from npm"
+
+      - name: Install dependencies (docs)
         run: |
           cd docs
           rm -rf node_modules/react-calendar-datetime-picker
-          pnpm install
+          pnpm install --frozen-lockfile
+          cd ..
+
+      - name: Sync version from package.json
+        run: |
+          # Sync version from root package.json to docs/app/config/version.ts
+          # This ensures the playground uses the exact version from package.json
+          # (The build script also runs this, but we do it explicitly here for clarity)
+          cd docs
+          pnpm run sync:version
           cd ..
 
       - name: Setup Pages
