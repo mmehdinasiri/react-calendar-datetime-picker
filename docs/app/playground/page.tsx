@@ -245,6 +245,22 @@ export default function Playground() {
   const currentAppCode =
     componentType === 'picker' ? appCodeWithPicker : appCodeWithCalendar
 
+  // Determine which version to use for Sandpack
+  // - For beta/alpha/rc versions, use the published beta version (2.0.0-beta.0)
+  // - For stable versions, use the exact version
+  const PUBLISHED_BETA_VERSION = '2.0.0-beta.0'
+
+  const isPreRelease =
+    (CURRENT_VERSION &&
+      (CURRENT_VERSION.includes('beta') ||
+        CURRENT_VERSION.includes('alpha') ||
+        CURRENT_VERSION.includes('rc'))) ||
+    false
+
+  // Use the published beta version for pre-releases, or the current version for stable releases
+  // Use exact version string (no caret) to avoid Sandpack parsing issues
+  const packageVersion = isPreRelease ? PUBLISHED_BETA_VERSION : CURRENT_VERSION
+
   return (
     <div className='w-full h-[calc(100vh-3.5rem-4rem)] flex flex-col mb-8'>
       <div className='px-4 sm:px-6 py-4 flex-shrink-0 border-b border-gray-200 dark:border-gray-700'>
@@ -325,7 +341,7 @@ export default function Playground() {
               dependencies: {
                 react: '^18.2.0',
                 'react-dom': '^18.2.0',
-                'react-calendar-datetime-picker': `^${CURRENT_VERSION}`
+                'react-calendar-datetime-picker': packageVersion
               },
               entry: '/src/index.js'
             }}
@@ -377,7 +393,7 @@ root.render(
                 hidden: true
               }
             }}
-            key={componentType} // Force re-render when component type changes
+            key={`${componentType}-${packageVersion}`} // Force re-render when component type or version changes
           />
         </div>
       </div>
