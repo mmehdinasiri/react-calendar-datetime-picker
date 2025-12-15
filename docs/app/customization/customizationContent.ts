@@ -119,7 +119,8 @@ customization?: {
 • Persian/Farsi (fa) - Persian numbers, Right-to-left (RTL), Persian month/weekday names
 • German (de) - Latin numbers, Left-to-right (LTR), German month/weekday names
 • Spanish (es) - Latin numbers, Left-to-right (LTR), Spanish month/weekday names
-• French (fr) - Latin numbers, Left-to-right (LTR), French month/weekday names`
+• French (fr) - Latin numbers, Left-to-right (LTR), French month/weekday names
+• Korean (ko) - Latin numbers, Left-to-right (LTR), Korean month/weekday names`
       },
       {
         title: 'Custom Translations:',
@@ -172,6 +173,14 @@ customization?: {
             'Left-to-right (LTR)',
             'French month/weekday names'
           ]
+        },
+        {
+          name: 'Korean (ko)',
+          features: [
+            'Latin numbers',
+            'Left-to-right (LTR)',
+            'Korean month/weekday names'
+          ]
         }
       ],
       codeExample: `// Basic locale usage
@@ -181,7 +190,10 @@ customization?: {
 <DtCalendar locale="de" onChange={setDate} />
 
 // French locale
-<DtPicker locale="fr" onChange={setDate} />`
+<DtPicker locale="fr" onChange={setDate} />
+
+// Korean locale
+<DtPicker locale="ko" onChange={setDate} />`
     },
     customTranslations: {
       description:
