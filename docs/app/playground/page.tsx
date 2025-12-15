@@ -245,21 +245,10 @@ export default function Playground() {
   const currentAppCode =
     componentType === 'picker' ? appCodeWithPicker : appCodeWithCalendar
 
-  // Determine which version to use for Sandpack
-  // - For beta/alpha/rc versions, use the published beta version (2.0.0-beta.1)
-  // - For stable versions, use the exact version
-  const PUBLISHED_BETA_VERSION = '2.0.0-beta.1'
-
-  const isPreRelease =
-    (CURRENT_VERSION &&
-      (CURRENT_VERSION.includes('beta') ||
-        CURRENT_VERSION.includes('alpha') ||
-        CURRENT_VERSION.includes('rc'))) ||
-    false
-
-  // Use the published beta version for pre-releases, or the current version for stable releases
-  // Use exact version string (no caret) to avoid Sandpack parsing issues
-  const packageVersion = isPreRelease ? PUBLISHED_BETA_VERSION : CURRENT_VERSION
+  // Use the exact version from package.json (synced via CURRENT_VERSION)
+  // This ensures Sandpack uses the exact version that matches package.json
+  // The version is synced from root package.json during build via sync-version.js
+  const packageVersion = CURRENT_VERSION || 'latest'
 
   return (
     <div className='w-full h-[calc(100vh-3.5rem-4rem)] flex flex-col mb-8'>
