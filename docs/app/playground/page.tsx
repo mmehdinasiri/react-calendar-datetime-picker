@@ -246,9 +246,9 @@ export default function Playground() {
     componentType === 'picker' ? appCodeWithPicker : appCodeWithCalendar
 
   // Determine which version to use for Sandpack
-  // - For beta/alpha/rc versions, use the published beta version (2.0.0-beta.0)
+  // - For beta/alpha/rc versions, use the published beta version (2.0.0-beta.1)
   // - For stable versions, use the exact version
-  const PUBLISHED_BETA_VERSION = '2.0.0-beta.0'
+  const PUBLISHED_BETA_VERSION = '2.0.0-beta.1'
 
   const isPreRelease =
     (CURRENT_VERSION &&
