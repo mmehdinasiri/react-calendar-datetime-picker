@@ -13,11 +13,12 @@ export const internationalizationContent = {
 • Persian (fa) - Persian/Farsi locale with Persian numerals, RTL direction, and Persian month/weekday names. Uses Jalali calendar system.
 • German (de) - German locale with Latin numbers, LTR direction, and German month/weekday names
 • Spanish (es) - Spanish locale with Latin numbers, LTR direction, and Spanish month/weekday names
-• French (fr) - French locale with Latin numbers, LTR direction, and French month/weekday names`
+• French (fr) - French locale with Latin numbers, LTR direction, and French month/weekday names
+• Korean (ko) - Korean locale with Latin numbers, LTR direction, and Korean month/weekday names`
       }
     ],
     typeDefinitions: [
-      `type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'`
+      `type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr' | 'ko'`
     ]
   },
   'Translation Customization': {

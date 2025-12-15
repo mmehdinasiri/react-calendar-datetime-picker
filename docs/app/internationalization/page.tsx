@@ -93,7 +93,7 @@ function InternationalizationContent() {
           <div className='mt-4 mb-4'>
             <CodeBlock
               language='typescript'
-              code={`type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'`}
+              code={`type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr' | 'ko'`}
             />
           </div>
         </div>
@@ -155,6 +155,16 @@ function InternationalizationContent() {
                 <li>• Latin numbers</li>
                 <li>• Left-to-right (LTR)</li>
                 <li>• French month/weekday names</li>
+              </ul>
+            </div>
+            <div className='bg-bg-tertiary rounded-lg p-4'>
+              <h4 className='font-semibold text-gray-900 dark:text-white mb-2'>
+                Korean (ko)
+              </h4>
+              <ul className='text-sm text-gray-700 dark:text-gray-300 space-y-1'>
+                <li>• Latin numbers</li>
+                <li>• Left-to-right (LTR)</li>
+                <li>• Korean month/weekday names</li>
               </ul>
             </div>
           </div>
