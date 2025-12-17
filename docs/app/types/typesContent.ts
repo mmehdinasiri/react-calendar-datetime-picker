@@ -325,7 +325,8 @@ const presetRanges: PresetRangesConfig = {
 // 'fa' - Persian (Persian numerals, RTL)
 // 'de' - German (Latin numerals, LTR)
 // 'es' - Spanish (Latin numerals, LTR)
-// 'fr' - French (Latin numerals, LTR)`,
+// 'fr' - French (Latin numerals, LTR)
+// 'ko' - Korean (Latin numerals, LTR)`,
       note: "The number system (Latin vs Persian numerals) is automatically determined from the locale. Persian (`'fa'`) locale uses Persian numerals (۰-۹), while all other locales use Latin numerals (0-9)."
     },
     {

@@ -44,11 +44,15 @@ export const LocaleContent: React.FC = () => {
             <strong>French (fr)</strong> - French locale with Latin numbers, LTR
             direction, and French month/weekday names
           </li>
+          <li>
+            <strong>Korean (ko)</strong> - Korean locale with Latin numbers, LTR
+            direction, and Korean month/weekday names
+          </li>
         </ul>
       </div>
       <div className='mt-6'>
         <TypeDefinition
-          definition={`type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'`}
+          definition={`type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr' | 'ko'`}
         />
       </div>
     </div>

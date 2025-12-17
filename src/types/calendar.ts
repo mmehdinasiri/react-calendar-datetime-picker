@@ -46,7 +46,7 @@ export type CalendarSystem = 'gregorian' | 'jalali' | 'ge' | 'ja'
 /**
  * Supported UI locales for internationalization
  */
-export type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'
+export type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr' | 'ko'
 
 /**
  * Locales that use Persian numerals (۰-۹)
@@ -57,7 +57,7 @@ export const persianArabicNumbers: CalendarUILocale[] = ['fa']
 /**
  * Locales that use Latin numerals (0-9)
  */
-export const latinNumbers: CalendarUILocale[] = ['en', 'de', 'es', 'fr']
+export const latinNumbers: CalendarUILocale[] = ['en', 'de', 'es', 'fr', 'ko']
 
 /**
  * Translation object containing all text strings for a locale

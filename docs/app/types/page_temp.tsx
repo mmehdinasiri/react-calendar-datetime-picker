@@ -358,14 +358,15 @@ const dateOnly: Day = {
               lineHeight: '1.5'
             }}
           >
-            {`type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr'
+            {`type CalendarUILocale = 'en' | 'fa' | 'de' | 'es' | 'fr' | 'ko'
 
 // Language locales:
 // 'en' - English (Latin numerals, LTR)
 // 'fa' - Persian (Persian numerals, RTL)
 // 'de' - German (Latin numerals, LTR)
 // 'es' - Spanish (Latin numerals, LTR)
-// 'fr' - French (Latin numerals, LTR)`}
+// 'fr' - French (Latin numerals, LTR)
+// 'ko' - Korean (Latin numerals, LTR)`}
           </SyntaxHighlighter>
         </div>
 

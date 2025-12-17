@@ -82,6 +82,20 @@ export const gregorianMonths = {
     'Octobre',
     'Novembre',
     'Décembre'
+  ],
+  ko: [
+    '1월',
+    '2월',
+    '3월',
+    '4월',
+    '5월',
+    '6월',
+    '7월',
+    '8월',
+    '9월',
+    '10월',
+    '11월',
+    '12월'
   ]
 }
 
@@ -127,7 +141,8 @@ const weekdayNames = {
   fa: ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'],
   de: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
   es: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-  fr: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa']
+  fr: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+  ko: ['일', '월', '화', '수', '목', '금', '토']
 }
 
 /**
@@ -208,6 +223,21 @@ const translationLabels = {
     timeTo: 'À',
     am: 'AM',
     pm: 'PM'
+  },
+  ko: {
+    today: '오늘',
+    clear: '지우기',
+    ok: '확인',
+    nextMonth: '다음',
+    previousMonth: '이전',
+    selectMonth: '월 선택',
+    selectYear: '연도 선택',
+    from: '시작',
+    to: '종료',
+    timeFrom: '시작',
+    timeTo: '종료',
+    am: '오전',
+    pm: '오후'
   }
 }
 
@@ -249,6 +279,13 @@ const presetRangesLabels = {
     last30days: '30 derniers jours',
     thisMonth: 'Ce mois',
     lastMonth: 'Mois dernier'
+  },
+  ko: {
+    yesterday: '어제',
+    last7days: '최근 7일',
+    last30days: '최근 30일',
+    thisMonth: '이번 달',
+    lastMonth: '지난 달'
   }
 }
 
@@ -264,13 +301,14 @@ const localeConfig = {
   fa: { direction: 'rtl' as const, numberSystem: 'persian' as const },
   de: { direction: 'ltr' as const, numberSystem: 'latin' as const },
   es: { direction: 'ltr' as const, numberSystem: 'latin' as const },
-  fr: { direction: 'ltr' as const, numberSystem: 'latin' as const }
+  fr: { direction: 'ltr' as const, numberSystem: 'latin' as const },
+  ko: { direction: 'ltr' as const, numberSystem: 'latin' as const }
 }
 
 /**
  * LTR (Left-to-Right) locales
  */
-export const ltrLocales: string[] = ['en', 'de', 'es', 'fr']
+export const ltrLocales: string[] = ['en', 'de', 'es', 'fr', 'ko']
 
 /**
  * RTL (Right-to-Left) locales
@@ -290,11 +328,14 @@ function createTranslation(
   locale: keyof typeof localeConfig
 ): CalendarTranslations {
   const config = localeConfig[locale]
-  const labels = translationLabels[locale]
-  const presets = presetRangesLabels[locale]
+  const labels = translationLabels[locale as keyof typeof translationLabels]
+  const presets = presetRangesLabels[locale as keyof typeof presetRangesLabels]
   // For Persian locale, default to Jalali months; for others, use Gregorian
-  const months = locale === 'fa' ? jalaliMonths.fa : gregorianMonths[locale]
-  const weekdays = weekdayNames[locale]
+  const months =
+    locale === 'fa'
+      ? jalaliMonths.fa
+      : gregorianMonths[locale as keyof typeof gregorianMonths]
+  const weekdays = weekdayNames[locale as keyof typeof weekdayNames]
 
   return {
     months,
@@ -318,7 +359,8 @@ export const translations: Record<string, CalendarTranslations> = {
   fa: createTranslation('fa'),
   de: createTranslation('de'),
   es: createTranslation('es'),
-  fr: createTranslation('fr')
+  fr: createTranslation('fr'),
+  ko: createTranslation('ko')
 }
 
 // ============================================================================
@@ -349,6 +391,11 @@ export const esTranslations: CalendarTranslations = translations.es
  * French translations
  */
 export const frTranslations: CalendarTranslations = translations.fr
+
+/**
+ * Korean translations
+ */
+export const koTranslations: CalendarTranslations = translations.ko
 
 /**
  * English transliterations of Jalali month names
