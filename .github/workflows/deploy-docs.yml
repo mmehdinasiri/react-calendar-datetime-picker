@@ -3,13 +3,14 @@ name: Deploy Documentation
 on:
   # Manual trigger from GitHub Actions UI
   workflow_dispatch:
+  # Trigger docs deployment when a release is created (after npm publish)
+  release:
+    types: [created]
   # Trigger docs deployment after npm publish completes successfully
   workflow_run:
     workflows: ['Publish to NPM']
     types:
       - completed
-    branches:
-      - main
 
 permissions:
   contents: read
@@ -25,9 +26,11 @@ jobs:
     runs-on: ubuntu-latest
     # Only run if:
     # - Manually triggered (workflow_dispatch), OR
+    # - Triggered by release (created), OR
     # - Triggered by workflow_run and the npm publish succeeded
     if: |
       github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'release' ||
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     environment:
       name: github-pages
