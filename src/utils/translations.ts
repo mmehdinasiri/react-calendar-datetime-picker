@@ -231,7 +231,7 @@ const translationLabels = {
     nextMonth: '다음',
     previousMonth: '이전',
     selectMonth: '월 선택',
-    selectYear: '년 선택',
+    selectYear: '연도 선택',
     from: '시작',
     to: '종료',
     timeFrom: '시작',
