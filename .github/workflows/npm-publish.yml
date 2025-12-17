@@ -87,3 +87,20 @@ jobs:
         run: pnpm publish --no-git-checks --access public --tag ${{ steps.npm_tag.outputs.TAG }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Commit and push version update
+        if: github.event_name == 'release'
+        run: |
+          VERSION="${{ steps.get_version.outputs.version }}"
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if [ "$CURRENT_VERSION" == "$VERSION" ]; then
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add package.json
+            if git diff --staged --quiet; then
+              echo "No changes to commit"
+            else
+              git commit -m "chore: bump version to $VERSION [skip ci]"
+              git push
+            fi
+          fi
