@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { DtPicker, DtCalendar } from 'react-calendar-datetime-picker'
+import { DtPicker, DtCalendar, Day } from 'react-calendar-datetime-picker'
 // Import the library styles
 import 'react-calendar-datetime-picker/style.css'
 import './App.css'
 
 function App() {
-  const [pickerDate, setPickerDate] = useState(null)
-  const [calendarDate, setCalendarDate] = useState(null)
+  const [pickerDate, setPickerDate] = useState<Day | null>(null)
+  const [calendarDate, setCalendarDate] = useState<Day | null>(null)
 
   return (
     <div className='app'>
@@ -39,7 +39,6 @@ function App() {
             </div>
           )}
         </section>
-
         {/* DtCalendar Example */}
         <section className='example-section'>
           <h2>DtCalendar Example</h2>
