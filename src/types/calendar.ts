@@ -469,11 +469,11 @@ export interface CalendarSelectionSingle {
    * @param jsDateValue - Native JavaScript Date object (always Gregorian)
    * @param formattedString - Formatted string based on dateFormat prop
    */
-  onChange: (
+  onChange(
     normalizedValue: Day | null,
-    jsDateValue: Date | null,
-    formattedString: string | null
-  ) => void
+    jsDateValue?: Date | null,
+    formattedString?: string | null
+  ): void
 }
 
 export interface CalendarSelectionRange {
@@ -484,11 +484,11 @@ export interface CalendarSelectionRange {
    * @param jsDateValue - Range of JavaScript Date objects (always Gregorian)
    * @param formattedString - Formatted range string (e.g., "From X to Y")
    */
-  onChange: (
+  onChange(
     normalizedValue: Range | null,
-    jsDateValue: RangeDate | null,
-    formattedString: string | null
-  ) => void
+    jsDateValue?: RangeDate | null,
+    formattedString?: string | null
+  ): void
 }
 
 export interface CalendarSelectionMulti {
@@ -499,11 +499,11 @@ export interface CalendarSelectionMulti {
    * @param jsDateValue - Array of JavaScript Date objects (always Gregorian)
    * @param formattedString - Formatted string (e.g., "3 dates selected")
    */
-  onChange: (
+  onChange(
     normalizedValue: Multi | null,
-    jsDateValue: Date[] | null,
-    formattedString: string | null
-  ) => void
+    jsDateValue?: Date[] | null,
+    formattedString?: string | null
+  ): void
 }
 
 export interface CalendarSelectionWeek {
@@ -514,9 +514,9 @@ export interface CalendarSelectionWeek {
    * @param jsDateValue - Range of JavaScript Date objects (always Gregorian)
    * @param formattedString - Formatted range string (e.g., "From X to Y")
    */
-  onChange: (
+  onChange(
     normalizedValue: Range | null,
     jsDateValue: RangeDate | null,
     formattedString: string | null
-  ) => void
+  ): void
 }

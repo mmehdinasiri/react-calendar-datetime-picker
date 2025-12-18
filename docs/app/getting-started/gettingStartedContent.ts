@@ -15,10 +15,11 @@ export const gettingStartedContent = {
       description: `The DtPicker component includes an input field that opens a calendar modal when clicked:`,
       code: `import React, { useState } from 'react'
 import { DtPicker } from 'react-calendar-datetime-picker'
+import type { Day } from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/style.css'
 
 function App() {
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState<Day | null>(null)
 
   return (
     <DtPicker
@@ -35,10 +36,11 @@ function App() {
       description: `The DtCalendar component provides a calendar without an input field:`,
       code: `import React, { useState } from 'react'
 import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { Day } from 'react-calendar-datetime-picker'
 import 'react-calendar-datetime-picker/dist/style.css'
 
 function App() {
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState<Day | null>(null)
 
   return (
     <DtCalendar

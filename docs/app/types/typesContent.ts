@@ -3,6 +3,17 @@
  * Used to render types documentation content in a structured way.
  */
 
+export interface TypeSubSection {
+  id: string
+  title: string
+  description: string
+  interfaceCode?: string
+  exampleCode?: string
+  exampleTitle?: string
+  note?: string
+  noteVariant?: 'warning' | 'info'
+}
+
 export interface TypeSection {
   id: string
   title: string
@@ -19,6 +30,7 @@ export interface TypeSection {
     text: string
   }
   linkSuffix?: string
+  subSections?: TypeSubSection[]
 }
 
 export const typesContent = {
@@ -31,78 +43,31 @@ export const typesContent = {
   },
   sections: [
     {
-      id: 'day',
-      title: 'Day',
+      id: 'calendarsystem',
+      title: 'CalendarSystem',
       description:
-        'The `Day` interface represents a single date. This is the fundamental type used throughout the library.',
-      interfaceCode: `interface Day {
-  year: number      // Year (e.g., 2025)
-  month: number     // Month (1-12, not 0-11 like JavaScript Date)
-  day: number       // Day of month (1-31)
-  hour?: number     // Optional: Hour (0-23) for time selection
-  minute?: number   // Optional: Minute (0-59) for time selection}`,
-      exampleTitle: 'Example',
-      exampleCode: `// December 2, 2025 at 3:30 PM
-const date: Day = {
-  year: 2025,
-  month: 12,
-  day: 2,
-  hour: 15,
-  minute: 30
-}
+        'The `CalendarSystem` type is what you pass to the `calendarSystem` prop in `DtPicker` and `DtCalendar`. It accepts the full names or convenient shorthand aliases.',
+      interfaceCode: `type CalendarSystem = 'gregorian' | 'jalali' | 'ge' | 'ja'
 
-// Date without time
-const dateOnly: Day = {
-  year: 2025,
-  month: 12,
-  day: 2
-}`,
-      note: "Unlike JavaScript's `Date` object where months are 0-indexed (0-11), the `Day` interface uses 1-indexed months (1-12), which is more intuitive.",
-      noteVariant: 'warning'
-    },
-    {
-      id: 'range',
-      title: 'Range',
-      description:
-        'The `Range` interface represents a date range with a start and end date. Used for range selection type.',
-      interfaceCode: `interface Range {
-  from: Day  // Start date (inclusive)
-  to: Day    // End date (inclusive)
-}`,
-      exampleTitle: 'Example',
-      exampleCode: `const dateRange: Range = {
-  from: { year: 2025, month: 12, day: 1 },
-  to: { year: 2025, month: 12, day: 15 }
-}`
-    },
-    {
-      id: 'multi',
-      title: 'Multi',
-      description:
-        "The `Multi` type represents multiple selected dates. It's an array of `Day` objects. Used for multiple date selection type.",
-      interfaceCode: `type Multi = Day[]`,
-      exampleTitle: 'Example',
-      exampleCode: `const multipleDates: Multi = [
-  { year: 2025, month: 12, day: 1 },
-  { year: 2025, month: 12, day: 5 },
-  { year: 2025, month: 12, day: 10 },
-  { year: 2025, month: 12, day: 15 }
-]`
-    },
-    {
-      id: 'week',
-      title: 'Week',
-      description:
-        'The `Week` interface represents a week selection with start and end dates. Used for week selection type.',
-      interfaceCode: `interface Week {
-  from: Day  // Start date of the week
-  to: Day    // End date of the week
-}`,
-      exampleTitle: 'Example',
-      exampleCode: `const week: Week = {
-  from: { year: 2025, month: 12, day: 1 },   // Monday
-  to: { year: 2025, month: 12, day: 7 }     // Sunday
-}`
+// Full names:
+// 'gregorian' - Gregorian calendar
+// 'jalali' - Jalali calendar (Persian)
+
+// Shorthand aliases:
+// 'ge' - Alias for 'gregorian'
+// 'ja' - Alias for 'jalali'`,
+      usageTitle: 'Example Usage',
+      usageCode: `// All of these are valid:
+<DtPicker calendarSystem="gregorian" onChange={setDate} />
+<DtPicker calendarSystem="ge" onChange={setDate} />
+<DtPicker calendarSystem="jalali" onChange={setDate} />
+<DtPicker calendarSystem="ja" onChange={setDate} />
+
+<DtCalendar calendarSystem="gregorian" onChange={setDate} />
+<DtCalendar calendarSystem="ge" onChange={setDate} />
+<DtCalendar calendarSystem="jalali" onChange={setDate} />
+<DtCalendar calendarSystem="ja" onChange={setDate} />`,
+      note: "The shorthand aliases (`'ge'` and `'ja'`) are automatically normalized to their full names internally. The library always works with `CalendarLocale` internally, but accepts `CalendarSystem` as a convenience for users."
     },
     {
       id: 'calendartype',
@@ -135,6 +100,88 @@ const dateOnly: Day = {
   // week is { from: Day, to: Day } representing the selected week or null
 }} />`,
       note: 'Each selection type returns a different value format: `single` returns a `Day` object, `range` and `week` return a `Range` object, and `multi` returns an array of `Day` objects (`Multi`).'
+    },
+    {
+      id: 'selection-types',
+      title: 'Selection Types',
+      description:
+        'These types represent the different data structures returned by the calendar based on the selection mode. They are the core types used throughout the library for date selection.',
+      subSections: [
+        {
+          id: 'day',
+          title: 'Day',
+          description:
+            'The `Day` interface represents a single date. This is the fundamental type used throughout the library.',
+          interfaceCode: `interface Day {
+  year: number      // Year (e.g., 2025)
+  month: number     // Month (1-12, not 0-11 like JavaScript Date)
+  day: number       // Day of month (1-31)
+  hour?: number     // Optional: Hour (0-23) for time selection
+  minute?: number   // Optional: Minute (0-59) for time selection}`,
+          exampleTitle: 'Example',
+          exampleCode: `// December 2, 2025 at 3:30 PM
+const date: Day = {
+  year: 2025,
+  month: 12,
+  day: 2,
+  hour: 15,
+  minute: 30
+}
+
+// Date without time
+const dateOnly: Day = {
+  year: 2025,
+  month: 12,
+  day: 2
+}`,
+          note: "Unlike JavaScript's `Date` object where months are 0-indexed (0-11), the `Day` interface uses 1-indexed months (1-12), which is more intuitive.",
+          noteVariant: 'warning'
+        },
+        {
+          id: 'range',
+          title: 'Range',
+          description:
+            'The `Range` interface represents a date range with a start and end date. Used for range selection type.',
+          interfaceCode: `interface Range {
+  from: Day  // Start date (inclusive)
+  to: Day    // End date (inclusive)
+}`,
+          exampleTitle: 'Example',
+          exampleCode: `const dateRange: Range = {
+  from: { year: 2025, month: 12, day: 1 },
+  to: { year: 2025, month: 12, day: 15 }
+}`
+        },
+        {
+          id: 'multi',
+          title: 'Multi',
+          description:
+            "The `Multi` type represents multiple selected dates. It's an array of `Day` objects. Used for multiple date selection type.",
+          interfaceCode: `type Multi = Day[]`,
+          exampleTitle: 'Example',
+          exampleCode: `const multipleDates: Multi = [
+  { year: 2025, month: 12, day: 1 },
+  { year: 2025, month: 12, day: 5 },
+  { year: 2025, month: 12, day: 10 },
+  { year: 2025, month: 12, day: 15 }
+]`
+        },
+        {
+          id: 'week',
+          title: 'Week',
+          description:
+            'The `Week` interface represents a week selection with start and end dates. Used for week selection type.',
+          interfaceCode: `interface Week {
+  from: Day  // Start date of the week
+  to: Day    // End date of the week
+}`,
+          exampleTitle: 'Example',
+          exampleCode: `const week: Week = {
+  from: { year: 2025, month: 12, day: 1 },   // Monday
+  to: { year: 2025, month: 12, day: 7 }     // Sunday
+}`
+        }
+      ]
     },
     {
       id: 'dateinput',
@@ -195,7 +242,20 @@ const timestamp: DateInput = 1735084800000`
     { year: 2025, month: 12, day: 25 }
   ]} 
 />`,
-      note: "All date formats (Day objects, Date objects, strings, timestamps) are automatically normalized to `Day` objects internally. The format you pass to `initValue` doesn't need to match the format returned by `onChange`."
+      usageTitle: 'Using null as Initial Value',
+      usageCode: `import { useState } from 'react'
+import { DtPicker } from 'react-calendar-datetime-picker'
+import type { Day, Range, Multi } from 'react-calendar-datetime-picker'
+
+// Single date selection - must type the state when using null
+const [date, setDate] = useState<Day | null>(null)
+
+// Range selection - must type the state when using null
+const [range, setRange] = useState<Range | null>(null)
+
+// Multiple dates selection - must type the state when using null
+const [dates, setDates] = useState<Multi | null>(null)`,
+      note: "All date formats (Day objects, Date objects, strings, timestamps) are automatically normalized to `Day` objects internally. The format you pass to `initValue` doesn't need to match the format returned by `onChange`. **Important:** When using `null` as the initial value with `useState`, you must explicitly type the state variable (e.g., `useState<Day | null>(null)`) because TypeScript cannot infer the type from `null` alone."
     },
     {
       id: 'calendarconstraintsinput',
@@ -240,33 +300,6 @@ const timestamp: DateInput = 1735084800000`
   }}
 />`,
       note: 'All date formats (Day objects, Date objects, strings, timestamps) are automatically normalized to `Day` objects internally. The `isDateDisabled` function receives a `Day` object and should return `true` if the date should be disabled.'
-    },
-    {
-      id: 'calendarsystem',
-      title: 'CalendarSystem',
-      description:
-        'The `CalendarSystem` type is what you pass to the `calendarSystem` prop in `DtPicker` and `DtCalendar`. It accepts the full names or convenient shorthand aliases.',
-      interfaceCode: `type CalendarSystem = 'gregorian' | 'jalali' | 'ge' | 'ja'
-
-// Full names:
-// 'gregorian' - Gregorian calendar
-// 'jalali' - Jalali calendar (Persian)
-
-// Shorthand aliases:
-// 'ge' - Alias for 'gregorian'
-// 'ja' - Alias for 'jalali'`,
-      usageTitle: 'Example Usage',
-      usageCode: `// All of these are valid:
-<DtPicker calendarSystem="gregorian" onChange={setDate} />
-<DtPicker calendarSystem="ge" onChange={setDate} />
-<DtPicker calendarSystem="jalali" onChange={setDate} />
-<DtPicker calendarSystem="ja" onChange={setDate} />
-
-<DtCalendar calendarSystem="gregorian" onChange={setDate} />
-<DtCalendar calendarSystem="ge" onChange={setDate} />
-<DtCalendar calendarSystem="jalali" onChange={setDate} />
-<DtCalendar calendarSystem="ja" onChange={setDate} />`,
-      note: "The shorthand aliases (`'ge'` and `'ja'`) are automatically normalized to their full names internally. The library always works with `CalendarLocale` internally, but accepts `CalendarSystem` as a convenience for users."
     },
     {
       id: 'presetrangesconfig',
