@@ -19,6 +19,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.release.tag_name || github.ref }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -53,7 +56,8 @@ jobs:
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           if [ "$CURRENT_VERSION" != "$VERSION" ]; then
             echo "Updating package.json version from $CURRENT_VERSION to $VERSION"
-            pnpm version $VERSION --no-git-tag-version --no-commit-hooks
+            # Use node to update package.json directly to avoid git commits
+            node -e "const fs = require('fs'); const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8')); pkg.version = '$VERSION'; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');"
           else
             echo "package.json version ($CURRENT_VERSION) already matches release tag"
           fi
