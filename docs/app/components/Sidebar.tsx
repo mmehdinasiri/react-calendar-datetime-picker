@@ -128,6 +128,7 @@ const navigation = [
     items: [
       { name: 'Installation', href: '/installation' },
       { name: 'Quick Start', href: '/getting-started' },
+      { name: 'Understanding Date Values', href: '/understanding-date-values' },
       { name: 'Playground', href: '/playground' }
     ]
   },
@@ -138,18 +139,24 @@ const navigation = [
         name: 'Data Types',
         href: '/types',
         subItems: [
-          { name: 'Day', href: '/types#day' },
-          { name: 'Range', href: '/types#range' },
-          { name: 'Multi', href: '/types#multi' },
-          { name: 'Week', href: '/types#week' },
+          { name: 'CalendarSystem', href: '/types#calendarsystem' },
           { name: 'CalendarType', href: '/types#calendartype' },
+          {
+            name: 'SelectionTypes',
+            href: '/types#selection-types',
+            subItems: [
+              { name: 'Day', href: '/types#day' },
+              { name: 'Range', href: '/types#range' },
+              { name: 'Multi', href: '/types#multi' },
+              { name: 'Week', href: '/types#week' }
+            ]
+          },
           { name: 'DateInput', href: '/types#dateinput' },
           { name: 'InitValueInput', href: '/types#initvalueinput' },
           {
             name: 'CalendarConstraintsInput',
             href: '/types#calendarconstraintsinput'
           },
-          { name: 'CalendarSystem', href: '/types#calendarsystem' },
           { name: 'PresetRangesConfig', href: '/types#presetrangesconfig' },
           { name: 'Locale', href: '/types#locale' },
           { name: 'CalendarListStyle', href: '/types#calendarliststyle' }
@@ -361,13 +368,15 @@ const navigation = [
 interface CollapsibleSectionProps {
   section: {
     title: string
-    items: Array<{
-      name: string
-      href: string
-      subItems?: Array<{ name: string; href: string }>
-    }>
+    items: SidebarItem[]
   }
   pathname: string
+}
+
+interface SidebarItem {
+  name: string
+  href: string
+  subItems?: SidebarItem[]
 }
 
 function CollapsibleItem({
@@ -376,11 +385,7 @@ function CollapsibleItem({
   searchQuery,
   onLinkClick
 }: {
-  item: {
-    name: string
-    href: string
-    subItems?: Array<{ name: string; href: string }>
-  }
+  item: SidebarItem
   pathname: string
   searchQuery: string
   onLinkClick?: () => void
@@ -389,15 +394,25 @@ function CollapsibleItem({
   const hasSubItems = item.subItems && item.subItems.length > 0
   const [isOpen, setIsOpen] = useState(false)
 
-  // Filter sub-items based on search query
+  // Filter sub-items based on search query (recursively check nested subItems)
   const filteredSubItems = useMemo(() => {
     if (!hasSubItems) return []
     if (!searchQuery.trim()) return item.subItems!
 
     const query = searchQuery.toLowerCase().trim()
-    return item.subItems!.filter((subItem) =>
-      subItem.name.toLowerCase().includes(query)
-    )
+    return item.subItems!.filter((subItem) => {
+      // Check if subItem name matches
+      if (subItem.name.toLowerCase().includes(query)) return true
+
+      // Check if any nested subItems match
+      if (subItem.subItems) {
+        return subItem.subItems.some((nestedSubItem) =>
+          nestedSubItem.name.toLowerCase().includes(query)
+        )
+      }
+
+      return false
+    })
   }, [item.subItems, searchQuery, hasSubItems])
 
   // Auto-open if search query matches sub-items
@@ -509,6 +524,21 @@ function CollapsibleItem({
         {(isOpen || shouldAutoOpen) && filteredSubItems.length > 0 && (
           <ul className='ml-4 mt-1 space-y-1 border-l border-border pl-2'>
             {filteredSubItems.map((subItem) => {
+              // If subItem has its own subItems, render it as a collapsible item
+              if (subItem.subItems && subItem.subItems.length > 0) {
+                return (
+                  <li key={subItem.name}>
+                    <CollapsibleItem
+                      item={subItem}
+                      pathname={pathname}
+                      searchQuery={searchQuery}
+                      onLinkClick={onLinkClick}
+                    />
+                  </li>
+                )
+              }
+
+              // Otherwise, render as a simple link
               // Highlight matching text in sub-items
               const subItemName = subItem.name
               const query = searchQuery.toLowerCase().trim()

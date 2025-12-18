@@ -64,6 +64,54 @@ export default function Types() {
               </>
             )}
 
+            {section.subSections && (
+              <>
+                {section.subSections.map((subSection) => (
+                  <div key={subSection.id}>
+                    <h3 id={subSection.id}>{subSection.title}</h3>
+                    <p>{subSection.description}</p>
+
+                    {subSection.interfaceCode && (
+                      <CodeBlock
+                        language='typescript'
+                        code={subSection.interfaceCode}
+                        className='mb-4'
+                      />
+                    )}
+
+                    {subSection.exampleTitle && subSection.exampleCode && (
+                      <>
+                        <h4>{subSection.exampleTitle}</h4>
+                        <CodeBlock
+                          language='typescript'
+                          code={subSection.exampleCode}
+                          className='mb-4'
+                        />
+                      </>
+                    )}
+
+                    {subSection.note && (
+                      <>
+                        {subSection.noteVariant === 'warning' ? (
+                          <InfoBox variant='warning'>
+                            <p className='text-sm text-gray-200'>
+                              <strong>Note:</strong> {subSection.note}
+                            </p>
+                          </InfoBox>
+                        ) : (
+                          <Note>
+                            <p className='text-sm text-gray-200'>
+                              <strong>Note:</strong> {subSection.note}
+                            </p>
+                          </Note>
+                        )}
+                      </>
+                    )}
+                  </div>
+                ))}
+              </>
+            )}
+
             {section.note && (
               <>
                 {section.noteVariant === 'warning' ? (

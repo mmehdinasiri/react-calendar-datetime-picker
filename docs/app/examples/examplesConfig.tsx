@@ -160,10 +160,11 @@ export const examples: ExamplesConfig = {
       },
       wrapper: 'calendar-container',
       customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { Day } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState<Day | null>(null)
 
   return (
     <DtCalendar
@@ -187,10 +188,11 @@ function App() {
       },
       wrapper: 'calendar-container',
       customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { Day } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState<Day | null>(null)
 
   return (
     <DtCalendar
@@ -258,10 +260,11 @@ function App() {
       },
       wrapper: 'calendar-container',
       customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { Day } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState<Day | null>(null)
 
   return (
     <DtCalendar
@@ -588,9 +591,10 @@ function App() {
       wrapper: 'calendar-container',
       showConsoleLog: false,
       customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { Day } from 'react-calendar-datetime-picker'
 
 function App() {
-  const [selectedDate, setSelectedDate] = React.useState(null)
+  const [selectedDate, setSelectedDate] = React.useState<Day | null>(null)
   
   // Get current month constraints
   const now = new Date()
@@ -719,10 +723,11 @@ function App() {
       },
       wrapper: 'calendar-container',
       customCode: `import { DtCalendar, getToday, subtractDays, addDays } from 'react-calendar-datetime-picker'
+import type { Range } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
-  const [range, setRange] = useState(null)
+  const [range, setRange] = useState<Range | null>(null)
 
   return (
     <DtCalendar
@@ -899,12 +904,13 @@ function App() {
       wrapper: 'calendar-container',
       showConsoleLog: true,
       customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { Day } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
-  const [date, setDate] = useState(null)
-  const [jsDate, setJsDate] = useState(null)
-  const [formatted, setFormatted] = useState(null)
+  const [date, setDate] = useState<Day | null>(null)
+  const [jsDate, setJsDate] = useState<Date | null>(null)
+  const [formatted, setFormatted] = useState<string | null>(null)
 
   const handleDateChange = (normalizedValue, jsDate, formattedString) => {
     setDate(normalizedValue)      // { year: 2025, month: 12, day: 2 }
@@ -935,12 +941,13 @@ function App() {
       wrapper: 'calendar-container',
       showConsoleLog: true,
       customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { Range, RangeDate } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
-  const [range, setRange] = useState(null)
-  const [jsDateRange, setJsDateRange] = useState(null)
-  const [formatted, setFormatted] = useState(null)
+  const [range, setRange] = useState<Range | null>(null)
+  const [jsDateRange, setJsDateRange] = useState<RangeDate | null>(null)
+  const [formatted, setFormatted] = useState<string | null>(null)
 
   const handleRangeChange = (normalizedValue, jsDate, formattedString) => {
     setRange(normalizedValue)      // { from: Day, to: Day }
@@ -972,12 +979,13 @@ function App() {
       wrapper: 'calendar-container',
       showConsoleLog: true,
       customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { Multi } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
-  const [dates, setDates] = useState(null)
-  const [jsDates, setJsDates] = useState(null)
-  const [formatted, setFormatted] = useState(null)
+  const [dates, setDates] = useState<Multi | null>(null)
+  const [jsDates, setJsDates] = useState<Date[] | null>(null)
+  const [formatted, setFormatted] = useState<string | null>(null)
 
   const handleMultiChange = (normalizedValue, jsDate, formattedString) => {
     setDates(normalizedValue)      // [Day, Day, ...]
@@ -1008,10 +1016,11 @@ function App() {
       wrapper: 'calendar-container',
       showConsoleLog: true,
       customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { Day } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState<Day | null>(null)
 
   return (
     <DtCalendar
@@ -1037,10 +1046,11 @@ function App() {
       wrapper: 'calendar-container',
       showConsoleLog: true,
       customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { Range } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
-  const [range, setRange] = useState(null)
+  const [range, setRange] = useState<Range | null>(null)
 
   return (
     <DtCalendar
@@ -1073,10 +1083,11 @@ function App() {
       wrapper: 'calendar-container',
       showConsoleLog: true,
       customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+import type { Day } from 'react-calendar-datetime-picker'
 import React, { useState } from 'react'
 
 function App() {
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState<Day | null>(null)
 
   return (
     <DtCalendar
@@ -1638,10 +1649,10 @@ function App() {
       wrapper: 'picker-container',
       showConsoleLog: true,
       customCode: `import { DtPicker } from 'react-calendar-datetime-picker'
-import type { CalendarError } from 'react-calendar-datetime-picker'
+import type { CalendarError, Day } from 'react-calendar-datetime-picker'
 
 function App() {
-  const [date, setDate] = React.useState(null)
+  const [date, setDate] = React.useState<Day | null>(null)
   const [errors, setErrors] = React.useState<CalendarError[]>([])
 
   const handleError = (errors: CalendarError[]) => {
