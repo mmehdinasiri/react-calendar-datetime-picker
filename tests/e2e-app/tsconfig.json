@@ -12,21 +12,10 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "types": ["vite/client", "vitest/globals"]
+    "types": ["vite/client"]
   },
-  "include": ["src", "tests"],
-  "exclude": ["node_modules", "dist", "examples", "tests/e2e-app"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

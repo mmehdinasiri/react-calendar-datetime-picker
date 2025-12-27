@@ -8,18 +8,17 @@ test.describe('DtPicker Component', () => {
 
   test.describe('Basic Functionality', () => {
     test('should render DtPicker component', async ({ page }) => {
-      const pickerSection = page.locator('section.example-section').first()
+      const pickerSection = page.locator('[data-testid="dtpicker-basic-section"]')
       await expect(pickerSection).toBeVisible()
-      await expect(pickerSection.locator('h2')).toContainText(
-        'DtPicker Example'
+      await expect(pickerSection.locator('[data-testid="dtpicker-basic-title"]')).toContainText(
+        'DtPicker Basic'
       )
     })
 
     test('should display placeholder text', async ({ page }) => {
       const pickerInput = page
-        .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
-        )
+        .locator('[data-testid="dtpicker-basic-container"]')
+        .locator('input[aria-label*="Select"], input[placeholder*="Select"]')
         .first()
       await expect(pickerInput).toBeVisible()
       await expect(pickerInput).toHaveAttribute('placeholder', /Select/)
@@ -29,9 +28,8 @@ test.describe('DtPicker Component', () => {
       page
     }) => {
       const pickerInput = page
-        .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
-        )
+        .locator('[data-testid="dtpicker-basic-container"]')
+        .locator('input[aria-label*="Select"], input[placeholder*="Select"]')
         .first()
       await pickerInput.click()
 
@@ -43,9 +41,8 @@ test.describe('DtPicker Component', () => {
       page
     }) => {
       const pickerInput = page
-        .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
-        )
+        .locator('[data-testid="dtpicker-basic-container"]')
+        .locator('input[aria-label*="Select"], input[placeholder*="Select"]')
         .first()
       await pickerInput.focus()
       await pickerInput.press('Enter')
@@ -59,7 +56,7 @@ test.describe('DtPicker Component', () => {
     }) => {
       const pickerInput = page
         .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
+          '[data-testid="dtpicker-basic-container"] input[aria-label*="Select"], [data-testid="dtpicker-basic-container"] input[placeholder*="Select"]'
         )
         .first()
       await pickerInput.click()
@@ -74,9 +71,8 @@ test.describe('DtPicker Component', () => {
 
     test('should display selected date in result display', async ({ page }) => {
       const pickerInput = page
-        .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
-        )
+        .locator('[data-testid="dtpicker-basic-container"]')
+        .locator('input[aria-label*="Select"], input[placeholder*="Select"]')
         .first()
       await pickerInput.click()
 
@@ -101,10 +97,10 @@ test.describe('DtPicker Component', () => {
 
       // Check if result display shows the selected date
       const resultDisplay = page
-        .locator('.result-display')
+        .locator('[data-testid="dtpicker-basic-result"], .test-result')
         .filter({ hasText: 'Selected Date' })
         .first()
-      await expect(resultDisplay).toBeVisible()
+      await expect(resultDisplay).toBeVisible({ timeout: 2000 })
       await expect(resultDisplay).toContainText('Selected Date')
     })
   })
@@ -116,7 +112,7 @@ test.describe('DtPicker Component', () => {
       // The example app has clearBtn={true}
       const pickerInput = page
         .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
+          '[data-testid="dtpicker-basic-container"] input[aria-label*="Select"], [data-testid="dtpicker-basic-container"] input[placeholder*="Select"]'
         )
         .first()
       await pickerInput.click()
@@ -146,7 +142,7 @@ test.describe('DtPicker Component', () => {
     }) => {
       const pickerInput = page
         .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
+          '[data-testid="dtpicker-basic-container"] input[aria-label*="Select"], [data-testid="dtpicker-basic-container"] input[placeholder*="Select"]'
         )
         .first()
 
@@ -178,7 +174,7 @@ test.describe('DtPicker Component', () => {
     test('should navigate to previous month', async ({ page }) => {
       const pickerInput = page
         .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
+          '[data-testid="dtpicker-basic-container"] input[aria-label*="Select"], [data-testid="dtpicker-basic-container"] input[placeholder*="Select"]'
         )
         .first()
       await pickerInput.click()
@@ -205,7 +201,7 @@ test.describe('DtPicker Component', () => {
     test('should navigate to next month', async ({ page }) => {
       const pickerInput = page
         .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
+          '[data-testid="dtpicker-basic-container"] input[aria-label*="Select"], [data-testid="dtpicker-basic-container"] input[placeholder*="Select"]'
         )
         .first()
       await pickerInput.click()
@@ -232,7 +228,7 @@ test.describe('DtPicker Component', () => {
     test('should switch to month view', async ({ page }) => {
       const pickerInput = page
         .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
+          '[data-testid="dtpicker-basic-container"] input[aria-label*="Select"], [data-testid="dtpicker-basic-container"] input[placeholder*="Select"]'
         )
         .first()
       await pickerInput.click()
@@ -252,7 +248,7 @@ test.describe('DtPicker Component', () => {
     test('should switch to year view', async ({ page }) => {
       const pickerInput = page
         .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
+          '[data-testid="dtpicker-basic-container"] input[aria-label*="Select"], [data-testid="dtpicker-basic-container"] input[placeholder*="Select"]'
         )
         .first()
       await pickerInput.click()
@@ -283,7 +279,7 @@ test.describe('DtPicker Component', () => {
     test('should select a date and update input value', async ({ page }) => {
       const pickerInput = page
         .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
+          '[data-testid="dtpicker-basic-container"] input[aria-label*="Select"], [data-testid="dtpicker-basic-container"] input[placeholder*="Select"]'
         )
         .first()
       await pickerInput.click()
@@ -311,7 +307,7 @@ test.describe('DtPicker Component', () => {
     test('should highlight selected date', async ({ page }) => {
       const pickerInput = page
         .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
+          '[data-testid="dtpicker-basic-container"] input[aria-label*="Select"], [data-testid="dtpicker-basic-container"] input[placeholder*="Select"]'
         )
         .first()
       await pickerInput.click()
@@ -344,7 +340,7 @@ test.describe('DtPicker Component', () => {
     test('should have proper ARIA attributes', async ({ page }) => {
       const pickerInput = page
         .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
+          '[data-testid="dtpicker-basic-container"] input[aria-label*="Select"], [data-testid="dtpicker-basic-container"] input[placeholder*="Select"]'
         )
         .first()
       await pickerInput.click()
@@ -362,7 +358,7 @@ test.describe('DtPicker Component', () => {
     test('should support keyboard navigation', async ({ page }) => {
       const pickerInput = page
         .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
+          '[data-testid="dtpicker-basic-container"] input[aria-label*="Select"], [data-testid="dtpicker-basic-container"] input[placeholder*="Select"]'
         )
         .first()
       await pickerInput.focus()

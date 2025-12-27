@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test'
  * Example E2E test to verify Playwright setup is working correctly
  */
 test.describe('Example E2E Test Suite', () => {
-  test('should load the examples page', async ({ page }) => {
+  test('should load the test app page', async ({ page }) => {
     await page.goto('/')
 
     // Wait for the page to load
@@ -14,12 +14,12 @@ test.describe('Example E2E Test Suite', () => {
     const header = page.locator('h1').first()
     await expect(header).toBeVisible()
 
-    // Check if header contains expected text
-    await expect(header).toContainText('React Calendar DateTime Picker')
+    // Check if header contains expected text (test app header)
+    await expect(header).toContainText('E2E Test App')
   })
 
   test('should have a working page title', async ({ page }) => {
     await page.goto('/')
-    await expect(page).toHaveTitle(/React Calendar/i)
+    await expect(page).toHaveTitle(/E2E Test App/i)
   })
 })

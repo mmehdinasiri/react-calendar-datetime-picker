@@ -11,7 +11,7 @@ test.describe('Calendar Features', () => {
       page
     }) => {
       // DtCalendar has todayBtn={true}
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const todayButton = calendarSection
         .locator('button[aria-label*="today" i], button[aria-label*="Today" i]')
         .first()
@@ -30,7 +30,7 @@ test.describe('Calendar Features', () => {
 
   test.describe('Weekend Highlighting', () => {
     test('should display weekend days in calendar', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-gregorian-section"]')
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
       await expect(calendarGrid).toBeVisible()
 
@@ -47,7 +47,7 @@ test.describe('Calendar Features', () => {
     test('should disable dates outside constraints', async ({ page }) => {
       // This test would require the example app to have constraints
       // For now, we'll verify that disabled dates can be identified
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
       await expect(calendarGrid).toBeVisible()
 
@@ -64,7 +64,7 @@ test.describe('Calendar Features', () => {
 
   test.describe('Month Navigation', () => {
     test('should navigate through multiple months', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
 
       // Navigate forward 3 months
       for (let i = 0; i < 3; i++) {
@@ -94,7 +94,7 @@ test.describe('Calendar Features', () => {
     test('should switch between calendar, month, and year views', async ({
       page
     }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
 
       // Start in calendar view
       let calendarGrid = calendarSection.locator('[role="grid"]').first()
@@ -151,7 +151,7 @@ test.describe('Calendar Features', () => {
 
   test.describe('Keyboard Navigation', () => {
     test('should support keyboard navigation in calendar', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
       await expect(calendarGrid).toBeVisible()
 
@@ -178,7 +178,7 @@ test.describe('Calendar Features', () => {
     test('should update result display when date is selected', async ({
       page
     }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
 
       // Select a date
@@ -191,14 +191,14 @@ test.describe('Calendar Features', () => {
 
       // Check if result display appears
       const resultDisplay = calendarSection
-        .locator('.result-display')
+        .locator('[data-testid="dtcalendar-basic-result"], .test-result')
         .filter({ hasText: 'Selected Date' })
-      await expect(resultDisplay).toBeVisible({ timeout: 1000 })
+      await expect(resultDisplay).toBeVisible({ timeout: 2000 })
       await expect(resultDisplay).toContainText('Selected Date')
     })
 
     test('should display date in correct format', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
 
       // Select a date
@@ -211,9 +211,9 @@ test.describe('Calendar Features', () => {
 
       // Result should contain valid JSON structure
       const resultDisplay = calendarSection
-        .locator('.result-display')
+        .locator('[data-testid="dtcalendar-basic-result"], .test-result')
         .filter({ hasText: 'Selected Date' })
-      await expect(resultDisplay).toBeVisible({ timeout: 1000 })
+      await expect(resultDisplay).toBeVisible({ timeout: 2000 })
 
       const resultText = await resultDisplay.textContent()
       expect(resultText).toContain('Selected Date')

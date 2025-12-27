@@ -8,11 +8,10 @@ test.describe('Calendar Systems', () => {
 
   test.describe('Jalali Calendar System', () => {
     test('should render Jalali calendar correctly', async ({ page }) => {
-      // The example app uses calendarSystem='jalali' for DtPicker
+      // Use the Jalali DtPicker test scenario
       const pickerInput = page
-        .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
-        )
+        .locator('[data-testid="dtpicker-jalali-container"]')
+        .locator('input[aria-label*="Select"], input[placeholder*="Select"]')
         .first()
       await pickerInput.click()
 
@@ -29,9 +28,8 @@ test.describe('Calendar Systems', () => {
 
     test('should display Jalali month names', async ({ page }) => {
       const pickerInput = page
-        .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
-        )
+        .locator('[data-testid="dtpicker-jalali-container"]')
+        .locator('input[aria-label*="Select"], input[placeholder*="Select"]')
         .first()
       await pickerInput.click()
 
@@ -45,9 +43,8 @@ test.describe('Calendar Systems', () => {
 
     test('should navigate Jalali months correctly', async ({ page }) => {
       const pickerInput = page
-        .locator(
-          'input[aria-label="Select date"], input[placeholder*="Select"]'
-        )
+        .locator('[data-testid="dtpicker-jalali-container"]')
+        .locator('input[aria-label*="Select"], input[placeholder*="Select"]')
         .first()
       await pickerInput.click()
 
@@ -74,7 +71,9 @@ test.describe('Calendar Systems', () => {
   test.describe('Gregorian Calendar System', () => {
     test('should render Gregorian calendar correctly', async ({ page }) => {
       // DtCalendar uses default gregorian
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator(
+        '[data-testid="dtcalendar-basic-section"]'
+      )
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
       await expect(calendarGrid).toBeVisible()
 
@@ -88,7 +87,9 @@ test.describe('Calendar Systems', () => {
     })
 
     test('should display Gregorian month names', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator(
+        '[data-testid="dtcalendar-basic-section"]'
+      )
       const monthYearButton = calendarSection
         .locator('.calendar-month-btn')
         .first()
@@ -101,8 +102,12 @@ test.describe('Calendar Systems', () => {
       page
     }) => {
       // Page should have both Jalali (DtPicker) and Gregorian (DtCalendar)
-      const pickerSection = page.locator('section.example-section').first()
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const pickerSection = page.locator(
+        '[data-testid="dtpicker-basic-section"]'
+      )
+      const calendarSection = page.locator(
+        '[data-testid="dtcalendar-basic-section"]'
+      )
 
       await expect(pickerSection).toBeVisible()
       await expect(calendarSection).toBeVisible()

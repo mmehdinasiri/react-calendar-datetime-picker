@@ -8,21 +8,21 @@ test.describe('DtCalendar Component', () => {
 
   test.describe('Basic Functionality', () => {
     test('should render DtCalendar component', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       await expect(calendarSection).toBeVisible()
-      await expect(calendarSection.locator('h2')).toContainText(
-        'DtCalendar Example'
+      await expect(calendarSection.locator('[data-testid="dtcalendar-basic-title"]')).toContainText(
+        'DtCalendar Basic'
       )
     })
 
     test('should display calendar grid', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
       await expect(calendarGrid).toBeVisible()
     })
 
     test('should display month and year header', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const monthYearButton = calendarSection
         .locator('.calendar-month-btn')
         .first()
@@ -30,7 +30,7 @@ test.describe('DtCalendar Component', () => {
     })
 
     test('should display weekday headers', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const weekdayHeaders = calendarSection.locator(
         '[role="row"] [role="columnheader"]'
       )
@@ -41,7 +41,7 @@ test.describe('DtCalendar Component', () => {
 
   test.describe('Date Selection', () => {
     test('should select a date when clicked', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
 
       // Select a date
@@ -54,13 +54,13 @@ test.describe('DtCalendar Component', () => {
 
       // Check if result display shows the selected date
       const resultDisplay = calendarSection
-        .locator('.result-display')
+        .locator('[data-testid="dtcalendar-basic-result"], .test-result')
         .filter({ hasText: 'Selected Date' })
       await expect(resultDisplay).toBeVisible({ timeout: 1000 })
     })
 
     test('should highlight selected date', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
 
       // Select a date
@@ -81,7 +81,7 @@ test.describe('DtCalendar Component', () => {
 
   test.describe('Calendar Navigation', () => {
     test('should navigate to previous month', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
 
       // Get current month label
       const monthLabel = calendarSection.locator('.calendar-month-btn').first()
@@ -102,7 +102,7 @@ test.describe('DtCalendar Component', () => {
     })
 
     test('should navigate to next month', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
 
       // Get current month label
       const monthLabel = calendarSection.locator('.calendar-month-btn').first()
@@ -123,7 +123,7 @@ test.describe('DtCalendar Component', () => {
     })
 
     test('should switch to month view', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
 
       // Click on month/year header to switch to month view
       const monthYearButton = calendarSection
@@ -139,7 +139,7 @@ test.describe('DtCalendar Component', () => {
     })
 
     test('should switch to year view', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
 
       // Click on month button to switch to month view first
       const monthButton = calendarSection.locator('.calendar-month-btn').first()
@@ -160,7 +160,7 @@ test.describe('DtCalendar Component', () => {
     })
 
     test('should select a month from month view', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
 
       // Switch to month view
       const monthYearButton = calendarSection
@@ -187,7 +187,7 @@ test.describe('DtCalendar Component', () => {
     })
 
     test('should select a year from year view', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
 
       // Switch to month view first
       const monthButton = calendarSection.locator('.calendar-month-btn').first()
@@ -225,7 +225,7 @@ test.describe('DtCalendar Component', () => {
     test('should navigate to today when today button is clicked', async ({
       page
     }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
 
       // Navigate to a different month first
       const nextButton = calendarSection
@@ -250,14 +250,14 @@ test.describe('DtCalendar Component', () => {
 
   test.describe('Accessibility', () => {
     test('should have proper ARIA attributes', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
       await expect(calendarGrid).toBeVisible()
       await expect(calendarGrid).toHaveAttribute('aria-label', /.+/)
     })
 
     test('should have accessible day cells', async ({ page }) => {
-      const calendarSection = page.locator('section.example-section').nth(1)
+      const calendarSection = page.locator('[data-testid="dtcalendar-basic-section"]')
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
       const dayCells = calendarGrid.locator(
         'button.calendar-day, [role="gridcell"]'

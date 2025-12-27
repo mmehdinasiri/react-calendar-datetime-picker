@@ -95,11 +95,20 @@ export async function switchToYearView(container: Locator): Promise<Locator> {
 
 /**
  * Get the picker input element
+ * Supports both new test IDs and legacy selectors
  */
-export async function getPickerInput(page: Page): Promise<Locator> {
-  return page
-    .locator('input[aria-label="Select date"], input[placeholder*="Select"]')
-    .first()
+export async function getPickerInput(
+  page: Page,
+  testId: string = 'dtpicker-basic-container'
+): Promise<Locator> {
+  // Try test ID first (new test app)
+  const testIdContainer = page.locator(`[data-testid="${testId}"]`)
+  const testIdInput = testIdContainer.locator('input[aria-label*="Select"], input[placeholder*="Select"]').first()
+  
+  // Fallback to legacy selector for backward compatibility
+  return testIdInput.or(
+    page.locator('input[aria-label="Select date"], input[placeholder*="Select"]').first()
+  )
 }
 
 /**
@@ -112,20 +121,61 @@ export async function openPickerModal(page: Page): Promise<Locator> {
 }
 
 /**
- * Get calendar section by index
+ * Get calendar section by test ID
+ * Supports both new test IDs and legacy selectors for backward compatibility
  */
-export function getCalendarSection(page: Page, index: number = 0): Locator {
-  return page.locator('section.example-section').nth(index)
+export function getCalendarSection(
+  page: Page,
+  testId: string = 'dtpicker-basic-section'
+): Locator {
+  // Try test ID first (new test app)
+  const testIdSelector = `[data-testid="${testId}"]`
+  const testIdSection = page.locator(testIdSelector)
+  
+  // Fallback to legacy selector for backward compatibility
+  // This allows tests to work with both old and new app structure
+  return testIdSection.or(page.locator('section.test-section').first())
+}
+
+/**
+ * Get DtPicker section by type
+ */
+export function getDtPickerSection(page: Page, type: 'basic' | 'gregorian' | 'jalali' | 'range' = 'basic'): Locator {
+  return page.locator(`[data-testid="dtpicker-${type}-section"]`)
+}
+
+/**
+ * Get DtCalendar section by type
+ */
+export function getDtCalendarSection(page: Page, type: 'basic' | 'gregorian' | 'jalali' = 'basic'): Locator {
+  return page.locator(`[data-testid="dtcalendar-${type}-section"]`)
+}
+
+/**
+ * Get picker input by test ID
+ */
+export function getPickerInputByTestId(page: Page, testId: string = 'dtpicker-basic'): Locator {
+  const container = page.locator(`[data-testid="${testId}"]`)
+  return container.locator('input[aria-label*="Select"], input[placeholder*="Select"]').first()
 }
 
 /**
  * Wait for result display to show selected date
+ * Supports both new test IDs and legacy selectors
  */
 export async function waitForResultDisplay(
-  container: Locator
+  container: Locator,
+  testId?: string
 ): Promise<Locator> {
+  if (testId) {
+    const resultDisplay = container.locator(`[data-testid="${testId}"]`)
+    await resultDisplay.waitFor({ state: 'visible', timeout: 2000 })
+    return resultDisplay
+  }
+  
+  // Legacy selector for backward compatibility
   const resultDisplay = container
-    .locator('.result-display')
+    .locator('.test-result, .result-display')
     .filter({ hasText: 'Selected Date' })
   await resultDisplay.waitFor({ state: 'visible', timeout: 2000 })
   return resultDisplay
