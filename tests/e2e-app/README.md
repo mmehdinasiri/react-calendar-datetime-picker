@@ -57,6 +57,7 @@ pnpm dev
 ⚠️ **DO NOT** modify this app for development purposes. Use `examples/` for development and experimentation.
 
 ✅ This app should only be modified to:
+
 - Add new test scenarios
 - Fix test-related issues
 - Improve test reliability
@@ -67,4 +68,3 @@ pnpm dev
 - **E2E test app**: Port 5005 (for testing)
 
 This separation ensures tests and development don't interfere with each other.
-

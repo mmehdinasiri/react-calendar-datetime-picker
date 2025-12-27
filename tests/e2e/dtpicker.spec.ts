@@ -8,11 +8,13 @@ test.describe('DtPicker Component', () => {
 
   test.describe('Basic Functionality', () => {
     test('should render DtPicker component', async ({ page }) => {
-      const pickerSection = page.locator('[data-testid="dtpicker-basic-section"]')
-      await expect(pickerSection).toBeVisible()
-      await expect(pickerSection.locator('[data-testid="dtpicker-basic-title"]')).toContainText(
-        'DtPicker Basic'
+      const pickerSection = page.locator(
+        '[data-testid="dtpicker-basic-section"]'
       )
+      await expect(pickerSection).toBeVisible()
+      await expect(
+        pickerSection.locator('[data-testid="dtpicker-basic-title"]')
+      ).toContainText('DtPicker Basic')
     })
 
     test('should display placeholder text', async ({ page }) => {

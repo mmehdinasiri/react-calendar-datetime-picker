@@ -103,11 +103,15 @@ export async function getPickerInput(
 ): Promise<Locator> {
   // Try test ID first (new test app)
   const testIdContainer = page.locator(`[data-testid="${testId}"]`)
-  const testIdInput = testIdContainer.locator('input[aria-label*="Select"], input[placeholder*="Select"]').first()
-  
+  const testIdInput = testIdContainer
+    .locator('input[aria-label*="Select"], input[placeholder*="Select"]')
+    .first()
+
   // Fallback to legacy selector for backward compatibility
   return testIdInput.or(
-    page.locator('input[aria-label="Select date"], input[placeholder*="Select"]').first()
+    page
+      .locator('input[aria-label="Select date"], input[placeholder*="Select"]')
+      .first()
   )
 }
 
@@ -131,7 +135,7 @@ export function getCalendarSection(
   // Try test ID first (new test app)
   const testIdSelector = `[data-testid="${testId}"]`
   const testIdSection = page.locator(testIdSelector)
-  
+
   // Fallback to legacy selector for backward compatibility
   // This allows tests to work with both old and new app structure
   return testIdSection.or(page.locator('section.test-section').first())
@@ -140,23 +144,34 @@ export function getCalendarSection(
 /**
  * Get DtPicker section by type
  */
-export function getDtPickerSection(page: Page, type: 'basic' | 'gregorian' | 'jalali' | 'range' = 'basic'): Locator {
+export function getDtPickerSection(
+  page: Page,
+  type: 'basic' | 'gregorian' | 'jalali' | 'range' = 'basic'
+): Locator {
   return page.locator(`[data-testid="dtpicker-${type}-section"]`)
 }
 
 /**
  * Get DtCalendar section by type
  */
-export function getDtCalendarSection(page: Page, type: 'basic' | 'gregorian' | 'jalali' = 'basic'): Locator {
+export function getDtCalendarSection(
+  page: Page,
+  type: 'basic' | 'gregorian' | 'jalali' = 'basic'
+): Locator {
   return page.locator(`[data-testid="dtcalendar-${type}-section"]`)
 }
 
 /**
  * Get picker input by test ID
  */
-export function getPickerInputByTestId(page: Page, testId: string = 'dtpicker-basic'): Locator {
+export function getPickerInputByTestId(
+  page: Page,
+  testId: string = 'dtpicker-basic'
+): Locator {
   const container = page.locator(`[data-testid="${testId}"]`)
-  return container.locator('input[aria-label*="Select"], input[placeholder*="Select"]').first()
+  return container
+    .locator('input[aria-label*="Select"], input[placeholder*="Select"]')
+    .first()
 }
 
 /**
@@ -172,7 +187,7 @@ export async function waitForResultDisplay(
     await resultDisplay.waitFor({ state: 'visible', timeout: 2000 })
     return resultDisplay
   }
-  
+
   // Legacy selector for backward compatibility
   const resultDisplay = container
     .locator('.test-result, .result-display')

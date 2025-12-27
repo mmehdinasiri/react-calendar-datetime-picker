@@ -31,7 +31,10 @@ test.describe('Integration Tests', () => {
 
       // Check result display
       const pickerSection = getCalendarSection(page, 'dtpicker-basic-section')
-      const resultDisplay = await waitForResultDisplay(pickerSection, 'dtpicker-basic-result')
+      const resultDisplay = await waitForResultDisplay(
+        pickerSection,
+        'dtpicker-basic-result'
+      )
       await expect(resultDisplay).toBeVisible()
     })
 
@@ -57,7 +60,10 @@ test.describe('Integration Tests', () => {
     test('should handle view switching and date selection', async ({
       page
     }) => {
-      const calendarSection = getCalendarSection(page, 'dtcalendar-basic-section')
+      const calendarSection = getCalendarSection(
+        page,
+        'dtcalendar-basic-section'
+      )
 
       // Switch to year view
       const yearGrid = await switchToYearView(calendarSection)
@@ -106,14 +112,23 @@ test.describe('Integration Tests', () => {
       await expect(pickerModal).not.toBeVisible({ timeout: 2000 })
 
       // Test DtCalendar
-      const calendarSection = getCalendarSection(page, 'dtcalendar-basic-section')
+      const calendarSection = getCalendarSection(
+        page,
+        'dtcalendar-basic-section'
+      )
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
       await expect(calendarGrid).toBeVisible()
       await selectDay(calendarGrid)
 
       // Both should have results
-      const pickerResult = await waitForResultDisplay(pickerSection, 'dtpicker-basic-result')
-      const calendarResult = await waitForResultDisplay(calendarSection, 'dtcalendar-basic-result')
+      const pickerResult = await waitForResultDisplay(
+        pickerSection,
+        'dtpicker-basic-result'
+      )
+      const calendarResult = await waitForResultDisplay(
+        calendarSection,
+        'dtcalendar-basic-result'
+      )
 
       await expect(pickerResult).toBeVisible()
       await expect(calendarResult).toBeVisible()
@@ -130,13 +145,22 @@ test.describe('Integration Tests', () => {
       await expect(pickerModal).not.toBeVisible({ timeout: 2000 })
 
       // Select different date in DtCalendar
-      const calendarSection = getCalendarSection(page, 'dtcalendar-basic-section')
+      const calendarSection = getCalendarSection(
+        page,
+        'dtcalendar-basic-section'
+      )
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
       await selectDay(calendarGrid, 10) // Select 11th day
 
       // Both should show different results
-      const pickerResult = await waitForResultDisplay(pickerSection, 'dtpicker-basic-result')
-      const calendarResult = await waitForResultDisplay(calendarSection, 'dtcalendar-basic-result')
+      const pickerResult = await waitForResultDisplay(
+        pickerSection,
+        'dtpicker-basic-result'
+      )
+      const calendarResult = await waitForResultDisplay(
+        calendarSection,
+        'dtcalendar-basic-result'
+      )
 
       const pickerText = await pickerResult.textContent()
       const calendarText = await calendarResult.textContent()
@@ -169,7 +193,10 @@ test.describe('Integration Tests', () => {
     })
 
     test('should handle navigation during selection', async ({ page }) => {
-      const calendarSection = getCalendarSection(page, 'dtcalendar-basic-section')
+      const calendarSection = getCalendarSection(
+        page,
+        'dtcalendar-basic-section'
+      )
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
 
       // Start selecting
@@ -208,12 +235,18 @@ test.describe('Integration Tests', () => {
     test('should work on tablet viewport', async ({ page }) => {
       await page.setViewportSize({ width: 768, height: 1024 })
 
-      const calendarSection = getCalendarSection(page, 'dtcalendar-basic-section')
+      const calendarSection = getCalendarSection(
+        page,
+        'dtcalendar-basic-section'
+      )
       const calendarGrid = calendarSection.locator('[role="grid"]').first()
       await expect(calendarGrid).toBeVisible()
 
       await selectDay(calendarGrid)
-      const resultDisplay = await waitForResultDisplay(calendarSection, 'dtcalendar-basic-result')
+      const resultDisplay = await waitForResultDisplay(
+        calendarSection,
+        'dtcalendar-basic-result'
+      )
       await expect(resultDisplay).toBeVisible()
     })
   })
