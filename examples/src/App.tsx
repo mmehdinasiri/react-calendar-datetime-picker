@@ -28,6 +28,7 @@ function App() {
               initValue={pickerDate}
               onChange={setPickerDate}
               placeholder='Select a date'
+              calendarSystem='jalali'
               clearBtn
               todayBtn
             />
