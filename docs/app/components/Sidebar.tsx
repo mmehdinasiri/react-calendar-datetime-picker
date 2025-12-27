@@ -157,6 +157,10 @@ const navigation = [
             name: 'CalendarConstraintsInput',
             href: '/types#calendarconstraintsinput'
           },
+          {
+            name: 'CalendarCustomization',
+            href: '/types#calendarcustomization'
+          },
           { name: 'PresetRangesConfig', href: '/types#presetrangesconfig' },
           { name: 'Locale', href: '/types#locale' },
           { name: 'CalendarListStyle', href: '/types#calendarliststyle' }

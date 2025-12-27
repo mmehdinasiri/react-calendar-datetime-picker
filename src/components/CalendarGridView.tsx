@@ -672,11 +672,14 @@ export const CalendarGridView = React.memo(
       prevProps.selectedValue === nextProps.selectedValue &&
       prevProps.displayMonth === nextProps.displayMonth &&
       prevProps.calendarSystem === nextProps.calendarSystem &&
+      prevProps.locale === nextProps.locale &&
+      prevProps.translations === nextProps.translations &&
       prevProps.type === nextProps.type &&
       prevProps.withTime === nextProps.withTime &&
       prevProps.dateFormat === nextProps.dateFormat &&
       prevProps.timeFormat === nextProps.timeFormat &&
       prevProps.showWeekend === nextProps.showWeekend &&
+      prevProps.weekStart === nextProps.weekStart &&
       prevProps.todayBtn === nextProps.todayBtn &&
       prevProps.enlargeSelectedDay === nextProps.enlargeSelectedDay &&
       prevProps.numberOfMonths === nextProps.numberOfMonths &&

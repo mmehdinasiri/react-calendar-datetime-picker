@@ -59,6 +59,25 @@ const ArrowRightIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
+// Custom Icon for DtPicker trigger (star icon - completely unrelated to calendar)
+const CustomCalendarIcon = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    width='18'
+    height='18'
+    viewBox='0 0 18 18'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <path
+      d='M9 1l2.5 5h5.5l-4.5 3.5 1.5 5L9 12l-4.5 2.5 1.5-5L2 6h5.5L9 1z'
+      fill='currentColor'
+      stroke='currentColor'
+      strokeWidth='0.5'
+    />
+  </svg>
+)
+
 export type CustomizationExamplesConfig = Record<
   string,
   Record<string, CustomizationExampleConfig>
@@ -538,23 +557,27 @@ import { Controller } from 'react-hook-form'
     }
   },
   'Custom Icons': {
-    CustomArrowIcons: {
-      title: 'Custom Arrow Icons',
-      description: 'Calendar with custom arrow navigation icons',
-      component: 'DtCalendar',
+    CustomIcons: {
+      title: 'Custom Icons',
+      description:
+        'DtPicker with custom navigation icons and custom calendar trigger icon. Note: The calendar icon customization only works for DtPicker, not DtCalendar.',
+      component: 'DtPicker',
       props: {
         customization: {
           icons: {
             previous: ArrowLeftIcon,
-            next: ArrowRightIcon
+            next: ArrowRightIcon,
+            calendar: CustomCalendarIcon
           }
         },
+        placeholder: 'Select date',
         showWeekend: true,
         todayBtn: true
       },
       wrapper: 'calendar-container',
-      customCode: `import { DtCalendar } from 'react-calendar-datetime-picker'
+      customCode: `import { DtPicker } from 'react-calendar-datetime-picker'
 
+// Custom navigation icons (for both DtCalendar and DtPicker)
 const CustomPrevIcon = ({ className }) => (
   <svg className={className} viewBox="0 0 20 20" fill="currentColor">
     <path d="M10 5L5 10L10 15M15 5L10 10L15 15" />
@@ -567,15 +590,36 @@ const CustomNextIcon = ({ className }) => (
   </svg>
 )
 
+const CustomCalendarIcon = ({ className }) => (
+  <svg
+    className={className}
+    width="18"
+    height="18"
+    viewBox="0 0 18 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M9 1l2.5 5h5.5l-4.5 3.5 1.5 5L9 12l-4.5 2.5 1.5-5L2 6h5.5L9 1z"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth="0.5"
+    />
+  </svg>
+)
+
 function App() {
-  const { theme } = useTheme()
+  const [date, setDate] = useState(null)
+  
   return (
-    <DtCalendar
-      dark={theme === 'dark'}
+    <DtPicker
+      onChange={setDate}
+      placeholder="Select date"
       customization={{
         icons: {
           previous: CustomPrevIcon,
-          next: CustomNextIcon
+          next: CustomNextIcon,
+          calendar: CustomCalendarIcon
         }
       }}
     />

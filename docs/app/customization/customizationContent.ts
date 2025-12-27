@@ -90,11 +90,12 @@ customization?: {
   },
   'Custom Icons': {
     intro:
-      'Customize navigation icons using the `customization` prop with the `icons` property. Replace the default chevron icons with your own React components.',
+      'Customize navigation icons using the `customization` prop with the `icons` property. Replace the default chevron icons with your own React components. For DtPicker, you can also customize the calendar trigger icon.',
     typeDefinitions: [
       `interface CalendarIcons {
   next?: React.ComponentType<{ className?: string }>
   previous?: React.ComponentType<{ className?: string }>
+  calendar?: React.ComponentType<{ className?: string }>
 }
 
 customization?: {
@@ -105,7 +106,8 @@ customization?: {
       {
         title: 'Properties:',
         content: `• next - React component for the next month navigation button. Receives a \`className\` prop.
-• previous - React component for the previous month navigation button. Receives a \`className\` prop.`
+• previous - React component for the previous month navigation button. Receives a \`className\` prop.
+• calendar - React component for the calendar trigger icon in DtPicker (only works for DtPicker, not DtCalendar). Receives a \`className\` prop.`
       }
     ]
   },
