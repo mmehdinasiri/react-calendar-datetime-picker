@@ -48,24 +48,6 @@ react-calendar-datetime-picker/
 - **Output**: Deployed to GitHub Pages
 - **URL**: https://mmehdinasiri.github.io/react-calendar-datetime-picker/
 
-## Next Steps
-
-1. **Migrate Website Content**:
-   - Follow instructions in `../docs/MIGRATION.md`
-   - Copy files from the separate website repository
-   - Update Next.js config for GitHub Pages
-
-2. **Set Up GitHub Secrets**:
-   - Add `NPM_TOKEN` for npm publishing
-   - Configure GitHub Pages in repository settings
-
-3. **Test Deployments**:
-   - Test npm publish workflow
-   - Test GitHub Pages deployment
-
-4. **Archive Old Repo** (Optional):
-   - Once migrated, you can archive the separate website repository
-
 ## Commands
 
 ```bash

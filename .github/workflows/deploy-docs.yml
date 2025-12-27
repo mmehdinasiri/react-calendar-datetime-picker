@@ -24,14 +24,16 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    # Only run if:
-    # - Manually triggered (workflow_dispatch), OR
-    # - Triggered by release (created), OR
-    # - Triggered by workflow_run and the npm publish succeeded
+    # Always run for manual triggers (workflow_dispatch) - allows reruns
+    # For automatic triggers:
+    # - release events always run (releases are created successfully)
+    # - workflow_run: removed conclusion check to allow manual reruns
+    #   Note: To prevent automatic runs on failure, use "Run workflow" button (workflow_dispatch)
+    #   instead of "Re-run" when you want to manually trigger after a failure
     if: |
       github.event_name == 'workflow_dispatch' ||
       github.event_name == 'release' ||
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+      github.event_name == 'workflow_run'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

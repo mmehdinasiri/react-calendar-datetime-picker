@@ -1,5 +1,7 @@
 # react-calendar-datetime-picker
 
+![Calendar Preview](./docs/public/image/react-datetime-picker.png)
+
 A modern, fast and small calendar for React with comprehensive support for Gregorian and Jalali (Persian) calendar systems.
 
 📚 **[Full Documentation Website](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)** - Complete guide with examples, API reference, and more
@@ -179,7 +181,6 @@ pnpm run lint
 ### User Documentation
 
 - **[Website](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)** - Full documentation website with examples
-- **[Changelog](./CHANGELOG.md)** - Version history and changes
 
 ### Developer Documentation
 
@@ -188,7 +189,6 @@ pnpm run lint
 - **[Deployment Guide](./docs-dev/DEPLOYMENT.md)** - Deployment guide for npm and GitHub Pages
 - **[Monorepo Setup](./docs-dev/MONOREPO.md)** - Monorepo structure and configuration
 - **[Version Management](./docs-dev/VERSIONING.md)** - Version management and publishing
-- **[Setup Guide](./docs-dev/SETUP_COMPLETE.md)** - Initial setup completion guide
 
 See [docs-dev/README.md](./docs-dev/README.md) for complete documentation index.
 
