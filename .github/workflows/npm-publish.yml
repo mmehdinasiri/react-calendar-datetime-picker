@@ -96,15 +96,46 @@ jobs:
         if: github.event_name == 'release'
         run: |
           VERSION="${{ steps.get_version.outputs.version }}"
+          
+          # Get the default branch name
+          # Try to get it from git remote, fallback to common branch names
+          DEFAULT_BRANCH=$(git remote show origin 2>/dev/null | grep 'HEAD branch' | sed 's/.*HEAD branch: //' || echo "")
+          if [ -z "$DEFAULT_BRANCH" ]; then
+            # Try common branch names
+            for branch in main master; do
+              if git ls-remote --heads origin $branch | grep -q .; then
+                DEFAULT_BRANCH=$branch
+                break
+              fi
+            done
+          fi
+          
+          if [ -z "$DEFAULT_BRANCH" ]; then
+            echo "Error: Could not determine default branch"
+            exit 1
+          fi
+          
+          echo "Default branch: $DEFAULT_BRANCH"
+          
+          # Fetch and checkout the default branch
+          git fetch origin $DEFAULT_BRANCH
+          git checkout -b $DEFAULT_BRANCH origin/$DEFAULT_BRANCH || git checkout $DEFAULT_BRANCH
+          
+          # Update package.json version on the default branch
           CURRENT_VERSION=$(node -p "require('./package.json').version")
-          if [ "$CURRENT_VERSION" == "$VERSION" ]; then
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action"
-            git add package.json
-            if git diff --staged --quiet; then
-              echo "No changes to commit"
-            else
-              git commit -m "chore: bump version to $VERSION [skip ci]"
-              git push
-            fi
+          if [ "$CURRENT_VERSION" != "$VERSION" ]; then
+            echo "Updating package.json version from $CURRENT_VERSION to $VERSION"
+            node -e "const fs = require('fs'); const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8')); pkg.version = '$VERSION'; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');"
+          else
+            echo "package.json version ($CURRENT_VERSION) already matches release tag"
+          fi
+          
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add package.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: bump version to $VERSION [skip ci]"
+            git push origin $DEFAULT_BRANCH
           fi
