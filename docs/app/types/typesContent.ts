@@ -302,6 +302,91 @@ const [dates, setDates] = useState<Multi | null>(null)`,
       note: 'All date formats (Day objects, Date objects, strings, timestamps) are automatically normalized to `Day` objects internally. The `isDateDisabled` function receives a `Day` object and should return `true` if the date should be disabled.'
     },
     {
+      id: 'calendarcustomization',
+      title: 'CalendarCustomization',
+      description:
+        'The `CalendarCustomization` interface allows you to customize various aspects of the calendar appearance and behavior, including CSS classes, icons, labels, and translations.',
+      interfaceCode: `interface CalendarCustomization {
+  classes?: CalendarClasses
+  icons?: CalendarIcons
+  labels?: CalendarLabels
+  translations?: Partial<CalendarTranslations>
+}
+
+interface CalendarClasses {
+  header?: string
+  days?: string
+  months?: string
+  years?: string
+}
+
+interface CalendarIcons {
+  next?: React.ComponentType<{ className?: string }>
+  previous?: React.ComponentType<{ className?: string }>
+  calendar?: React.ComponentType<{ className?: string }>
+}
+
+interface CalendarLabels {
+  nextMonth?: string
+  previousMonth?: string
+}`,
+      exampleTitle: 'Example Usage',
+      exampleCode: `import { DtPicker, DtCalendar } from 'react-calendar-datetime-picker'
+
+// Custom icons
+const CustomPrevIcon = ({ className }) => (
+  <svg className={className} viewBox="0 0 20 20" fill="currentColor">
+    <path d="M10 5L5 10L10 15" />
+  </svg>
+)
+
+const CustomNextIcon = ({ className }) => (
+  <svg className={className} viewBox="0 0 20 20" fill="currentColor">
+    <path d="M10 5L15 10L10 15" />
+  </svg>
+)
+
+const CustomTriggerIcon = ({ className }) => (
+  <svg className={className} viewBox="0 0 18 18" fill="none">
+    <circle cx="9" cy="9" r="7" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M9 5v4l3 2" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+)
+
+// Usage with DtCalendar
+<DtCalendar
+  customization={{
+    classes: {
+      header: 'my-custom-header',
+      days: 'my-custom-days'
+    },
+    icons: {
+      previous: CustomPrevIcon,
+      next: CustomNextIcon
+    },
+    labels: {
+      nextMonth: 'Next',
+      previousMonth: 'Previous'
+    }
+  }}
+/>
+
+// Usage with DtPicker (calendar icon only works for DtPicker)
+<DtPicker
+  customization={{
+    icons: {
+      calendar: CustomTriggerIcon
+    }
+  }}
+/>`,
+      note: 'The `calendar` icon in `CalendarIcons` only works for `DtPicker` components, not `DtCalendar`. For more customization examples, see the',
+      link: {
+        href: '/customization',
+        text: 'Customization'
+      },
+      linkSuffix: 'documentation.'
+    },
+    {
       id: 'presetrangesconfig',
       title: 'PresetRangesConfig',
       description:

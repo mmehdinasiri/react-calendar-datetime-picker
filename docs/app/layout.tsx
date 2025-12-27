@@ -15,9 +15,50 @@ import { BASE_PATH } from './config/basePath'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'React Calendar DateTime Picker',
+  title: {
+    default: 'React Calendar DateTime Picker',
+    template: '%s | React Calendar DateTime Picker'
+  },
   description:
-    'A modern, fast and small calendar for React with English and Persian (Jalali) support',
+    'A modern, fast and small calendar for React with comprehensive support for Gregorian and Jalali (Persian) calendar systems. Features single date, date range, multi-date, and week selection modes with full TypeScript support.',
+  keywords: [
+    'react',
+    'calendar',
+    'date-picker',
+    'datetime-picker',
+    'time-picker',
+    'persian',
+    'jalali',
+    'gregorian',
+    'typescript',
+    'react-component',
+    'date-range',
+    'multi-date',
+    'rtl',
+    'i18n',
+    'internationalization'
+  ],
+  openGraph: {
+    title: 'React Calendar DateTime Picker',
+    description:
+      'A modern, fast and small calendar for React with English and Persian (Jalali) support',
+    type: 'website',
+    images: [
+      {
+        url: `${BASE_PATH}/react-datetime-picker.png`,
+        width: 1200,
+        height: 630,
+        alt: 'React Calendar DateTime Picker'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'React Calendar DateTime Picker',
+    description:
+      'A modern, fast and small calendar for React with English and Persian (Jalali) support',
+    images: [`${BASE_PATH}/react-datetime-picker.png`]
+  },
   icons: {
     icon: [
       { url: `${BASE_PATH}/next-logo.png`, sizes: 'any' },

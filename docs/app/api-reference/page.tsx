@@ -1,9 +1,10 @@
 import {
   sharedProps,
   dtPickerOnlyProps,
-  dtCalendarOnlyProps
+  dtCalendarOnlyProps,
+  types
 } from './apiReference'
-import { PropsTable } from '../components'
+import { PropsTable, TypeDefinition } from '../components'
 import { CategoryContentDisplay } from '../components/CategoryContentDisplay'
 import { apiReferenceContent } from './apiReferenceContent'
 
@@ -21,7 +22,11 @@ const typeLinks: Record<string, string> = {
   DateInput: '/types#dateinput',
   InitValueInput: '/types#initvalueinput',
   CalendarConstraintsInput: '/types#calendarconstraintsinput',
-  PresetRangesConfig: '/types#presetrangesconfig'
+  PresetRangesConfig: '/types#presetrangesconfig',
+  CalendarCustomization: '/types#calendarcustomization',
+  CalendarClasses: '/types#calendarcustomization',
+  CalendarIcons: '/types#calendarcustomization',
+  CalendarLabels: '/types#calendarcustomization'
 }
 
 export default function APIReference() {
@@ -59,6 +64,24 @@ export default function APIReference() {
             <PropsTable props={dtCalendarOnlyProps} typeLinks={typeLinks} />
           </>
         )}
+
+        <h2>Types</h2>
+
+        <CategoryContentDisplay
+          categoryName='Types'
+          source='examples'
+          examplesContent={apiReferenceContent}
+          internationalizationContent={{}}
+        />
+
+        <div className='space-y-6 mt-6'>
+          {types.map((type) => (
+            <div key={type.name} id={type.name.toLowerCase()}>
+              <h3>{type.name}</h3>
+              <TypeDefinition definition={type.definition} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

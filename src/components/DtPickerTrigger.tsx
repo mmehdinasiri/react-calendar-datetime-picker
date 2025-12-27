@@ -1,4 +1,26 @@
 import React from 'react'
+import type { CalendarCustomization } from '../types/calendar'
+
+// Default calendar icon SVG component
+const CalendarIcon = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    width='16'
+    height='16'
+    viewBox='0 0 16 16'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+    aria-hidden='true'
+  >
+    <path
+      d='M3 6h10M5.5 1v3M10.5 1v3M3.5 4h9c.83 0 1.5.67 1.5 1.5v7c0 .83-.67 1.5-1.5 1.5h-9c-.83 0-1.5-.67-1.5-1.5v-7c0-.83.67-1.5 1.5-1.5z'
+      stroke='currentColor'
+      strokeWidth='1.5'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+    />
+  </svg>
+)
 
 /**
  * Props for DtPickerTrigger component
@@ -36,6 +58,8 @@ export interface DtPickerTriggerProps {
   triggerClass?: string
   /** Translation for clear button label */
   translationsClear: string
+  /** Customization options (for custom calendar icon) */
+  customization?: CalendarCustomization
 }
 
 /**
@@ -64,7 +88,7 @@ export interface DtPickerTriggerProps {
  * />
  * ```
  */
-export const DtPickerTrigger: React.FC<DtPickerTriggerProps> = ({
+const DtPickerTriggerInner: React.FC<DtPickerTriggerProps> = ({
   triggerElement,
   displayValue,
   placeholder,
@@ -80,8 +104,11 @@ export const DtPickerTrigger: React.FC<DtPickerTriggerProps> = ({
   inputId,
   inputClass,
   triggerClass,
-  translationsClear
+  translationsClear,
+  customization
 }) => {
+  // Get custom calendar icon from customization, or use default
+  const CalendarIconComponent = customization?.icons?.calendar || CalendarIcon
   // Render custom trigger element
   if (triggerElement) {
     return (
@@ -145,10 +172,36 @@ export const DtPickerTrigger: React.FC<DtPickerTriggerProps> = ({
         className='calendar-picker-toggle'
         aria-label='Open calendar'
       >
-        📅
+        <CalendarIconComponent className='calendar-picker-icon' />
       </button>
     </div>
   )
 }
+
+// 🟢 Memoize component to prevent unnecessary re-renders
+export const DtPickerTrigger = React.memo(
+  DtPickerTriggerInner,
+  (prevProps, nextProps) => {
+    // Return TRUE if props are equal (skip re-render)
+    // Note: refs are excluded from comparison as they are stable references
+    return (
+      prevProps.triggerElement === nextProps.triggerElement &&
+      prevProps.displayValue === nextProps.displayValue &&
+      prevProps.placeholder === nextProps.placeholder &&
+      prevProps.isDisabled === nextProps.isDisabled &&
+      prevProps.isOpen === nextProps.isOpen &&
+      prevProps.clearBtn === nextProps.clearBtn &&
+      prevProps.hasSelectedValue === nextProps.hasSelectedValue &&
+      prevProps.onTriggerClick === nextProps.onTriggerClick &&
+      prevProps.onInputKeyDown === nextProps.onInputKeyDown &&
+      prevProps.onClear === nextProps.onClear &&
+      prevProps.inputId === nextProps.inputId &&
+      prevProps.inputClass === nextProps.inputClass &&
+      prevProps.triggerClass === nextProps.triggerClass &&
+      prevProps.translationsClear === nextProps.translationsClear &&
+      prevProps.customization === nextProps.customization
+    )
+  }
+)
 
 DtPickerTrigger.displayName = 'DtPickerTrigger'

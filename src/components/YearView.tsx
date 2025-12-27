@@ -158,6 +158,8 @@ export const YearView = React.memo(YearViewInner, (prevProps, nextProps) => {
   return (
     prevProps.displayMonth === nextProps.displayMonth &&
     prevProps.calendarSystem === nextProps.calendarSystem &&
+    prevProps.locale === nextProps.locale &&
+    prevProps.translations === nextProps.translations &&
     prevProps.yearListStyle === nextProps.yearListStyle &&
     prevProps.customization === nextProps.customization &&
     prevProps.onYearSelect === nextProps.onYearSelect &&

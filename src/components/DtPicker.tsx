@@ -299,6 +299,7 @@ export const DtPicker: React.FC<DtPickerProps> = (props) => {
         inputClass={inputClass}
         triggerClass={triggerClass}
         translationsClear={translations.labels.clear}
+        customization={customization}
       />
 
       {isOpen && (

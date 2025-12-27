@@ -99,6 +99,8 @@ export const MonthView = React.memo(MonthViewInner, (prevProps, nextProps) => {
   return (
     prevProps.displayMonth === nextProps.displayMonth &&
     prevProps.calendarSystem === nextProps.calendarSystem &&
+    prevProps.locale === nextProps.locale &&
+    prevProps.translations === nextProps.translations &&
     prevProps.customization === nextProps.customization &&
     prevProps.onMonthSelect === nextProps.onMonthSelect &&
     prevProps.onViewChange === nextProps.onViewChange

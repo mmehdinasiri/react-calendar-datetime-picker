@@ -307,13 +307,36 @@ export const types: Type[] = [
 }`
   },
   {
+    name: 'CalendarClasses',
+    definition: `interface CalendarClasses {
+  header?: string
+  days?: string
+  months?: string
+  years?: string
+}`
+  },
+  {
+    name: 'CalendarIcons',
+    definition: `interface CalendarIcons {
+  next?: React.ComponentType<{ className?: string }>
+  previous?: React.ComponentType<{ className?: string }>
+  calendar?: React.ComponentType<{ className?: string }>
+}`
+  },
+  {
+    name: 'CalendarLabels',
+    definition: `interface CalendarLabels {
+  nextMonth?: string
+  previousMonth?: string
+}`
+  },
+  {
     name: 'CalendarCustomization',
     definition: `interface CalendarCustomization {
   classes?: CalendarClasses
   icons?: CalendarIcons
   labels?: CalendarLabels
-  monthNames?: string[]
-  weekdayNames?: string[]
+  translations?: Partial<CalendarTranslations>
 }`
   },
   {

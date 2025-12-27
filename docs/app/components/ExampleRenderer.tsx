@@ -99,6 +99,7 @@ export const ExampleRenderer: React.FC<ExampleRendererProps> = ({
   const componentProps: Record<string, unknown> = {}
 
   // Copy all props except boolean ones
+  // Note: React component references in customization.icons are preserved
   Object.keys(config.props || {}).forEach((key) => {
     if (!booleanPropNames.includes(key)) {
       componentProps[key] = config.props![key]

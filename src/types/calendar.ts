@@ -213,6 +213,8 @@ export interface CalendarIcons {
   next?: React.ComponentType<{ className?: string }>
   /** Previous month button icon */
   previous?: React.ComponentType<{ className?: string }>
+  /** Calendar trigger icon (for DtPicker only) */
+  calendar?: React.ComponentType<{ className?: string }>
 }
 
 /**
