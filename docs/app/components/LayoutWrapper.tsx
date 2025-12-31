@@ -96,7 +96,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         )}
         <main
           className={`flex-1 overflow-auto w-full transition-all duration-300 ease-in-out ${
-            isSidebarOpen ? 'lg:ml-80' : ''
+            isSidebarOpen && !isLegacyRoute ? 'lg:ml-80' : ''
           }`}
         >
           {children}
