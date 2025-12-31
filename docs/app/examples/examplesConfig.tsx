@@ -119,7 +119,7 @@ export const examples: ExamplesConfig = {
       props: {
         calendarSystem: 'gregorian',
         placeholder: 'Select a date',
-        locale: 'ko'
+        locale: 'en'
       },
       wrapper: 'picker-container'
     },
