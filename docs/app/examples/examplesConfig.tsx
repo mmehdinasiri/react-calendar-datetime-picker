@@ -481,12 +481,12 @@ function App() {
       component: 'DtCalendar',
       props: {
         constraints: {
-          minDate: new Date(2024, 11, 25)
+          minDate: new Date()
         }
       },
       wrapper: 'calendar-container',
       constraintsCode: `constraints={{
-        minDate: new Date(2024, 11, 25)
+        minDate: new Date()
       }}`
     },
     MaxDateConstraint: {
@@ -509,20 +509,42 @@ function App() {
       component: 'DtCalendar',
       props: {
         constraints: {
-          disabledDates: [
-            new Date(2024, 11, 25),
-            new Date(2024, 11, 26),
-            new Date(2024, 11, 27)
-          ]
+          disabledDates: (() => {
+            const now = new Date()
+            const year = now.getFullYear()
+            const month = now.getMonth()
+
+            // First day of current month
+            const firstDay = new Date(year, month, 1)
+
+            // Mid-day (15th) of current month
+            const midDay = new Date(year, month, 15)
+
+            // Last day of current month (first day of next month minus 1)
+            const lastDay = new Date(year, month + 1, 0)
+
+            return [firstDay, midDay, lastDay]
+          })()
         }
       },
       wrapper: 'calendar-container',
       constraintsCode: `constraints={{
-        disabledDates: [
-          new Date(2024, 11, 25),
-          new Date(2024, 11, 26),
-          new Date(2024, 11, 27)
-        ]
+        disabledDates: (() => {
+          const now = new Date()
+          const year = now.getFullYear()
+          const month = now.getMonth()
+          
+          // First day of current month
+          const firstDay = new Date(year, month, 1)
+          
+          // Mid-day (15th) of current month
+          const midDay = new Date(year, month, 15)
+          
+          // Last day of current month
+          const lastDay = new Date(year, month + 1, 0)
+          
+          return [firstDay, midDay, lastDay]
+        })()
       }}`
     },
     IsDateDisabledExample: {
@@ -602,9 +624,17 @@ function App() {
   const currentYear = now.getFullYear()
   const currentMonth = now.getMonth()
 
+  // ⚠️ Invalid initValue example: Date outside constraints
+  // If you set an initValue that's outside the min/max range,
+  // the calendar will automatically reject it and won't display it.
+  // The date must be between the 10th and 25th of the current month.
+  const invalidInitValue = new Date(currentYear, currentMonth, 5) // Before minDate (10th)
+  // const invalidInitValue = new Date(currentYear, currentMonth, 30) // After maxDate (25th)
+
   return (
     <div>
       <DtCalendar
+        initValue={invalidInitValue} // ❌ This will be rejected - outside constraints
         constraints={{
           minDate: new Date(currentYear, currentMonth, 10),
           maxDate: new Date(currentYear, currentMonth, 25)
@@ -619,6 +649,11 @@ function App() {
           Selected: {selectedDate.toLocaleDateString()}
         </p>
       )}
+      {/* 
+        Note: The invalid initValue (5th) will be ignored because it's 
+        before minDate (10th). The calendar will not display it as selected.
+        Only dates within the constraints (10th-25th) can be selected.
+      */}
     </div>
   )
 }`
@@ -769,21 +804,10 @@ function App() {
     }
   },
   'Week Settings': {
-    WeekSettingsOverview: {
-      title: 'Week Settings Overview',
-      description:
-        'Configure week start day and weekend highlighting. Control which day the week begins with and whether weekends are visually highlighted.',
-      component: 'DtCalendar',
-      props: {
-        showWeekend: true,
-        todayBtn: true
-      },
-      wrapper: 'calendar-container'
-    },
     DefaultWeekStart: {
       title: 'Default Week Start (Sunday)',
       description:
-        'Calendar with default week start (Sunday for Gregorian calendar)',
+        'Configure week start day and weekend highlighting. Control which day the week begins with and whether weekends are visually highlighted. Calendar with default week start (Sunday for Gregorian calendar).',
       component: 'DtCalendar',
       props: {
         showWeekend: true,
@@ -881,7 +905,7 @@ function App() {
     JalaliWithoutWeekendHighlighting: {
       title: 'Jalali Calendar without Weekend Highlighting',
       description:
-        'Persian calendar without weekend highlighting - all days look the same',
+        'Persian calendar without weekend highlighting - all days look the same. Week start is set to Monday (different from Jalali default of Saturday).',
       component: 'DtCalendar',
       props: {
         calendarSystem: 'jalali',
