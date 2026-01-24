@@ -110,14 +110,24 @@ jobs:
         if: github.event_name == 'workflow_run'
         run: |
           VERSION="${{ steps.get_published_version.outputs.version }}"
-          cd docs
           # Update package.json to use npm version instead of file:../
+          cd docs
           pnpm pkg set "dependencies.react-calendar-datetime-picker=$VERSION"
           echo "Updated docs/package.json to use react-calendar-datetime-picker@$VERSION from npm"
-          # Clean up old local installation and update lockfile after changing package.json
-          rm -rf node_modules/react-calendar-datetime-picker
-          pnpm install --no-frozen-lockfile
+          # Verify the change
+          echo "Current package.json dependency:"
+          pnpm pkg get "dependencies.react-calendar-datetime-picker"
           cd ..
+          
+          # Clean up old local installation
+          rm -rf docs/node_modules/react-calendar-datetime-picker
+          rm -rf node_modules/.pnpm/react-calendar-datetime-picker* 2>/dev/null || true
+          
+          # Run install from root to update workspace lockfile
+          # Must use --no-frozen-lockfile to allow lockfile update after package.json change
+          echo "Installing dependencies and updating lockfile from root..."
+          pnpm install --no-frozen-lockfile
+          echo "✅ Lockfile updated successfully"
 
       - name: Install dependencies (docs)
         if: github.event_name != 'workflow_run'
