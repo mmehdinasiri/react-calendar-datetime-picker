@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 
 const Header = () => {
@@ -113,7 +113,7 @@ const Header = () => {
             </Link>
             <a
               className='block inline-block mt-0 text-text-lightest hover:text-white mr-4 font-extralight'
-              href='https://github.com/mmehdinasiri/react-calendar-datetime-picker'
+              href='https://github.com/mehdi-nasiri-jahroodi/react-calendar-datetime-picker'
               target='_blank'
               rel='noopener noreferrer'
             >

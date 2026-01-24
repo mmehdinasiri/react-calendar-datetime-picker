@@ -51,7 +51,7 @@ git push origin main
 
 ### Step 3: Create GitHub Release
 
-1. Go to: https://github.com/mmehdinasiri/react-calendar-datetime-picker/releases/new
+1. Go to: https://github.com/mehdi-nasiri-jahroodi/react-calendar-datetime-picker/releases/new
 2. **Tag version**: Enter `v2.0.0` (must match package.json version)
 3. **Release title**: `Version 2.0.0` (or descriptive title)
 4. **Description**: Add release notes

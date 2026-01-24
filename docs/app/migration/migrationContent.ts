@@ -317,12 +317,12 @@ isBefore(date1, date2)        // Uses default locale`
     links: [
       {
         text: 'Report Issues',
-        href: 'https://github.com/mmehdinasiri/react-calendar-datetime-picker/issues',
+        href: 'https://github.com/mehdi-nasiri-jahroodi/react-calendar-datetime-picker/issues',
         variant: 'primary' as const
       },
       {
         text: 'Start Discussion',
-        href: 'https://github.com/mmehdinasiri/react-calendar-datetime-picker/discussions',
+        href: 'https://github.com/mehdi-nasiri-jahroodi/react-calendar-datetime-picker/discussions',
         variant: 'secondary' as const
       }
     ]

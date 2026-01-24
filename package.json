@@ -1,14 +1,14 @@
 {
   "name": "react-calendar-datetime-picker",
-  "version": "2.0.0-rc.0",
+  "version": "2.0.0",
   "description": "A modern, fast and small calendar for React with English and Persian (Jalali) support",
   "author": "MehdiNasiri",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mmehdinasiri/react-calendar-datetime-picker"
+    "url": "https://github.com/mehdi-nasiri-jahroodi/react-calendar-datetime-picker"
   },
-  "homepage": "https://mmehdinasiri.github.io/react-calendar-datetime-picker/",
+  "homepage": "https://mehdi-nasiri-jahroodi.github.io/react-calendar-datetime-picker/",
   "types": "./dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",

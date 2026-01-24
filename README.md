@@ -4,7 +4,7 @@
 
 A modern, fast and small calendar for React with comprehensive support for Gregorian and Jalali (Persian) calendar systems.
 
-📚 **[Full Documentation Website](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)** - Complete guide with examples, API reference, and more
+📚 **[Full Documentation Website](https://mehdi-nasiri-jahroodi.github.io/react-calendar-datetime-picker/)** - Complete guide with examples, API reference, and more
 
 ## Features
 
@@ -104,7 +104,7 @@ Version 2.x brings significant improvements and new capabilities:
 - Robust error handling system with onError callback
 - Handles invalid dates, constraint violations, and provides detailed error information
 
-For a complete list of features and migration guide, visit the [documentation website](https://mmehdinasiri.github.io/react-calendar-datetime-picker/).
+For a complete list of features and migration guide, visit the [documentation website](https://mehdi-nasiri-jahroodi.github.io/react-calendar-datetime-picker/).
 
 ## Keywords
 
@@ -180,7 +180,7 @@ pnpm run lint
 
 ### User Documentation
 
-- **[Website](https://mmehdinasiri.github.io/react-calendar-datetime-picker/)** - Full documentation website with examples
+- **[Website](https://mehdi-nasiri-jahroodi.github.io/react-calendar-datetime-picker/)** - Full documentation website with examples
 
 ### Developer Documentation
 
@@ -194,4 +194,4 @@ See [docs-dev/README.md](./docs-dev/README.md) for complete documentation index.
 
 ## License
 
-MIT © [mehdinasiri](https://github.com/mmehdinasiri)
+MIT © [mehdi-nasiri-jahroodi](https://github.com/mehdi-nasiri-jahroodi)

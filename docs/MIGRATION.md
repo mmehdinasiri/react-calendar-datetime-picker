@@ -7,7 +7,7 @@ This guide helps you migrate the website from the separate repository to this mo
 1. **Clone the website repository** (if you haven't already):
 
    ```bash
-   git clone https://github.com/mmehdinasiri/react-calendar-datetime-picker-website.git temp-website
+   git clone https://github.com/mehdi-nasiri-jahroodi/react-calendar-datetime-picker-website.git temp-website
    ```
 
 2. **Copy website files to docs directory**:
@@ -73,4 +73,4 @@ Once migrated, you can:
 
 - Archive or delete the separate website repository
 - Update any links pointing to the old repo
-- The website will be available at: https://mmehdinasiri.github.io/react-calendar-datetime-picker/
+- The website will be available at: https://mehdi-nasiri-jahroodi.github.io/react-calendar-datetime-picker/

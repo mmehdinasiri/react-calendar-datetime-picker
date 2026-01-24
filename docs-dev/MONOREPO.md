@@ -46,7 +46,7 @@ react-calendar-datetime-picker/
 - **Trigger**: Push to `main` branch only (when docs/ changes)
 - **Workflow**: `.github/workflows/deploy-docs.yml`
 - **Output**: Deployed to GitHub Pages
-- **URL**: https://mmehdinasiri.github.io/react-calendar-datetime-picker/
+- **URL**: https://mehdi-nasiri-jahroodi.github.io/react-calendar-datetime-picker/
 
 ## Commands
 

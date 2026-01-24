@@ -24,7 +24,7 @@ react-calendar-datetime-picker/
 The library is automatically published to npm when:
 
 - **A new GitHub Release is created** (recommended)
-  - Go to: https://github.com/mmehdinasiri/react-calendar-datetime-picker/releases/new
+  - Go to: https://github.com/mehdi-nasiri-jahroodi/react-calendar-datetime-picker/releases/new
   - Create a new release with a tag (e.g., `v2.0.0`)
   - The workflow runs automatically
 - **Manual trigger via GitHub Actions UI** (`workflow_dispatch`)
@@ -108,7 +108,7 @@ The website is automatically deployed when:
 
 The website will be available at:
 
-- **Production**: https://mmehdinasiri.github.io/react-calendar-datetime-picker/
+- **Production**: https://mehdi-nasiri-jahroodi.github.io/react-calendar-datetime-picker/
 
 ## Workflows
 
@@ -138,7 +138,7 @@ git commit -m "chore: bump version to 2.0.0"
 git push
 
 # 3. Create a GitHub Release
-# Go to: https://github.com/mmehdinasiri/react-calendar-datetime-picker/releases/new
+# Go to: https://github.com/mehdi-nasiri-jahroodi/react-calendar-datetime-picker/releases/new
 # Tag: v2.0.0
 # Title: Version 2.0.0
 # Click "Publish release"

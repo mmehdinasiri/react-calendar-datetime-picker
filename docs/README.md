@@ -32,7 +32,7 @@ See [MIGRATION.md](./MIGRATION.md) for instructions on migrating the website fro
 
 The website is automatically deployed to GitHub Pages via GitHub Actions when changes are pushed to the `main` branch.
 
-The website is available at: https://mmehdinasiri.github.io/react-calendar-datetime-picker/
+The website is available at: https://mehdi-nasiri-jahroodi.github.io/react-calendar-datetime-picker/
 
 ## Structure
 

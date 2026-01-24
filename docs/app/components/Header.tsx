@@ -411,7 +411,7 @@ export function Header() {
             )}
           </button>
           <a
-            href='https://github.com/mmehdinasiri/react-calendar-datetime-picker'
+            href='https://github.com/mehdi-nasiri-jahroodi/react-calendar-datetime-picker'
             target='_blank'
             rel='noopener noreferrer'
             className='text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors'
