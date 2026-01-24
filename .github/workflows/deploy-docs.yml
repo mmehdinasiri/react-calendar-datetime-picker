@@ -83,9 +83,24 @@ jobs:
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "Version from package.json: $VERSION (npm tag: $TAG)"
 
+      - name: Ensure docs package.json uses local reference
+        if: github.event_name != 'workflow_run'
+        run: |
+          cd docs
+          # Ensure package.json uses local file reference for manual/release triggers
+          # This must happen before root install so workspace sees correct reference
+          pnpm pkg set "dependencies.react-calendar-datetime-picker=file:../"
+          cd ..
+
       - name: Install dependencies (root)
         if: github.event_name != 'workflow_run'
-        run: pnpm install --frozen-lockfile
+        run: |
+          # Allow lockfile update for manual triggers to handle sync issues
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            pnpm install --no-frozen-lockfile
+          else
+            pnpm install --frozen-lockfile
+          fi
 
       - name: Build library from source (for docs to use)
         if: github.event_name != 'workflow_run'
@@ -109,7 +124,13 @@ jobs:
         run: |
           cd docs
           rm -rf node_modules/react-calendar-datetime-picker
-          pnpm install --frozen-lockfile
+          # Allow lockfile update for manual triggers (workflow_dispatch) to handle sync issues
+          # Use frozen-lockfile for release triggers (assumes lockfile is already in sync)
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            pnpm install --no-frozen-lockfile
+          else
+            pnpm install --frozen-lockfile
+          fi
           cd ..
 
       - name: Sync version from package.json
