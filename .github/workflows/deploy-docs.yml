@@ -99,8 +99,13 @@ jobs:
           # Update package.json to use npm version instead of file:../
           pnpm pkg set "dependencies.react-calendar-datetime-picker=$VERSION"
           echo "Updated docs/package.json to use react-calendar-datetime-picker@$VERSION from npm"
+          # Clean up old local installation and update lockfile after changing package.json
+          rm -rf node_modules/react-calendar-datetime-picker
+          pnpm install --no-frozen-lockfile
+          cd ..
 
       - name: Install dependencies (docs)
+        if: github.event_name != 'workflow_run'
         run: |
           cd docs
           rm -rf node_modules/react-calendar-datetime-picker
